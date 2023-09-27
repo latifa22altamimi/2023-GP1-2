@@ -1,7 +1,7 @@
 # 2023-GP1-2
 
 ## Introduction
-"Rehaab" is a system that aims to facilitate the process of electric vehicle reservation and management for visitors of the Al-Masjid Al-Haram and vehicle manager by providing numerous features. 
+"Rehaab" is a system that aims to facilitate the process of electric vehicle reservation and management for visitors of the Al-Masjid Al-Haram and vehicle manager by providing numerous features. hi
 
 ##  technology
 The system will use using Dart programming language, computer vision for object detection to track electric vehicles and detect congestion. Also, it will make use of phone location sensors (GPS) to track Tawaf status and count the number of circumambulation rounds around the Kaaba as well as estimate waiting time in case all the vehicles are busy. 
