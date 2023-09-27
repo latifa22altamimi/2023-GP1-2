@@ -492,17 +492,17 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          // mdre wsh faydtha
-                          //form is valids
+                         
+                          //form is valid
 
-                          if (_vehicleType != null &&
-                              _drivingType == DrivingType.SelfDriving) { //put or between them w admjehm
-                            // && choosed time and date
-                            print('Success 1'); //show dialog and insert in db
-                          } else if (_vehicleType != null &&
+                          if ((_vehicleType != null &&
+                              _drivingType == DrivingType.SelfDriving)||(_vehicleType != null &&
                               _drivingType == DrivingType.WithDriver &&
-                              _driverGender != null) {
-                            // && choosed date and time
+                              _driverGender != null)) { // complete with choose time and date
+                           
+                          
+                          
+                           
 
                             //confirm msg
                             print('Success 2');
