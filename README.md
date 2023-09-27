@@ -1,4 +1,4 @@
-# 2023-GP1-2
+# rehaab
 
 ## Introduction
 "Rehaab" is a system that aims to facilitate the process of electric vehicle reservation and management for visitors of the Al-Masjid Al-Haram and vehicle manager by providing numerous features. 
@@ -11,12 +11,12 @@ In addition, reservations are managed through unique barcodes issued, and a barc
 
 ### 1.Clone the Repository:
 ```
-https://github.com/latifa22altamimi/2023-GP1-2.git 
+https://github.com/latifa22altamimi/rehaab.git 
 ```
 
 ### 2.Go to the Project Directory:
 ```
-2023-GP1-2.git 
+rehaab.git 
 ```
 ### 3.Run the App:
 
