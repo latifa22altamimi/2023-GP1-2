@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rehaab/main/home.dart';
+import 'package:rehaab/SignIn/login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -119,7 +119,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        const home()), //navigate to sign up page
+                        const LoginScreen()), //navigate to sign up page
               );
             } else {
               _pageController.nextPage(
