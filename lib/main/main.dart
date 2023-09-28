@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'package:rehaab/onboardingscreen.dart';
-import 'package:rehaab/splash_screen.dart';
+import 'package:rehaab/main/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());

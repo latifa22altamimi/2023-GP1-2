@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'clip.dart';
-import 'home.dart';
+import 'package:rehaab/reservations/myreservations.dart';
+import 'package:rehaab/reservations/reservation_list.dart';
+import '../customization/clip.dart';
+import '../main/home.dart';
 
 enum VehicleType { Single, Double }
 
@@ -485,24 +487,21 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
 
                 // reserve button
                 Container(
-                  padding: EdgeInsets.only(right: 5.0,top: 80.0,left: 5.0),
+                  padding: EdgeInsets.only(right: 5.0, top: 80.0, left: 5.0),
                   child: ConstrainedBox(
                     constraints:
                         BoxConstraints.tightFor(height: 50, width: 500),
                     child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                         
                           //form is valid
 
                           if ((_vehicleType != null &&
-                              _drivingType == DrivingType.SelfDriving)||(_vehicleType != null &&
-                              _drivingType == DrivingType.WithDriver &&
-                              _driverGender != null)) { // complete with choose time and date
-                           
-                          
-                          
-                           
+                                  _drivingType == DrivingType.SelfDriving) ||
+                              (_vehicleType != null &&
+                                  _drivingType == DrivingType.WithDriver &&
+                                  _driverGender != null)) {
+                            // complete with choose time and date
 
                             //confirm msg
                             print('Success 2');
@@ -657,12 +656,16 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                                             100),
                                                                 child:
                                                                     ElevatedButton(
-                                                                  onPressed: (){
-                                                                     Navigator.push(
-                                                                      context,
-                                                                       MaterialPageRoute(builder: (context) => const home()), //navigate to sign up page
-                                                                      );
-
+                                                                  onPressed:
+                                                                      () {
+                                                                    if (_driverGender !=
+                                                                        null) {
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .push(
+                                                                              MaterialPageRoute(builder: ((context) => ReserveCard())));
+                                                                      //navigate to sign up page
+                                                                    }
                                                                   },
                                                                   child: Text(
                                                                     'Done',
@@ -734,6 +737,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                             print('error');
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
+                                duration: Duration(seconds: 3),
                                 content: Container(
                                   height: 80,
                                   padding: EdgeInsets.all(10.0),

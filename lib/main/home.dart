@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:rehaab/onboardingscreen.dart';
-import 'package:rehaab/reserve_vehicle.dart';
-import 'package:rehaab/myreservations.dart';
+import 'package:rehaab/main/onboardingscreen.dart';
+import 'package:rehaab/reservations/reserve_vehicle.dart';
+import 'package:rehaab/reservations/myreservations.dart';
 
 class home extends StatefulWidget {
   const home({super.key});
