@@ -39,6 +39,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_native_splash: ^2.3.2
   lottie: ^2.6.0
+  mailer: ^6.0.1
+  fluttertoast: ^8.2.2
+  http: ^1.1.0
 
 
    
@@ -90,6 +93,8 @@ flutter:
     - assets/images/erorrr.json
     - assets/images/warn.json
     - assets/images/success.json
+    - assets/images/rehabLogo.png
+    - assets/images/icons8-received-90.png 
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
