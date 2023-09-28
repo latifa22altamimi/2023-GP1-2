@@ -5,14 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:rehaab/components/page_title_bar.dart';
 import 'package:rehaab/components/under_part.dart';
 import 'package:rehaab/components/upside.dart';
-import 'package:rehaab/constants.dart';
 import 'package:rehaab/SignUp/signup_screen.dart';
+import 'package:rehaab/widgets/constants.dart';
 import 'package:rehaab/widgets/rounded_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rehaab/widgets/text_field_container.dart';
-import 'package:rehaab/Signin/forgotPass_Screen';
+import 'package:rehaab/Signin/forgotPass_Screen.dart';
 import 'dart:async';
+import 'package:rehaab/main/home.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -31,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
    
 
   Future rehaab() async{
-    var url ="http://192.168.100.167/RehabAuth/rehaab.php";
+    var url ="http://192.168.100.167/RehabAuth/signin.php";
     final response= await http.post(Uri.parse(url),body:{
     "Email":email.text,
     "Password":Password.text,
@@ -48,6 +49,10 @@ class _LoginScreenState extends State<LoginScreen> {
         textColor: Colors.white,
         fontSize: 16.0
     );
+          Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const home()),
+  ); 
   }
     else if( data == "empty"){
       Fluttertoast.showToast(

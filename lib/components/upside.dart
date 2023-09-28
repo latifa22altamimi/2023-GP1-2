@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rehaab/constants.dart';
+import 'package:rehaab/widgets/constants.dart';
 
 
 class Upside extends StatelessWidget {

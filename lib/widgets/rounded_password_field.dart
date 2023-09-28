@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rehaab/constants.dart';
+import 'package:rehaab/widgets/constants.dart';
 import 'package:rehaab/widgets/text_field_container.dart';
 import 'package:rehaab/widgets/widgets.dart';
 
