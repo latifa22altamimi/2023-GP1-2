@@ -13,7 +13,7 @@ class _HomeState extends State<Home> {
 
   getCustomMarker() async {
     customMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, 'assets/images/double.png');
+        ImageConfiguration.empty, 'assets/images/mapMarker.png');
   }
 
   @override
