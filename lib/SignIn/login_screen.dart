@@ -26,7 +26,10 @@ State<LoginScreen> createState() => _LoginScreenState();}
 class _LoginScreenState extends State<LoginScreen> {
  TextEditingController email = TextEditingController();
  TextEditingController Password=TextEditingController();
-var dropdownValue;
+var valueChoose;
+List listItem=[
+  "Al-Haram visitor", "Vehicle manager"
+];
 
 
    
@@ -36,8 +39,7 @@ var dropdownValue;
     final response= await http.post(Uri.parse(url),body:{
     "Email":email.text,
     "Password":Password.text,
-    //"Type":dropdownValue,
-  });
+    "Type": valueChoose});
   var data =json.decode(response.body);
 
   if(data == "Success"){
@@ -66,9 +68,20 @@ var dropdownValue;
         fontSize: 16.0
     );
   }
+      else if( data == "notVerfied"){
+      Fluttertoast.showToast(
+        msg: "You are not verfied!",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
+  }
   else{
      Fluttertoast.showToast(
-        msg: "Email or password is wrong or your are not verified",
+        msg: "Email or password or type is wrong",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 2,
@@ -82,7 +95,6 @@ var dropdownValue;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-     String dropdownValue = 'Al-Haram visitor';
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -117,70 +129,73 @@ var dropdownValue;
                         Form(
                           child: Column(
                             children: [
-                             /* const RoundedInputField(
-                                  hintText: "Email", icon: Icons.email),
-                              const RoundedPasswordField(),*/
+                          
                                TextFieldContainer(
-      child: TextField(
-        controller:email,
-        cursorColor: kPrimaryColor,
-        decoration: InputDecoration(
-            icon: Icon(
-              Icons.email,
-              color: kPrimaryColor,
-            ),
-            hintText: "Email",
-            hintStyle: const TextStyle(fontFamily: 'OpenSans'),
-            border: InputBorder.none),
-      )
-      ),
-       TextFieldContainer(
-      child: TextField(
-        controller: Password,
-        obscureText: true,
-        cursorColor: kPrimaryColor,
-         decoration: const InputDecoration(
-            icon: Icon(
-              Icons.lock,
-              color: kPrimaryColor,
-            ),
-            hintText: "Password",
-            hintStyle:  TextStyle(fontFamily: 'OpenSans'),
-            suffixIcon: Icon(
-              Icons.visibility,
-              color: kPrimaryColor,
-            ),
-            border: InputBorder.none),
-      ),
-    ),
-          
-                               Text("User type", style: TextStyle(
-
-                                      fontSize:15,
-                                      fontWeight: FontWeight.bold,
-                                      color: kPrimaryColor,
-                                      fontFamily: 'OpenSans',
-                                      ), 
-                                      ),
-                        DropdownButton<String>(
-                          value: dropdownValue,
-                          items: <String>['Al-Haram visitor','Vehicle manager']
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                             value,
-                            style: TextStyle(fontSize: 15,fontFamily: 'OpenSans'),
-                          ),
-                          );
-                          }).toList(),
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              dropdownValue = newValue!;
-                                  });
-                                  },
-                               ),
-                              
+                               child: TextField(
+                               controller:email,
+                               cursorColor: kPrimaryColor,
+                               decoration: InputDecoration(
+                                icon: Icon(
+                                 Icons.email,
+                                 color: kPrimaryColor,
+                                   ),
+                                  hintText: "Email",
+                                   hintStyle: const TextStyle(fontFamily: 'OpenSans'),
+                                   border: InputBorder.none),
+                                   )
+                                   ),
+                                   TextFieldContainer(
+                                  child: TextField(
+                                  controller: Password,
+                                  obscureText: true,
+                                  cursorColor: kPrimaryColor,
+                                  decoration: const InputDecoration(
+                                   icon: Icon(
+                                   Icons.lock,
+                                   color: kPrimaryColor,
+                                   ),
+                                   hintText: "Password",
+                                   hintStyle:  TextStyle(fontFamily: 'OpenSans'),
+                                   suffixIcon: Icon(
+                                   Icons.visibility,
+                                   color: kPrimaryColor,
+                                    ),
+                                   border: InputBorder.none),
+                                    ),
+                                    ),
+                                    
+                              Padding(padding:EdgeInsets.all(16), 
+                             child: Container(
+                              padding: EdgeInsets.only(left: 14, right: 14),
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: kPrimaryColor, width: 1),
+                                  borderRadius: BorderRadius.circular(15)
+                                  ),
+                              child: DropdownButton(
+                              hint: Text("User type: "),
+                               icon: Icon(Icons.arrow_drop_down),
+                               iconSize: 32,
+                               underline: SizedBox(),
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+              
+                              ),
+                               value: valueChoose,
+                               onChanged: (newValue){
+                                setState(() {
+                                  valueChoose=newValue;
+                                });
+                              },
+                              items: listItem.map((valueItem){
+                                return DropdownMenuItem(
+                                  value:valueItem,
+                                  child:Text(valueItem) ,
+                                 );
+                              }).toList(),
+                              ) 
+                              )
+                              ),
                               RoundedButton(text: 'LOGIN', press: () {rehaab();}),
                               const SizedBox(
                                 height: 10,
