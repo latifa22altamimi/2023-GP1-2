@@ -26,7 +26,7 @@ State<LoginScreen> createState() => _LoginScreenState();}
 class _LoginScreenState extends State<LoginScreen> {
  TextEditingController email = TextEditingController();
  TextEditingController Password=TextEditingController();
-
+var dropdownValue;
 
 
    
@@ -36,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final response= await http.post(Uri.parse(url),body:{
     "Email":email.text,
     "Password":Password.text,
+    //"Type":dropdownValue,
   });
   var data =json.decode(response.body);
 
@@ -51,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
           Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => const home()),
+    MaterialPageRoute(builder: (context) =>  home()),
   ); 
   }
     else if( data == "empty"){

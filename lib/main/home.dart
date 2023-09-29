@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:rehaab/main/onboardingscreen.dart';
 import 'package:rehaab/reservations/reserve_vehicle.dart';
 import 'package:rehaab/reservations/myreservations.dart';
+import 'package:rehaab/Map_page/map.dart';
 
 class home extends StatefulWidget {
   const home({super.key});
@@ -251,7 +252,7 @@ class Body extends StatelessWidget {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => OnboardingScreen())),
+                          builder: (context) => Home())),
                   child: Container(
                     width: 180,
                     height: 180,
@@ -297,7 +298,7 @@ class Body extends StatelessWidget {
                   onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => OnboardingScreen())),
+                          builder: (context) => const OnboardingScreen())),
                   child: Container(
                     width: 180,
                     height: 180,
