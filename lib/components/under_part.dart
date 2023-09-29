@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rehaab/constants.dart';
+import 'package:rehaab/widgets/constants.dart';
 
 class UnderPart extends StatelessWidget {
   const UnderPart(
