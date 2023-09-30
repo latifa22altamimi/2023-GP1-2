@@ -63,13 +63,18 @@ Widget build(BuildContext context) {
          child : Column( 
         
         children: [
-        Container(alignment: Alignment.center, //padding: const EdgeInsets.only(top: 1.0, left: 10.0, right: 10.0),
-        margin: EdgeInsets.only(bottom: 20.0),
-        padding: EdgeInsets.only(top: 50),
+        Container( 
+          alignment: Alignment.center, 
+        height: 300,//padding: const EdgeInsets.only(top: 1.0, left: 10.0, right: 10.0),
+        width: 300,
+        //margin: EdgeInsets.only(bottom: 20.0),
+        decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
+        //padding: EdgeInsets.only(top: 50),
         child: QrImageView(data: "Name\n Date \n  Time \n Vehicle type \n Driving type \n Driver gender \n  " , size: 200, )), 
+        Container(padding: EdgeInsets.only(top: 5),      alignment: Alignment.topCenter, height:40,child: Text("Use this QR code at the pickup location to check in",maxLines: 2, style: TextStyle(color: Colors.grey, fontSize: 15 ), )),
         Container(child: Row(children: [Container(  
 
-          padding: EdgeInsets.only( left: 30, right: 6 , top: 180, bottom: 6),
+          padding: EdgeInsets.only( left: 30, right: 6 , top: 150, bottom: 6),
           child: ElevatedButton.icon(
                 
             onPressed: () async { showDialog(
@@ -298,7 +303,7 @@ Widget build(BuildContext context) {
 style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.red), shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))), fixedSize: MaterialStateProperty.resolveWith((states) => Size(150, 40)),), 
               ),) , Container(
 //padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
-          padding: EdgeInsets.only( right: 6,top: 180, bottom: 6),
+          padding: EdgeInsets.only( right: 6,top: 150, bottom: 6),
               child: ElevatedButton.icon(
                 
             onPressed: () async { },
