@@ -168,7 +168,9 @@ List listItem=[
                              child: Container(
                               padding: EdgeInsets.only(left: 14, right: 14),
                               decoration: BoxDecoration(
-                                  border: Border.all(color: kPrimaryColor, width: 1),
+                                  border: Border.all(
+                                  color: kPrimaryColor, 
+                                  width: 1),
                                   borderRadius: BorderRadius.circular(15)
                                   ),
                               child: DropdownButton(
