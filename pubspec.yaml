@@ -96,6 +96,7 @@ flutter:
     - assets/images/success.json
     - assets/images/rehabLogo.png
     - assets/images/icons8-received-90.png 
+    - assets/images/mark_.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

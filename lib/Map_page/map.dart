@@ -8,12 +8,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  var markers = HashSet<Marker>();
+  List<Marker> markers = <Marker>[];
   late BitmapDescriptor customMarker;
 
   getCustomMarker() async {
     customMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, 'assets/images/marker_1.png');
+        ImageConfiguration.empty, 'assets/images/mark_.png');
   }
 
   @override
@@ -51,7 +51,7 @@ class _HomeState extends State<Home> {
             markers.add(
               Marker(
                 markerId: const MarkerId("2"),
-                position: const LatLng(21, 39),
+                position: const LatLng(21.423437919104114, 39.83102421727011),
                 infoWindow: const InfoWindow(
                   title: "Marker 2",
                   snippet: "Click for the location",
@@ -62,7 +62,7 @@ class _HomeState extends State<Home> {
             markers.add(
               Marker(
                 markerId: const MarkerId("3"),
-                position: const LatLng(21.322, 39.223),
+                position: const LatLng(21.425406784366682, 39.82432911006888),
                 infoWindow: const InfoWindow(
                   title: "Marker 3",
                   snippet: "Click for the location",
@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
             );
           });
         },
-        markers: markers,
+        markers: Set<Marker>.from(markers),
       ),
     );
   }
