@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/SignIn/login_screen.dart';
+import 'package:rehaab/Signup/signup_screen.dart';
 
 import 'home.dart';
 
@@ -121,7 +122,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                         home()), //navigate to sign up page
+                         LoginScreen()), //navigate to sign up page
               );
             } else {
               _pageController.nextPage(
