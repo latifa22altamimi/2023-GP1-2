@@ -140,7 +140,7 @@ class BodyHome extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.only(
             topRight: Radius.circular(90), topLeft: Radius.circular(20)),
-        color: Color.fromARGB(255, 244, 244, 244),
+        color: Color.fromARGB(255, 255, 255, 255),
       ),
       child: Column(
         children: [
@@ -214,6 +214,7 @@ class BodyHome extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 InkWell(
                   onTap: () => Navigator.push(
                       context,
@@ -250,7 +251,7 @@ class BodyHome extends StatelessWidget {
                           height: 10,
                         ),
                         Text(
-                          'services',
+                          'Track tawaf status',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 18,
@@ -260,6 +261,7 @@ class BodyHome extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 InkWell(
                   onTap: () => Navigator.push(
                       context,
@@ -306,6 +308,7 @@ class BodyHome extends StatelessWidget {
                     ),
                   ),
                 ),
+
                 InkWell(
                   onTap: () => Navigator.push(
                       context,
@@ -342,7 +345,7 @@ class BodyHome extends StatelessWidget {
                           height: 10,
                         ),
                         Text(
-                          'services',
+                          'Pray',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 18,

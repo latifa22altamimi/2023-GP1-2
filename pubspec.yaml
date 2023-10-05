@@ -98,6 +98,7 @@ flutter:
     - assets/images/rehabLogo.png
     - assets/images/icons8-received-90.png 
     - assets/images/mark_.png
+    - assets/images/confirm.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

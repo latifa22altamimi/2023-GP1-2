@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rehaab/reservations/reservationdetails.dart';
 
@@ -35,7 +36,7 @@ class ReserveCard extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(left: 20.0,top: 10.0),
                     child: Text(
-                      'Reservation#1',
+                      'Reservation#1', // reservation id
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 18,
@@ -46,37 +47,68 @@ class ReserveCard extends StatelessWidget {
                   ),
                 ],
               ),
-            
+             
           
 
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
 
+              Container(
+                margin: EdgeInsets.only(left:20.0),
 
-              ElevatedButton(
-                     onPressed: () {
-              Navigator.push(context,
-              MaterialPageRoute(builder: ((context) => ReservationDetails()) ));
-                     },
-      child: Text(
-    'View details',
-   style: TextStyle(
-    color: Colors.black,
-   fontSize: 15,
-   fontWeight:
-   FontWeight.w500),
-   ),
-style: ElevatedButton.styleFrom(
- backgroundColor: Color.fromARGB( 255, 255, 255, 255),
-  shape: RoundedRectangleBorder(
-  borderRadius:
-     BorderRadius.all(Radius.circular(50),
-    ),
-     ),
-     ),
-     ),
+              child: Text(
+                'Status: ', 
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500
 
+                ),
+              ),
+              ),
+
+              Text(
+                'Confirmed ',
+                 style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400
+
+                ),
+                ),
+
+                Image.asset('assets/images/confirm.png',
+                width: 25,
+                height: 25,
+                ),
+
+
+              SizedBox(width: 130,),
+
+
+              Container(
+                margin: EdgeInsets.only(right: 10.0),
+                child: ElevatedButton(
+                       onPressed: () {
+                Navigator.push(context,
+                MaterialPageRoute(builder: ((context) => ReservationDetails()) ));
+                       },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor:  Color.fromARGB(131, 60, 100, 73),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(500),
+                            ),
+                          ),
+                        ),
+                    
+                        child: const Icon(CupertinoIcons.chevron_right, color: Colors.white),
+                        ),
+              ),
+     
+
+          
 
      
             ],
