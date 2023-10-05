@@ -26,13 +26,11 @@ State<LoginScreen> createState() => _LoginScreenState();}
 class _LoginScreenState extends State<LoginScreen> {
  TextEditingController email = TextEditingController();
  TextEditingController Password=TextEditingController();
-var valueChoose;
-List listItem=[
-  "Al-Haram visitor", "Vehicle manager"
+Object? valueChoose="---------------------------";
+List listItem= [
+  "---------------------------","Al-Haram visitor", "Vehicle manager"
 ];
-
-
-   
+  
 
   Future rehaab() async{
     var url ="http://192.168.100.167/RehabAuth/signin.php";
@@ -163,12 +161,22 @@ List listItem=[
                                    border: InputBorder.none),
                                     ),
                                     ),
-                                    
+                                   Text(
+  'User type:',
+  textAlign: TextAlign.center,
+  overflow: TextOverflow.ellipsis,
+  style: const TextStyle(fontWeight: FontWeight.bold,
+  color: kPrimaryColor,
+  fontSize: 17,
+  ),
+), 
                               Padding(padding:EdgeInsets.all(16), 
                              child: Container(
                               padding: EdgeInsets.only(left: 14, right: 14),
                               decoration: BoxDecoration(
-                                  border: Border.all(color: kPrimaryColor, width: 1),
+                                  border: Border.all(
+                                  color: kPrimaryColor, 
+                                  width: 1),
                                   borderRadius: BorderRadius.circular(15)
                                   ),
                               child: DropdownButton(
@@ -184,7 +192,7 @@ List listItem=[
                                value: valueChoose,
                                onChanged: (newValue){
                                 setState(() {
-                                  valueChoose=newValue;
+                                  valueChoose= newValue;
                                 });
                               },
                               items: listItem.map((valueItem){
