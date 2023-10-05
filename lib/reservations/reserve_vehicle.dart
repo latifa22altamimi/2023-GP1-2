@@ -9,7 +9,7 @@ enum VehicleType { Single, Double }
 
 enum DrivingType { SelfDriving, WithDriver }
 
-enum DriverGender { Female, Male }
+String _driverGender = "";
 
 class ReserveVehicle extends StatefulWidget {
   const ReserveVehicle({super.key});
@@ -21,7 +21,6 @@ class ReserveVehicle extends StatefulWidget {
 class _ReserveVehicleState extends State<ReserveVehicle> {
   VehicleType? _vehicleType;
   DrivingType? _drivingType;
-  DriverGender? _driverGender;
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -348,21 +347,21 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                           ),
                           child: Row(
                             children: [
-                              Radio<DriverGender>(
-                                value: DriverGender.Female,
+                              Radio<String>(
+                                value: 'Female',
                                 groupValue: _driverGender,
                                 onChanged: (value) {
                                   // value is Single
                                   setState(() {
                                     _driverGender =
-                                        value; //when I want to know which value user choosed use _vehicleType
+                                        'Female'; //when I want to know which value user choosed use _vehicleType
                                   });
                                 },
                                 fillColor:
                                     MaterialStateProperty.resolveWith(getColor),
                               ),
                               Text(
-                                DriverGender.Female.name,
+                               'Female',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400, fontSize: 17),
                               ),
@@ -394,21 +393,21 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                           ),
                           child: Row(
                             children: [
-                              Radio<DriverGender>(
-                                value: DriverGender.Male,
+                              Radio<String>(
+                                value: 'Male',
                                 groupValue: _driverGender,
                                 onChanged: (value) {
                                   // value is Single
                                   setState(() {
                                     _driverGender =
-                                        value; //when I want to know which value user choosed use _vehicleType
+                                        'Male'; //when I want to know which value user choosed use _vehicleType
                                   });
                                 },
                                 fillColor:
                                     MaterialStateProperty.resolveWith(getColor),
                               ),
                               Text(
-                                DriverGender.Male.name,
+                                'Male',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400, fontSize: 17),
                               ),
@@ -500,7 +499,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                   _drivingType == DrivingType.SelfDriving) ||
                               (_vehicleType != null &&
                                   _drivingType == DrivingType.WithDriver &&
-                                  _driverGender != null)) {
+                                  _driverGender != "")) {
                             // complete with choose time and date
 
                             //confirm msg
@@ -656,15 +655,20 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                                             100),
                                                                 child:
                                                                     ElevatedButton(
-                                                                  onPressed:
+                                                                  onPressed: //when press on done
                                                                       () {
                                                                     if (_driverGender !=
-                                                                        null) {
-                                                                      Navigator.of(
-                                                                              context)
-                                                                          .push(
-                                                                              MaterialPageRoute(builder: ((context) => ReserveCard())));
-                                                                      //navigate to sign up page
+                                                                        "") {
+                                                                         
+                                                                          
+
+                                                                      Navigator.push(
+                                                                        context,
+                                                                              MaterialPageRoute(builder: ((context) =>  home(
+                                                                          driverG:
+                                                                              _driverGender))));
+                                                                     // var: val passed
+                                                                      
                                                                     }
                                                                   },
                                                                   child: Text(

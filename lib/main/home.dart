@@ -6,34 +6,40 @@ import 'package:rehaab/reservations/myreservations.dart';
 import 'package:rehaab/Map_page/map.dart';
 
 class home extends StatefulWidget {
-  const home({super.key});
+ String? driverG;
 
+  home({this.driverG});
   @override
-  State<home> createState() => _homeState();
+  State<home> createState() => _homeState(driverG: driverG);
 }
 
 class _homeState extends State<home> {
-  int index = 0;
+   String? driverG;
 
-  final pages = [
+  _homeState({this.driverG});
+  int index = 0; 
+  late final pages = [
     // pages in navigation bar
-    MyReservations(), //my reservations page
+   MyReservations(driverG: driverG),
 
     Column(
       //home page
       children: const [
         AppBarr(),
-        Body(),
+        BodyHome(),
       ],
     ),
     Container(), //settings or log out
   ];
+  
+ 
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        body: pages[index],
+        body: IndexedStack(index: index,
+        children: pages,),
         bottomNavigationBar: NavigationBarTheme(
           data: NavigationBarThemeData(
             height: 80,
@@ -49,18 +55,24 @@ class _homeState extends State<home> {
               onDestinationSelected: (index) =>
                   setState(() => this.index = index),
               destinations: [
-                NavigationDestination(
-                    icon: Icon(Icons.menu),
-                    selectedIcon: Icon(Icons.menu_open),
-                    label: 'My reservations'),
-                NavigationDestination(
-                    icon: Icon(Icons.home_filled),
-                    selectedIcon: Icon(Icons.home_outlined),
-                    label: 'Home'),
-                NavigationDestination(
-                    icon: Icon(Icons.settings),
-                    selectedIcon: Icon(Icons.settings),
-                    label: 'Settings'),
+               
+                  
+                  NavigationDestination(
+                          icon: Icon(Icons.menu),
+                          selectedIcon: Icon(Icons.menu_open),
+                          label: 'My reservations',
+                          ),
+                    
+                    NavigationDestination(
+                        icon: Icon(Icons.home_filled),
+                        selectedIcon: Icon(Icons.home_outlined),
+                        label: 'Home'),
+                    NavigationDestination(
+                        icon: Icon(Icons.settings),
+                        selectedIcon: Icon(Icons.settings),
+                        label: 'Settings'),
+                  
+                
               ]),
         ),
       ),
@@ -75,7 +87,7 @@ class AppBarr extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
-      height: 200,
+      height: 150,
       width: double.infinity,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -118,8 +130,8 @@ class AppBarr extends StatelessWidget {
   }
 }
 
-class Body extends StatelessWidget {
-  const Body({super.key});
+class BodyHome extends StatelessWidget {
+  const BodyHome({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +250,7 @@ class Body extends StatelessWidget {
                           height: 10,
                         ),
                         Text(
-                          'Track tawaf status',
+                          'services',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 18,
@@ -330,7 +342,7 @@ class Body extends StatelessWidget {
                           height: 10,
                         ),
                         Text(
-                          'Prays',
+                          'services',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 18,

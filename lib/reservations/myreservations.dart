@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rehaab/main/home.dart';
 import 'package:rehaab/reservations/reservation_list.dart';
 import 'package:rehaab/reservations/reserve_vehicle.dart';
 
@@ -6,11 +7,16 @@ import '../customization/clip.dart';
 
 class MyReservations extends StatelessWidget {
  
+  String? driverG;
+
+  MyReservations({this.driverG});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
+       
         automaticallyImplyLeading: false, //remove back button
 
         backgroundColor: Colors.transparent,
@@ -43,13 +49,15 @@ class MyReservations extends StatelessWidget {
           ),
         ),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            ReservationList(),
-          ],
-        ),
-      ),
+body: Column(
+  children: [
+    ReservationList(driverG: driverG)
+  ],
+),
+
+ 
+      
+       
     );
   }
 }

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/SignIn/login_screen.dart';
 
+import 'home.dart';
+
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
 
@@ -119,7 +121,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        const LoginScreen()), //navigate to sign up page
+                         home()), //navigate to sign up page
               );
             } else {
               _pageController.nextPage(
