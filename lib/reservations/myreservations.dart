@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rehaab/main/home.dart';
 import 'package:rehaab/reservations/reservation_list.dart';
-import 'package:rehaab/reservations/reserve_vehicle.dart';
 
 import '../customization/clip.dart';
 

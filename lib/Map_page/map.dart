@@ -2,6 +2,8 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../customization/clip.dart';
+
 class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
@@ -24,9 +26,40 @@ class _HomeState extends State<Home> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Our Location"),
-        backgroundColor: Colors.green,
+     appBar: AppBar(
+       leading: Container(
+          padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
+          child: BackButton(),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        toolbarHeight: 100,
+        flexibleSpace: ClipPath(
+          clipper: AppbarClip(),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 180,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color.fromARGB(255, 60, 100, 73),
+                  Color.fromARGB(255, 104, 132, 113)
+                ],
+              ),
+            ),
+            child: Center(
+              child: Text(
+                'Our location',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 23,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+        ),
       ),
       body: GoogleMap(
         mapType: MapType.hybrid,
