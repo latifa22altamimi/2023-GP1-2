@@ -119,7 +119,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        const home()), //navigate to sign up page
+                         home()), //navigate to sign up page
               );
             } else {
               _pageController.nextPage(
