@@ -5,7 +5,7 @@ import '../customization/clip.dart';
 import 'date.dart';
 import 'package:rehaab/widgets/rounded_button.dart';
 import 'package:table_calendar/table_calendar.dart';
-import '../constants.dart';
+import '../widgets/constants.dart';
 import '../main/home.dart';
 
 
@@ -508,7 +508,7 @@ static DrivingType? _drivingType;
                             // complete with choose time and dat
 
                             //confirm msg
-                            print('Success 2');
+                           
                             showDialog(
                               context: context,
                               builder: (context) => Dialog(
@@ -525,7 +525,7 @@ static DrivingType? _drivingType;
                                       Lottie.asset('assets/images/warn.json',
                                           width: 150, height: 120),
                                       Text(
-                                        'Warning',
+                                        'Confirmation',
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 20,
@@ -535,7 +535,7 @@ static DrivingType? _drivingType;
                                         height: 10.0,
                                       ),
                                       Text(
-                                        'Do you want to confirm the operation?',
+                                        'Are you sure you want to confirm the reservation?',
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 17,
@@ -740,7 +740,7 @@ static DrivingType? _drivingType;
                             );
                           } else {
                             //Error msg
-                            print('error');
+                            
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: Duration(seconds: 3),
