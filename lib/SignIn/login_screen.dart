@@ -161,72 +161,18 @@ List listItem= [
                                    border: InputBorder.none),
                                     ),
                                     ),
-                                   Text(
-  'User type:',
-  textAlign: TextAlign.center,
-  overflow: TextOverflow.ellipsis,
-  style: const TextStyle(fontWeight: FontWeight.bold,
-  color: kPrimaryColor,
-  fontSize: 17,
-  ),
-), 
-                              Padding(padding:EdgeInsets.all(16), 
-                             child: Container(
-                              padding: EdgeInsets.only(left: 14, right: 14),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                  color: kPrimaryColor, 
-                                  width: 1),
-                                  borderRadius: BorderRadius.circular(15)
-                                  ),
-                              child: DropdownButton(
-                              hint: Text("User type: "),
-                               icon: Icon(Icons.arrow_drop_down),
-                               iconSize: 32,
-                               underline: SizedBox(),
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 18,
-              
-                              ),
-                               value: valueChoose,
-                               onChanged: (newValue){
-                                setState(() {
-                                  valueChoose= newValue;
-                                });
-                              },
-                              items: listItem.map((valueItem){
-                                return DropdownMenuItem(
-                                  value:valueItem,
-                                  child:Text(valueItem) ,
-                                 );
-                              }).toList(),
-                              ) 
-                              )
-                              ),
-                              RoundedButton(text: 'LOGIN', press: () {rehaab();}),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              UnderPart(
-                                title: "Don't have an account?",
-                                navigatorText: "Register here",
-                                onTap: () {
-                                  Navigator.push(context,
-                                    MaterialPageRoute(builder: (context) => const SignUpScreen())
-                                  );
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
+                                     const SizedBox(
+                                height: 5,
                               ),
                               InkWell(child:     Text(
                                 'Forgot password?',
+                               
                                 style: TextStyle(
                                     color: kPrimaryColor,
                                     fontFamily: 'OpenSans',
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 13),
+                                    fontSize: 13
+                                  ),
                               ),
                                  onTap: () {
                                   Navigator.push(context,
@@ -234,6 +180,30 @@ List listItem= [
                                   );
                                 },
                                 ),
+                                          const SizedBox(
+                                height: 13,
+                              ),
+                      
+                              RoundedButton(text: 'SIGN IN', press: () {rehaab();}),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                               RoundedButton(text: "OR SIGN UP HERE!", press: () {Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => const SignUpScreen())
+                                  );}),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                             /* UnderPart(
+                                title: "Don't have an account?",
+                                navigatorText: "Register here",
+                                onTap: () {
+                                  Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) => const SignUpScreen())
+                                  );
+                                },
+                              ),*/
+                             
                           
                               
                               const SizedBox(height: 20,)
