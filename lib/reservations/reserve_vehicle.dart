@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rehaab/reservations/myreservations.dart';
 import 'package:rehaab/reservations/reservation_list.dart';
 import '../customization/clip.dart';
+import 'date.dart';
+import 'package:rehaab/widgets/rounded_button.dart';
+import 'package:table_calendar/table_calendar.dart';
+import '../widgets/constants.dart';
 import '../main/home.dart';
+
+
+
+
 
 enum VehicleType { Single, Double }
 
 enum DrivingType { SelfDriving, WithDriver }
 
 String _driverGender = "";
+
 
 class ReserveVehicle extends StatefulWidget {
   const ReserveVehicle({super.key});
@@ -19,11 +27,12 @@ class ReserveVehicle extends StatefulWidget {
 }
 
 class _ReserveVehicleState extends State<ReserveVehicle> {
-  VehicleType? _vehicleType;
-  DrivingType? _drivingType;
+ static VehicleType? _vehicleType;
+static DrivingType? _drivingType;
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  
 
   Color getColor(Set<MaterialState> states) {
     return Color.fromARGB(219, 69, 95, 77);
@@ -347,21 +356,21 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                           ),
                           child: Row(
                             children: [
-                              Radio<String>(
+                               Radio<String>(
                                 value: 'Female',
                                 groupValue: _driverGender,
                                 onChanged: (value) {
                                   // value is Single
                                   setState(() {
                                     _driverGender =
-                                        'Female'; //when I want to know which value user choosed use _vehicleType
+                                           'Female';//when I want to know which value user choosed use _vehicleType
                                   });
                                 },
                                 fillColor:
                                     MaterialStateProperty.resolveWith(getColor),
                               ),
                               Text(
-                               'Female',
+                                  'Female',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400, fontSize: 17),
                               ),
@@ -393,21 +402,21 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                           ),
                           child: Row(
                             children: [
-                              Radio<String>(
+                                Radio<String>(
                                 value: 'Male',
                                 groupValue: _driverGender,
                                 onChanged: (value) {
                                   // value is Single
                                   setState(() {
                                     _driverGender =
-                                        'Male'; //when I want to know which value user choosed use _vehicleType
+                                       'Male';  //when I want to know which value user choosed use _vehicleType
                                   });
                                 },
                                 fillColor:
                                     MaterialStateProperty.resolveWith(getColor),
                               ),
                               Text(
-                                'Male',
+                               'Male',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400, fontSize: 17),
                               ),
@@ -467,16 +476,12 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                     onPressed: () {
                       //show dates and time
                       showModalBottomSheet(
+                        isScrollControlled: true,
                         context: context,
                         builder: (BuildContext context) {
                           return Container(
                             height: 600,
-                            child: ElevatedButton(
-                              child: Text('back'),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
+                            child: BookingPage(),
                           );
                         },
                       );
@@ -499,11 +504,11 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                   _drivingType == DrivingType.SelfDriving) ||
                               (_vehicleType != null &&
                                   _drivingType == DrivingType.WithDriver &&
-                                  _driverGender != "")) {
-                            // complete with choose time and date
+                                  _driverGender != "") && _BookingPageState._dateSelected &&_BookingPageState._timeSelected) {
+                            // complete with choose time and dat
 
                             //confirm msg
-                            print('Success 2');
+                           
                             showDialog(
                               context: context,
                               builder: (context) => Dialog(
@@ -520,7 +525,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                       Lottie.asset('assets/images/warn.json',
                                           width: 150, height: 120),
                                       Text(
-                                        'Warning',
+                                        'Confirmation',
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 20,
@@ -530,7 +535,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                         height: 10.0,
                                       ),
                                       Text(
-                                        'Do you want to confirm the operation?',
+                                        'Are you sure you want to confirm the reservation?',
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 17,
@@ -658,19 +663,16 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                                   onPressed: //when press on done
                                                                       () {
                                                                     if (_driverGender !=
-                                                                        "") {
-                                                                         
-                                                                          
+                                                                          "") {
+
+
 
                                                                       Navigator.push(
                                                                         context,
-                                                                              MaterialPageRoute(builder: ((context) =>  home(
-                                                                          driverG:
-                                                                              _driverGender))));
+                                                                              MaterialPageRoute(builder: ((context) =>  home(driverG : _driverGender))));
                                                                      // var: val passed
-                                                                      
-                                                                    }
-                                                                  },
+
+                                                                      }},
                                                                   child: Text(
                                                                     'Done',
                                                                     style: TextStyle(
@@ -738,7 +740,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                             );
                           } else {
                             //Error msg
-                            print('error');
+                            
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: Duration(seconds: 3),
@@ -835,3 +837,176 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
     );
   }
 }
+ late final getDate;
+ late final getTime;
+class BookingPage extends StatefulWidget {
+  BookingPage({Key? key}) : super(key: key);
+
+  @override
+  State<BookingPage> createState() => _BookingPageState();
+}
+
+class _BookingPageState extends State<BookingPage> {
+  //declaration
+  CalendarFormat _format = CalendarFormat.week;
+  DateTime _focusDay = DateTime.now();
+  DateTime _currentDay = DateTime.now();
+  int? _currentIndex;
+  // ignore: unused_field
+  static bool _dateSelected = false;
+  static  bool _timeSelected = false;
+  String? token;
+  
+
+
+  
+  @override
+  /*void initState() {
+    super.initState();
+    GetData();
+
+  }*/
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+         backgroundColor: Color.fromARGB(255, 244, 244, 244),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverToBoxAdapter(
+            child: Column(
+              children: <Widget>[
+                _tableCalendar(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
+                  child: Center(
+                    child: Text(
+                      'Select Reservation Time',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+           SliverGrid(
+                  delegate: SliverChildBuilderDelegate(
+                    
+                    (context, index) {
+                      var timeSlots = solts();
+                      return InkWell(
+                        splashColor: Colors.transparent,
+                        onTap: () {
+                          setState(() {
+                            _currentIndex = index;
+                            _timeSelected = true;
+                          });
+                        },
+                        child: Container(
+
+                          margin: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            
+                            border: Border.all(
+                              color: _currentIndex == index 
+                                  ? Colors.white
+                                  : Color.fromARGB(255, 33, 30, 30),
+                            ),
+                            borderRadius: BorderRadius.circular(15),
+                            color: _currentIndex == index 
+                                ? Color.fromARGB(255, 232, 231, 230) 
+                                : null, 
+                          ),
+                          alignment: Alignment.center,
+                          child: Text(
+                            '${int.parse(timeSlots[index].substring(0,2))}${timeSlots[index].substring(2)} ${int.parse(timeSlots[index].substring(0,2))>11 ? "PM" : "AM"}',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color:
+                                  _currentIndex == index ? Colors.white : null,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    childCount: solts().length,
+                  ),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4, childAspectRatio: 1.5),
+                ),
+          SliverToBoxAdapter(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
+              child: RoundedButton(
+                text: 'Select',
+                press: () async {
+                  //convert date/day/time into string first
+                  getDate = DateConverted.getDate(_currentDay);
+                  //final getDay = DateConverted.getDay(_currentDay.weekday);
+                  getTime = DateConverted.getTime(_currentIndex!);
+
+                  Navigator.pop(context);
+
+                  //if booking return status code 200, then redirect to success booking page
+
+                  
+                },
+                disable: _timeSelected ? false : true,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //table calendar
+  Widget _tableCalendar() {
+    return TableCalendar(
+      
+      focusedDay: _focusDay,
+      firstDay: DateTime.now(),
+      lastDay: DateTime.now().add(const Duration(days: 90)),
+      calendarFormat: _format,
+      currentDay: _currentDay,
+      rowHeight: 50,
+      startingDayOfWeek: StartingDayOfWeek.sunday,
+      calendarStyle: const CalendarStyle(
+        todayDecoration:
+            BoxDecoration(color: kPrimaryColor, shape: BoxShape.circle),
+      ),
+      availableCalendarFormats: const {
+        CalendarFormat.week: 'Week' , CalendarFormat.twoWeeks: '2 weeks', CalendarFormat.month: 'Month'
+      },
+      onFormatChanged: (format) {
+        setState(() {
+          _format = format;
+        });
+      },
+      onDaySelected: ((selectedDay, focusedDay) {
+        setState(() {
+          _currentDay = selectedDay;
+          _focusDay = focusedDay;
+          _dateSelected = true;
+        
+          //check if weekend is selected
+          /*if (selectedDay.weekday == 6 || selectedDay.weekday == 7) {
+            _isWeekend = true;
+            _timeSelected = false;
+            _currentIndex = null;
+          } else {
+            _isWeekend = false;
+          }*/
+        });
+      }),
+    );}
+    
+  
+
+
+    
+}
+

@@ -4,11 +4,12 @@ import 'package:rehaab/widgets/constants.dart';
 
 class RoundedButton extends StatelessWidget {
   const RoundedButton(
-      {Key? key, this.press, this.textColor = Colors.white, required this.text})
+      {Key? key, this.press, this.textColor = Colors.white, required this.text ,this.disable})
       : super(key: key);
   final String text;
   final Function()? press;
   final Color? textColor;
+  final bool? disable;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,7 @@ class RoundedButton extends StatelessWidget {
       onPressed: press,
       style: ElevatedButton.styleFrom(
         primary: kPrimaryColor,
-        padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 17),
-
+        padding: const EdgeInsets.symmetric(horizontal: 40,vertical: 20),
         textStyle: TextStyle(
           letterSpacing: 2,
           color: textColor,
