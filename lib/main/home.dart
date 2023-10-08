@@ -6,21 +6,22 @@ import 'package:rehaab/reservations/myreservations.dart';
 import 'package:rehaab/Map_page/map.dart';
 
 class home extends StatefulWidget {
- String? driverG;
-
-  home({this.driverG});
+  dynamic getDate;
+  dynamic getTime;
+  home({this.getDate, this.getTime});
   @override
-  State<home> createState() => _homeState(driverG: driverG);
+  State<home> createState() => _homeState(getDate: getDate, getTime: getTime);
 }
 
 class _homeState extends State<home> {
-   String? driverG;
+  dynamic getDate;
+  dynamic getTime;
 
-  _homeState({this.driverG});
-  int index = 0; 
+  _homeState({this.getDate, this.getTime});
+  int index = 0;
   late final pages = [
     // pages in navigation bar
-   MyReservations(driverG: driverG),
+    MyReservations(getDate: getDate, getTime: getTime),
 
     Column(
       //home page
@@ -31,50 +32,68 @@ class _homeState extends State<home> {
     ),
     Container(), //settings or log out
   ];
-  
- 
+
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
-        body: IndexedStack(index: index,
-        children: pages,),
-        bottomNavigationBar: NavigationBarTheme(
-          data: NavigationBarThemeData(
-            height: 80,
-            labelTextStyle: MaterialStateProperty.all(
-                TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-            backgroundColor: Color.fromARGB(255, 255, 255, 255),
-            shadowColor: Colors.black,
-            indicatorColor:
-                Color.fromARGB(255, 104, 132, 113).withOpacity(0.34),
-          ),
-          child: NavigationBar(
-              selectedIndex: index,
-              onDestinationSelected: (index) =>
-                  setState(() => this.index = index),
-              destinations: [
-               
-                  
-                  NavigationDestination(
-                          icon: Icon(Icons.menu),
-                          selectedIcon: Icon(Icons.menu_open),
-                          label: 'My reservations',
-                          ),
-                    
+        body: IndexedStack(
+          index: index,
+          children: pages,
+        ),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(                                                   
+    borderRadius: BorderRadius.only(  
+                                          
+      topRight: Radius.circular(40),
+       topLeft: Radius.circular(40)),            
+    boxShadow: [                                                               
+      BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 1),       
+    ],                                                                         
+  ),                                                                           
+  child: ClipRRect(                                                            
+    borderRadius: BorderRadius.only(  
+                                               
+    topLeft: Radius.circular(40.0),                                            
+    topRight: Radius.circular(40.0),                                           
+    ),    
+          child: NavigationBarTheme(
+           
+              data: NavigationBarThemeData(
+                height: 80,
+                labelTextStyle: MaterialStateProperty.all(
+                    TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                shadowColor: Colors.black,
+                indicatorColor:
+                    Color.fromARGB(255, 104, 132, 113).withOpacity(0.34),
+              ),
+        
+              
+              child: NavigationBar(
+                  selectedIndex: index,
+                  onDestinationSelected: (index) =>
+                      setState(() => this.index = index),
+                  destinations: [
                     NavigationDestination(
-                        icon: Icon(Icons.home_filled),
+                      icon: Icon(Icons.menu_outlined),
+                      selectedIcon: Icon(Icons.menu_open),
+                      label: 'My reservations',
+                    ),
+                    NavigationDestination(
+                        icon: Icon(Icons.home_outlined),
                         selectedIcon: Icon(Icons.home_outlined),
                         label: 'Home'),
                     NavigationDestination(
-                        icon: Icon(Icons.settings),
+                        icon: Icon(Icons.settings_outlined),
                         selectedIcon: Icon(Icons.settings),
                         label: 'Settings'),
-                  
-                
-              ]),
+                  ]),
+            ),
+  ),
         ),
+        
       ),
     );
   }
@@ -214,7 +233,6 @@ class BodyHome extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 InkWell(
                   onTap: () => Navigator.push(
                       context,
@@ -261,12 +279,9 @@ class BodyHome extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 InkWell(
                   onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Home())),
+                      context, MaterialPageRoute(builder: (context) => Home())),
                   child: Container(
                     width: 180,
                     height: 180,
@@ -308,7 +323,6 @@ class BodyHome extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 InkWell(
                   onTap: () => Navigator.push(
                       context,

@@ -8,16 +8,9 @@ import 'package:table_calendar/table_calendar.dart';
 import '../widgets/constants.dart';
 import '../main/home.dart';
 
-
-
-
-
-enum VehicleType { Single, Double }
-
-enum DrivingType { SelfDriving, WithDriver }
-
 String _driverGender = "";
-
+String _vehicleType = "";
+String _drivingType = "";
 
 class ReserveVehicle extends StatefulWidget {
   const ReserveVehicle({super.key});
@@ -27,12 +20,9 @@ class ReserveVehicle extends StatefulWidget {
 }
 
 class _ReserveVehicleState extends State<ReserveVehicle> {
- static VehicleType? _vehicleType;
-static DrivingType? _drivingType;
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  
 
   Color getColor(Set<MaterialState> states) {
     return Color.fromARGB(219, 69, 95, 77);
@@ -120,14 +110,14 @@ static DrivingType? _drivingType;
                         ),
                         child: Row(
                           children: [
-                            Radio<VehicleType>(
-                              value: VehicleType.Single,
+                            Radio<String>(
+                              value: "Single",
                               groupValue: _vehicleType,
                               onChanged: (value) {
                                 // value is Single
                                 setState(() {
                                   _vehicleType =
-                                      value; //when I want to know which value user choosed use _vehicleType
+                                      "Single"; //when I want to know which value user choosed use _vehicleType
                                   isVisibleDriving = true;
                                 });
                               },
@@ -135,7 +125,7 @@ static DrivingType? _drivingType;
                                   MaterialStateProperty.resolveWith(getColor),
                             ),
                             Text(
-                              VehicleType.Single.name,
+                              "Single",
                               style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 17),
                             ),
@@ -167,16 +157,16 @@ static DrivingType? _drivingType;
                         ),
                         child: Row(
                           children: [
-                            Radio<VehicleType>(
+                            Radio<String>(
                               // put it inside sizedbox to solve the problem
-                              value: VehicleType.Double,
+                              value: "Double",
 
                               groupValue: _vehicleType,
                               onChanged: (value) {
                                 // value is Single
                                 setState(() {
                                   _vehicleType =
-                                      value; //when I want to know which value user choosed use _vehicleType
+                                      "Double"; //when I want to know which value user choosed use _vehicleType
                                   isVisibleDriving = false;
                                 });
                               },
@@ -184,7 +174,7 @@ static DrivingType? _drivingType;
                                   MaterialStateProperty.resolveWith(getColor),
                             ),
                             Text(
-                              VehicleType.Double.name,
+                              "Double",
                               style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 17),
                             ),
@@ -242,14 +232,14 @@ static DrivingType? _drivingType;
                         ),
                         child: Row(
                           children: [
-                            Radio<DrivingType>(
-                              value: DrivingType.SelfDriving,
+                            Radio<String>(
+                              value: "Self-driving",
                               groupValue: _drivingType,
                               onChanged: (value) {
-                                // value is Single
+                                // value is selfdriving
                                 setState(() {
                                   _drivingType =
-                                      value; //when I want to know which value user choosed use _vehicleType
+                                      "Self-driving"; //when I want to know which value user choosed use _vehicleType
                                   isVisibleGender = false;
                                 });
                               },
@@ -257,7 +247,7 @@ static DrivingType? _drivingType;
                                   MaterialStateProperty.resolveWith(getColor),
                             ),
                             Text(
-                              DrivingType.SelfDriving.name,
+                              "Self-driving",
                               style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 17),
                             ),
@@ -268,7 +258,7 @@ static DrivingType? _drivingType;
                       Visibility(
                         visible: !isVisibleDriving,
                         child: Container(
-                          padding: const EdgeInsets.only(right: 25.0),
+                          padding: const EdgeInsets.only(right: 23.0),
                           margin: EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             color: Color.fromARGB(255, 255, 255, 255),
@@ -283,16 +273,16 @@ static DrivingType? _drivingType;
                           ),
                           child: Row(
                             children: [
-                              Radio<DrivingType>(
+                              Radio<String>(
                                 // put it inside sizedbox to solve the problem
-                                value: DrivingType.WithDriver,
+                                value: "With-driver",
 
                                 groupValue: _drivingType,
                                 onChanged: (value) {
                                   // value is Single
                                   setState(() {
                                     _drivingType =
-                                        value; //when I want to know which value user choosed use _vehicleType
+                                        "With-driver"; //when I want to know which value user choosed use _vehicleType
                                     isVisibleGender = !isVisibleGender;
                                   });
                                 },
@@ -300,7 +290,7 @@ static DrivingType? _drivingType;
                                     MaterialStateProperty.resolveWith(getColor),
                               ),
                               Text(
-                                DrivingType.WithDriver.name,
+                                "With-driver",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400, fontSize: 17),
                               ),
@@ -356,21 +346,21 @@ static DrivingType? _drivingType;
                           ),
                           child: Row(
                             children: [
-                               Radio<String>(
+                              Radio<String>(
                                 value: 'Female',
                                 groupValue: _driverGender,
                                 onChanged: (value) {
                                   // value is Single
                                   setState(() {
                                     _driverGender =
-                                           'Female';//when I want to know which value user choosed use _vehicleType
+                                        'Female'; //when I want to know which value user choosed use _vehicleType
                                   });
                                 },
                                 fillColor:
                                     MaterialStateProperty.resolveWith(getColor),
                               ),
                               Text(
-                                  'Female',
+                                'Female',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400, fontSize: 17),
                               ),
@@ -402,21 +392,21 @@ static DrivingType? _drivingType;
                           ),
                           child: Row(
                             children: [
-                                Radio<String>(
+                              Radio<String>(
                                 value: 'Male',
                                 groupValue: _driverGender,
                                 onChanged: (value) {
                                   // value is Single
                                   setState(() {
                                     _driverGender =
-                                       'Male';  //when I want to know which value user choosed use _vehicleType
+                                        'Male'; //when I want to know which value user choosed use _vehicleType
                                   });
                                 },
                                 fillColor:
                                     MaterialStateProperty.resolveWith(getColor),
                               ),
                               Text(
-                               'Male',
+                                'Male',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400, fontSize: 17),
                               ),
@@ -500,15 +490,17 @@ static DrivingType? _drivingType;
                         if (_formKey.currentState!.validate()) {
                           //form is valid
 
-                          if ((_vehicleType != null &&
-                                  _drivingType == DrivingType.SelfDriving) ||
-                              (_vehicleType != null &&
-                                  _drivingType == DrivingType.WithDriver &&
-                                  _driverGender != "") && _BookingPageState._dateSelected &&_BookingPageState._timeSelected) {
-                            // complete with choose time and dat
+                          if ((_vehicleType != "" &&
+                                  _drivingType == "Self-driving") ||
+                              (_vehicleType != "" &&
+                                      _drivingType == "With-driver" &&
+                                      _driverGender != "") &&
+                                  _BookingPageState._dateSelected &&
+                                  _BookingPageState._timeSelected) {
+                            // complete with choose time and date
 
                             //confirm msg
-                           
+
                             showDialog(
                               context: context,
                               builder: (context) => Dialog(
@@ -517,32 +509,127 @@ static DrivingType? _drivingType;
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Container(
-                                  padding: const EdgeInsets.all(20.0),
+                                  padding: const EdgeInsets.only(left: 50.0, right:50.0, top:30.0, bottom: 50.0),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Lottie.asset('assets/images/warn.json',
-                                          width: 150, height: 120),
+                                          width: 80, height: 80),
                                       Text(
                                         'Confirmation',
                                         style: TextStyle(
                                             color: Colors.black,
-                                            fontSize: 20,
+                                            fontSize: 18,
                                             fontWeight: FontWeight.w600),
                                       ),
                                       SizedBox(
                                         height: 10.0,
                                       ),
                                       Text(
-                                        'Are you sure you want to confirm the reservation?',
+                                        'Are you sure you want to confirm the following reservation? \n',
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 17,
                                             fontWeight: FontWeight.w400),
                                       ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Vehicle type: ',
+                                             style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+
+                                          Text(
+                                            '$_vehicleType',
+                                           style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      ),
+
                                       SizedBox(
-                                        height: 10.0,
+                                        height: 3.0,
+                                      ),
+
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Driving type: ',
+                                             style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+
+                                          Text(
+                                            '$_drivingType',
+                                           style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      ),
+
+                                      SizedBox(
+                                        height: 3.0,
+                                      ),
+
+                                       Visibility(
+                                        visible: isVisibleGender,
+                                         child: Row(
+                                          children: [
+                                            Text(
+                                              'Driver gender: ',
+                                               style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                       
+                                            Text(
+                                              '$_driverGender',
+                                             style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                          ],
+                                                                             ),
+                                       ),
+
+                                       SizedBox(
+                                        height: 3.0,
+                                      ),
+
+                                       Row(
+                                        children: [
+                                          Text(
+                                            'Date/Time: ',
+                                             style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+
+                                          Text(
+                                            '$getDate | $getTime',
+                                           style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      ),
+                                      
+                                      SizedBox(
+                                        height: 20.0,
                                       ),
                                       Row(
                                         crossAxisAlignment:
@@ -663,16 +750,14 @@ static DrivingType? _drivingType;
                                                                   onPressed: //when press on done
                                                                       () {
                                                                     if (_driverGender !=
-                                                                          "") {
-
-
-
+                                                                        "") {
                                                                       Navigator.push(
-                                                                        context,
-                                                                              MaterialPageRoute(builder: ((context) =>  home(driverG : _driverGender))));
-                                                                     // var: val passed
-
-                                                                      }},
+                                                                          context,
+                                                                          MaterialPageRoute(
+                                                                              builder: ((context) => home(getDate: getDate, getTime: getTime))));
+                                                                      // var: val passed
+                                                                    }
+                                                                  },
                                                                   child: Text(
                                                                     'Done',
                                                                     style: TextStyle(
@@ -740,7 +825,7 @@ static DrivingType? _drivingType;
                             );
                           } else {
                             //Error msg
-                            
+
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: Duration(seconds: 3),
@@ -837,8 +922,10 @@ static DrivingType? _drivingType;
     );
   }
 }
- late final getDate;
- late final getTime;
+
+late final getDate;
+late final getTime;
+
 class BookingPage extends StatefulWidget {
   BookingPage({Key? key}) : super(key: key);
 
@@ -854,12 +941,9 @@ class _BookingPageState extends State<BookingPage> {
   int? _currentIndex;
   // ignore: unused_field
   static bool _dateSelected = false;
-  static  bool _timeSelected = false;
+  static bool _timeSelected = false;
   String? token;
-  
 
-
-  
   @override
   /*void initState() {
     super.initState();
@@ -870,7 +954,7 @@ class _BookingPageState extends State<BookingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-         backgroundColor: Color.fromARGB(255, 244, 244, 244),
+      backgroundColor: Color.fromARGB(255, 244, 244, 244),
       body: CustomScrollView(
         slivers: <Widget>[
           SliverToBoxAdapter(
@@ -892,51 +976,47 @@ class _BookingPageState extends State<BookingPage> {
               ],
             ),
           ),
-           SliverGrid(
-                  delegate: SliverChildBuilderDelegate(
-                    
-                    (context, index) {
-                      var timeSlots = solts();
-                      return InkWell(
-                        splashColor: Colors.transparent,
-                        onTap: () {
-                          setState(() {
-                            _currentIndex = index;
-                            _timeSelected = true;
-                          });
-                        },
-                        child: Container(
-
-                          margin: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            
-                            border: Border.all(
-                              color: _currentIndex == index 
-                                  ? Colors.white
-                                  : Color.fromARGB(255, 33, 30, 30),
-                            ),
-                            borderRadius: BorderRadius.circular(15),
-                            color: _currentIndex == index 
-                                ? Color.fromARGB(255, 232, 231, 230) 
-                                : null, 
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            '${int.parse(timeSlots[index].substring(0,2))}${timeSlots[index].substring(2)} ${int.parse(timeSlots[index].substring(0,2))>11 ? "PM" : "AM"}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color:
-                                  _currentIndex == index ? Colors.white : null,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    childCount: solts().length,
+          SliverGrid(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                var timeSlots = solts();
+                return InkWell(
+                  splashColor: Colors.transparent,
+                  onTap: () {
+                    setState(() {
+                      _currentIndex = index;
+                      _timeSelected = true;
+                    });
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: _currentIndex == index
+                            ? Colors.white
+                            : Color.fromARGB(255, 33, 30, 30),
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                      color: _currentIndex == index
+                          ? Color.fromARGB(255, 232, 231, 230)
+                          : null,
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      '${int.parse(timeSlots[index].substring(0, 2))}${timeSlots[index].substring(2)} ${int.parse(timeSlots[index].substring(0, 2)) > 11 ? "PM" : "AM"}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: _currentIndex == index ? Colors.white : null,
+                      ),
+                    ),
                   ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4, childAspectRatio: 1.5),
-                ),
+                );
+              },
+              childCount: solts().length,
+            ),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4, childAspectRatio: 1.5),
+          ),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
@@ -951,8 +1031,6 @@ class _BookingPageState extends State<BookingPage> {
                   Navigator.pop(context);
 
                   //if booking return status code 200, then redirect to success booking page
-
-                  
                 },
                 disable: _timeSelected ? false : true,
               ),
@@ -966,7 +1044,6 @@ class _BookingPageState extends State<BookingPage> {
   //table calendar
   Widget _tableCalendar() {
     return TableCalendar(
-      
       focusedDay: _focusDay,
       firstDay: DateTime.now(),
       lastDay: DateTime.now().add(const Duration(days: 90)),
@@ -979,7 +1056,9 @@ class _BookingPageState extends State<BookingPage> {
             BoxDecoration(color: kPrimaryColor, shape: BoxShape.circle),
       ),
       availableCalendarFormats: const {
-        CalendarFormat.week: 'Week' , CalendarFormat.twoWeeks: '2 weeks', CalendarFormat.month: 'Month'
+        CalendarFormat.week: 'Week',
+        CalendarFormat.twoWeeks: '2 weeks',
+        CalendarFormat.month: 'Month'
       },
       onFormatChanged: (format) {
         setState(() {
@@ -991,7 +1070,7 @@ class _BookingPageState extends State<BookingPage> {
           _currentDay = selectedDay;
           _focusDay = focusedDay;
           _dateSelected = true;
-        
+
           //check if weekend is selected
           /*if (selectedDay.weekday == 6 || selectedDay.weekday == 7) {
             _isWeekend = true;
@@ -1002,11 +1081,6 @@ class _BookingPageState extends State<BookingPage> {
           }*/
         });
       }),
-    );}
-    
-  
-
-
-    
+    );
+  }
 }
-

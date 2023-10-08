@@ -4,17 +4,15 @@ import 'package:rehaab/reservations/reservation_list.dart';
 import '../customization/clip.dart';
 
 class MyReservations extends StatelessWidget {
- 
-  String? driverG;
+  dynamic getDate;
+  dynamic getTime;
 
-  MyReservations({this.driverG});
+  MyReservations({this.getDate, this.getTime});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       appBar: AppBar(
-       
         automaticallyImplyLeading: false, //remove back button
 
         backgroundColor: Colors.transparent,
@@ -37,7 +35,7 @@ class MyReservations extends StatelessWidget {
             ),
             child: Center(
               child: Text(
-                'Reservations list',
+                'My reservations',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 23,
@@ -47,15 +45,9 @@ class MyReservations extends StatelessWidget {
           ),
         ),
       ),
-body: Column(
-  children: [
-    ReservationList(driverG: driverG)
-  ],
-),
-
- 
-      
-       
+      body: Column(
+        children: [ReservationList(getDate: getDate, getTime: getTime)],
+      ),
     );
   }
 }
