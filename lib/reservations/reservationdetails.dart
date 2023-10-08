@@ -1,12 +1,13 @@
-import 'dart:math';
 
+import 'dart:convert';
+
+//import 'package:flutter/foundation.dart';
 import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:rehaab/customization/clip.dart';
-import 'package:rehaab/reservations/reserve_vehicle.dart';
-import 'package:rehaab/widgets/rounded_button.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:rehaab/widgets/constants.dart';
 
 class ReservationDetails extends StatefulWidget{
 
@@ -17,7 +18,36 @@ const ReservationDetails({super.key});
 
 }
 class _ReservationDetailsState extends State<ReservationDetails> {
-  
+  List list =[];
+Future GetData() async{
+
+  var url = "http://192.168.8.105/rehaab/details.php"; //put your computer IP address instead of 192.168.8.105 
+  var res = await http.get(Uri.parse(url));
+
+  if(res.statusCode ==200){
+    var red = json.decode(res.body);
+    setState(() {
+      list.add(red);
+    });
+
+  }
+}
+ 
+@override
+void initState(){
+super.initState();
+GetData();
+
+}
+
+
+
+
+
+
+
+
+
 
 
 
@@ -70,11 +100,19 @@ Widget build(BuildContext context) {
         //margin: EdgeInsets.only(bottom: 20.0),
         decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
         //padding: EdgeInsets.only(top: 50),
-        child: QrImageView(data: "Name\n Date \n  Time \n Vehicle type \n Driving type \n Driver gender \n  " , size: 200, )), 
-        Container(padding: EdgeInsets.only(top: 5),      alignment: Alignment.topCenter, height:40,child: Text("Use this QR code at the pickup location to check in",maxLines: 2, style: TextStyle(color: Colors.grey, fontSize: 15 ), )),
-        Container(child: Row(children: [Container(  
+        child: list.isEmpty? Text(""): QrImageView(data: "Date:    ${list[0]["date"] } \n  Time: ${list[0]["time"] } \n Vehicle Type: ${list[0]["VehicleType"] } \n Driving Type: ${list[0]["drivingType"] }${list[0]["VehicleType"] == "Single" ? "" : "Driver gender : ${list[0]["driverGender"]}"}\n  Status: ${list[0]["Status"] }" , size: 200, )),
+        Container( padding: EdgeInsets.only(top: 5),      alignment: Alignment.topCenter, height:40,child: Text("Use this QR code at the pickup location to check in",maxLines: 2, style: TextStyle(color: Colors.grey, fontSize: 13.5 ), )),Container(   decoration: BoxDecoration(borderRadius: BorderRadius.circular(15) ,   border: Border.all(color:kPrimaryColor)   ,color: Colors.grey.shade200), child:   Column(children: [
+        Container( width : 250 ,    padding: EdgeInsets.only(left:20 , top: 10),//decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
+        child: Row(children: [ Icon(Icons.date_range , color: kPrimaryColor,), Container(child: list.isEmpty? Text(""): Text(" Date:   ${list[0]["date"] }", style: TextStyle(fontSize: 15 , color: Colors.black45 ,fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),))])) , Container(   width : 250 , padding: EdgeInsets.only(left:20 ) ,child: Row(children:  [Icon(Icons.schedule , color: kPrimaryColor,) ,Container(child: list.isEmpty? Text(""):Text(" Time: ${list[0]["time"] }", style: TextStyle(fontSize: 15 , color: Colors.black45, fontFamily: "OpenSans" ,fontWeight: FontWeight.bold)),)]),),
+        Container( width : 250 ,   padding: EdgeInsets.only(left:20),//decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
+        child: Row(children: [  Icon(Icons.motorcycle, color: kPrimaryColor,), Container(child: list.isEmpty? Text(""): Text(" Vehicle Type: ${list[0]["VehicleType"] }", style: TextStyle(fontSize: 15 , color: Colors.black45 ,fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),))])) ,Container( width : 250 , padding: EdgeInsets.only(left:20),//decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
+        child: Row(children: [  Icon(Icons.motion_photos_on_rounded, color: kPrimaryColor,), Container(child: list.isEmpty? Text(""): Text(" Driving Type: ${list[0]["drivingType"] }", style: TextStyle(fontSize: 15 , color: Colors.black45 , fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),))])) 
+        
+        ,Container( width : 250 , padding: EdgeInsets.only(left:20),//decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
+        child: Row(children: [ Container(child: list.isEmpty? Text(""):Text("${list[0]["VehicleType"] == "Single" ? "" : "Driver gender : ${list[0]["driverGender"]}"}  ", style: TextStyle(color: Colors.black45, fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),),)])),])),
+        Container( child: Row(children: [Container(  
 
-          padding: EdgeInsets.only( left: 30, right: 6 , top: 150, bottom: 6),
+          padding: EdgeInsets.only( left: 30, right: 6 ,top:30, bottom: 6),
           child: ElevatedButton.icon(
                 
             onPressed: () async { showDialog(
@@ -301,9 +339,10 @@ Widget build(BuildContext context) {
              icon: Icon(Icons.close),  
 
 style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.red), shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))), fixedSize: MaterialStateProperty.resolveWith((states) => Size(150, 40)),), 
-              ),) , Container(
+              ),) , Container(          alignment: Alignment.center, 
+
 //padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
-          padding: EdgeInsets.only( right: 6,top: 150, bottom: 6),
+          padding: EdgeInsets.only( right: 6,top:30, bottom: 6),
               child: ElevatedButton.icon(
                 
             onPressed: () async { },
@@ -570,6 +609,11 @@ style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) =
 
 
 
+
+
+
+
+}
 
 
 
