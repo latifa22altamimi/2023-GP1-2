@@ -1,11 +1,42 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rehaab/reservations/reservationdetails.dart';
+import 'package:http/http.dart' as http;
 
-class ReservationList extends StatelessWidget {
+class ReservationList extends StatefulWidget {
   dynamic getDate;
   dynamic getTime;
   ReservationList({this.getDate, this.getTime});
+
+  @override
+  State<ReservationList> createState() => _ReservationListState();
+}
+
+class _ReservationListState extends State<ReservationList> {
+  List list = [];
+
+  Future GetData() async {
+    var url =
+        "http://192.168.1.9/phpfiles/details.php"; //put your computer IP address instead of 192.168.8.105
+    var res = await http.get(Uri.parse(url));
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      setState(() {
+        list.addAll(red);
+      });
+
+     
+    }
+  }
+
+  void initState() {
+    super.initState();
+    GetData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -13,8 +44,12 @@ class ReservationList extends StatelessWidget {
         child: ListView.builder(
             itemCount: 1,
             itemBuilder: (BuildContext context, int index) {
-              if (getDate != null) {// status=confirmed
-                return ReserveCard(getDate: getDate, getTime: getTime);
+              if ({list[0]["Status"] }  == 'Confirmed' || {list[0]["Status"] }  == 'Cancelled') {
+                
+                return ReserveCard(getDate: widget.getDate, getTime: widget.getTime);
+              }
+              else{
+                //when manager changes status to being used
               }
             }));
   }
@@ -57,6 +92,8 @@ class ReserveCard extends StatelessWidget {
                       fontWeight: FontWeight.w500),
                 ),
               ),
+
+
               Text(
                 'Confirmed ',
                 style: TextStyle(
@@ -64,6 +101,9 @@ class ReserveCard extends StatelessWidget {
                     fontSize: 15,
                     fontWeight: FontWeight.w400),
               ),
+
+
+              
               Image.asset(
                 'assets/images/confirm.png',
                 width: 25,
@@ -105,28 +145,24 @@ class ReserveCard extends StatelessWidget {
                 child: Text(
                   'Date: ',
                   style: TextStyle(
-                    color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500
-                  ),
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500),
                 ),
               ),
-
               Text(
                 '$getDate',
-                 style: TextStyle(
+                style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.w400),
-                ),
-
-              
-              
-              ],
-
+              ),
+            ],
           ),
 
-          SizedBox(height: 5.0,),
+          SizedBox(
+            height: 5.0,
+          ),
 
           Row(
             children: [
@@ -135,23 +171,20 @@ class ReserveCard extends StatelessWidget {
                 child: Text(
                   'Time: ',
                   style: TextStyle(
-                    color: Colors.black,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500
-                  ),
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500),
                 ),
               ),
-
-               Text(
+              Text(
                 '$getTime',
-                 style: TextStyle(
+                style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.w400),
-                ),
+              ),
             ],
           )
-          
         ],
       ),
       width: 180,

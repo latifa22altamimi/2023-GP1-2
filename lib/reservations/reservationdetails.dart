@@ -21,7 +21,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
   List list =[];
 Future GetData() async{
 
-  var url = "http://192.168.8.105/rehaab/details.php"; //put your computer IP address instead of 192.168.8.105 
+  var url = "http://192.168.8.105/phpfiles/details.php"; //put your computer IP address instead of 192.168.8.105 
   var res = await http.get(Uri.parse(url));
 
   if(res.statusCode ==200){
@@ -618,4 +618,4 @@ style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) =
 
 
 
-}
+
