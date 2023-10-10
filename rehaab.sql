@@ -65,7 +65,8 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`id`, `date`, `time`, `vehicleId`, `drivingType`, `driverGender`, `Status`, `visitorId`) VALUES
-(1, '2023-10-23', '18:00', 1, 'Self driving', NULL, 'Confirmed', 40);
+(1, '2023-10-23', '18:00', 1, 'Self driving', NULL, 'Confirmed', 40),
+(3, '2023-11-10', '16:00', 33, 'Self driving', NULL, 'Confirmed', 40);
 
 -- --------------------------------------------------------
 
