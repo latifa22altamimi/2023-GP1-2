@@ -26,18 +26,14 @@ State<LoginScreen> createState() => _LoginScreenState();}
 class _LoginScreenState extends State<LoginScreen> {
  TextEditingController email = TextEditingController();
  TextEditingController Password=TextEditingController();
-Object? valueChoose="---------------------------";
-List listItem= [
-  "---------------------------","Al-Haram visitor", "Vehicle manager"
-];
+
   
 
   Future rehaab() async{
-    var url ="http://192.168.100.167/RehabAuth/signin.php";
+    var url ="http://192.168.100.167/phpfiles/signin.php";
     final response= await http.post(Uri.parse(url),body:{
     "Email":email.text,
-    "Password":Password.text,
-    "Type": valueChoose});
+    "Password":Password.text});
   var data =json.decode(response.body);
 
   if(data == "Success"){
