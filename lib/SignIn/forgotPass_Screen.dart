@@ -32,7 +32,7 @@ var changelink;
 
 
   Future ExistEmail() async{
-    var url ="http://192.168.100.167/phpfiles/exsitEmail.php";
+    var url ="http://192.168.1.9/phpfiles/exsitEmail.php";
     final response= await http.post(Uri.parse(url),body:{
     "Email":email.text,
   });

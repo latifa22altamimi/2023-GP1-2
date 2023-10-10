@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:rehaab/reservations/reservation_list.dart';
 
@@ -28,20 +30,49 @@ class MyReservations extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color.fromARGB(255, 60, 100, 73),
+                 Color.fromARGB(255, 60, 100, 73),
                   Color.fromARGB(255, 104, 132, 113)
                 ],
               ),
             ),
-            child: Center(
-              child: Text(
-                'My reservations',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 23,
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
+            child: Stack(
+              children: [
+                BackdropFilter(
+                  filter: ImageFilter.blur(
+                    sigmaX: 2.0,
+                    sigmaY: 2.0
+                  ),
+                  
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.2)),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white.withOpacity(0.09),
+                           Colors.white.withOpacity(0.1),
+                          
+                        ])
+                    ),
+                  ),
+
+                  
+                  ),
+
+                   Container(
+                   alignment: Alignment.center,
+                     child: Text(
+                                   'My reservations',
+                                   style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 23,
+                      fontWeight: FontWeight.w500),
+                                 ),
+                   ),
+                  
+              ],
+            )
           ),
         ),
       ),
