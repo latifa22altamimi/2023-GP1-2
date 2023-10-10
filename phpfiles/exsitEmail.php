@@ -1,5 +1,5 @@
 <?php
-    $db= mysqli_connect('localhost','root','','Rehaab');
+    $db= mysqli_connect('localhost','root','','rehaab');
          if(!$db){
              echo "Database connection faild";
          }
