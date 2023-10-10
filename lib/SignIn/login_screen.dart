@@ -26,7 +26,6 @@ State<LoginScreen> createState() => _LoginScreenState();}
 class _LoginScreenState extends State<LoginScreen> {
  TextEditingController email = TextEditingController();
  TextEditingController Password=TextEditingController();
-static int Userid=0;
   
 
   Future rehaab() async{
@@ -36,8 +35,7 @@ static int Userid=0;
     "Password":Password.text});
   var data =json.decode(response.body);
 
-  if(data[0] == "Success"){
-    Userid=data[1];
+  if(data == "Success"){
     Fluttertoast.showToast(
         msg: "Signed in successfully",
         toastLength: Toast.LENGTH_SHORT,

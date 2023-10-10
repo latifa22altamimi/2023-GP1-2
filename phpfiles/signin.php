@@ -25,7 +25,8 @@
              }
              
              echo json_encode("Success");
-             echo json_encode($id);
+
+          
          }
            else if(empty($Password)|| empty($Email)){
              echo json_encode("empty");
@@ -37,5 +38,18 @@
          else{
            echo json_encode("Fail");  
          }
+
+
+?>
+         <html>
+         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+   $.get('RList.php', {Userid:<?php echo $id; ?>}, function(result) {})
+</script>
+
+
+
+
+         </html>
          
              

@@ -39,6 +39,8 @@ $specialChars = preg_match('@[^\w]@', $Password);
   
              if($query){
                  $id = mysqli_insert_id($db);
-                 echo json_encode("http://".$_SERVER['SERVER_NAME']."/RehabAuth/verfiy.php?id=$id");
+                 echo json_encode("http://".$_SERVER['SERVER_NAME']."/phpfiles/verfiy.php?id=$id");
              }
          }
+
+        
