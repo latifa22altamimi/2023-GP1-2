@@ -9,7 +9,7 @@ $Email= $_POST['Email'];
          $count= mysqli_num_rows($result);
          
 if($count== 1){
-   echo json_encode("http://".$_SERVER['SERVER_NAME']."/RehabAuth/forgotPass.php?Email=$Email");
+   echo json_encode("http://".$_SERVER['SERVER_NAME']."/phpfiles/forgotPass.php?Email=$Email");
 }
 else if(empty($Email)){
    echo json_encode("empty");  
