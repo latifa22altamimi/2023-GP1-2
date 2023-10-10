@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rehaab/reservations/reservationdetails.dart';
 import 'package:http/http.dart' as http;
+import 'package:rehaab/reservations/reserve_vehicle.dart';
 
 class ReservationList extends StatefulWidget {
   dynamic getDate;
@@ -44,8 +45,8 @@ class _ReservationListState extends State<ReservationList> {
         child: ListView.builder(
             itemCount: 1,
             itemBuilder: (BuildContext context, int index) {
-              if ({list[0]["Status"] }  == 'Confirmed' || {list[0]["Status"] }  == 'Cancelled') {
-                
+              if (widget.getDate!=null) {
+                //{list[0]["Status"] }  == 'Confirmed' || {list[0]["Status"] }  == 'Cancelled'
                 return ReserveCard(getDate: widget.getDate, getTime: widget.getTime);
               }
               else{

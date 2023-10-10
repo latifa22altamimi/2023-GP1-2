@@ -1,12 +1,12 @@
 <?php
 
 include 'connect.php';
-$visitorId= $_GET['Userid'];
+$v=40;
 
-$sql = "SELECT * FROM reservation WHERE visitorId= $visitorId";
+$sql = "SELECT * FROM reservation WHERE visitorId=$v";
 $result = $conn->query($sql);
  $list = mysqli_fetch_assoc($result);
       
-  
-  echo json_encode($list);
-?>
+  foreach ($list as $array){
+  echo json_encode($array);
+  }
