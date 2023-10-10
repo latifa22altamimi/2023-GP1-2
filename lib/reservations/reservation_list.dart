@@ -19,7 +19,7 @@ class _ReservationListState extends State<ReservationList> {
 
   Future GetData() async {
     var url =
-        "http://192.168.1.9/phpfiles/RList.php"; //put your computer IP address instead of 192.168.8.105
+        "http://192.168.100.167/phpfiles/RList.php"; //put your computer IP address instead of 192.168.8.105
     var res = await http.get(Uri.parse(url));
 
     if (res.statusCode == 200) {
