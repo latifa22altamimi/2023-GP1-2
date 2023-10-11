@@ -1,9 +1,9 @@
 <?php
 
 include 'connect.php';
-$v=40;
+$visitorId= $_GET['Userid'];
 
-$sql = "SELECT * FROM reservation WHERE visitorId=$v";
+$sql = "SELECT * FROM reservation WHERE visitorId=$vistiorId";
 $result = $conn->query($sql);
  $list = mysqli_fetch_assoc($result);
       
