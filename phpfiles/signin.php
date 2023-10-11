@@ -30,7 +30,7 @@
              $data=array();
              $data[0]="Success";
              $data[1]="<html>  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
-             <script>    $.get('RList.php', {Userid:$id});";
+             <script>    $.get('RList.php', {Userid:$id}); </script> </html>";
              echo json_encode($data);
              
          }
@@ -44,6 +44,7 @@
          else{
            echo json_encode("Fail");  
          }
+
 
     
 ?>

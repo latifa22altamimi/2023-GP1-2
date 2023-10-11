@@ -2,6 +2,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rehaab/components/page_title_bar.dart';
 import 'package:rehaab/components/under_part.dart';
 import 'package:rehaab/components/upside.dart';
@@ -39,7 +40,7 @@ var changelink;
   var data =json.decode(response.body);
 
   if(data == "Fail"){
-          Fluttertoast.showToast(
+        /*  Fluttertoast.showToast(
         msg: "Email does not exist!",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
@@ -47,10 +48,81 @@ var changelink;
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 16.0
-    );
+    );*/
+
+    ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(seconds: 3),
+                                content: Container(
+                                  height: 80,
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color.fromARGB(221, 224, 41, 41),
+                                          Color.fromARGB(255, 240, 50, 50),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 4.0,
+                                          spreadRadius: .05,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15))),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Error!',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Text(
+                                              "Email doesn't exists!",
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Lottie.asset(
+                                          'assets/images/erorrr.json',
+                                          width: 150,
+                                          height: 150,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                elevation: 0,
+                                backgroundColor: Colors.transparent,
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
   }
   else if(data == "empty"){
-          Fluttertoast.showToast(
+        /*  Fluttertoast.showToast(
         msg: "fill in your email!",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
@@ -58,7 +130,77 @@ var changelink;
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 16.0
-    );
+    );*/
+    ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(seconds: 3),
+                                content: Container(
+                                  height: 80,
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color.fromARGB(221, 224, 41, 41),
+                                          Color.fromARGB(255, 240, 50, 50),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 4.0,
+                                          spreadRadius: .05,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15))),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Error!',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Text(
+                                              "There is an empty field!",
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Lottie.asset(
+                                          'assets/images/erorrr.json',
+                                          width: 150,
+                                          height: 150,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                elevation: 0,
+                                backgroundColor: Colors.transparent,
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
   } 
   else{
         changelink=data;
