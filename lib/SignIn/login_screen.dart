@@ -74,7 +74,7 @@ print(data);
   }
   else{
      Fluttertoast.showToast(
-        msg: "Email or password or type is wrong",
+        msg: "Email or password is wrong",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 2,
