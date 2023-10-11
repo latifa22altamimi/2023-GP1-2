@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 import 'package:rehaab/components/page_title_bar.dart';
 import 'package:rehaab/components/under_part.dart';
@@ -31,7 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
    
 var verifylink;
   Future signup() async{
-    var url ="http://192.168.1.9/phpfiles/signup.php";
+    var url ="http://192.168.100.167/phpfiles/signup.php";
     final response= await http.post(Uri.parse(url),body:{
     "FirstName":FirstName.text,
     "Email":email.text,
@@ -42,7 +43,7 @@ var verifylink;
   print(data);
 
   if(data == "Error"){
-    Fluttertoast.showToast(
+   /* Fluttertoast.showToast(
         msg: "Email already exists",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
@@ -50,59 +51,398 @@ var verifylink;
         backgroundColor: Colors.red,
         textColor: Colors.white,
         fontSize: 16.0
-    );
-  }
+    );*/
+    ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(seconds: 3),
+                                content: Container(
+                                  height: 80,
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color.fromARGB(221, 224, 41, 41),
+                                          Color.fromARGB(255, 240, 50, 50),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 4.0,
+                                          spreadRadius: .05,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15))),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Error!',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Text(
+                                              "Email already exists!",
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Lottie.asset(
+                                          'assets/images/erorrr.json',
+                                          width: 150,
+                                          height: 150,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                elevation: 0,
+                                backgroundColor: Colors.transparent,
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
+ 
+                          }
+                        
   else if( data == "empty"){
-      Fluttertoast.showToast(
-        msg: "Please fill all the fields",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(seconds: 3),
+                                content: Container(
+                                  height: 80,
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color.fromARGB(221, 224, 41, 41),
+                                          Color.fromARGB(255, 240, 50, 50),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 4.0,
+                                          spreadRadius: .05,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15))),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Error!',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Text(
+                                              "There is an empty field!",
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Lottie.asset(
+                                          'assets/images/erorrr.json',
+                                          width: 150,
+                                          height: 150,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                elevation: 0,
+                                backgroundColor: Colors.transparent,
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
 
   }
    else if( data == "invalidPass"){
-      Fluttertoast.showToast(
-        msg: "Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
 
+ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(seconds: 5),
+                                content: Container(
+                                  height: 80,
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color.fromARGB(221, 224, 41, 41),
+                                          Color.fromARGB(255, 240, 50, 50),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 4.0,
+                                          spreadRadius: .05,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15))),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Error!',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Text(
+                                              "Password must be strong!",
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Lottie.asset(
+                                          'assets/images/erorrr.json',
+                                          width: 150,
+                                          height: 150,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                elevation: 0,
+                                backgroundColor: Colors.transparent,
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
   }
      else if( data == "invalidEmail"){
-      Fluttertoast.showToast(
-        msg: "Invalid Email",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
+
+   ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(seconds: 3),
+                                content: Container(
+                                  height: 60,
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color.fromARGB(221, 224, 41, 41),
+                                          Color.fromARGB(255, 240, 50, 50),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 4.0,
+                                          spreadRadius: .05,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15))),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Error!',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Text(
+                                              "Invalid Email!",
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Lottie.asset(
+                                          'assets/images/erorrr.json',
+                                          width: 150,
+                                          height: 150,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                elevation: 0,
+                                backgroundColor: Colors.transparent,
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
+
   }
   else{
     verifylink=data;
     sendMail();
-     Fluttertoast.showToast(
-        msg: "Thank you for regestration! Verfiy your email to sign in!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 2,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0);
-        Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const LoginScreen())
-        );
+        showDialog(
+                                                  context: context,
+                                                  builder: (context) 
+                                                  
+                                                  {
+                        Future.delayed(Duration(seconds:3), () {
+                              Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) =>  LoginScreen()),
+  );
+                        });
+                                                  return Dialog(
+                                                   
+                                                    backgroundColor:
+                                                        Color.fromARGB(
+                                                            255, 247, 247, 247),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              20.0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Lottie.asset(
+                                                              'assets/images/success.json',
+                                                              width: 100,
+                                                              height: 100),
+                                                          Text(
+                                                            'Success',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Thank you for regestration! Verfiy your email to sign in!',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10.0,
+                                                          ),
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              ConstrainedBox(
+                                                                constraints: BoxConstraints
+                                                                    .tightFor(
+                                                                        height:
+                                                                            38,
+                                                                        width:
+                                                                            100),
+                                                         
+                                                                  
+                                                                ),
+                                                            
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                  }
+                                                );
+
                              
   }
+  
   }
  
  sendMail() async{
@@ -265,3 +605,6 @@ var verifylink;
   }
 
   }
+
+
+

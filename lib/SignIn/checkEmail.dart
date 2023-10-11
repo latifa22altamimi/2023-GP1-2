@@ -33,7 +33,6 @@ class _CheckEmailScreenState extends State<CheckEmailScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-     String dropdownValue = 'Al-Haram visitor';
     Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
