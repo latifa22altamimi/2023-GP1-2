@@ -34,8 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
     "Email":email.text,
     "Password":Password.text});
   var data =json.decode(response.body);
-
-  if(data == "Success"){
+print(data);
+  if(data[0]=="Success"){
     Fluttertoast.showToast(
         msg: "Signed in successfully",
         toastLength: Toast.LENGTH_SHORT,
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   else{
      Fluttertoast.showToast(
-        msg: "Email or password or type is wrong",
+        msg: "Email or password is wrong",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 2,

@@ -3,7 +3,7 @@
          if(!$db){
              echo "Database connection faild";
          }
-        $id;
+       $id;
         $Email= $_POST['Email'];
          $Password= $_POST['Password'];
          //$Type=$_POST['Type'];
@@ -26,14 +26,13 @@
                 $id=$row['ID'];
              }
              
-             echo json_encode("Success");
-            echo "       <html>
-            <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
-   <script>
-      $.get('RList.php', {Userid:$id}, function(result) {})
-   </script>
-    </html>";
-          
+
+             $data=array();
+             $data[0]="Success";
+             $data[1]="<html>  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
+             <script>    $.get('RList.php', {Userid:$id});";
+             echo json_encode($data);
+             
          }
            else if(empty($Password)|| empty($Email)){
              echo json_encode("empty");
