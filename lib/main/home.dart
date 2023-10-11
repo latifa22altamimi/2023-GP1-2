@@ -6,22 +6,17 @@ import 'package:rehaab/reservations/myreservations.dart';
 import 'package:rehaab/Map_page/map.dart';
 
 class home extends StatefulWidget {
-  dynamic getDate;
-  dynamic getTime;
-  home({this.getDate, this.getTime});
+  home({Key? key}) : super(key: key);
   @override
-  State<home> createState() => _homeState(getDate: getDate, getTime: getTime);
+  State<home> createState() => _homeState();
 }
 
 class _homeState extends State<home> {
-  dynamic getDate;
-  dynamic getTime;
-
-  _homeState({this.getDate, this.getTime});
+  
   int index = 0;
   late final pages = [
     // pages in navigation bar
-    MyReservations(getDate: getDate, getTime: getTime),
+    MyReservations(),
 
     Column(
       //home page
@@ -43,23 +38,19 @@ class _homeState extends State<home> {
           children: pages,
         ),
         bottomNavigationBar: Container(
-          decoration: BoxDecoration(                                                   
-    borderRadius: BorderRadius.only(  
-                                          
-      topRight: Radius.circular(40),
-       topLeft: Radius.circular(40)),            
-    boxShadow: [                                                               
-      BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 1),       
-    ],                                                                         
-  ),                                                                           
-  child: ClipRRect(                                                            
-    borderRadius: BorderRadius.only(  
-                                               
-    topLeft: Radius.circular(40.0),                                            
-    topRight: Radius.circular(40.0),                                           
-    ),    
-          child: NavigationBarTheme(
-           
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(40), topLeft: Radius.circular(40)),
+            boxShadow: [
+              BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 1),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40.0),
+              topRight: Radius.circular(40.0),
+            ),
+            child: NavigationBarTheme(
               data: NavigationBarThemeData(
                 height: 80,
                 labelTextStyle: MaterialStateProperty.all(
@@ -69,8 +60,6 @@ class _homeState extends State<home> {
                 indicatorColor:
                     Color.fromARGB(255, 104, 132, 113).withOpacity(0.34),
               ),
-        
-              
               child: NavigationBar(
                   selectedIndex: index,
                   onDestinationSelected: (index) =>
@@ -91,9 +80,8 @@ class _homeState extends State<home> {
                         label: 'Settings'),
                   ]),
             ),
-  ),
+          ),
         ),
-        
       ),
     );
   }

@@ -754,7 +754,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                                       Navigator.push(
                                                                           context,
                                                                           MaterialPageRoute(
-                                                                              builder: ((context) => home(getDate: getDate, getTime: getTime))));
+                                                                              builder: ((context) => home())));
                                                                       // var: val passed
                                                                     }
                                                                   },
