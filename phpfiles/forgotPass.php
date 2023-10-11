@@ -1,8 +1,5 @@
 <?php
-    $db= mysqli_connect('localhost','root','','rehaab');
-         if(!$db){
-             echo "Database connection faild";
-         }
+ include 'connect.php';
          
          
 function alert($msg) {
@@ -34,7 +31,7 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
            else{
           
               $select= "UPDATE `users` SET `Password`='$NewPass' WHERE Email='$Email'";
-              $result= mysqli_query($db, $select);
+              $result= mysqli_query($conn, $select);
               if($result){
              alert("Changed successfully");
               }

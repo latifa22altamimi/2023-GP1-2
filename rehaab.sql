@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2023 at 02:37 PM
+-- Generation Time: Oct 11, 2023 at 11:38 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -65,8 +65,8 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`id`, `date`, `time`, `vehicleId`, `drivingType`, `driverGender`, `Status`, `visitorId`) VALUES
-(1, '2023-10-23', '18:00', 1, 'Self driving', NULL, 'Confirmed', 40),
-(3, '2023-11-10', '16:00', 33, 'Self driving', NULL, 'Cancelled', 40);
+(1, '2023-10-23', '18:00', 1, 'Self driving', NULL, 'Confirmed', 44),
+(3, '2023-11-10', '16:00', 33, 'Self driving', NULL, 'Cancelled', 44);
 
 -- --------------------------------------------------------
 
@@ -79,7 +79,7 @@ CREATE TABLE `users` (
   `FirstName` varchar(30) NOT NULL,
   `LastName` varchar(30) NOT NULL,
   `Email` varchar(200) NOT NULL,
-  `Password` varchar(50) NOT NULL,
+  `Password` varchar(255) NOT NULL,
   `Type` varchar(30) NOT NULL DEFAULT 'Al-Haram visitor',
   `Status` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -89,7 +89,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`ID`, `FirstName`, `LastName`, `Email`, `Password`, `Type`, `Status`) VALUES
-(40, 'Fatimah', 'alnaser', 'alnaserfatimah344@gmail.com', 'Fatimah123!', 'AL-Haram visitor', 1);
+(44, 'Fatimah', 'alnaser', 'alnaserfatimah344@gmail.com', '$2y$10$KIqLBapuEtypAVCMqhOs7eSwNKrnZ1lqjknxO5uCTIV.sNaa0BZNS', 'Al-Haram visitor', 1);
 
 -- --------------------------------------------------------
 
@@ -169,7 +169,7 @@ ALTER TABLE `reservation`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `vehicle`

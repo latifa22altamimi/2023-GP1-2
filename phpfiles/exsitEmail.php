@@ -1,11 +1,8 @@
 <?php
-    $db= mysqli_connect('localhost','root','','rehaab');
-         if(!$db){
-             echo "Database connection faild";
-         }
+  include 'connect.php';
 $Email= $_POST['Email'];
  $sql= "SELECT * FROM users WHERE Email='".$Email."' AND status=1";
-         $result= mysqli_query($db, $sql);
+         $result= mysqli_query($conn, $sql);
          $count= mysqli_num_rows($result);
          
 if($count== 1){

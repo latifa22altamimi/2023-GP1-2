@@ -1,13 +1,10 @@
 <?php
-    $db= mysqli_connect('localhost','root','','rehaab');
-         if(!$db){
-             echo "Database connection faild";
-         }
+   include 'connect.php';
         $FirstName= $_POST['FirstName'];
         $LastName=$_POST['LastName'];
          $Password= $_POST['Password'];
          $Email=$_POST['Email'];
-         $hashPass=hash('sha256',$Password);
+         $hashPass=password_hash($Password, PASSWORD_DEFAULT);
          
          $uppercase = preg_match('@[A-Z]@', $Password);
 $lowercase = preg_match('@[a-z]@', $Password);
@@ -16,7 +13,7 @@ $specialChars = preg_match('@[^\w]@', $Password);
      
    
          $sql= "SELECT * FROM users WHERE Email='".$Email."'";
-         $result= mysqli_query($db, $sql);
+         $result= mysqli_query($conn, $sql);
          $count= mysqli_num_rows($result);
          
          if($count== 1){
@@ -34,11 +31,11 @@ $specialChars = preg_match('@[^\w]@', $Password);
          else {
              $id;
              $insert= "INSERT INTO users(FirstName,LastName,Email,Password) VALUES('".$FirstName."','".$LastName."','".$Email."','".$hashPass."')";
-             $query= mysqli_query($db, $insert);
+             $query= mysqli_query($conn, $insert);
              
   
              if($query){
-                 $id = mysqli_insert_id($db);
+                 $id = mysqli_insert_id($conn);
                  echo json_encode("http://".$_SERVER['SERVER_NAME']."/phpfiles/verfiy.php?id=$id");
              }
          }

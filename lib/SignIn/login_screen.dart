@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
     "Password":Password.text});
   var data =json.decode(response.body);
 print(data);
-  if(data[0]=="Success"){
+  if(data =="Success"){
  
 
                                              showDialog(

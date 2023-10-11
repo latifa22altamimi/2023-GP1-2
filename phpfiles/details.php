@@ -6,7 +6,7 @@
  */
 
 include 'connect.php';
-$id=40;
+$id=44;
 $RID =1;
 $sql = "SELECT * FROM reservation JOIN vehicle ON reservation.vehicleId = vehicle.id WHERE reservation.visitorId= $id AND reservation.id =$RID";
 $result = $conn->query($sql);

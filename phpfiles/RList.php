@@ -1,7 +1,7 @@
 <?php
 
 include 'connect.php';
-$visitorId=40;
+$visitorId=44;
 
 $sql = "SELECT * FROM reservation WHERE visitorId=$visitorId";
 $result = $conn->query($sql);
