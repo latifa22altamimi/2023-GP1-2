@@ -34,8 +34,8 @@ class _LoginScreenState extends State<LoginScreen> {
     "Email":email.text,
     "Password":Password.text});
   var data =json.decode(response.body);
-
-  if(data == "Success"){
+print(data);
+  if(data[0]=="Success"){
     Fluttertoast.showToast(
         msg: "Signed in successfully",
         toastLength: Toast.LENGTH_SHORT,
