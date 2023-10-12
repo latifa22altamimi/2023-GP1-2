@@ -342,7 +342,7 @@ class BodyHome extends StatelessWidget {
                         Align(
                           alignment: Alignment.center,
                           child: Image.asset(
-                            'assets/images/pray.png',
+                            'assets/images/qibla.png',
                             height: 120,
                             width: 120,
                           ),
@@ -351,7 +351,7 @@ class BodyHome extends StatelessWidget {
                           height: 10,
                         ),
                         Text(
-                          'Pray',
+                          'Qibla',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 18,
