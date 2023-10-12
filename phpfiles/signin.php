@@ -28,9 +28,7 @@
          }
          if(password_verify($Password,$pw)){
           
-          while($row = mysqli_fetch_assoc($result)) {
-            $id=$row['ID'];
-         }
+    
           echo json_encode("Success");    
       
           /*echo "<html>  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>

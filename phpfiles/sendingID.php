@@ -32,7 +32,6 @@
 
 
           <script> 
-           $.ajax({url: "RList.php", data:{Userid:<?php echo $id; ?>}, success: function(result){
-
+           $.ajax({url: "RList.php", data:{Userid:44}, success: function(result){
     }}); </script> 
 </html>
