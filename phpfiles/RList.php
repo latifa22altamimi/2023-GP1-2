@@ -1,8 +1,7 @@
 <?php
 
 include 'connect.php';
-$visitorId=44;
-
+$visitorId=$_GET['Userid'];
 $sql = "SELECT * FROM reservation WHERE visitorId=$visitorId";
 $result = $conn->query($sql);
   $array= array();

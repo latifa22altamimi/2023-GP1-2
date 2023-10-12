@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
     "Password":Password.text});
   var data =json.decode(response.body);
 print(data);
-  if(data =="Success"){
+  if(data=="Success"){
  
 
                                              showDialog(
@@ -354,7 +354,15 @@ print(data);
 
   }
   }
+Future sendigID() async{
+    var url ="http://192.168.100.167/phpfiles/sendingID.php";
+    final response= await http.post(Uri.parse(url),body:{
+    "Email":email.text,
+    "Password":Password.text});
+     var data =json.decode(response.body);
+print(data);
 
+}
 
   @override
   Widget build(BuildContext context) {
@@ -450,7 +458,8 @@ print(data);
                                 height: 13,
                               ),
                       
-                              RoundedButton(text: 'SIGN IN', press: () {rehaab();}),
+                              RoundedButton(text: 'SIGN IN', press: () {rehaab();
+                              sendigID();}),
                               const SizedBox(
                                 height: 10,
                               ),

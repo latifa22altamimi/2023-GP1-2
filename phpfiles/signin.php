@@ -28,12 +28,19 @@
          }
          if(password_verify($Password,$pw)){
           
+          while($row = mysqli_fetch_assoc($result)) {
+            $id=$row['ID'];
+         }
           echo json_encode("Success");    
-          //$data=array();
-          //$data[0]="Success";
-          /*$data[1]="<html>  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
+      
+          /*echo "<html>  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
           <script>    $.get('RList.php', {Userid:$id}); </script> </html>";*/
         
+
+
+          //$data=array();
+          //$data[0]="Success";
+          //$data[1]=
            /* while($row = mysqli_fetch_assoc($result)) {
                 $id=$row['ID'];
              }*/
