@@ -22,6 +22,7 @@ class ReserveVehicle extends StatefulWidget {
 class _ReserveVehicleState extends State<ReserveVehicle> {
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
+  
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Color getColor(Set<MaterialState> states) {
@@ -119,6 +120,12 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                   _vehicleType =
                                       "Single"; //when I want to know which value user choosed use _vehicleType
                                   isVisibleDriving = true;
+                                   _drivingType =
+                                      "Self-driving";
+                                       isVisibleGender = false;
+                                       _driverGender = "";
+
+                                
                                 });
                               },
                               fillColor:
@@ -241,6 +248,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                   _drivingType =
                                       "Self-driving"; //when I want to know which value user choosed use _vehicleType
                                   isVisibleGender = false;
+                                   _driverGender = "";
                                 });
                               },
                               fillColor:
@@ -509,7 +517,11 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Container(
-                                  padding: const EdgeInsets.only(left: 50.0, right:50.0, top:30.0, bottom: 50.0),
+                                  padding: const EdgeInsets.only(
+                                      left: 30.0,
+                                      right: 30.0,
+                                      top: 30.0,
+                                      bottom: 50.0),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
@@ -517,7 +529,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                       Lottie.asset('assets/images/warn.json',
                                           width: 80, height: 80),
                                       Text(
-                                        'Confirmation',
+                                        'Confirm the reservation',
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 18,
@@ -527,107 +539,150 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                         height: 10.0,
                                       ),
                                       Text(
-                                        'Are you sure you want to confirm the following reservation? \n',
+                                        'Your reservation will be confirmed with the following information \n',
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 17,
                                             fontWeight: FontWeight.w400),
                                       ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Vehicle type: ',
-                                             style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-
-                                          Text(
-                                            '$_vehicleType',
-                                           style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ],
-                                      ),
-
-                                      SizedBox(
-                                        height: 3.0,
-                                      ),
-
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Driving type: ',
-                                             style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-
-                                          Text(
-                                            '$_drivingType',
-                                           style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ],
-                                      ),
-
-                                      SizedBox(
-                                        height: 3.0,
-                                      ),
-
-                                       Visibility(
-                                        visible: isVisibleGender,
-                                         child: Row(
-                                          children: [
-                                            Text(
-                                              'Driver gender: ',
-                                               style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 17,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                       
-                                            Text(
-                                              '$_driverGender',
-                                             style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w400),
+                                      Container(
+                                        width: 350,
+                                        height: 150,
+                                        margin: const EdgeInsets.all(12),
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.6),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.2),
+                                              blurRadius: 2.0,
+                                              spreadRadius: .01,
                                             ),
                                           ],
-                                                                             ),
-                                       ),
-
-                                       SizedBox(
-                                        height: 3.0,
+                                        ),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'Vehicle type: ',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  '$_vehicleType',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'Driving type: ',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  '$_drivingType',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Visibility(
+                                              visible: isVisibleGender,
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    'Driver gender: ',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  Text(
+                                                    '$_driverGender',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'Date: ',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  '$getDate',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'Time: ',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  '$getTime',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
                                       ),
-
-                                       Row(
-                                        children: [
-                                          Text(
-                                            'Date/Time: ',
-                                             style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-
-                                          Text(
-                                            '$getDate | $getTime',
-                                           style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                        ],
-                                      ),
-                                      
                                       SizedBox(
                                         height: 20.0,
                                       ),
@@ -644,7 +699,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                               onPressed: () =>
                                                   Navigator.of(context).pop(),
                                               child: Text(
-                                                'Close',
+                                                'Cancel',
                                                 style: TextStyle(
                                                     color: Colors.black,
                                                     fontSize: 15,
@@ -678,123 +733,94 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                 //success msg here , insert in db --------------------------------------------
                                                 Navigator.of(context).pop();
                                                 showDialog(
-                                                  context: context,
-                                                  builder: (context) => Dialog(
-                                                    backgroundColor:
-                                                        Color.fromARGB(
-                                                            255, 247, 247, 247),
-                                                    shape:
-                                                        RoundedRectangleBorder(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      Future.delayed(
+                                                          Duration(seconds: 2),
+                                                          () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      home()),
+                                                        );
+                                                      });
+                                                      return Dialog(
+                                                        backgroundColor:
+                                                            Color.fromARGB(255,
+                                                                247, 247, 247),
+                                                        shape: RoundedRectangleBorder(
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
                                                                         20)),
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              20.0),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          Lottie.asset(
-                                                              'assets/images/success.json',
-                                                              width: 100,
-                                                              height: 100),
-                                                          Text(
-                                                            'Success',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 20,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10.0,
-                                                          ),
-                                                          Text(
-                                                            'Reservation is done successfully',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 17,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10.0,
-                                                          ),
-                                                          Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(20.0),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
                                                                     .center,
                                                             mainAxisSize:
                                                                 MainAxisSize
                                                                     .min,
                                                             children: [
-                                                              ConstrainedBox(
-                                                                constraints: BoxConstraints
-                                                                    .tightFor(
+                                                              Lottie.asset(
+                                                                  'assets/images/success.json',
+                                                                  width: 100,
+                                                                  height: 100),
+                                                              Text(
+                                                                'Success',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Text(
+                                                                'ٌReservation is done successfully',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        17,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  ConstrainedBox(
+                                                                    constraints: BoxConstraints.tightFor(
                                                                         height:
                                                                             38,
                                                                         width:
                                                                             100),
-                                                                child:
-                                                                    ElevatedButton(
-                                                                  onPressed: //when press on done
-                                                                      () {
-                                                                    if (_driverGender !=
-                                                                        "") {
-                                                                      Navigator.push(
-                                                                          context,
-                                                                          MaterialPageRoute(
-                                                                              builder: ((context) => home())));
-                                                                      // var: val passed
-                                                                    }
-                                                                  },
-                                                                  child: Text(
-                                                                    'Done',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontSize:
-                                                                            15,
-                                                                        fontWeight:
-                                                                            FontWeight.w500),
                                                                   ),
-                                                                  style: ElevatedButton
-                                                                      .styleFrom(
-                                                                    backgroundColor:
-                                                                        Color.fromARGB(
-                                                                            255,
-                                                                            255,
-                                                                            255,
-                                                                            255),
-                                                                    shape:
-                                                                        RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .all(
-                                                                        Radius.circular(
-                                                                            50),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
+                                                                ],
+                                                              )
                                                             ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
+                                                          ),
+                                                        ),
+                                                      );
+                                                    });
                                               },
                                               child: Text(
                                                 'Confirm',

@@ -207,8 +207,8 @@ class BodyHome extends StatelessWidget {
                           alignment: Alignment.center,
                           child: Image.asset(
                             'assets/images/vehicle1.png',
-                            height: 120,
-                            width: 120,
+                            height: 135,
+                            width: 140,
                           ),
                         ),
                         const SizedBox(
@@ -298,14 +298,14 @@ class BodyHome extends StatelessWidget {
                           child: Image.asset(
                             'assets/images/loc.png',
                             height: 120,
-                            width: 120,
+                            width: 109,
                           ),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         Text(
-                          'Our location',
+                          'Vehicles location',
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 18,
