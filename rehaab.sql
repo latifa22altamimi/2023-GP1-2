@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2023 at 02:37 PM
+-- Generation Time: Oct 12, 2023 at 12:31 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -66,7 +66,8 @@ CREATE TABLE `reservation` (
 
 INSERT INTO `reservation` (`id`, `date`, `time`, `vehicleId`, `drivingType`, `driverGender`, `Status`, `visitorId`) VALUES
 (1, '2023-10-23', '18:00', 1, 'Self driving', NULL, 'Confirmed', 40),
-(3, '2023-11-10', '16:00', 33, 'Self driving', NULL, 'Cancelled', 40);
+(3, '2023-11-10', '16:00', 33, 'Self driving', NULL, 'Cancelled', 40),
+(4, '2023-12-1', '12:00', 35, 'Self driving', NULL, 'Confirmed', 42);
 
 -- --------------------------------------------------------
 
@@ -89,7 +90,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`ID`, `FirstName`, `LastName`, `Email`, `Password`, `Type`, `Status`) VALUES
-(40, 'Fatimah', 'alnaser', 'alnaserfatimah344@gmail.com', 'Fatimah123!', 'AL-Haram visitor', 1);
+(40, 'Fatimah', 'alnaser', 'alnaserfatimah344@gmail.com', 'Fatimah123!', 'AL-Haram visitor', 1),
+(42, 'shahad', 'alothman', 'shahad@gmail.com', '1212h', 'Al-Haram visitor', 1);
 
 -- --------------------------------------------------------
 
@@ -163,13 +165,13 @@ ALTER TABLE `adminpram`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `vehicle`
