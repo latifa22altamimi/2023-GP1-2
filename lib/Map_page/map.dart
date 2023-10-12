@@ -1,6 +1,8 @@
 import 'dart:collection';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:http/http.dart' as http;
 
 import '../customization/clip.dart';
 
@@ -18,16 +20,30 @@ class _HomeState extends State<Home> {
         ImageConfiguration.empty, 'assets/images/mark_.png');
   }
 
+  List list = [];
+  Future GetData() async {
+    var url = "http://10.9.199.233/phpfiles/map.php";
+    var res = await http.get(Uri.parse(url));
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      setState(() {
+        list.add(red);
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     getCustomMarker();
+    GetData();
   }
 
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: AppBar(
-       leading: Container(
+      appBar: AppBar(
+        leading: Container(
           padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
           child: BackButton(),
         ),
@@ -80,7 +96,6 @@ class _HomeState extends State<Home> {
                 icon: customMarker,
               ),
             );
-
             markers.add(
               Marker(
                 markerId: const MarkerId("2"),
