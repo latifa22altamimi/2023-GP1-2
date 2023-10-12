@@ -28,7 +28,7 @@
          }
          if(password_verify($Password,$pw)){
           
-          echo json_encode("Success");    
+          echo json_encode("Success");   
           //$data=array();
           //$data[0]="Success";
           /*$data[1]="<html>  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
@@ -44,7 +44,8 @@
              $data[1]="<html>  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
              <script>    $.get('RList.php', {Userid:$id}); </script> </html>";
              echo json_encode($data);
-             
+             */
+         }
          }
            else if(empty($Password)|| empty($Email)){
              echo json_encode("empty");
