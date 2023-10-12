@@ -28,7 +28,7 @@
          }
          if(password_verify($Password,$pw)){
           
-          echo json_encode("Success");   
+          echo json_encode("Success");    
           //$data=array();
           //$data[0]="Success";
           /*$data[1]="<html>  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
@@ -36,22 +36,14 @@
         
            /* while($row = mysqli_fetch_assoc($result)) {
                 $id=$row['ID'];
-             }
-             
-
-             $data=array();
-             $data[0]="Success";
-             $data[1]="<html>  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
-             <script>    $.get('RList.php', {Userid:$id}); </script> </html>";
-             echo json_encode($data);
-             */
+             }*/
+         
+            }  
+            else{
+              echo json_encode("Fail");
+            }
          }
-         }
-           else if(empty($Password)|| empty($Email)){
-             echo json_encode("empty");
-             }
-             
-             else if($count1==1){
+       else if($count1==1){
               echo json_encode("notVerfied");   
              }
          else{
