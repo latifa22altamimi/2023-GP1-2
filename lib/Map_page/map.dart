@@ -14,7 +14,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   List<Marker> markers = <Marker>[];
   late BitmapDescriptor customMarker;
-
+  var m1;
   getCustomMarker() async {
     customMarker = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration.empty, 'assets/images/mark_.png');
@@ -22,11 +22,12 @@ class _HomeState extends State<Home> {
 
   List list = [];
   Future GetData() async {
-    var url = "http://10.9.199.233/phpfiles/map.php";
+    var url = "http://192.168.100.167/phpfiles/map.php";
     var res = await http.get(Uri.parse(url));
 
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
+      print(red);
       setState(() {
         list.add(red);
       });
@@ -85,12 +86,14 @@ class _HomeState extends State<Home> {
         ),
         onMapCreated: (GoogleMapController googleMapController) {
           setState(() {
+             if (list[0] != null) {
+m1=list[0]['id'];}
             markers.add(
               Marker(
-                markerId: const MarkerId("1"),
+                markerId:  MarkerId(m1),
                 position: const LatLng(21.422444, 39.822861),
-                infoWindow: const InfoWindow(
-                  title: "Electric Vehicle Pick-up Point",
+                infoWindow:  InfoWindow(
+                  title: "Electric Vehicle Pick-up Point "+m1,
                   snippet: "Click for the location",
                 ),
                 icon: customMarker,
