@@ -39,7 +39,7 @@
           //$data=array();
           //$data[0]="Success";
           //$data[1]=
-           /* while($row = mysqli_fetch_assoc($result)) {
+         /* while($row = mysqli_fetch_assoc($result)) {
                 $id=$row['ID'];
              }*/
          

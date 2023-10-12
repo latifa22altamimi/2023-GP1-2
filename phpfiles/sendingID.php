@@ -23,6 +23,8 @@
             $id=$row['ID'];
             
          }
+
+       
             }}
 
 ?>
@@ -32,6 +34,8 @@
 
 
           <script> 
-           $.ajax({url: "RList.php", data:{Userid:44}, success: function(result){
+          var userid=<?php echo $id;?>;
+           $.ajax({type: "GET", url: "RList.php", data: "Userid="+userid, success: function(result){
+           
     }}); </script> 
 </html>
