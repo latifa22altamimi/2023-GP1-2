@@ -32,7 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
    
 var verifylink;
   Future signup() async{
-    var url ="http://10.6.203.249/phpfiles/signup.php";
+    var url ="http://10.6.198.101/phpfiles/signup.php";
     final response= await http.post(Uri.parse(url),body:{
     "FirstName":FirstName.text,
     "Email":email.text,
