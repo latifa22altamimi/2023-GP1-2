@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:rehaab/SignIn/login_screen.dart';
 import 'package:rehaab/main/onboardingscreen.dart';
 import 'package:rehaab/reservations/reserve_vehicle.dart';
 import 'package:rehaab/reservations/myreservations.dart';
@@ -12,7 +13,6 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
-  
   int index = 0;
   late final pages = [
     // pages in navigation bar
@@ -74,10 +74,14 @@ class _homeState extends State<home> {
                         icon: Icon(Icons.home_outlined),
                         selectedIcon: Icon(Icons.home_outlined),
                         label: 'Home'),
-                    NavigationDestination(
-                        icon: Icon(Icons.settings_outlined),
-                        selectedIcon: Icon(Icons.settings),
-                        label: 'Settings'),
+                    IconButton(
+                        onPressed: () async {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginScreen()));
+                        },
+                        icon: Icon(Icons.login_outlined)),
                   ]),
             ),
           ),
