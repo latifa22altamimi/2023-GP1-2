@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/reservations/reservation_list.dart';
@@ -7,6 +9,9 @@ import 'package:rehaab/widgets/rounded_button.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../widgets/constants.dart';
 import '../main/home.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+
 
 String _driverGender = "";
 String _vehicleType = "";
@@ -23,6 +28,19 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
 
+
+    Future Insert() async{
+   var url = "http://192.168.100.167/phpfiles/reservation.php";
+   final res= await http.post(Uri.parse(url),body:{
+    "date":getDate, 
+    "time":getTime,
+    "VehicleType": _vehicleType,
+    "DrivingType": _drivingType,
+     "DriverGender": _driverGender});
+     var resp= json.decode(res.body);
+     print(resp);
+     }
+  
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Color getColor(Set<MaterialState> states) {
@@ -726,7 +744,8 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                 BoxConstraints.tightFor(
                                                     height: 38, width: 100),
                                             child: ElevatedButton(
-                                              onPressed: () {
+                                              onPressed: () async{
+                                                Insert();
                                                 //success msg here , insert in db --------------------------------------------
 
                                                 _drivingType = "";
