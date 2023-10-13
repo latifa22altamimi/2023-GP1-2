@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 //import 'package:flutter/foundation.dart';
@@ -9,115 +8,241 @@ import 'package:rehaab/customization/clip.dart';
 import 'package:http/http.dart' as http;
 import 'package:rehaab/widgets/constants.dart';
 
-class ReservationDetails extends StatefulWidget{
+class ReservationDetails extends StatefulWidget {
+  String? Rid;
 
-const ReservationDetails({super.key});
+  ReservationDetails({this.Rid});
+
+/*Future Send(Rid) async{
+var s = await http.post(Uri.parse("http://192.168.8.105/phpfiles/details.php"), body: json.encode({"rid": Rid}));
+if(s.statusCode==200){
+
+}
+}*/
+  @override
+  State<ReservationDetails> createState() => _ReservationDetailsState(Rid: Rid);
+}
+
+class _ReservationDetailsState extends State<ReservationDetails> {
+  var ind = 0;
+  List list = [];
+  String? Rid;
+  _ReservationDetailsState({this.Rid});
+
+  Future GetData() async {
+    var url =
+        "http://192.168.1.9/phpfiles/details.php"; //put your computer IP address instead of 192.168.8.105
+    var res = await http.get(Uri.parse(url));
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      setState(() {
+        list.addAll(red);
+      });
+    }
+    for (var i = 0; i < list.length; i++) {
+      if (list[i]["id"] == int.parse(Rid!)) {
+        ind = i;
+      }
+    }
+  }
 
   @override
-  State<ReservationDetails> createState() => _ReservationDetailsState();
-
-}
-class _ReservationDetailsState extends State<ReservationDetails> {
-  List list =[];
-Future GetData() async{
-
-  var url = "http://192.168.1.9/phpfiles/details.php"; //put your computer IP address instead of 192.168.8.105 
-  var res = await http.get(Uri.parse(url));
-
-  if(res.statusCode ==200){
-    var red = json.decode(res.body);
-    setState(() {
-      list.add(red);
-    });
-
+  void initState() {
+    super.initState();
+    GetData();
   }
-}
- 
-@override
-void initState(){
-super.initState();
-GetData();
 
-}
-
-
-
-
-
-
-
-
-
-
-
-
-Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 244, 244, 244),
-      appBar: AppBar(
-        leading: Container(
-          padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
-          child: BackButton(),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        toolbarHeight: 100,
-        flexibleSpace: ClipPath(
-          clipper: AppbarClip(),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: 180,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color.fromARGB(255, 60, 100, 73),
-                  Color.fromARGB(255, 104, 132, 113)
-                ],
+        backgroundColor: Color.fromARGB(255, 244, 244, 244),
+        appBar: AppBar(
+          leading: Container(
+            padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
+            child: BackButton(),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+          toolbarHeight: 100,
+          flexibleSpace: ClipPath(
+            clipper: AppbarClip(),
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: 180,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color.fromARGB(255, 60, 100, 73),
+                    Color.fromARGB(255, 104, 132, 113)
+                  ],
+                ),
               ),
-            ),
-            child: Center(
-              child: Text(
-                'Reservation details',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 23,
-                    fontWeight: FontWeight.w500),
+              child: Center(
+                child: Text(
+                  'Reservation details',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 23,
+                      fontWeight: FontWeight.w500),
+                ),
               ),
             ),
           ),
         ),
-      ),
-      body: Container(
-         child : Column( 
-        
-        children: [
-        Container( 
-          alignment: Alignment.center, 
-        height: 300,//padding: const EdgeInsets.only(top: 1.0, left: 10.0, right: 10.0),
-        width: 300,
-        //margin: EdgeInsets.only(bottom: 20.0),
-        decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
-        //padding: EdgeInsets.only(top: 50),
-        child: list.isEmpty? Text(""): QrImageView(data: "Date:    ${list[0]["date"] } \n  Time: ${list[0]["time"] } \n Vehicle Type: ${list[0]["VehicleType"] } \n Driving Type: ${list[0]["drivingType"] }${list[0]["VehicleType"] == "Single" ? "" : "Driver gender : ${list[0]["driverGender"]}"}\n  Status: ${list[0]["Status"] }" , size: 200, )),
-        Container( padding: EdgeInsets.only(top: 5),      alignment: Alignment.topCenter, height:40,child: Text("Use this QR code at the pickup location to check in",maxLines: 2, style: TextStyle(color: Colors.grey, fontSize: 13.5 ), )),Container(   decoration: BoxDecoration(borderRadius: BorderRadius.circular(15) ,   border: Border.all(color:kPrimaryColor)   ,color: Colors.grey.shade200), child:   Column(children: [
-        Container( width : 250 ,    padding: EdgeInsets.only(left:20 , top: 10),//decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
-        child: Row(children: [ Icon(Icons.date_range , color: kPrimaryColor,), Container(child: list.isEmpty? Text(""): Text(" Date:   ${list[0]["date"] }", style: TextStyle(fontSize: 15 , color: Colors.black45 ,fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),))])) , Container(   width : 250 , padding: EdgeInsets.only(left:20 ) ,child: Row(children:  [Icon(Icons.schedule , color: kPrimaryColor,) ,Container(child: list.isEmpty? Text(""):Text(" Time: ${list[0]["time"] }", style: TextStyle(fontSize: 15 , color: Colors.black45, fontFamily: "OpenSans" ,fontWeight: FontWeight.bold)),)]),),
-        Container( width : 250 ,   padding: EdgeInsets.only(left:20),//decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
-        child: Row(children: [  Icon(Icons.motorcycle, color: kPrimaryColor,), Container(child: list.isEmpty? Text(""): Text(" Vehicle Type: ${list[0]["VehicleType"] }", style: TextStyle(fontSize: 15 , color: Colors.black45 ,fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),))])) ,Container( width : 250 , padding: EdgeInsets.only(left:20),//decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
-        child: Row(children: [  Icon(Icons.motion_photos_on_rounded, color: kPrimaryColor,), Container(child: list.isEmpty? Text(""): Text(" Driving Type: ${list[0]["drivingType"] }", style: TextStyle(fontSize: 15 , color: Colors.black45 , fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),))])) 
-        
-        ,Container( width : 250 , padding: EdgeInsets.only(left:20),//decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
-        child: Row(children: [ Container(child: list.isEmpty? Text(""):Text("${list[0]["VehicleType"] == "Single" ? "" : "Driver gender : ${list[0]["driverGender"]}"}  ", style: TextStyle(color: Colors.black45, fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),),)])),])),
-        Container( child: Row(children: [Container(  
-
-          padding: EdgeInsets.only( left: 30, right: 6 ,top:30, bottom: 6),
-          child: ElevatedButton.icon(
-                
-            onPressed: () async { showDialog(
-                              context: context,
-                              builder: (context) => Dialog(
+        body: Container(
+          child: Column(children: [
+            Container(
+                alignment: Alignment.center,
+                height:
+                    300, //padding: const EdgeInsets.only(top: 1.0, left: 10.0, right: 10.0),
+                width: 300,
+                //margin: EdgeInsets.only(bottom: 20.0),
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade200,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                //padding: EdgeInsets.only(top: 50),
+                child: list.isEmpty
+                    ? Text("")
+                    : QrImageView(
+                        data:
+                            "Date:    ${list[ind]["date"]} \n  Time: ${list[ind]["time"]} \n Vehicle Type: ${list[ind]["VehicleType"]} \n Driving Type: ${list[ind]["drivingType"]}${list[ind]["VehicleType"] == "Single" ? "" : "Driver gender : ${list[ind]["driverGender"]}"}\n  Status: ${list[ind]["Status"]}",
+                        size: 200,
+                      )),
+            Container(
+                padding: EdgeInsets.only(top: 5),
+                alignment: Alignment.topCenter,
+                height: 40,
+                child: Text(
+                  "Use this QR code at the pickup location to check in",
+                  maxLines: 2,
+                  style: TextStyle(color: Colors.grey, fontSize: 13.5),
+                )),
+            Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: kPrimaryColor),
+                    color: Colors.grey.shade200),
+                child: Column(children: [
+                  Container(
+                      width: 250,
+                      padding: EdgeInsets.only(
+                          left: 20,
+                          top:
+                              10), //decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
+                      child: Row(children: [
+                        Icon(
+                          Icons.date_range,
+                          color: kPrimaryColor,
+                        ),
+                        Container(
+                            child: list.isEmpty
+                                ? Text("")
+                                : Text(
+                                    " Date:   ${list[ind]["date"]}",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.black45,
+                                        fontFamily: "OpenSans",
+                                        fontWeight: FontWeight.bold),
+                                  ))
+                      ])),
+                  Container(
+                    width: 250,
+                    padding: EdgeInsets.only(left: 20),
+                    child: Row(children: [
+                      Icon(
+                        Icons.schedule,
+                        color: kPrimaryColor,
+                      ),
+                      Container(
+                        child: list.isEmpty
+                            ? Text("")
+                            : Text(" Time: ${list[ind]["time"]}",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.black45,
+                                    fontFamily: "OpenSans",
+                                    fontWeight: FontWeight.bold)),
+                      )
+                    ]),
+                  ),
+                  Container(
+                      width: 250,
+                      padding: EdgeInsets.only(
+                          left:
+                              20), //decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
+                      child: Row(children: [
+                        Icon(
+                          Icons.motorcycle,
+                          color: kPrimaryColor,
+                        ),
+                        Container(
+                            child: list.isEmpty
+                                ? Text("")
+                                : Text(
+                                    " Vehicle Type: ${list[ind]["VehicleType"]}",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.black45,
+                                        fontFamily: "OpenSans",
+                                        fontWeight: FontWeight.bold),
+                                  ))
+                      ])),
+                  Container(
+                      width: 250,
+                      padding: EdgeInsets.only(
+                          left:
+                              20), //decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
+                      child: Row(children: [
+                        Icon(
+                          Icons.motion_photos_on_rounded,
+                          color: kPrimaryColor,
+                        ),
+                        Container(
+                            child: list.isEmpty
+                                ? Text("")
+                                : Text(
+                                    " Driving Type: ${list[ind]["drivingType"]}",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        color: Colors.black45,
+                                        fontFamily: "OpenSans",
+                                        fontWeight: FontWeight.bold),
+                                  ))
+                      ])),
+                  Container(
+                      width: 250,
+                      padding: EdgeInsets.only(
+                          left:
+                              20), //decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
+                      child: Row(children: [
+                        Container(
+                          child: list.isEmpty
+                              ? Text("")
+                              : Text(
+                                  "${list[ind]["VehicleType"] == "Single" ? "" : "Driver gender : ${list[ind]["driverGender"]}"}  ",
+                                  style: TextStyle(
+                                      color: Colors.black45,
+                                      fontFamily: "OpenSans",
+                                      fontWeight: FontWeight.bold),
+                                ),
+                        )
+                      ])),
+                ])),
+            Container(
+                child: Row(
+              children: [
+                Container(
+                  padding:
+                      EdgeInsets.only(left: 30, right: 6, top: 30, bottom: 6),
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
                                 backgroundColor:
                                     Color.fromARGB(255, 247, 247, 247),
                                 shape: RoundedRectangleBorder(
@@ -268,8 +393,8 @@ Widget build(BuildContext context) {
                                                                     ElevatedButton(
                                                                   onPressed:
                                                                       () {
-                                                                        Navigator.pop(context);
-                                                                    
+                                                                    Navigator.pop(
+                                                                        context);
                                                                   },
                                                                   child: Text(
                                                                     'Done',
@@ -334,49 +459,69 @@ Widget build(BuildContext context) {
                                     ],
                                   ),
                                 ),
-                              )); },
-            label:Text("Cancel"),
-             icon: Icon(Icons.close),  
-
-style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.red), shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))), fixedSize: MaterialStateProperty.resolveWith((states) => Size(150, 40)),), 
-              ),) , Container(          alignment: Alignment.center, 
+                              ));
+                    },
+                    label: Text("Cancel"),
+                    icon: Icon(Icons.close),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) => Colors.red),
+                      shape: MaterialStateProperty.resolveWith((states) =>
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      fixedSize: MaterialStateProperty.resolveWith(
+                          (states) => Size(150, 40)),
+                    ),
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
 
 //padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
-          padding: EdgeInsets.only( right: 6,top:30, bottom: 6),
+                  padding: EdgeInsets.only(right: 6, top: 30, bottom: 6),
+                  child: ElevatedButton.icon(
+                    onPressed: () async {},
+                    label: Text("Reschdule"),
+                    icon: Icon(Icons.schedule),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) => Color.fromARGB(255, 207, 202, 202)),
+                      shape: MaterialStateProperty.resolveWith((states) =>
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      fixedSize: MaterialStateProperty.resolveWith(
+                          (states) => Size(150, 40)),
+                    ),
+                  ),
+                )
+              ],
+            )),
+            Offstage(
+              offstage: true,
               child: ElevatedButton.icon(
-                
-            onPressed: () async { },
-            label:Text("Reschdule"),
-             icon: Icon(Icons.schedule),  
-
-style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) => Color.fromARGB(255, 207, 202, 202)), shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))), fixedSize: MaterialStateProperty.resolveWith((states) => Size(150, 40)),), 
+                onPressed: () async {},
+                label: Text("Call support"),
+                icon: Icon(Icons.phone),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => Color.fromARGB(255, 207, 202, 202)),
+                  shape: MaterialStateProperty.resolveWith((states) =>
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0))),
+                  fixedSize: MaterialStateProperty.resolveWith(
+                      (states) => Size(150, 40)),
+                ),
               ),
-          
-
-        )],)
-      
-     
-      ) , Offstage(
-        offstage: true,
-        child: ElevatedButton.icon(
-                
-            onPressed: () async { },
-            label:Text("Call support"),
-             icon: Icon(Icons.phone),  
-
-style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) => Color.fromARGB(255, 207, 202, 202)), shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))), fixedSize: MaterialStateProperty.resolveWith((states) => Size(150, 40)),), 
-              ),
-      ) , Offstage( 
-
-        offstage: true,
-
-        child:Container(
-          padding: EdgeInsets.only(top: 8),
-        child: ElevatedButton.icon(
-                
-            onPressed: () async { showDialog(
-                              context: context,
-                              builder: (context) => Dialog(
+            ),
+            Offstage(
+                offstage: true,
+                child: Container(
+                  padding: EdgeInsets.only(top: 8),
+                  child: ElevatedButton.icon(
+                    onPressed: () async {
+                      showDialog(
+                          context: context,
+                          builder: (context) => Dialog(
                                 backgroundColor:
                                     Color.fromARGB(255, 247, 247, 247),
                                 shape: RoundedRectangleBorder(
@@ -527,8 +672,8 @@ style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) =
                                                                     ElevatedButton(
                                                                   onPressed:
                                                                       () {
-                                                                        Navigator.pop(context);
-                                                                    
+                                                                    Navigator.pop(
+                                                                        context);
                                                                   },
                                                                   child: Text(
                                                                     'Done',
@@ -593,29 +738,25 @@ style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) =
                                     ],
                                   ),
                                 ),
-                              ));},
-            label:Text("Check out"),
-             icon: Icon(Icons.check),  
-
-style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) => Colors.red), shape: MaterialStateProperty.resolveWith((states) => RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))), fixedSize: MaterialStateProperty.resolveWith((states) => Size(150, 40)),), 
-              ),
-      ))]),  )
+                              ));
+                    },
+                    label: Text("Check out"),
+                    icon: Icon(Icons.check),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.resolveWith(
+                          (states) => Colors.red),
+                      shape: MaterialStateProperty.resolveWith((states) =>
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0))),
+                      fixedSize: MaterialStateProperty.resolveWith(
+                          (states) => Size(150, 40)),
+                    ),
+                  ),
+                ))
+          ]),
+        )
 //padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
-             
-          
 
-       );
+        );
+  }
 }
-
-
-
-
-
-
-
-}
-
-
-
-
-

@@ -7,11 +7,14 @@
 
 include 'connect.php';
 $id=44;
-$RID =1;
-$sql = "SELECT * FROM reservation JOIN vehicle ON reservation.vehicleId = vehicle.id WHERE reservation.visitorId= $id AND reservation.id =$RID";
+
+//RID =$_POST['rid'];
+$sql = "SELECT * FROM reservation JOIN vehicle ON reservation.vehicleId = vehicle.id";
 $result = $conn->query($sql);
- $ro2 = mysqli_fetch_assoc($result);
+while ($ro2 = mysqli_fetch_assoc($result)){
+    $data[]=$ro2;
+}
       
   
-  echo json_encode($ro2);
+  echo json_encode($data);
 

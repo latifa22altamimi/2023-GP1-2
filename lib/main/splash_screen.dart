@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
           width: double.infinity,
           height: double.infinity,
           decoration: const BoxDecoration(
-            color: Color.fromARGB(255, 60, 100, 73),
+            color: Colors.white,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -45,7 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     'في رحاب الله',
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Color.fromARGB(255, 47, 76, 58),
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
                     ),
