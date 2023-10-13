@@ -22,7 +22,7 @@ class ReserveVehicle extends StatefulWidget {
 class _ReserveVehicleState extends State<ReserveVehicle> {
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
-  
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Color getColor(Set<MaterialState> states) {
@@ -120,12 +120,9 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                   _vehicleType =
                                       "Single"; //when I want to know which value user choosed use _vehicleType
                                   isVisibleDriving = true;
-                                   _drivingType =
-                                      "Self-driving";
-                                       isVisibleGender = false;
-                                       _driverGender = "";
-
-                                
+                                  _drivingType = "Self-driving";
+                                  isVisibleGender = false;
+                                  _driverGender = "";
                                 });
                               },
                               fillColor:
@@ -248,7 +245,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                   _drivingType =
                                       "Self-driving"; //when I want to know which value user choosed use _vehicleType
                                   isVisibleGender = false;
-                                   _driverGender = "";
+                                  _driverGender = "";
                                 });
                               },
                               fillColor:
@@ -731,6 +728,12 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                             child: ElevatedButton(
                                               onPressed: () {
                                                 //success msg here , insert in db --------------------------------------------
+
+                                                _drivingType = "";
+                                                _driverGender = "";
+                                                _vehicleType = "";
+                                               
+
                                                 Navigator.of(context).pop();
                                                 showDialog(
                                                     context: context,
