@@ -22,7 +22,7 @@ class _HomeState extends State<Home> {
 
   List list = [];
   Future GetData() async {
-    var url = "http://192.168.100.167/phpfiles/map.php";
+    var url = "http://192.168.8.103/phpfiles/map.php";
     var res = await http.get(Uri.parse(url));
 
     if (res.statusCode == 200) {
@@ -86,14 +86,12 @@ class _HomeState extends State<Home> {
         ),
         onMapCreated: (GoogleMapController googleMapController) {
           setState(() {
-             if (list[0] != null) {
-m1=list[0]['id'];}
             markers.add(
               Marker(
-                markerId:  MarkerId(m1),
-                position: const LatLng(21.422444, 39.822861),
-                infoWindow:  InfoWindow(
-                  title: "Electric Vehicle Pick-up Point "+m1,
+                markerId: MarkerId(list[0]['id']),
+                position: LatLng(list[0]['Latitude'], list[0]['Longitude']),
+                infoWindow: InfoWindow(
+                  title: "Electric Vehicle Pick-up Point ",
                   snippet: "Click for the location",
                 ),
                 icon: customMarker,
@@ -101,8 +99,8 @@ m1=list[0]['id'];}
             );
             markers.add(
               Marker(
-                markerId: const MarkerId("2"),
-                position: const LatLng(21.423437919104114, 39.83102421727011),
+                markerId: MarkerId(list[1]['id']),
+                position: LatLng(list[1]['Latitude'], list[1]['Longitude']),
                 infoWindow: const InfoWindow(
                   title: "Marker 2",
                   snippet: "Click for the location",
@@ -112,8 +110,8 @@ m1=list[0]['id'];}
             );
             markers.add(
               Marker(
-                markerId: const MarkerId("3"),
-                position: const LatLng(21.425406784366682, 39.82432911006888),
+                markerId: MarkerId(list[2]['id']),
+                position: LatLng(list[2]['Latitude'], list[2]['Longitude']),
                 infoWindow: const InfoWindow(
                   title: "Marker 3",
                   snippet: "Click for the location",
