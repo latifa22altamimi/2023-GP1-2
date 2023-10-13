@@ -1,4 +1,5 @@
 
+
 import 'dart:convert';
 
 //import 'package:flutter/foundation.dart';
@@ -10,27 +11,49 @@ import 'package:http/http.dart' as http;
 import 'package:rehaab/widgets/constants.dart';
 
 class ReservationDetails extends StatefulWidget{
+String? Rid;
 
-const ReservationDetails({super.key});
+ReservationDetails({this.Rid});
 
+
+ 
+/*Future Send(Rid) async{
+var s = await http.post(Uri.parse("http://192.168.8.105/phpfiles/details.php"), body: json.encode({"rid": Rid}));
+if(s.statusCode==200){
+
+}
+}*/
   @override
-  State<ReservationDetails> createState() => _ReservationDetailsState();
+  State<ReservationDetails> createState() => _ReservationDetailsState(Rid);
 
 }
 class _ReservationDetailsState extends State<ReservationDetails> {
+var ind=0;
   List list =[];
+  _ReservationDetailsState(String? rid);
+String? rid; 
+  
 Future GetData() async{
 
-  var url = "http://192.168.1.9/phpfiles/details.php"; //put your computer IP address instead of 192.168.8.105 
+  var url = "http://192.168.8.105/phpfiles/details.php"; //put your computer IP address instead of 192.168.8.105 
   var res = await http.get(Uri.parse(url));
 
   if(res.statusCode ==200){
     var red = json.decode(res.body);
     setState(() {
-      list.add(red);
+      list.addAll(red);
+
+     
     });
 
   }
+   for(var i=0;i<list.length;i++){
+        if(list[i]["id"]==int.parse(rid!)){
+          ind=i;
+        }
+
+
+      }
 }
  
 @override
@@ -100,16 +123,16 @@ Widget build(BuildContext context) {
         //margin: EdgeInsets.only(bottom: 20.0),
         decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
         //padding: EdgeInsets.only(top: 50),
-        child: list.isEmpty? Text(""): QrImageView(data: "Date:    ${list[0]["date"] } \n  Time: ${list[0]["time"] } \n Vehicle Type: ${list[0]["VehicleType"] } \n Driving Type: ${list[0]["drivingType"] }${list[0]["VehicleType"] == "Single" ? "" : "Driver gender : ${list[0]["driverGender"]}"}\n  Status: ${list[0]["Status"] }" , size: 200, )),
+        child: list.isEmpty? Text(""): QrImageView(data: "Date:    ${list[ind]["date"] } \n  Time: ${list[ind]["time"] } \n Vehicle Type: ${list[ind]["VehicleType"] } \n Driving Type: ${list[ind]["drivingType"] }${list[ind]["VehicleType"] == "Single" ? "" : "Driver gender : ${list[ind]["driverGender"]}"}\n  Status: ${list[ind]["Status"] }" , size: 200, )),
         Container( padding: EdgeInsets.only(top: 5),      alignment: Alignment.topCenter, height:40,child: Text("Use this QR code at the pickup location to check in",maxLines: 2, style: TextStyle(color: Colors.grey, fontSize: 13.5 ), )),Container(   decoration: BoxDecoration(borderRadius: BorderRadius.circular(15) ,   border: Border.all(color:kPrimaryColor)   ,color: Colors.grey.shade200), child:   Column(children: [
         Container( width : 250 ,    padding: EdgeInsets.only(left:20 , top: 10),//decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
-        child: Row(children: [ Icon(Icons.date_range , color: kPrimaryColor,), Container(child: list.isEmpty? Text(""): Text(" Date:   ${list[0]["date"] }", style: TextStyle(fontSize: 15 , color: Colors.black45 ,fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),))])) , Container(   width : 250 , padding: EdgeInsets.only(left:20 ) ,child: Row(children:  [Icon(Icons.schedule , color: kPrimaryColor,) ,Container(child: list.isEmpty? Text(""):Text(" Time: ${list[0]["time"] }", style: TextStyle(fontSize: 15 , color: Colors.black45, fontFamily: "OpenSans" ,fontWeight: FontWeight.bold)),)]),),
+        child: Row(children: [ Icon(Icons.date_range , color: kPrimaryColor,), Container(child: list.isEmpty? Text(""): Text(" Date:   ${list[ind]["date"] }", style: TextStyle(fontSize: 15 , color: Colors.black45 ,fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),))])) , Container(   width : 250 , padding: EdgeInsets.only(left:20 ) ,child: Row(children:  [Icon(Icons.schedule , color: kPrimaryColor,) ,Container(child: list.isEmpty? Text(""):Text(" Time: ${list[ind]["time"] }", style: TextStyle(fontSize: 15 , color: Colors.black45, fontFamily: "OpenSans" ,fontWeight: FontWeight.bold)),)]),),
         Container( width : 250 ,   padding: EdgeInsets.only(left:20),//decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
-        child: Row(children: [  Icon(Icons.motorcycle, color: kPrimaryColor,), Container(child: list.isEmpty? Text(""): Text(" Vehicle Type: ${list[0]["VehicleType"] }", style: TextStyle(fontSize: 15 , color: Colors.black45 ,fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),))])) ,Container( width : 250 , padding: EdgeInsets.only(left:20),//decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
-        child: Row(children: [  Icon(Icons.motion_photos_on_rounded, color: kPrimaryColor,), Container(child: list.isEmpty? Text(""): Text(" Driving Type: ${list[0]["drivingType"] }", style: TextStyle(fontSize: 15 , color: Colors.black45 , fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),))])) 
+        child: Row(children: [  Icon(Icons.motorcycle, color: kPrimaryColor,), Container(child: list.isEmpty? Text(""): Text(" Vehicle Type: ${list[ind]["VehicleType"] }", style: TextStyle(fontSize: 15 , color: Colors.black45 ,fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),))])) ,Container( width : 250 , padding: EdgeInsets.only(left:20),//decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
+        child: Row(children: [  Icon(Icons.motion_photos_on_rounded, color: kPrimaryColor,), Container(child: list.isEmpty? Text(""): Text(" Driving Type: ${list[ind]["drivingType"] }", style: TextStyle(fontSize: 15 , color: Colors.black45 , fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),))])) 
         
         ,Container( width : 250 , padding: EdgeInsets.only(left:20),//decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
-        child: Row(children: [ Container(child: list.isEmpty? Text(""):Text("${list[0]["VehicleType"] == "Single" ? "" : "Driver gender : ${list[0]["driverGender"]}"}  ", style: TextStyle(color: Colors.black45, fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),),)])),])),
+        child: Row(children: [ Container(child: list.isEmpty? Text(""):Text("${list[ind]["VehicleType"] == "Single" ? "" : "Driver gender : ${list[ind]["driverGender"]}"}  ", style: TextStyle(color: Colors.black45, fontFamily: "OpenSans" ,fontWeight: FontWeight.bold),),)])),])),
         Container( child: Row(children: [Container(  
 
           padding: EdgeInsets.only( left: 30, right: 6 ,top:30, bottom: 6),
