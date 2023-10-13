@@ -1,21 +1,11 @@
 
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:rehaab/components/page_title_bar.dart';
-import 'package:rehaab/components/under_part.dart';
 import 'package:rehaab/components/upside.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:rehaab/SignIn/login_screen.dart';
-import 'package:rehaab/SignUp/signup_screen.dart';
-import 'package:rehaab/widgets/rounded_button.dart';
-import 'package:rehaab/widgets/rounded_input_field.dart';
-import 'package:rehaab/widgets/rounded_password_field.dart';
-import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:rehaab/widgets/text_field_container.dart';
-import 'package:rehaab/Signin/forgotPass_Screen.dart';
-import 'dart:async';
+
 
 
 class CheckEmailScreen extends StatefulWidget {

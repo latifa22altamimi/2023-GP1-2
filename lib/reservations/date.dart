@@ -18,7 +18,7 @@ return timeSlots[time];
   /*var red;
 Future GetData() async{
 
-  var url = "http://192.168.8.105/rehaab/duration.php";
+  var url = "http://10.0.2.2/rehaab/duration.php";
   var res = await http.get(Uri.parse(url));
 
   if(res.statusCode ==200){
