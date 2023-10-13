@@ -7,6 +7,8 @@ import 'package:rehaab/widgets/rounded_button.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../widgets/constants.dart';
 import '../main/home.dart';
+import 'package:http/http.dart' as http;
+
 
 String _driverGender = "";
 String _vehicleType = "";
@@ -729,7 +731,8 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                 BoxConstraints.tightFor(
                                                     height: 38, width: 100),
                                             child: ElevatedButton(
-                                              onPressed: () {
+                                              onPressed: () async{
+                                                Insert();
                                                 //success msg here , insert in db --------------------------------------------
                                                 Navigator.of(context).pop();
                                                 showDialog(
@@ -947,6 +950,17 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
       ),
     );
   }
+  Future  Insert() async{
+   var url = "http://192.168.8.105/phpfiles/reservation.php";
+   var res=   await http.post(Uri.parse(url) , body:jsonEncode({
+    "date":getDate, 
+    "time":getTime,
+    "VehicleType": _vehicleType,
+    "DrivingType": _drivingType,
+     "DriverGender": _driverGender}));
+     var resp= jsonDecode(res.body);
+     print(resp);
+     }
 }
 
 late final getDate;
