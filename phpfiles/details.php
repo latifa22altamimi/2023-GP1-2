@@ -6,7 +6,7 @@
  */
 
 include 'connect.php';
-$id=40;
+$id=44;
 
 //RID =$_POST['rid'];
 $sql = "SELECT * FROM reservation JOIN vehicle ON reservation.vehicleId = vehicle.id";
