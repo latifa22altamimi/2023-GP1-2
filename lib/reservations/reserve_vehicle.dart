@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/reservations/reservation_list.dart';
@@ -8,6 +10,7 @@ import 'package:table_calendar/table_calendar.dart';
 import '../widgets/constants.dart';
 import '../main/home.dart';
 import 'package:http/http.dart' as http;
+import 'dart:async';
 
 
 String _driverGender = "";
@@ -24,6 +27,19 @@ class ReserveVehicle extends StatefulWidget {
 class _ReserveVehicleState extends State<ReserveVehicle> {
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
+
+
+    Future Insert() async{
+   var url = "http://192.168.100.167/phpfiles/reservation.php";
+   final res= await http.post(Uri.parse(url),body:{
+    "date":getDate, 
+    "time":getTime,
+    "VehicleType": _vehicleType,
+    "DrivingType": _drivingType,
+     "DriverGender": _driverGender});
+     var resp= json.decode(res.body);
+     print(resp);
+     }
   
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -950,17 +966,6 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
       ),
     );
   }
-  Future  Insert() async{
-   var url = "http://192.168.8.105/phpfiles/reservation.php";
-   var res=   await http.post(Uri.parse(url) , body:jsonEncode({
-    "date":getDate, 
-    "time":getTime,
-    "VehicleType": _vehicleType,
-    "DrivingType": _drivingType,
-     "DriverGender": _driverGender}));
-     var resp= jsonDecode(res.body);
-     print(resp);
-     }
 }
 
 late final getDate;
