@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2023 at 11:38 PM
+-- Generation Time: Oct 14, 2023 at 01:56 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -42,6 +42,27 @@ CREATE TABLE `adminpram` (
 
 INSERT INTO `adminpram` (`id`, `NumOfSingleV`, `NumOfDoubleV`, `NumOfVehicles`, `ReservationDur`, `numOfVehiclesInSlot`) VALUES
 (1, 7, 3, 10, 90, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `markers`
+--
+
+CREATE TABLE `markers` (
+  `id` int(11) NOT NULL,
+  `Latitude` double NOT NULL,
+  `Longitude` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `markers`
+--
+
+INSERT INTO `markers` (`id`, `Latitude`, `Longitude`) VALUES
+(1, 21.425391904127395, 39.824971878215585),
+(2, 21.424083547667347, 39.82654901701323),
+(3, 21.427279512254483, 39.82886644545058);
 
 -- --------------------------------------------------------
 
@@ -130,6 +151,12 @@ ALTER TABLE `adminpram`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `markers`
+--
+ALTER TABLE `markers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `reservation`
 --
 ALTER TABLE `reservation`
@@ -158,6 +185,12 @@ ALTER TABLE `vehicle`
 --
 ALTER TABLE `adminpram`
   MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `markers`
+--
+ALTER TABLE `markers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `reservation`

@@ -75,12 +75,7 @@ class _homeState extends State<home> {
                         selectedIcon: Icon(Icons.home_outlined),
                         label: 'Home'),
                     IconButton(
-                        onPressed: () async {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()));
-                        },
+                        onPressed: () async {},
                         icon: Icon(Icons.login_outlined)),
                   ]),
             ),
@@ -146,14 +141,7 @@ class BodyHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 590,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(90), topLeft: Radius.circular(20)),
-        color: Color.fromARGB(255, 255, 255, 255),
-      ),
-      child: Column(
+    return Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
@@ -365,7 +353,7 @@ class BodyHome extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      
     );
   }
 }

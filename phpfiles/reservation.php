@@ -11,10 +11,10 @@ $DriverGender= $_POST['DriverGender'];
 
 $id=44; //user id
 //echo $VehicleType;
-$print = "SELECT id From vehicle Where Vehiclestatus = 'Avaliable' AND VehicleType ='".$VehicleType."'";
-$result = $conn->query($print);
+$print = "SELECT id From vehicle Where Vehiclestatus = 'Avaliable' AND VehicleType ='Single'";
+$result = mysqli_query($conn, $print);
 $row = mysqli_fetch_assoc($result);
-    $vehicleId= $row[0]['id'];
+    $vehicleId= $row['id'];
     
     
 
@@ -22,13 +22,13 @@ $row = mysqli_fetch_assoc($result);
 
 $s ="INSERT INTO reservation (date,time,vehicleId,drivingType,driverGender,Status,visitorId) VALUES ('".$date."','".$time."','".$vehicleId."','".$DrivingType."','".$DriverGender."','Confirmed','".$id."')";
 
-$result2 = $conn->query($s);
+$result2 = mysqli_query($conn, $s);
 
-$count= mysqli_num_rows($result2);
+//$count= mysqli_num_rows($result2);
 
-if($count==1){
-$s2="UPDATE `vehicle` SET `Vehiclestatus`='booked' WHERE id=$vehicleId";
-$result3 = $conn->query($s2);
+if($result2){
+$s2="UPDATE `vehicle` SET `Vehiclestatus`='booked' WHERE id='".$vehicleId."'";
+$result3 = mysqli_query($conn, $s2);
 echo json_encode("Success");
 }
  else {
