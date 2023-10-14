@@ -47,9 +47,10 @@ class _ReservationDetailsState extends State<ReservationDetails> {
       });
     }
     for (var i = 0; i < list.length; i++) {
-      if (list[i]["id"] == int.parse(Rid!)) {
+      if (int.parse(list[i]["id"]) == int.parse(Rid!)) {
         ind = i;
       }
+     
     }
   }
 
