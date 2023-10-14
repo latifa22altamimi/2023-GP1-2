@@ -17,8 +17,7 @@ class _ReservationListState extends State<ReservationList> {
   List list = [];
 
   Future GetData() async {
-    var url =
-        "http://10.0.2.2/phpfiles/RList.php";
+    var url = "http://10.0.2.2/phpfiles/RList.php";
     var res = await http.get(Uri.parse(url));
 
     if (res.statusCode == 200) {
@@ -37,12 +36,16 @@ class _ReservationListState extends State<ReservationList> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 500,
-      child: ListView.builder(
+      height: double.infinity,
+      child: ListView.separated(
         itemCount: list.length,
+        separatorBuilder: (context, index) {
+          return const SizedBox(
+            height: 9,
+          );
+        },
         itemBuilder: (BuildContext context, int index) {
           if (list[0] != null) {
-
             if (list[index]["Status"] == "Confirmed") {
               return ReserveCard(
                 Rid: list[index]["id"],
@@ -52,16 +55,15 @@ class _ReservationListState extends State<ReservationList> {
                 colorr: Color.fromARGB(255, 33, 152, 51),
               );
             }
-             if (list[index]["Status"] == "Cancelled") {
+            if (list[index]["Status"] == "Cancelled") {
               return ReserveCard(
                 Rid: list[index]["id"],
                 datee: list[index]["date"],
                 timee: list[index]["time"],
                 status: list[index]["Status"],
-                colorr:  Color.fromARGB(255, 215, 53, 53),
+                colorr: Color.fromARGB(255, 215, 53, 53),
               );
             }
-            
           } else {
             //when manager changes status to being used
           }
@@ -101,9 +103,7 @@ class ReserveCard extends StatelessWidget {
                 Text(
                   '$status ',
                   style: TextStyle(
-                      color: colorr,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500),
+                      color: colorr, fontSize: 18, fontWeight: FontWeight.w500),
                 ),
                 Image.asset(
                   'assets/images/$status.png',
@@ -174,7 +174,8 @@ class ReserveCard extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: ((context) => ReservationDetails(Rid: Rid))));
+                            builder: ((context) =>
+                                ReservationDetails(Rid: Rid, Status: status))));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromARGB(131, 60, 100, 73),

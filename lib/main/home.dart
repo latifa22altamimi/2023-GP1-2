@@ -146,14 +146,7 @@ class BodyHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 590,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(90), topLeft: Radius.circular(20)),
-        color: Color.fromARGB(255, 255, 255, 255),
-      ),
-      child: Column(
+    return Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
@@ -365,7 +358,7 @@ class BodyHome extends StatelessWidget {
             ),
           ),
         ],
-      ),
+      
     );
   }
 }
