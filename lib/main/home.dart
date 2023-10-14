@@ -75,12 +75,7 @@ class _homeState extends State<home> {
                         selectedIcon: Icon(Icons.home_outlined),
                         label: 'Home'),
                     IconButton(
-                        onPressed: () async {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()));
-                        },
+                        onPressed: () async {},
                         icon: Icon(Icons.login_outlined)),
                   ]),
             ),
