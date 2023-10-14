@@ -6,15 +6,13 @@
  */
 
 include 'connect.php';
-$id=44;
-
-//RID =$_POST['rid'];
-$sql = "SELECT * FROM reservation JOIN vehicle ON reservation.vehicleId = vehicle.id";
+$sql = "SELECT reservation.id, reservation.date, reservation.time, reservation.vehicleId, vehicle.VehicleType, reservation.drivingType, reservation.driverGender, reservation.Status, reservation.visitorId FROM reservation JOIN vehicle ON reservation.vehicleId = vehicle.id";
 $result = $conn->query($sql);
-while ($ro2 = mysqli_fetch_assoc($result)){
-    $data[]=$ro2;
-}
+ while($ro2 = mysqli_fetch_assoc($result)){
+     $data[]=$ro2;
+ }
       
   
   echo json_encode($data);
+
 
