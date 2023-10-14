@@ -27,9 +27,8 @@ class _HomeState extends State<Home> {
 
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
-      print(red);
       setState(() {
-        list.add(red);
+        list.addAll(red);
       });
     }
   }
@@ -40,6 +39,9 @@ class _HomeState extends State<Home> {
     getCustomMarker();
     GetData();
   }
+
+  late var lat = list[0]['Latitude'];
+  late var lon = list[0]['Longitude'];
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,8 +90,8 @@ class _HomeState extends State<Home> {
           setState(() {
             markers.add(
               Marker(
-                markerId: MarkerId(list[0]['id']),
-                position: LatLng(list[0]['Latitude'], list[0]['Longitude']),
+                markerId: MarkerId("1"),
+                position: LatLng(double.parse(lat), double.parse(lon)),
                 infoWindow: InfoWindow(
                   title: "Electric Vehicle Pick-up Point ",
                   snippet: "Click for the location",
@@ -97,10 +99,10 @@ class _HomeState extends State<Home> {
                 icon: customMarker,
               ),
             );
-            markers.add(
+            /* markers.add(
               Marker(
-                markerId: MarkerId(list[1]['id']),
-                position: LatLng(list[1]['Latitude'], list[1]['Longitude']),
+                markerId: MarkerId("2"),
+                position: LatLng(double.parse(lat1), double.parse(lon1)),
                 infoWindow: const InfoWindow(
                   title: "Marker 2",
                   snippet: "Click for the location",
@@ -111,14 +113,15 @@ class _HomeState extends State<Home> {
             markers.add(
               Marker(
                 markerId: MarkerId(list[2]['id']),
-                position: LatLng(list[2]['Latitude'], list[2]['Longitude']),
+                position: LatLng(double.parse(list[2]['Latitude']),
+                    double.parse(list[2]['Longitude'])),
                 infoWindow: const InfoWindow(
                   title: "Marker 3",
                   snippet: "Click for the location",
                 ),
                 icon: customMarker,
               ),
-            );
+            );*/
           });
         },
         markers: Set<Marker>.from(markers),
