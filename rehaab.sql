@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2023 at 01:56 AM
+-- Generation Time: Oct 15, 2023 at 06:35 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -87,7 +87,8 @@ CREATE TABLE `reservation` (
 
 INSERT INTO `reservation` (`id`, `date`, `time`, `vehicleId`, `drivingType`, `driverGender`, `Status`, `visitorId`) VALUES
 (1, '2023-10-23', '18:00', 1, 'Self driving', NULL, 'Confirmed', 44),
-(3, '2023-11-10', '16:00', 33, 'Self driving', NULL, 'Cancelled', 44);
+(3, '2023-11-10', '16:00', 33, 'Self driving', NULL, 'Cancelled', 44),
+(4, '2023-10-16', '19:30', 37, 'WithDriver', 'Female', 'Confirmed', 44);
 
 -- --------------------------------------------------------
 
@@ -133,11 +134,11 @@ INSERT INTO `vehicle` (`id`, `VehicleType`, `Vehiclestatus`) VALUES
 (30, 'Single', 'Avaliable'),
 (31, 'Single', 'Avaliable'),
 (32, 'Single', 'Avaliable'),
-(33, 'Single', 'Avaliable'),
+(33, 'Single', 'booked'),
 (34, 'Single', 'Avaliable'),
 (35, 'Single', 'Avaliable'),
 (36, 'Double', 'Avaliable'),
-(37, 'Double', 'Avaliable'),
+(37, 'Double', 'booked'),
 (38, 'Double', 'Avaliable');
 
 --
@@ -196,7 +197,7 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `users`
