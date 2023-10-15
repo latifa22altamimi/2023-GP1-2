@@ -16,7 +16,8 @@ import 'dart:async';
 String _driverGender = "";
 String _vehicleType = "";
 String _drivingType = "";
-
+late final getDate;
+late final getTime;
 class ReserveVehicle extends StatefulWidget {
   const ReserveVehicle({super.key});
 
@@ -29,7 +30,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
   bool isVisibleDriving = false;
 
 
-    Future Insert() async{
+    Future insert() async{
    var url = "http://10.0.2.2/phpfiles/reservation.php";
    final res= await http.post(Uri.parse(url),body:{
     "date":getDate, 
@@ -40,6 +41,10 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
      var resp= json.decode(res.body);
      print(resp);
      }
+
+     
+
+
   
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -745,7 +750,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                     height: 38, width: 100),
                                             child: ElevatedButton(
                                               onPressed: () async{
-                                                Insert();
+                                                insert();
                                                 //success msg here , insert in db --------------------------------------------
 
                                                 _drivingType = "";
@@ -971,8 +976,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
   }
 }
 
-late final getDate;
-late final getTime;
+
 
 class BookingPage extends StatefulWidget {
   BookingPage({Key? key}) : super(key: key);

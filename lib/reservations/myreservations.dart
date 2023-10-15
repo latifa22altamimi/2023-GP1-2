@@ -63,9 +63,7 @@ class MyReservations extends StatelessWidget {
               )),
         ),
       ),
-      body: Column(
-        children: [ReservationList()],
-      ),
+      body: ReservationList(),
     );
   }
 }

@@ -27,9 +27,10 @@
             $pw=$row['Password'];
          }
          if(password_verify($Password,$pw)){
-          
     
-          echo json_encode("Success");    
+          echo json_encode("Success"); 
+
+            
       
           /*echo "<html>  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
           <script>    $.get('RList.php', {Userid:$id}); </script> </html>";*/

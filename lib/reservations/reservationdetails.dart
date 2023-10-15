@@ -6,12 +6,16 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:rehaab/customization/clip.dart';
 import 'package:http/http.dart' as http;
+import 'package:rehaab/reservations/reservation_list.dart';
 import 'package:rehaab/widgets/constants.dart';
+
+import '../main/home.dart';
 
 class ReservationDetails extends StatefulWidget {
   String? Rid;
+  String? Status;
 
-  ReservationDetails({this.Rid});
+  ReservationDetails({this.Rid, this.Status});
 
 /*Future Send(Rid) async{
 var s = await http.post(Uri.parse("http://192.168.8.105/phpfiles/details.php"), body: json.encode({"rid": Rid}));
@@ -20,18 +24,20 @@ if(s.statusCode==200){
 }
 }*/
   @override
-  State<ReservationDetails> createState() => _ReservationDetailsState(Rid: Rid);
+  State<ReservationDetails> createState() =>
+      _ReservationDetailsState(Rid: Rid, Status: Status);
 }
 
 class _ReservationDetailsState extends State<ReservationDetails> {
   var ind = 0;
   List list = [];
   String? Rid;
-  _ReservationDetailsState({this.Rid});
+  String? Status;
+  bool cancelIsVisible = false;
+  _ReservationDetailsState({this.Rid, this.Status});
 
   Future GetData() async {
-    var url =
-        "http://10.0.2.2/phpfiles/details.php"; 
+    var url = "http://10.0.2.2/phpfiles/details.php";
     var res = await http.get(Uri.parse(url));
 
     if (res.statusCode == 200) {
@@ -41,9 +47,10 @@ class _ReservationDetailsState extends State<ReservationDetails> {
       });
     }
     for (var i = 0; i < list.length; i++) {
-      if (list[i]["id"] == int.parse(Rid!)) {
+      if (int.parse(list[i]["id"]) == int.parse(Rid!)) {
         ind = i;
       }
+     
     }
   }
 
@@ -51,6 +58,23 @@ class _ReservationDetailsState extends State<ReservationDetails> {
   void initState() {
     super.initState();
     GetData();
+  }
+
+  remove() async {
+    var url = "http://10.0.2.2/phpfiles/removeReserve.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "Rid": Rid,
+    });
+    var respo = json.decode(res.body);
+    print(respo);
+  }
+
+  bool visibility() {
+    if (Status == 'Confirmed') {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   Widget build(BuildContext context) {
@@ -235,262 +259,253 @@ class _ReservationDetailsState extends State<ReservationDetails> {
             Container(
                 child: Row(
               children: [
-                Container(
-                  padding:
-                      EdgeInsets.only(left: 30, right: 6, top: 30, bottom: 6),
-                  child: ElevatedButton.icon(
-                    onPressed: () async {
-                      showDialog(
-                          context: context,
-                          builder: (context) => Dialog(
-                                backgroundColor:
-                                    Color.fromARGB(255, 247, 247, 247),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Container(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Lottie.asset('assets/images/warn.json',
-                                          width: 150, height: 120),
-                                      Text(
-                                        'Warning',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      Text(
-                                        'Do you want to cancel?',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          ConstrainedBox(
-                                            constraints:
-                                                BoxConstraints.tightFor(
-                                                    height: 38, width: 100),
-                                            child: ElevatedButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context).pop(),
-                                              child: Text(
-                                                'Close',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color.fromARGB(
-                                                    255, 255, 255, 255),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(50),
+               
+                //cancel button
+                Visibility(
+                  visible: visibility(),
+                  child: Container(
+                    padding:
+                        EdgeInsets.only(left: 30, right: 6, top: 30, bottom: 6),
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        showDialog(
+                            context: context,
+                            builder: (context) => Dialog(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 247, 247, 247),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Lottie.asset('assets/images/warn.json',
+                                            width: 150, height: 120),
+                                        Text(
+                                          'Warning',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Text(
+                                          'Do you want to cancel?',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ConstrainedBox(
+                                              constraints:
+                                                  BoxConstraints.tightFor(
+                                                      height: 38, width: 100),
+                                              child: ElevatedButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context).pop(),
+                                                child: Text(
+                                                  'Close',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 255, 255, 255),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(50),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
                                             ),
-                                          ),
 
-                                          SizedBox(
-                                            width: 30.0,
-                                          ),
-                                          //when press on confirm
+                                            SizedBox(
+                                              width: 30.0,
+                                            ),
+                                            //when press on confirm
 
-                                          ConstrainedBox(
-                                            constraints:
-                                                BoxConstraints.tightFor(
-                                                    height: 38, width: 100),
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                //success msg here , insert in db --------------------------------------------
-                                                Navigator.of(context).pop();
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) => Dialog(
-                                                    backgroundColor:
-                                                        Color.fromARGB(
-                                                            255, 247, 247, 247),
-                                                    shape:
-                                                        RoundedRectangleBorder(
+                                            ConstrainedBox(
+                                              constraints:
+                                                  BoxConstraints.tightFor(
+                                                      height: 38, width: 100),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  remove();
+                                                  cancelIsVisible = false;
+                                                  Navigator.of(context).pop();
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      Future.delayed(
+                                                          Duration(seconds: 2),
+                                                          () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      home()),
+                                                        );
+                                                      });
+                                                      return Dialog(
+                                                        backgroundColor:
+                                                            Color.fromARGB(255,
+                                                                247, 247, 247),
+                                                        shape: RoundedRectangleBorder(
                                                             borderRadius:
                                                                 BorderRadius
                                                                     .circular(
                                                                         20)),
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              20.0),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          Lottie.asset(
-                                                              'assets/images/success.json',
-                                                              width: 100,
-                                                              height: 100),
-                                                          Text(
-                                                            'Success',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 20,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10.0,
-                                                          ),
-                                                          Text(
-                                                            'Cancelation is done successfully',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 17,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10.0,
-                                                          ),
-                                                          Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(20.0),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
                                                                     .center,
                                                             mainAxisSize:
                                                                 MainAxisSize
                                                                     .min,
                                                             children: [
-                                                              ConstrainedBox(
-                                                                constraints: BoxConstraints
-                                                                    .tightFor(
+                                                              Lottie.asset(
+                                                                  'assets/images/success.json',
+                                                                  width: 100,
+                                                                  height: 100),
+                                                              Text(
+                                                                'Success',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Text(
+                                                                'Cancellation is done successfully',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        17,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  ConstrainedBox(
+                                                                    constraints: BoxConstraints.tightFor(
                                                                         height:
                                                                             38,
                                                                         width:
                                                                             100),
-                                                                child:
-                                                                    ElevatedButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  child: Text(
-                                                                    'Done',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontSize:
-                                                                            15,
-                                                                        fontWeight:
-                                                                            FontWeight.w500),
                                                                   ),
-                                                                  style: ElevatedButton
-                                                                      .styleFrom(
-                                                                    backgroundColor:
-                                                                        Color.fromARGB(
-                                                                            255,
-                                                                            255,
-                                                                            255,
-                                                                            255),
-                                                                    shape:
-                                                                        RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .all(
-                                                                        Radius.circular(
-                                                                            50),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
+                                                                ],
+                                                              )
                                                             ],
-                                                          )
-                                                        ],
-                                                      ),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                child: Text(
+                                                  'Confirm',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 60, 100, 73),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(50),
                                                     ),
-                                                  ),
-                                                );
-                                              },
-                                              child: Text(
-                                                'Confirm',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color.fromARGB(
-                                                    255, 60, 100, 73),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(50),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          )
-                                        ],
-                                      )
-                                    ],
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ));
-                    },
-                    label: Text("Cancel"),
-                    icon: Icon(Icons.close),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith(
-                          (states) => Colors.red),
-                      shape: MaterialStateProperty.resolveWith((states) =>
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0))),
-                      fixedSize: MaterialStateProperty.resolveWith(
-                          (states) => Size(150, 40)),
+                                ));
+                      },
+                      label: Text("Cancel"),
+                      icon: Icon(Icons.close),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            (states) => Colors.red),
+                        shape: MaterialStateProperty.resolveWith((states) =>
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        fixedSize: MaterialStateProperty.resolveWith(
+                            (states) => Size(150, 40)),
+                      ),
                     ),
                   ),
                 ),
-                Container(
-                  alignment: Alignment.center,
 
-//padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
-                  padding: EdgeInsets.only(right: 6, top: 30, bottom: 6),
-                  child: ElevatedButton.icon(
-                    onPressed: () async {},
-                    label: Text("Reschdule"),
-                    icon: Icon(Icons.schedule),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.resolveWith(
-                          (states) => Color.fromARGB(255, 207, 202, 202)),
-                      shape: MaterialStateProperty.resolveWith((states) =>
-                          RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.0))),
-                      fixedSize: MaterialStateProperty.resolveWith(
-                          (states) => Size(150, 40)),
+                Visibility(
+                  visible: visibility(),
+                  child: Container(
+                    alignment: Alignment.center,
+
+                    //padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
+                    padding: EdgeInsets.only(right: 6, top: 30, bottom: 6),
+                    child: ElevatedButton.icon(
+                      onPressed: () async {},
+                      label: Text("Reschdule"),
+                      icon: Icon(Icons.schedule),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            (states) => Color.fromARGB(255, 207, 202, 202)),
+                        shape: MaterialStateProperty.resolveWith((states) =>
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        fixedSize: MaterialStateProperty.resolveWith(
+                            (states) => Size(150, 40)),
+                      ),
                     ),
                   ),
                 )
