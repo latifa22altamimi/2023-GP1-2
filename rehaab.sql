@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 14, 2023 at 01:56 AM
+-- Generation Time: Oct 17, 2023 at 02:07 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -33,15 +33,17 @@ CREATE TABLE `adminpram` (
   `NumOfDoubleV` int(7) NOT NULL,
   `NumOfVehicles` int(7) NOT NULL,
   `ReservationDur` int(3) NOT NULL,
-  `numOfVehiclesInSlot` int(7) NOT NULL
+  `numOfVehiclesInSlot` int(7) NOT NULL,
+  `date` varchar(10) NOT NULL,
+  `time` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `adminpram`
 --
 
-INSERT INTO `adminpram` (`id`, `NumOfSingleV`, `NumOfDoubleV`, `NumOfVehicles`, `ReservationDur`, `numOfVehiclesInSlot`) VALUES
-(1, 7, 3, 10, 90, 3);
+INSERT INTO `adminpram` (`id`, `NumOfSingleV`, `NumOfDoubleV`, `NumOfVehicles`, `ReservationDur`, `numOfVehiclesInSlot`, `date`, `time`) VALUES
+(1, 7, 13, 20, 90, 3, '2023-10-16', '19:30');
 
 -- --------------------------------------------------------
 
@@ -74,7 +76,7 @@ CREATE TABLE `reservation` (
   `id` int(20) NOT NULL,
   `date` varchar(10) NOT NULL,
   `time` varchar(6) NOT NULL,
-  `vehicleId` int(20) NOT NULL,
+  `VehicleType` varchar(6) NOT NULL,
   `drivingType` varchar(20) NOT NULL,
   `driverGender` varchar(20) DEFAULT NULL,
   `Status` varchar(20) NOT NULL,
@@ -85,9 +87,16 @@ CREATE TABLE `reservation` (
 -- Dumping data for table `reservation`
 --
 
-INSERT INTO `reservation` (`id`, `date`, `time`, `vehicleId`, `drivingType`, `driverGender`, `Status`, `visitorId`) VALUES
-(1, '2023-10-23', '18:00', 1, 'Self driving', NULL, 'Confirmed', 44),
-(3, '2023-11-10', '16:00', 33, 'Self driving', NULL, 'Cancelled', 44);
+INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `visitorId`) VALUES
+(1, '2023-10-23', '18:00', 'Single', 'Self driving', NULL, 'Confirmed', 44),
+(3, '2023-11-10', '16:00', 'Single', 'Self driving', NULL, 'Cancelled', 44),
+(4, '2023-10-16', '19:30', 'Double', 'WithDriver', 'Female', 'Confirmed', 44),
+(35, '2023-10-17', '21:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(36, '2023-10-17', '21:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(37, '2023-10-17', '21:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(38, '2023-10-17', '15:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(39, '2023-10-17', '15:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(40, '2023-10-17', '15:00', 'Single', 'Self-driving', '', 'Confirmed', 44);
 
 -- --------------------------------------------------------
 
@@ -120,25 +129,31 @@ INSERT INTO `users` (`ID`, `FirstName`, `LastName`, `Email`, `Password`, `Type`,
 
 CREATE TABLE `vehicle` (
   `id` int(20) NOT NULL,
-  `VehicleType` varchar(7) NOT NULL,
-  `Vehiclestatus` varchar(20) NOT NULL
+  `Number` int(3) NOT NULL,
+  `time` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `vehicle`
 --
 
-INSERT INTO `vehicle` (`id`, `VehicleType`, `Vehiclestatus`) VALUES
-(1, 'Single', 'booked'),
-(30, 'Single', 'Avaliable'),
-(31, 'Single', 'Avaliable'),
-(32, 'Single', 'Avaliable'),
-(33, 'Single', 'Avaliable'),
-(34, 'Single', 'Avaliable'),
-(35, 'Single', 'Avaliable'),
-(36, 'Double', 'Avaliable'),
-(37, 'Double', 'Avaliable'),
-(38, 'Double', 'Avaliable');
+INSERT INTO `vehicle` (`id`, `Number`, `time`) VALUES
+(1, 3, '00:00'),
+(2, 3, '1:30'),
+(3, 3, '3:00'),
+(4, 3, '4:30'),
+(5, 3, '6:00'),
+(6, 3, '7:30'),
+(7, 3, '9:00'),
+(8, 3, '10:30'),
+(9, 3, '12:00'),
+(10, 3, '13:30'),
+(11, 3, '15:00'),
+(12, 3, '16:30'),
+(13, 3, '18:00'),
+(14, 3, '19:30'),
+(15, 3, '21:00'),
+(16, 3, '22:30');
 
 --
 -- Indexes for dumped tables
@@ -161,7 +176,6 @@ ALTER TABLE `markers`
 --
 ALTER TABLE `reservation`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `vehicleId` (`vehicleId`),
   ADD KEY `visitorId` (`visitorId`);
 
 --
@@ -196,7 +210,7 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -208,7 +222,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `vehicle`
 --
 ALTER TABLE `vehicle`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- Constraints for dumped tables
@@ -218,10 +232,10 @@ ALTER TABLE `vehicle`
 -- Constraints for table `reservation`
 --
 ALTER TABLE `reservation`
-  ADD CONSTRAINT `reservation_ibfk_1` FOREIGN KEY (`vehicleId`) REFERENCES `vehicle` (`id`),
   ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`visitorId`) REFERENCES `users` (`ID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+

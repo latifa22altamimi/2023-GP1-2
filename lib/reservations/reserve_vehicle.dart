@@ -1,4 +1,4 @@
-import 'dart:convert';
+mport 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -18,6 +18,7 @@ String _vehicleType = "";
 String _drivingType = "";
 late final getDate;
 late final getTime;
+late Map<String, dynamic> time= {"time":"", "date":"" };
 class ReserveVehicle extends StatefulWidget {
   const ReserveVehicle({super.key});
 
@@ -40,6 +41,8 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
      "DriverGender": _driverGender});
      var resp= json.decode(res.body);
      print(resp);
+     time = resp;
+
      }
 
      
@@ -522,9 +525,8 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                   _drivingType == "Self-driving") ||
                               (_vehicleType != "" &&
                                       _drivingType == "With-driver" &&
-                                      _driverGender != "") &&
-                                  _BookingPageState._dateSelected &&
-                                  _BookingPageState._timeSelected) {
+                                      _driverGender != "" &&_BookingPageState._dateSelected 
+                                      && _BookingPageState._timeSelected)) {
                             // complete with choose time and date
 
                             //confirm msg
@@ -1032,6 +1034,10 @@ class _BookingPageState extends State<BookingPage> {
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 var timeSlots = solts();
+                var now= DateTime.now();
+print(timeSlots[index]);
+var u = timeSlots;
+
                 return InkWell(
                   splashColor: Colors.transparent,
                   onTap: () {
@@ -1055,7 +1061,7 @@ class _BookingPageState extends State<BookingPage> {
                     ),
                     alignment: Alignment.center,
                     child: Text(
-                      '${int.parse(timeSlots[index].substring(0, 2))}${timeSlots[index].substring(2)} ${int.parse(timeSlots[index].substring(0, 2)) > 11 ? "PM" : "AM"}',
+                      '${int.parse(u[index].substring(0, 2))}${u[index].substring(2)} ${int.parse(u[index].substring(0, 2)) > 11 ? "PM" : "AM"}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: _currentIndex == index ? Colors.white : null,
@@ -1102,7 +1108,7 @@ class _BookingPageState extends State<BookingPage> {
       calendarFormat: _format,
       currentDay: _currentDay,
       rowHeight: 50,
-      startingDayOfWeek: StartingDayOfWeek.sunday,
+      //startingDayOfWeek: StartingDayOfWeek.sunday,
       calendarStyle: const CalendarStyle(
         todayDecoration:
             BoxDecoration(color: kPrimaryColor, shape: BoxShape.circle),
@@ -1122,7 +1128,44 @@ class _BookingPageState extends State<BookingPage> {
           _currentDay = selectedDay;
           _focusDay = focusedDay;
           _dateSelected = true;
-
+SliverChildBuilderDelegate(
+              (context, index) {
+                var timeSlots = solts();
+                
+                return InkWell(
+                  splashColor: Colors.transparent,
+                  onTap: () {
+                    setState(() {
+                      _currentIndex = index;
+                      _timeSelected = true;
+                    });
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: _currentIndex == index
+                            ? Colors.white
+                            : Color.fromARGB(255, 33, 30, 30),
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                      color: _currentIndex == index
+                          ? Color.fromARGB(255, 232, 231, 230)
+                          : null,
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      '${int.parse(timeSlots[index].substring(0, 2))}${timeSlots[index].substring(2)} ${int.parse(timeSlots[index].substring(0, 2)) > 11 ? "PM" : "AM"}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: _currentIndex == index ? Colors.white : null,
+                      ),
+                    ),
+                  ),
+                );
+              },
+              childCount: solts().length,
+            );
           //check if weekend is selected
           /*if (selectedDay.weekday == 6 || selectedDay.weekday == 7) {
             _isWeekend = true;
@@ -1136,3 +1179,106 @@ class _BookingPageState extends State<BookingPage> {
     );
   }
 }
+/*class BookingCalendarDemoApp extends StatefulWidget {
+  const BookingCalendarDemoApp({Key? key}) : super(key: key);
+
+  @override
+  State<BookingCalendarDemoApp> createState() => _BookingCalendarDemoAppState();
+}
+
+class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
+  final now = DateTime.now();
+  late BookingService mockBookingService;
+  
+
+  @override
+  void initState() {
+    super.initState();
+    
+    // DateTime.now().startOfDay
+    // DateTime.now().endOfDay
+    mockBookingService = BookingService(
+        serviceName: 'Vehicle',
+        serviceDuration: 90,
+        bookingEnd: DateTime(now.year, now.month, now.day, 23, 59),
+        bookingStart: DateTime(now.year, now.month, now.day, 0, 0));
+  }
+
+  Stream<dynamic>? getBookingStreamMock(
+      {required DateTime end, required DateTime start}) {
+    return Stream.value([]);
+  }
+
+  Future<dynamic> uploadBookingMock(
+      {required BookingService newBooking}) async {
+    await Future.delayed(const Duration(seconds: 1));
+    getDate = DateConverted.getDate(newBooking.bookingStart);
+    getTime= DateConverted.getTime(newBooking.bookingStart);
+    
+
+    Navigator.pop(context);
+   
+    /*converted.add(DateTimeRange(
+
+        start: newBooking.bookingStart, end: newBooking.bookingEnd));*/
+    print('${newBooking.toJson()} has been uploaded');
+  }
+
+  List<DateTimeRange> converted = [];
+
+  List<DateTimeRange> convertStreamResultMock({required dynamic streamResult}) {
+    ///here you can parse the streamresult and convert to [List<DateTimeRange>]
+    ///take care this is only mock, so if you add today as disabledDays it will still be visible on the first load
+    ///disabledDays will properly work with real data
+    converted.add(DateTimeRange(start: now.subtract(Duration(hours: now.hour)), end: now));
+    return converted;
+  }
+
+  List<DateTimeRange> generatePauseSlots() {
+    return [
+     /* DateTimeRange(
+        start: DateTime(now.year, now.month, now.day, 12, 0),
+          end: DateTime(now.year, now.month, now.day, 13, 0))*/
+    ];
+  }
+  void time(Map<String,dynamic> time){
+    String t =time["time"].toString();
+    print(t);
+    //converted.add(DateTimeRange(start: DateTime(), end: end));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+                backgroundColor: Color.fromARGB(255, 244, 244, 244),
+
+          body: Center(
+            child: BookingCalendar(
+              bookingService: mockBookingService,
+              convertStreamResultToDateTimeRanges: convertStreamResultMock,
+              getBookingStream: getBookingStreamMock,
+              uploadBooking: uploadBookingMock,
+              pauseSlots: generatePauseSlots(),
+              bookingButtonColor: kPrimaryColor,
+              selectedSlotColor: Colors.lightGreen.shade100,
+              pauseSlotText: 'LUNCH',
+              hideBreakTime: true,
+              bookedSlotColor: Colors.grey.shade300,
+              availableSlotColor: Colors.white,
+
+              //loadingWidget: const Text('Fetching data...'),
+             uploadingWidget: const CircularProgressIndicator(),
+              locale: 'en-US',
+             //startingDayOfWeek: StartingDayOfWeek.tuesday,
+              wholeDayIsBookedWidget:
+                  const Text('Sorry, for this day everything is booked'),
+              //disabledDates: [DateTime(2023, 1, 20)],
+              //disabledDays: [6, 7],
+            ),
+          ),
+        ));
+  }
+}*/
+

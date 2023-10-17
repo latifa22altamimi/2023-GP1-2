@@ -8,7 +8,7 @@ import 'package:rehaab/customization/clip.dart';
 import 'package:http/http.dart' as http;
 import 'package:rehaab/reservations/reservation_list.dart';
 import 'package:rehaab/widgets/constants.dart';
-
+import 'package:ticket_widget/ticket_widget.dart';
 import '../main/home.dart';
 
 class ReservationDetails extends StatefulWidget {
@@ -29,7 +29,7 @@ if(s.statusCode==200){
 }
 
 class _ReservationDetailsState extends State<ReservationDetails> {
-  var ind = 0;
+  int ind=0;
   List list = [];
   String? Rid;
   String? Status;
@@ -47,9 +47,12 @@ class _ReservationDetailsState extends State<ReservationDetails> {
       });
     }
     for (var i = 0; i < list.length; i++) {
-      if (list[i]["id"] == int.parse(Rid!)) {
-        ind = i;
+      if (int.parse(list[i]["id"]) == int.parse(Rid!)) {
+        
+          ind = i;
+        
       }
+     
     }
   }
 
@@ -78,10 +81,10 @@ class _ReservationDetailsState extends State<ReservationDetails> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 244, 244, 244),
+        backgroundColor: kPrimaryLightColor,
         appBar: AppBar(
           leading: Container(
-            padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
+            padding: EdgeInsets.only(top: 5.0, bottom:30),
             child: BackButton(),
           ),
           backgroundColor: Colors.transparent,
@@ -91,7 +94,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
             clipper: AppbarClip(),
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: 180,
+              height: 120,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
@@ -107,7 +110,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                   'Reservation details',
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 23,
+                      fontSize: 19,
                       fontWeight: FontWeight.w500),
                 ),
               ),
@@ -115,147 +118,89 @@ class _ReservationDetailsState extends State<ReservationDetails> {
           ),
         ),
         body: Container(
-          child: Column(children: [
+          
+          child: Column(children: [Container(alignment: Alignment.topCenter, //width: 350,height: 500,
+        //  decoration: BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(20)    ,color: Colors.white, border: Border.all(color: Colors.white)),
+        child: TicketWidget(
+          width: 350,
+          height: 500,
+          isCornerRounded: true,
+          padding: EdgeInsets.all(20),
+          child: Column(
+         crossAxisAlignment: CrossAxisAlignment.start,
+         children: [
+          Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
             Container(
-                alignment: Alignment.center,
-                height:
-                    300, //padding: const EdgeInsets.only(top: 1.0, left: 10.0, right: 10.0),
-                width: 300,
-                //margin: EdgeInsets.only(bottom: 20.0),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(50),
+
+              width: 120.0,
+              height: 25.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30.0),
+                border: Border.all(width: 1.0, color: Status== "Cancelled"?  Colors.red :   Colors.green ),
+              ),
+              child:  Center(
+                child: Text(
+                  '${Status}',// reservation status 
+                  style: Status == "Cancelled"? TextStyle(color: Colors.red , fontWeight: FontWeight.bold):  TextStyle(color: Colors.green , fontWeight: FontWeight.bold),
                 ),
+              ),
+            ),
+           
+          ],
+        ),
+        
+        Padding(
+          padding:  const EdgeInsets.only(top: 25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                alignment: Alignment.center,
+               
+                //margin: EdgeInsets.only(bottom: 20.0),
+                
                 //padding: EdgeInsets.only(top: 50),
-                child: list.isEmpty
-                    ? Text("")
-                    : QrImageView(
+                child: list.isEmpty? Text("") : QrImageView(
                         data:
-                            "Date:    ${list[ind]["date"]} \n  Time: ${list[ind]["time"]} \n Vehicle Type: ${list[ind]["VehicleType"]} \n Driving Type: ${list[ind]["drivingType"]}${list[ind]["VehicleType"] == "Single" ? "" : "Driver gender : ${list[ind]["driverGender"]}"}\n  Status: ${list[ind]["Status"]}",
-                        size: 200,
+                            "Date:${list[ind]["date"]}\nTime:${list[ind]["time"]}\nVehicle Type: ${list[ind]["VehicleType"]}\nDriving Type: ${list[ind]["drivingType"]}\nDriver gender:${list[ind]["driverGender"]} \n Status: ${Status}",
+                        size: 150,
                       )),
-            Container(
-                padding: EdgeInsets.only(top: 5),
+                        Container(
+                padding: const EdgeInsets.only(top: 5),
                 alignment: Alignment.topCenter,
                 height: 40,
-                child: Text(
-                  "Use this QR code at the pickup location to check in",
+                child: const Text(
+                  "Use this QR code at the pickup location to check in\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  ",
                   maxLines: 2,
-                  style: TextStyle(color: Colors.grey, fontSize: 13.5),
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
                 )),
-            Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: kPrimaryColor),
-                    color: Colors.grey.shade200),
-                child: Column(children: [
-                  Container(
-                      width: 250,
-                      padding: EdgeInsets.only(
-                          left: 20,
-                          top:
-                              10), //decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
-                      child: Row(children: [
-                        Icon(
-                          Icons.date_range,
-                          color: kPrimaryColor,
-                        ),
-                        Container(
-                            child: list.isEmpty
-                                ? Text("")
-                                : Text(
-                                    " Date:   ${list[ind]["date"]}",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.black45,
-                                        fontFamily: "OpenSans",
-                                        fontWeight: FontWeight.bold),
-                                  ))
-                      ])),
-                  Container(
-                    width: 250,
-                    padding: EdgeInsets.only(left: 20),
-                    child: Row(children: [
-                      Icon(
-                        Icons.schedule,
-                        color: kPrimaryColor,
-                      ),
-                      Container(
-                        child: list.isEmpty
-                            ? Text("")
-                            : Text(" Time: ${list[ind]["time"]}",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black45,
-                                    fontFamily: "OpenSans",
-                                    fontWeight: FontWeight.bold)),
-                      )
-                    ]),
-                  ),
-                  Container(
-                      width: 250,
-                      padding: EdgeInsets.only(
-                          left:
-                              20), //decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
-                      child: Row(children: [
-                        Icon(
-                          Icons.motorcycle,
-                          color: kPrimaryColor,
-                        ),
-                        Container(
-                            child: list.isEmpty
-                                ? Text("")
-                                : Text(
-                                    " Vehicle Type: ${list[ind]["VehicleType"]}",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.black45,
-                                        fontFamily: "OpenSans",
-                                        fontWeight: FontWeight.bold),
-                                  ))
-                      ])),
-                  Container(
-                      width: 250,
-                      padding: EdgeInsets.only(
-                          left:
-                              20), //decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
-                      child: Row(children: [
-                        Icon(
-                          Icons.motion_photos_on_rounded,
-                          color: kPrimaryColor,
-                        ),
-                        Container(
-                            child: list.isEmpty
-                                ? Text("")
-                                : Text(
-                                    " Driving Type: ${list[ind]["drivingType"]}",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.black45,
-                                        fontFamily: "OpenSans",
-                                        fontWeight: FontWeight.bold),
-                                  ))
-                      ])),
-                  Container(
-                      width: 250,
-                      padding: EdgeInsets.only(
-                          left:
-                              20), //decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(50),),
-                      child: Row(children: [
-                        Container(
-                          child: list.isEmpty
-                              ? Text("")
-                              : Text(
-                                  "${list[ind]["VehicleType"] == "Single" ? "" : "Driver gender : ${list[ind]["driverGender"]}"}  ",
-                                  style: TextStyle(
-                                      color: Colors.black45,
-                                      fontFamily: "OpenSans",
-                                      fontWeight: FontWeight.bold),
-                                ),
-                        )
-                      ])),
-                ])),
-            Container(
+
+                Padding(padding: const EdgeInsets.only(top: 6, right: 52.0),
+                child: list.isNotEmpty?    ticketDetailsWidget('Reservation no.', '#${list[ind]["id"]}', 'Vehicle type','${list[ind]["VehicleType"]}'):ticketDetailsWidget("", "", "", "") ,
+                ),
+             
+              Padding(
+                padding: const EdgeInsets.only(top: 6.0, right: 52.0),
+                child: list.isNotEmpty?     ticketDetailsWidget('Date', '${list[ind]["date"]}', 'Driving type', '${list[ind]["drivingType"]}') : ticketDetailsWidget("", "", "", ""),
+
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 6.0, right: 43.0),
+                child:  list.isNotEmpty && list[ind]["VehicleType"] =="Double" ? ticketDetailsWidget('Time', '${list[ind]["time"]}','Driver gender', '${list[ind]["driverGender"]}'): list.isNotEmpty? ticketDetailsWidget('Time', '${list[ind]["time"]}   ', '', ''): ticketDetailsWidget('','','','') ,
+                
+              ),
+            ],
+          ),
+        ),
+       
+        
+      
+      ],
+    ),
+        ),),  Container (
+
                 child: Row(
               children: [
                
@@ -263,8 +208,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                 Visibility(
                   visible: visibility(),
                   child: Container(
-                    padding:
-                        EdgeInsets.only(left: 30, right: 6, top: 30, bottom: 6),
+                   padding: EdgeInsets.only(left:55, right: 10, top:35),
                     child: ElevatedButton.icon(
                       onPressed: () async {
                         showDialog(
@@ -479,7 +423,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                             RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30.0))),
                         fixedSize: MaterialStateProperty.resolveWith(
-                            (states) => Size(150, 40)),
+                            (states) => Size(150,40)),
                       ),
                     ),
                   ),
@@ -488,10 +432,9 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                 Visibility(
                   visible: visibility(),
                   child: Container(
-                    alignment: Alignment.center,
 
                     //padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
-                    padding: EdgeInsets.only(right: 6, top: 30, bottom: 6),
+                   padding: EdgeInsets.only(right: 6 , top:35),
                     child: ElevatedButton.icon(
                       onPressed: () async {},
                       label: Text("Reschdule"),
@@ -507,10 +450,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                       ),
                     ),
                   ),
-                )
-              ],
-            )),
-            Offstage(
+                ), Offstage(
               offstage: true,
               child: ElevatedButton.icon(
                 onPressed: () async {},
@@ -523,14 +463,14 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0))),
                   fixedSize: MaterialStateProperty.resolveWith(
-                      (states) => Size(150, 40)),
+                      (states) => Size(  150,40 )),
                 ),
               ),
             ),
             Offstage(
                 offstage: true,
                 child: Container(
-                  padding: EdgeInsets.only(top: 8),
+                 // padding: EdgeInsets.only(top: 8),
                   child: ElevatedButton.icon(
                     onPressed: () async {
                       showDialog(
@@ -763,14 +703,70 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                           RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0))),
                       fixedSize: MaterialStateProperty.resolveWith(
-                          (states) => Size(150, 40)),
+                          (states) => Size(150,40)),
                     ),
                   ),
                 ))
-          ]),
-        )
+              ],
+            ),
+            
+            
+          )],)
+          
+      ),
+          
+          );
+        
 //padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
 
-        );
+        
   }
+
+}
+Widget ticketDetailsWidget(String firstTitle, String firstDesc,
+    String secondTitle, String secondDesc) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(left: 20.0,top: 6.0, ),
+        child: Column(
+         crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              firstTitle,
+              style: const TextStyle(color: Colors.grey),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: Text(
+                firstDesc,
+                style: const TextStyle(color: Colors.black),
+              ),
+            )
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(right: 0.0, top: 6.0),
+        child: Column(
+         crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              secondTitle,
+              style: const TextStyle(color: Colors.grey),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: Text(
+                secondDesc,
+                style: const TextStyle(color: Colors.black),
+              ),
+            )
+          ],
+        ),
+      )
+    ],
+  );
 }
