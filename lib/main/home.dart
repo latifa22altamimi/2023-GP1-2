@@ -391,8 +391,8 @@ class BodyHome extends StatelessWidget {
                           alignment: Alignment.center,
                           child: Image.asset(
                             'assets/images/vehicle1.png',
-                            height: 135,
-                            width: 140,
+                            height: 115,
+                            width: 115,
                           ),
                         ),
                         const SizedBox(

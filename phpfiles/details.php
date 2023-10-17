@@ -6,7 +6,7 @@
  */
 
 include 'connect.php';
-$sql = "SELECT reservation.id, reservation.date, reservation.time, reservation.vehicleId, vehicle.VehicleType, reservation.drivingType, reservation.driverGender, reservation.Status, reservation.visitorId FROM reservation JOIN vehicle ON reservation.vehicleId = vehicle.id";
+$sql = "SELECT id, date, time, VehicleType, drivingType, driverGender, Status, visitorId FROM reservation";
 $result = $conn->query($sql);
  while($ro2 = mysqli_fetch_assoc($result)){
      $data[]=$ro2;
@@ -14,5 +14,3 @@ $result = $conn->query($sql);
       
   
   echo json_encode($data);
-
-
