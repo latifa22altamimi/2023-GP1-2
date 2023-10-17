@@ -11,7 +11,6 @@ import '../widgets/constants.dart';
 import '../main/home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'package:booking_calendar/booking_calendar.dart';
 
 
 String _driverGender = "";
