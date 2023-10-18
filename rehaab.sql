@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 17, 2023 at 02:07 PM
+-- Generation Time: Oct 18, 2023 at 09:33 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -91,12 +91,8 @@ INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `
 (1, '2023-10-23', '18:00', 'Single', 'Self driving', NULL, 'Confirmed', 44),
 (3, '2023-11-10', '16:00', 'Single', 'Self driving', NULL, 'Cancelled', 44),
 (4, '2023-10-16', '19:30', 'Double', 'WithDriver', 'Female', 'Confirmed', 44),
-(35, '2023-10-17', '21:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(36, '2023-10-17', '21:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(37, '2023-10-17', '21:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(38, '2023-10-17', '15:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(39, '2023-10-17', '15:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(40, '2023-10-17', '15:00', 'Single', 'Self-driving', '', 'Confirmed', 44);
+(44, '2023-10-17', '16:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(45, '2023-10-17', '22:30', 'Single', 'Self-driving', '', 'Confirmed', 44);
 
 -- --------------------------------------------------------
 
@@ -129,31 +125,33 @@ INSERT INTO `users` (`ID`, `FirstName`, `LastName`, `Email`, `Password`, `Type`,
 
 CREATE TABLE `vehicle` (
   `id` int(20) NOT NULL,
-  `Number` int(3) NOT NULL,
-  `time` varchar(5) NOT NULL
+  `time` varchar(5) NOT NULL,
+  `numberOfSingleV` int(5) NOT NULL,
+  `numberOfDoubleV` int(5) NOT NULL,
+  `slotStatus` varchar(15) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `vehicle`
 --
 
-INSERT INTO `vehicle` (`id`, `Number`, `time`) VALUES
-(1, 3, '00:00'),
-(2, 3, '1:30'),
-(3, 3, '3:00'),
-(4, 3, '4:30'),
-(5, 3, '6:00'),
-(6, 3, '7:30'),
-(7, 3, '9:00'),
-(8, 3, '10:30'),
-(9, 3, '12:00'),
-(10, 3, '13:30'),
-(11, 3, '15:00'),
-(12, 3, '16:30'),
-(13, 3, '18:00'),
-(14, 3, '19:30'),
-(15, 3, '21:00'),
-(16, 3, '22:30');
+INSERT INTO `vehicle` (`id`, `time`, `numberOfSingleV`, `numberOfDoubleV`, `slotStatus`) VALUES
+(1, '00:00', 3, 3, 'Both'),
+(2, '1:30', 3, 3, 'Both'),
+(3, '3:00', 3, 3, 'Both'),
+(4, '4:30', 3, 3, 'Both'),
+(5, '6:00', 3, 3, 'Both'),
+(6, '7:30', 3, 3, 'Both'),
+(7, '9:00', 3, 3, 'Both'),
+(8, '10:30', 3, 3, 'Both'),
+(9, '12:00', 3, 3, 'Both'),
+(10, '13:30', 3, 3, 'Both'),
+(11, '15:00', 3, 3, 'Both'),
+(12, '16:30', 3, 3, 'Both'),
+(13, '18:00', 3, 3, 'Both'),
+(14, '19:30', 3, 3, 'Both'),
+(15, '21:00', 3, 3, 'Both'),
+(16, '22:30', 3, 3, 'Both');
 
 --
 -- Indexes for dumped tables
@@ -210,7 +208,7 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -222,7 +220,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `vehicle`
 --
 ALTER TABLE `vehicle`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- Constraints for dumped tables
@@ -238,4 +236,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
