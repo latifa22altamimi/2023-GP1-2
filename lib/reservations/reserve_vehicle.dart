@@ -16,14 +16,12 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rehaab/reservations/DatePicker2.dart';
 
 
-
-
 String _driverGender = "";
 String _vehicleType = "";
 String _drivingType = "";
 late final getDate;
 late final getTime;
-late Map<String, dynamic> time= {"time":"", "date":"" };
+//late Map<String, dynamic> time= {"time":"", "date":"" };
 class ReserveVehicle extends StatefulWidget {
   const ReserveVehicle({super.key});
 
@@ -46,7 +44,6 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
      "DriverGender": _driverGender});
      var resp= json.decode(res.body);
      print(resp);
-     time = resp;
 
      }
 
@@ -507,7 +504,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                         builder: (BuildContext context) {
                           return Container(
                             height: 600,
-                            child: _BookingPageState(),
+                            child: BookingPage(),
                           );
                         },
                       );
@@ -531,8 +528,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                               (_vehicleType != "" &&
                                       _drivingType == "With-driver" &&
                                       _driverGender != "" &&_BookingPageState.time.isNotEmpty 
-                                     && _BookingPageState.date.text.isNotEmpty
-                                     )) {
+                                     && _BookingPageState.date.text.isNotEmpty)) {
                             // complete with choose time and date
 
                             //confirm msg
@@ -984,8 +980,8 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
   }
 }
 
-
 /*
+
 class BookingPage extends StatefulWidget {
   BookingPage({Key? key}) : super(key: key);
 
@@ -999,7 +995,6 @@ class _BookingPageState extends State<BookingPage> {
   DateTime _focusDay = DateTime.now();
   DateTime _currentDay = DateTime.now();
   int? _currentIndex;
-  bool _notAvailable=false;
   // ignore: unused_field
   static bool _dateSelected = false;
   static bool _timeSelected = false;
@@ -1014,7 +1009,6 @@ class _BookingPageState extends State<BookingPage> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 244, 244, 244),
       body: CustomScrollView(
@@ -1042,10 +1036,10 @@ class _BookingPageState extends State<BookingPage> {
             delegate: SliverChildBuilderDelegate(
               (context, index) {
                 var timeSlots = solts();
-                var now= DateTime.now();
-print(timeSlots[index]);
-var u = timeSlots;
+               /* if(time.isNotEmpty){ 
 
+                solts().remove(time);
+                solts().length--;}*/
                 return InkWell(
                   splashColor: Colors.transparent,
                   onTap: () {
@@ -1069,7 +1063,7 @@ var u = timeSlots;
                     ),
                     alignment: Alignment.center,
                     child: Text(
-                      '${int.parse(u[index].substring(0, 2))}${u[index].substring(2)} ${int.parse(u[index].substring(0, 2)) > 11 ? "PM" : "AM"}',
+                      '${int.parse(timeSlots[index].substring(0, 2))}${timeSlots[index].substring(2)} ${int.parse(timeSlots[index].substring(0, 2)) > 11 ? "PM" : "AM"}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: _currentIndex == index ? Colors.white : null,
@@ -1137,44 +1131,6 @@ var u = timeSlots;
           _focusDay = focusedDay;
           _dateSelected = true;
 
-SliverChildBuilderDelegate(
-              (context, index) {
-                var timeSlots = solts();
-                
-                return InkWell(
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    setState(() {
-                      _currentIndex = index;
-                      _timeSelected = true;
-                    });
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: _currentIndex == index
-                            ? Colors.white
-                            : Color.fromARGB(255, 33, 30, 30),
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                      color: _currentIndex == index
-                          ? Color.fromARGB(255, 232, 231, 230)
-                          : null,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      '${int.parse(timeSlots[index].substring(0, 2))}${timeSlots[index].substring(2)} ${int.parse(timeSlots[index].substring(0, 2)) > 11 ? "PM" : "AM"}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: _currentIndex == index ? Colors.white : null,
-                      ),
-                    ),
-                  ),
-                );
-              },
-              childCount: solts().length,
-            );
           //check if weekend is selected
           /*if (selectedDay.weekday == 6 || selectedDay.weekday == 7) {
             _isWeekend = true;
@@ -1187,7 +1143,7 @@ SliverChildBuilderDelegate(
       }),
     );
   }
-}
+}*/
 /*class BookingCalendarDemoApp extends StatefulWidget {
   const BookingCalendarDemoApp({Key? key}) : super(key: key);
 
@@ -1290,41 +1246,41 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
         ));
   }
 }*/
-*/
-class _BookingPageState extends StatelessWidget {
-   _BookingPageState({Key? key}) : super(key: key);
+
+List list=[];
+class BookingPage extends StatefulWidget {
+  BookingPage({Key? key}) : super(key: key);
+
+  @override
+  State<BookingPage> createState() => _BookingPageState();
+}
+
+class _BookingPageState extends State<BookingPage> {
   final datePicker = Get.put(DatePicker2());
-  final timeList=[
-    { "timeName":"1:30 Am","id":1,"available":3},
-    { "timeName":"4:30 Am","id":2,"available":3},
-    { "timeName":"7:30 Am","id":3,"available":3}
-  ];
+  
+  final timeList=list;
   static  RxInt isSelect=0.obs;
    static RxString time="".obs;
  static TextEditingController date=TextEditingController();
-  
+   @override
+  void initState() {
+    super.initState();
+    GetData();
+
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:Text(
-                                'reservation date',
-                               
-                                style: TextStyle(
-                                    color: kPrimaryColor,
-                                    fontFamily: 'OpenSans',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 17
-                                  ),
-                              ),),
+      
       body: Column(children: [
         GestureDetector(
-          onTap: ()=> datePicker.getDate(controller: date,),
+          onTap: ()=> datePicker.getDate(controller: date, c: context),
           child:  TextFormField(
             controller: date,
             enabled: false,
             decoration:const InputDecoration(
-          hintText:"تاريخ الحجز",
+          hintText:" date",
             prefixIcon: const Icon(Icons.date_range_outlined),   
   ), 
           ),
@@ -1338,20 +1294,21 @@ class _BookingPageState extends StatelessWidget {
             return GestureDetector(onTap: () {
               print(timeList[index]["available"].toString());
               isSelect.value=index;
-              time.value=timeList[index]["timeName"].toString();
+              time.value=timeList[index]["time"].toString();
             },
-              child: Obx(()=>Card(color:timeList[index]["available"]!=0?isSelect.value==index?Colors.limeAccent: Colors.white:Colors.grey,margin: EdgeInsets.symmetric(horizontal: 16,vertical: 4),child: Padding(
+              child: Obx(()=>Card(  //shape: ShapeBorder.lerp(a, b, t) 
+                   color:timeList[index]["available"]!=0?isSelect.value==index?Colors.limeAccent: Colors.white:Colors.grey,margin: EdgeInsets.symmetric(horizontal: 16,vertical: 4),child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 12),
-                  child:Text( timeList[index]["timeName"].toString()),
+                  child:Text( timeList[index]["time"].toString()),
                 ),),
               ),
             );
           },),
         ),
-         RoundedButton(text: 'Reserve', press: () {
+         RoundedButton(text: 'Select', press: () {
           
  if(date.text.isNotEmpty){
-          if(timeList[isSelect.value]["available"]!=0){
+          if(timeList[isSelect.value]["numberOfSingleV"]!=0){
             var data=timeList[isSelect.value];
             int newAvailable=(int.parse(data["available"].toString()))-1;
             timeList.removeAt(isSelect.value);
@@ -1396,4 +1353,21 @@ class _BookingPageState extends StatelessWidget {
       ],),
     );
   }
-}
+  
+  Future GetData() async {
+    var url = "http://10.0.2.2/phpfiles/times.php";
+    var res = await http.get(Uri.parse(url));
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      setState(() {
+        list.addAll(red);
+      });
+    }
+    
+      }
+     
+    }
+  
+
+
