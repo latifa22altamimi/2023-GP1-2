@@ -118,8 +118,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                         home()), //navigate to sign up page
+                    builder: (context) => home()), //navigate to sign up page
               );
             } else {
               _pageController.nextPage(

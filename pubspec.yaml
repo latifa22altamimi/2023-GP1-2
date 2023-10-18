@@ -46,7 +46,7 @@ dependencies:
   qr_flutter: ^4.1.0
   table_calendar: ^3.0.9
   ticket_widget: ^0.0.1
-  get: ^4.6.6
+  get:
 
 
 

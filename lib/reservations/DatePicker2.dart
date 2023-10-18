@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-class DatePicker2 extends GetxController{
+
+class DatePicker2 extends GetxController {
   @override
   void onInit() {
     // TODO: implement onInit
     super.onInit();
   }
 
-  getDate({TextEditingController? controller, required BuildContext c,    String title="Reservation date"}) async {
-
+  getDate(
+      {TextEditingController? controller,
+      required BuildContext c,
+      title = "تاريخ الحجز"}) async {
     DateTime? pickedDate = await showDatePicker(
       context: c,
       initialDate: DateTime.now(),
-      firstDate:DateTime.now(),
-      lastDate:DateTime.now().add(const Duration(days: 90)),
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 90)),
       // initialDatePickerMode: DatePickerMode.year,
       // initialEntryMode: DatePickerEntryMode.input,
       cancelText: "الغاء",
@@ -26,9 +29,8 @@ class DatePicker2 extends GetxController{
     );
     if (pickedDate != null) {
       var date;
-        date = DateFormat('yyyy/MM/dd').format(pickedDate);
-        controller!.text = date.toString();
+      date = DateFormat('yyyy/MM/dd').format(pickedDate);
+      controller!.text = date.toString();
     }
   }
-
 }

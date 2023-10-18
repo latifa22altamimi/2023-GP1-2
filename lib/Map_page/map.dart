@@ -28,7 +28,7 @@ class _HomeState extends State<Home> {
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
       setState(() {
-        list.addAll(red);
+        list.add(red);
       });
     }
   }
@@ -90,7 +90,7 @@ class _HomeState extends State<Home> {
           setState(() {
             markers.add(
               Marker(
-                markerId: MarkerId("1"),
+                markerId: MarkerId(list[0]["id"]),
                 position: LatLng(double.parse(lat), double.parse(lon)),
                 infoWindow: InfoWindow(
                   title: "Electric Vehicle Pick-up Point ",
