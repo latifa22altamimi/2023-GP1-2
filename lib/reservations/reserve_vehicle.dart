@@ -11,19 +11,17 @@ import '../widgets/constants.dart';
 import '../main/home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'package:get/get.dart';
+import "package:get/get.dart";
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rehaab/reservations/DatePicker2.dart';
-
-
-
 
 String _driverGender = "";
 String _vehicleType = "";
 String _drivingType = "";
 late final getDate;
 late final getTime;
-late Map<String, dynamic> time= {"time":"", "date":"" };
+late Map<String, dynamic> time = {"time": "", "date": ""};
+
 class ReserveVehicle extends StatefulWidget {
   const ReserveVehicle({super.key});
 
@@ -35,25 +33,20 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
 
+  Future insert() async {
+    var url = "http://10.0.2.2/phpfiles/reservation.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "date": getDate,
+      "time": getTime,
+      "VehicleType": _vehicleType,
+      "DrivingType": _drivingType,
+      "DriverGender": _driverGender
+    });
+    var resp = json.decode(res.body);
+    print(resp);
+    time = resp;
+  }
 
-    Future insert() async{
-   var url = "http://10.0.2.2/phpfiles/reservation.php";
-   final res= await http.post(Uri.parse(url),body:{
-    "date":getDate, 
-    "time":getTime,
-    "VehicleType": _vehicleType,
-    "DrivingType": _drivingType,
-     "DriverGender": _driverGender});
-     var resp= json.decode(res.body);
-     print(resp);
-     time = resp;
-
-     }
-
-     
-
-
-  
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Color getColor(Set<MaterialState> states) {
@@ -529,10 +522,10 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                           if ((_vehicleType != "" &&
                                   _drivingType == "Self-driving") ||
                               (_vehicleType != "" &&
-                                      _drivingType == "With-driver" &&
-                                      _driverGender != "" &&_BookingPageState.time.isNotEmpty 
-                                     && _BookingPageState.date.text.isNotEmpty
-                                     )) {
+                                  _drivingType == "With-driver" &&
+                                  _driverGender != "" &&
+                                  _BookingPageState.time.isNotEmpty &&
+                                  _BookingPageState.date.text.isNotEmpty)) {
                             // complete with choose time and date
 
                             //confirm msg
@@ -757,14 +750,13 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                 BoxConstraints.tightFor(
                                                     height: 38, width: 100),
                                             child: ElevatedButton(
-                                              onPressed: () async{
+                                              onPressed: () async {
                                                 insert();
                                                 //success msg here , insert in db --------------------------------------------
 
                                                 _drivingType = "";
                                                 _driverGender = "";
                                                 _vehicleType = "";
-                                               
 
                                                 Navigator.of(context).pop();
                                                 showDialog(
@@ -983,7 +975,6 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
     );
   }
 }
-
 
 /*
 class BookingPage extends StatefulWidget {
@@ -1292,108 +1283,124 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
 }*/
 */
 class _BookingPageState extends StatelessWidget {
-   _BookingPageState({Key? key}) : super(key: key);
+  _BookingPageState({Key? key}) : super(key: key);
   final datePicker = Get.put(DatePicker2());
-  final timeList=[
-    { "timeName":"1:30 Am","id":1,"available":3},
-    { "timeName":"4:30 Am","id":2,"available":3},
-    { "timeName":"7:30 Am","id":3,"available":3}
+  final timeList = [
+    {"timeName": "1:30 Am", "id": 1, "available": 3},
+    {"timeName": "4:30 Am", "id": 2, "available": 3},
+    {"timeName": "7:30 Am", "id": 3, "available": 3}
   ];
-  static  RxInt isSelect=0.obs;
-   static RxString time="".obs;
- static TextEditingController date=TextEditingController();
-  
+  static RxInt isSelect = 0.obs;
+  static RxString time = "".obs;
+  static TextEditingController date = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title:Text(
-                                'reservation date',
-                               
-                                style: TextStyle(
-                                    color: kPrimaryColor,
-                                    fontFamily: 'OpenSans',
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 17
-                                  ),
-                              ),),
-      body: Column(children: [
-        GestureDetector(
-          onTap: ()=> datePicker.getDate(controller: date,),
-          child:  TextFormField(
-            controller: date,
-            enabled: false,
-            decoration:const InputDecoration(
-          hintText:"تاريخ الحجز",
-            prefixIcon: const Icon(Icons.date_range_outlined),   
-  ), 
-          ),
+      appBar: AppBar(
+        title: Text(
+          'reservation date',
+          style: TextStyle(
+              color: kPrimaryColor,
+              fontFamily: 'OpenSans',
+              fontWeight: FontWeight.w600,
+              fontSize: 17),
         ),
-
-        Expanded(child:
-          ListView.builder(shrinkWrap: true,
-            physics: const BouncingScrollPhysics(),
-            itemCount: timeList.length,itemBuilder: (context, index) {
-
-            return GestureDetector(onTap: () {
-              print(timeList[index]["available"].toString());
-              isSelect.value=index;
-              time.value=timeList[index]["timeName"].toString();
-            },
-              child: Obx(()=>Card(color:timeList[index]["available"]!=0?isSelect.value==index?Colors.limeAccent: Colors.white:Colors.grey,margin: EdgeInsets.symmetric(horizontal: 16,vertical: 4),child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0,horizontal: 12),
-                  child:Text( timeList[index]["timeName"].toString()),
-                ),),
+      ),
+      body: Column(
+        children: [
+          GestureDetector(
+            onTap: () => datePicker.getDate(controller: date, c: context),
+            child: TextFormField(
+              controller: date,
+              enabled: false,
+              decoration: const InputDecoration(
+                hintText: "Date",
+                prefixIcon: const Icon(Icons.date_range_outlined),
+                fillColor: Color.fromARGB(255, 8, 0, 0),
               ),
-            );
-          },),
-        ),
-         RoundedButton(text: 'Reserve', press: () {
-          
- if(date.text.isNotEmpty){
-          if(timeList[isSelect.value]["available"]!=0){
-            var data=timeList[isSelect.value];
-            int newAvailable=(int.parse(data["available"].toString()))-1;
-            timeList.removeAt(isSelect.value);
-            timeList.insert(isSelect.value,{ "timeName":data["timeName"].toString(),"id":int.parse(data["id"].toString()),"available":newAvailable} );
-           Fluttertoast.showToast(
-        msg: "Reserved successfully",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
-            isSelect.value=0;
-            // date.clear();
-          }else{
-            Fluttertoast.showToast(
-        msg: "Reservation is full",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
-          }
-          }else{
-           Fluttertoast.showToast(
-        msg: "choose date",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );
-
-          }
-                             }),
-        Spacer(),
-        Spacer(),
-      ],),
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const BouncingScrollPhysics(),
+              itemCount: timeList.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    print(timeList[index]["available"].toString());
+                    isSelect.value = index;
+                    time.value = timeList[index]["timeName"].toString();
+                  },
+                  child: Obx(
+                    () => Card(
+                      color: timeList[index]["available"] != 0
+                          ? isSelect.value == index
+                              ? Colors.limeAccent
+                              : Colors.white
+                          : Colors.grey,
+                      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 12),
+                        child: Text(timeList[index]["timeName"].toString()),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+          RoundedButton(
+              text: 'Reserve',
+              press: () {
+                if (date.text.isNotEmpty) {
+                  if (timeList[isSelect.value]["available"] != 0) {
+                    var data = timeList[isSelect.value];
+                    int newAvailable =
+                        (int.parse(data["available"].toString())) - 1;
+                    timeList.removeAt(isSelect.value);
+                    timeList.insert(isSelect.value, {
+                      "timeName": data["timeName"].toString(),
+                      "id": int.parse(data["id"].toString()),
+                      "available": newAvailable
+                    });
+                    Fluttertoast.showToast(
+                        msg: "Reserved successfully",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                    isSelect.value = 0;
+                    // date.clear();
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Reservation is full",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.CENTER,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.red,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
+                } else {
+                  Fluttertoast.showToast(
+                      msg: "choose date",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+                }
+              }),
+          Spacer(),
+          Spacer(),
+        ],
+      ),
     );
   }
 }
