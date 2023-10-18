@@ -23,12 +23,16 @@
           }
          else if($count== 1){
           $pw;
+          $id;
           while($row = mysqli_fetch_assoc($result)) {
             $pw=$row['Password'];
+            $id=$row['ID'];
          }
+         $id=strval($id);
+
          if(password_verify($Password,$pw)){
-    
-          echo json_encode("Success"); 
+          echo json_encode([0=>"Success",1=>$id]); 
+
 
             
       

@@ -1,8 +1,7 @@
 <?php
 
 include 'connect.php';
-$visitorId=44;
-//;/////////we need to recieve it from SendingID php page
+$visitorId=$_POST['Userid'];
 $sql = "SELECT * FROM reservation WHERE visitorId=$visitorId";
 $result = $conn->query($sql);
   $array= array();

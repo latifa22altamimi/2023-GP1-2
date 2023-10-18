@@ -2,23 +2,31 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rehaab/GlobalValues.dart';
+import 'package:rehaab/main/home.dart';
 import 'package:rehaab/reservations/reservationdetails.dart';
 import 'package:http/http.dart' as http;
 import 'package:rehaab/reservations/reserve_vehicle.dart';
+import 'package:rehaab/Signin/login_screen.dart';
 
 class ReservationList extends StatefulWidget {
   ReservationList({Key? key}) : super(key: key);
+  
 
   @override
   State<ReservationList> createState() => _ReservationListState();
 }
 
 class _ReservationListState extends State<ReservationList> {
+  
   List list = [];
 
   Future GetData() async {
+    print( GlobalValues.id);
     var url = "http://10.0.2.2/phpfiles/RList.php";
-    var res = await http.get(Uri.parse(url));
+    final res= await http.post(Uri.parse(url),body:{
+ "Userid": GlobalValues.id,
+ });
 
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
