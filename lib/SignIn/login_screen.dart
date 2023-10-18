@@ -27,6 +27,7 @@ State<LoginScreen> createState() => _LoginScreenState();}
 class _LoginScreenState extends State<LoginScreen> {
  TextEditingController email = TextEditingController();
  TextEditingController Password=TextEditingController();
+ bool _isSecurePassword=true;
   Future rehaab() async{
     var url ="http://10.0.2.2/phpfiles/signin.php";
     final response= await http.post(Uri.parse(url),body:{
@@ -413,19 +414,16 @@ print(data);
                                    TextFieldContainer(
                                   child: TextField(
                                   controller: Password,
-                                  obscureText: true,
+                                  obscureText: _isSecurePassword,
                                   cursorColor: kPrimaryColor,
-                                  decoration: const InputDecoration(
+                                  decoration:  InputDecoration(
                                    icon: Icon(
                                    Icons.lock,
                                    color: kPrimaryColor,
                                    ),
                                    hintText: "Password",
                                    hintStyle:  TextStyle(fontFamily: 'OpenSans'),
-                                   suffixIcon: Icon(
-                                   Icons.visibility,
-                                   color: kPrimaryColor,
-                                    ),
+                                   suffixIcon: togglePassword(),
                                    border: InputBorder.none),
                                     ),
                                     ),
@@ -480,6 +478,14 @@ print(data);
     );
   }
   
+  Widget togglePassword(){
+  return IconButton(onPressed: (){
+     setState((){
+    _isSecurePassword =!_isSecurePassword;
+    }); },
+     icon: _isSecurePassword ? Icon(Icons.visibility) : Icon(Icons.visibility_off)
+  , color: kPrimaryColor,);
+}
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState

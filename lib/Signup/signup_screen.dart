@@ -29,7 +29,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
  TextEditingController email = TextEditingController();
  TextEditingController LastName = TextEditingController();
  TextEditingController Password=TextEditingController();
-   
+  bool _isSecurePassword=true;
 var verifylink;
   Future signup() async{
     var url ="http://10.0.2.2/phpfiles/signup.php";
@@ -556,19 +556,16 @@ ScaffoldMessenger.of(context).showSnackBar(
     TextFieldContainer(
       child: TextField(
         controller: Password,
-        obscureText: true,
+        obscureText: _isSecurePassword,
         cursorColor: kPrimaryColor,
-         decoration: const InputDecoration(
+         decoration:  InputDecoration(
             icon: Icon(
               Icons.lock,
               color: kPrimaryColor,
             ),
             hintText: "Password",
             hintStyle:  TextStyle(fontFamily: 'OpenSans'),
-            suffixIcon: Icon(
-              Icons.visibility,
-              color: kPrimaryColor,
-            ),
+            suffixIcon: togglePassword(),
             border: InputBorder.none),
       ),
     ),
@@ -603,7 +600,14 @@ ScaffoldMessenger.of(context).showSnackBar(
       ),
     );
   }
-
+Widget togglePassword(){
+  return IconButton(onPressed: (){
+     setState((){
+    _isSecurePassword =!_isSecurePassword;
+    }); },
+     icon: _isSecurePassword ? Icon(Icons.visibility) : Icon(Icons.visibility_off)
+  , color: kPrimaryColor,);
+}
   }
 
 
