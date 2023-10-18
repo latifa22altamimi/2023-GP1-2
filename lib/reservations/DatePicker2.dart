@@ -8,7 +8,7 @@ class DatePicker2 extends GetxController{
     super.onInit();
   }
 
-  getDate({TextEditingController? controller,String title="تاريخ الحجز"}) async {
+  getDate({TextEditingController? controller, required BuildContext c,    String title="Reservation date"}) async {
 
     DateTime? pickedDate = await showDatePicker(
       context: Get.context!,
