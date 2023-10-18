@@ -3,9 +3,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/components/page_title_bar.dart';
 import 'package:rehaab/components/upside.dart';
 import 'package:rehaab/SignUp/signup_screen.dart';
+import 'package:rehaab/reservations/reservation_list.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:rehaab/widgets/rounded_button.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +15,6 @@ import 'package:rehaab/widgets/text_field_container.dart';
 import 'package:rehaab/Signin/forgotPass_Screen.dart';
 import 'dart:async';
 import 'package:rehaab/main/home.dart';
-import 'package:intl/intl.dart';
 
 
 class LoginScreen extends StatefulWidget {
@@ -26,8 +27,6 @@ State<LoginScreen> createState() => _LoginScreenState();}
 class _LoginScreenState extends State<LoginScreen> {
  TextEditingController email = TextEditingController();
  TextEditingController Password=TextEditingController();
-  
-
   Future rehaab() async{
     var url ="http://10.0.2.2/phpfiles/signin.php";
     final response= await http.post(Uri.parse(url),body:{
@@ -35,8 +34,9 @@ class _LoginScreenState extends State<LoginScreen> {
     "Password":Password.text});
   var data =json.decode(response.body);
 print(data);
-  if(data=="Success"){
- 
+ GlobalValues.id=data[1];
+  if(data[0]=="Success"){
+    
 
                                              showDialog(
                                                   context: context,
@@ -45,9 +45,10 @@ print(data);
                                                   {
                         Future.delayed(Duration(seconds:2), () {
                               Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) =>  home()),
-  );
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) =>
+                               home())));
                         });
                                                   return Dialog(
                                                    
@@ -355,15 +356,7 @@ print(data);
 
 }
   }
-Future sendigID() async{
-    var url ="http://10.0.2.2/phpfiles/sendingID.php";
-    final response= await http.post(Uri.parse(url),body:{
-    "Email":email.text,
-    "Password":Password.text});
-     var data =json.decode(response.body);
-print(data);
 
-}
 
   @override
   Widget build(BuildContext context) {
@@ -460,7 +453,7 @@ print(data);
                               ),
                       
                               RoundedButton(text: 'SIGN IN', press: () {rehaab();
-                             sendigID();
+                            // sendigID();
                              }),
                               const SizedBox(
                                 height: 10,
