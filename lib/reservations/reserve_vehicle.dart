@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/reservations/reservation_list.dart';
 import '../customization/clip.dart';
 import 'date.dart';
@@ -36,8 +37,9 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
 
 
     Future insert() async{
-   var url = "http://10.6.194.92/phpfiles/reservation.php";
+   var url = "http://10.0.2.2/phpfiles/reservation.php";
    final res= await http.post(Uri.parse(url),body:{
+    "id": GlobalValues.id,
     "date":getDate, 
     "time":getTime,
     "VehicleType": _vehicleType,
@@ -504,7 +506,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                         context: context,
                         builder: (BuildContext context) {
                           return Container(
-                            height: 600,
+                            height: 650,
                             child: BookingPage(),
                           );
                         },
@@ -999,13 +1001,15 @@ class _BookingPageState extends State<BookingPage> {
   static bool _dateSelected = false;
   static bool _timeSelected = false;
   String? token;
+  List tlist=[];
+
 
   @override
-  /*void initState() {
+  void initState() {
     super.initState();
     GetData();
 
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1035,11 +1039,10 @@ class _BookingPageState extends State<BookingPage> {
           SliverGrid(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                var timeSlots = solts();
-               /* if(time.isNotEmpty){ 
+                var timeSlots = tlist;
+               
+                
 
-                solts().remove(time);
-                solts().length--;}*/
                 return InkWell(
                   splashColor: Colors.transparent,
                   onTap: () {
@@ -1052,18 +1055,24 @@ class _BookingPageState extends State<BookingPage> {
                     margin: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: _currentIndex == index
-                            ? Colors.white
+                        color: _currentIndex == index 
+                            ? Colors.white 
                             : Color.fromARGB(255, 33, 30, 30),
                       ),
                       borderRadius: BorderRadius.circular(15),
-                      color: _currentIndex == index
-                          ? Color.fromARGB(255, 232, 231, 230)
-                          : null,
+                      color: _currentIndex == index 
+                          ? Color.fromARGB(255, 232, 231, 230) 
+                          : timeSlots[index]["slotStatus"] == "Both"? 
+                          Colors.green 
+                          : timeSlots[index]["slotStatus"] == "OnlySingle"? 
+                          Colors.yellow 
+                          : timeSlots[index]["slotStatus"] == "OnlyDouble"?
+                          Colors.blue
+                          : Colors.grey,
                     ),
                     alignment: Alignment.center,
-                    child: Text(
-                      '${int.parse(timeSlots[index].substring(0, 2))}${timeSlots[index].substring(2)} ${int.parse(timeSlots[index].substring(0, 2)) > 11 ? "PM" : "AM"}',
+                    child: Text(                                                                                                                                         
+                      '${timeSlots[index]["time"]}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: _currentIndex == index ? Colors.white : null,
@@ -1072,7 +1081,7 @@ class _BookingPageState extends State<BookingPage> {
                   ),
                 );
               },
-              childCount: solts().length,
+              childCount: tlist.length,
             ),
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 4, childAspectRatio: 1.5),
@@ -1150,7 +1159,7 @@ class _BookingPageState extends State<BookingPage> {
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
       setState(() {
-        list.addAll(red);
+        tlist.addAll(red);
       });
     }
     
@@ -1259,7 +1268,6 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
   }
 }*/
 
-List list=[];
 /*
 class BookingPage extends StatefulWidget {
   BookingPage({Key? key}) : super(key: key);
@@ -1404,7 +1412,7 @@ class _BookingPageState extends State<BookingPage> {
   }
   
   Future GetData() async {
-    var url = "http://10.6.194.92/phpfiles/times.php";
+    var url = "http://10.0.2.2/phpfiles/times.php";
     var res = await http.get(Uri.parse(url));
 
     if (res.statusCode == 200) {
