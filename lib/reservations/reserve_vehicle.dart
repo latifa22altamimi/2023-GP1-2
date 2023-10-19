@@ -506,7 +506,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                         context: context,
                         builder: (BuildContext context) {
                           return Container(
-                            height: 600,
+                            height: 650,
                             child: BookingPage(),
                           );
                         },
