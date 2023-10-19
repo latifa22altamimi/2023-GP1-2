@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/reservations/reservation_list.dart';
 import '../customization/clip.dart';
 import 'date.dart';
@@ -38,6 +39,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
     Future insert() async{
    var url = "http://10.0.2.2/phpfiles/reservation.php";
    final res= await http.post(Uri.parse(url),body:{
+    "id": GlobalValues.id,
     "date":getDate, 
     "time":getTime,
     "VehicleType": _vehicleType,
