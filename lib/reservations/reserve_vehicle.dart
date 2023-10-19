@@ -36,7 +36,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
 
 
     Future insert() async{
-   var url = "http://10.0.2.2/phpfiles/reservation.php";
+   var url = "http://10.6.194.92/phpfiles/reservation.php";
    final res= await http.post(Uri.parse(url),body:{
     "date":getDate, 
     "time":getTime,
@@ -528,8 +528,8 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                   _drivingType == "Self-driving") ||
                               (_vehicleType != "" &&
                                       _drivingType == "With-driver" &&
-                                      _driverGender != "" &&_BookingPageState.time.isNotEmpty 
-                                     && _BookingPageState.date.text.isNotEmpty)) {
+                                      _driverGender != "" &&_BookingPageState._timeSelected
+                                     && _BookingPageState._dateSelected)) {
                             // complete with choose time and date
 
                             //confirm msg
@@ -981,7 +981,6 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
   }
 }
 
-/*
 
 class BookingPage extends StatefulWidget {
   BookingPage({Key? key}) : super(key: key);
@@ -1144,7 +1143,19 @@ class _BookingPageState extends State<BookingPage> {
       }),
     );
   }
-}*/
+   Future GetData() async {
+    var url = "http://10.6.194.92/phpfiles/times.php";
+    var res = await http.get(Uri.parse(url));
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      setState(() {
+        list.addAll(red);
+      });
+    }
+    
+      }
+}
 /*class BookingCalendarDemoApp extends StatefulWidget {
   const BookingCalendarDemoApp({Key? key}) : super(key: key);
 
@@ -1249,6 +1260,7 @@ class _BookingCalendarDemoAppState extends State<BookingCalendarDemoApp> {
 }*/
 
 List list=[];
+/*
 class BookingPage extends StatefulWidget {
   BookingPage({Key? key}) : super(key: key);
 
@@ -1392,7 +1404,7 @@ class _BookingPageState extends State<BookingPage> {
   }
   
   Future GetData() async {
-    var url = "http://10.0.2.2/phpfiles/times.php";
+    var url = "http://10.6.194.92/phpfiles/times.php";
     var res = await http.get(Uri.parse(url));
 
     if (res.statusCode == 200) {
@@ -1405,6 +1417,6 @@ class _BookingPageState extends State<BookingPage> {
       }
      
     }
-  
+  */
 
 
