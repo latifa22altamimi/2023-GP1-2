@@ -29,22 +29,14 @@ var changelink;
 
 
   Future ExistEmail() async{
-    var url ="http://10.0.2.2/phpfiles/exsitEmail.php";
+    var url ="http://192.168.100.167/phpfiles/exsitEmail.php";
     final response= await http.post(Uri.parse(url),body:{
     "Email":email.text,
   });
   var data =json.decode(response.body);
-
+print(data);
   if(data == "Fail"){
-        /*  Fluttertoast.showToast(
-        msg: "Email does not exist!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );*/
+
 
     ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -118,15 +110,7 @@ var changelink;
                             );
   }
   else if(data == "empty"){
-        /*  Fluttertoast.showToast(
-        msg: "fill in your email!",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );*/
+
     ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: Duration(seconds: 3),
@@ -218,8 +202,8 @@ sendMail() async{
   final massage= Message()
   ..from = Address(EmailSystem)
   ..recipients.add(email.text)
-  ..subject= 'Reset Password from Rehaab :${DateTime.now()}'
-  ..html = "<h3> please click this link to Reset your password</h3>\n<p> <a href= '$changelink'> Click me to Reset</a></p>";
+  ..subject= 'Reset Password from Rehaab\n ${DateTime.now()}'
+  ..html = "<h2> Hello, </h2> <h3> <p> A request has been received to reset the password for your Rehaab account, please click this link to reset your password</p></h3>\n<p> <a href= '$changelink'> Reset Password</a></p>\n  <h3> if you did not initate this request, just ignore this email.<h3><h3>Thank you,<br> Rehaab team. </h3>";
    try {
     final sendReport = await send(massage, smtpServer);
     print('Message sent: ' + sendReport.toString());

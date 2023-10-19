@@ -26,23 +26,23 @@ if($_SERVER['REQUEST_METHOD']=="POST"){
   
         if(strcmp($NewPass, $ConPass) == 0){
            if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($NewPass) < 8){
-              alert("Password should be strong");    
+              alert("Password must be strong! at least 8 letters, 1 capital and small letter, 1 digit and 1 special character.");    
            }  
            else{
-          
-              $select= "UPDATE `users` SET `Password`='$NewPass' WHERE Email='$Email'";
+            $hashPass=password_hash($NewPass, PASSWORD_DEFAULT);
+              $select= "UPDATE `users` SET `Password`='$hashPass' WHERE Email='$Email'";
               $result= mysqli_query($conn, $select);
               if($result){
-             alert("Changed successfully");
+             alert("Your password has been changed successfully!");
               }
               else{
-                 alert("can not change");
+                 alert("Can not change!");
               }
            }
          }
          else if(strcmp($NewPass, $ConPass)!= 0){
             
-             alert("Passwords does not match");  
+             alert("The passwords does not match!");  
          }
      
          

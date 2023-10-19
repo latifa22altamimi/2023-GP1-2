@@ -8,7 +8,6 @@ import 'package:rehaab/components/upside.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:rehaab/widgets/rounded_button.dart';
 import 'package:http/http.dart' as http;
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rehaab/widgets/text_field_container.dart';
 import 'dart:async';
 import "package:mailer/mailer.dart";
@@ -32,7 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _isSecurePassword=true;
 var verifylink;
   Future signup() async{
-    var url ="http://10.0.2.2/phpfiles/signup.php";
+    var url ="http://192.168.100.167/phpfiles/signup.php";
     final response= await http.post(Uri.parse(url),body:{
     "FirstName":FirstName.text,
     "Email":email.text,
@@ -43,15 +42,7 @@ var verifylink;
   print(data);
 
   if(data == "Error"){
-   /* Fluttertoast.showToast(
-        msg: "Email already exists",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.red,
-        textColor: Colors.white,
-        fontSize: 16.0
-    );*/
+
     ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: Duration(seconds: 3),
@@ -400,7 +391,7 @@ ScaffoldMessenger.of(context).showSnackBar(
                                                             height: 10.0,
                                                           ),
                                                           Text(
-                                                            'Thank you for regestration! Verfiy your email to sign in!',
+                                                            'Thank you for regestration! Verify your email to sign in!',
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .black,
@@ -455,8 +446,8 @@ ScaffoldMessenger.of(context).showSnackBar(
   final massage= Message()
   ..from = Address(EmailSystem)
   ..recipients.add(email.text)
-  ..subject= 'SignUp verification link from Rehaab :${DateTime.now()}'
-  ..html = "<h3> Thanks for registering with Rehaab, please click this link to complete the registration</h3>\n<p> <a href= '$verifylink'> Click me to verify</a></p>";
+  ..subject= 'Thank you for signing up! \n${DateTime.now()}'
+  ..html = "<h2>Hello,</h2><h3> <p> You're almost ready to get started. Please click on the button below to verify your email address and enjoy our services!</p></h3>\n<p> <a href= '$verifylink'> Verify your email</a></p>";
    try {
     final sendReport = await send(massage, smtpServer);
     print('Message sent: ' + sendReport.toString());
@@ -569,7 +560,7 @@ ScaffoldMessenger.of(context).showSnackBar(
             border: InputBorder.none),
       ),
     ),
-                        
+              
                               RoundedButton(text: 'REGISTER', press:(){signup();}),
                               const SizedBox(
                                 height: 10,

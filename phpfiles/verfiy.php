@@ -7,10 +7,10 @@ include 'connect.php';
         $result= mysqli_query($conn, $select);
         
         if($result){
-            echo json_encode("verify successful,you can log in now");
+            echo json_encode("Your Email has been verified successfully,you can sign in now!");
             
         }
         else{
         
-            echo json_encode("not verified");
+            echo json_encode("Couldn't verify your email for some reason, Sorry.");
         }
