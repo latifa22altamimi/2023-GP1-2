@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 18, 2023 at 09:33 PM
+-- Generation Time: Oct 19, 2023 at 09:16 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -44,6 +44,17 @@ CREATE TABLE `adminpram` (
 
 INSERT INTO `adminpram` (`id`, `NumOfSingleV`, `NumOfDoubleV`, `NumOfVehicles`, `ReservationDur`, `numOfVehiclesInSlot`, `date`, `time`) VALUES
 (1, 7, 13, 20, 90, 3, '2023-10-16', '19:30');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `datetime`
+--
+
+CREATE TABLE `datetime` (
+  `D_id` varchar(200) DEFAULT NULL,
+  `D_number` int(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -92,7 +103,19 @@ INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `
 (3, '2023-11-10', '16:00', 'Single', 'Self driving', NULL, 'Cancelled', 44),
 (4, '2023-10-16', '19:30', 'Double', 'WithDriver', 'Female', 'Confirmed', 44),
 (44, '2023-10-17', '16:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(45, '2023-10-17', '22:30', 'Single', 'Self-driving', '', 'Confirmed', 44);
+(45, '2023-10-17', '22:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(46, '2023-10-26', '3:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(47, '2023-10-26', '3:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(48, '2023-10-26', '3:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(49, '2023-10-26', '1:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(50, '2023-10-25', '1:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(51, '2023-10-26', '1:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(52, '2023-10-23', '3:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(53, '2023-10-23', '4:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(55, '2023-11-15', '00:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(60, '2023-11-16', '3:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(61, '2023-10-19', '01:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(62, '2023-10-19', '21:00', 'Single', 'Self-driving', '', 'Confirmed', 44);
 
 -- --------------------------------------------------------
 
@@ -125,7 +148,7 @@ INSERT INTO `users` (`ID`, `FirstName`, `LastName`, `Email`, `Password`, `Type`,
 
 CREATE TABLE `vehicle` (
   `id` int(20) NOT NULL,
-  `time` varchar(5) NOT NULL,
+  `time` varchar(20) NOT NULL,
   `numberOfSingleV` int(5) NOT NULL,
   `numberOfDoubleV` int(5) NOT NULL,
   `slotStatus` varchar(15) NOT NULL
@@ -136,22 +159,22 @@ CREATE TABLE `vehicle` (
 --
 
 INSERT INTO `vehicle` (`id`, `time`, `numberOfSingleV`, `numberOfDoubleV`, `slotStatus`) VALUES
-(1, '00:00', 3, 3, 'Both'),
-(2, '1:30', 3, 3, 'Both'),
-(3, '3:00', 3, 3, 'Both'),
-(4, '4:30', 3, 3, 'Both'),
-(5, '6:00', 3, 3, 'Both'),
-(6, '7:30', 3, 3, 'Both'),
-(7, '9:00', 3, 3, 'Both'),
-(8, '10:30', 3, 3, 'Both'),
-(9, '12:00', 3, 3, 'Both'),
-(10, '13:30', 3, 3, 'Both'),
-(11, '15:00', 3, 3, 'Both'),
-(12, '16:30', 3, 3, 'Both'),
-(13, '18:00', 3, 3, 'Both'),
-(14, '19:30', 3, 3, 'Both'),
-(15, '21:00', 3, 3, 'Both'),
-(16, '22:30', 3, 3, 'Both');
+(1, '12:00 AM', 3, 0, 'OnlySingle'),
+(2, '1:30 AM', 3, 3, 'Both'),
+(3, '3:00 AM', 3, 3, 'Both'),
+(4, '4:30 AM', 3, 3, 'Both'),
+(5, '6:00 AM', 0, 0, 'Occupied'),
+(6, '7:30 AM', 3, 3, 'Both'),
+(7, '9:00 AM', 3, 3, 'Both'),
+(8, '10:30 AM', 0, 3, 'OnlyDouble'),
+(9, '12:00 PM', 3, 3, 'Both'),
+(10, '1:30 PM', 3, 3, 'Both'),
+(11, '3:00 PM', 0, 0, 'Occupied'),
+(12, '4:30 PM', 3, 3, 'Both'),
+(13, '6:00 PM', 3, 3, 'Both'),
+(14, '7:30 PM', 3, 3, 'Both'),
+(15, '9:00 PM', 3, 3, 'Both'),
+(16, '10:30 PM', 3, 3, 'Both');
 
 --
 -- Indexes for dumped tables
@@ -208,7 +231,7 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT for table `users`
