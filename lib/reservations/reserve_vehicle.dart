@@ -16,12 +16,11 @@ import 'package:get/get.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rehaab/reservations/DatePicker2.dart';
 
-
 String _driverGender = "";
 String _vehicleType = "";
 String _drivingType = "";
-String getDate="";
-String getTime="";
+String getDate = "";
+String getTime = "";
 
 //late Map<String, dynamic> time= {"time":"", "date":"" };
 class ReserveVehicle extends StatefulWidget {
@@ -35,25 +34,20 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
 
+  Future insert() async {
+    var url = "http://10.0.2.2/phpfiles/reservation.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "id": GlobalValues.id,
+      "date": getDate,
+      "time": getTime,
+      "VehicleType": _vehicleType,
+      "DrivingType": _drivingType,
+      "DriverGender": _driverGender
+    });
+    var resp = json.decode(res.body);
+    print(resp);
+  }
 
-    Future insert() async{
-   var url = "http://10.0.2.2/phpfiles/reservation.php";
-   final res= await http.post(Uri.parse(url),body:{
-    "id": GlobalValues.id,
-    "date":getDate, 
-    "time":getTime,
-    "VehicleType": _vehicleType,
-    "DrivingType": _drivingType,
-    "DriverGender": _driverGender});
-     var resp= json.decode(res.body);
-     print(resp);
-
-     }
-
-     
-
-
-  
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Color getColor(Set<MaterialState> states) {
@@ -529,9 +523,10 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                           if ((_vehicleType != "" &&
                                   _drivingType == "Self-driving") ||
                               (_vehicleType != "" &&
-                                      _drivingType == "With-driver" &&
-                                      _driverGender != "" &&_BookingPageState._timeSelected
-                                     && _BookingPageState._dateSelected)) {
+                                  _drivingType == "With-driver" &&
+                                  _driverGender != "" &&
+                                  _BookingPageState._timeSelected &&
+                                  _BookingPageState._dateSelected)) {
                             // complete with choose time and date
 
                             //confirm msg
@@ -756,14 +751,13 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                 BoxConstraints.tightFor(
                                                     height: 38, width: 100),
                                             child: ElevatedButton(
-                                              onPressed: () async{
+                                              onPressed: () async {
                                                 insert();
                                                 //success msg here , insert in db --------------------------------------------
 
                                                 _drivingType = "";
                                                 _driverGender = "";
                                                 _vehicleType = "";
-                                               
 
                                                 Navigator.of(context).pop();
                                                 showDialog(
@@ -983,7 +977,6 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
   }
 }
 
-
 class BookingPage extends StatefulWidget {
   BookingPage({Key? key}) : super(key: key);
 
@@ -1001,14 +994,12 @@ class _BookingPageState extends State<BookingPage> {
   static bool _dateSelected = false;
   static bool _timeSelected = false;
   String? token;
-  List tlist=[];
-
+  List tlist = [];
 
   @override
   void initState() {
     super.initState();
     GetData();
-
   }
 
   @override
@@ -1032,60 +1023,11 @@ class _BookingPageState extends State<BookingPage> {
                       ),
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),
-          SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                var timeSlots = tlist;
-               
-                
-
-                return InkWell(
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    setState(() {
-                      _currentIndex = index;
-                      _timeSelected = true;
-                    });
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: _currentIndex == index 
-                            ? Colors.white 
-                            : Color.fromARGB(255, 33, 30, 30),
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                      color: _currentIndex == index 
-                          ? Color.fromARGB(255, 232, 231, 230) 
-                          : timeSlots[index]["slotStatus"] == "Both"? 
-                          Colors.green 
-                          : timeSlots[index]["slotStatus"] == "OnlySingle"? 
-                          Colors.yellow 
-                          : timeSlots[index]["slotStatus"] == "OnlyDouble"?
-                          Colors.blue
-                          : Colors.grey,
-                    ),
-                    alignment: Alignment.center,
-                    child: Text(                                                                                                                                         
-                      '${timeSlots[index]["time"]}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: _currentIndex == index ? Colors.white : null,
-                      ),
-                    ),
-                  ),
-                );
-              },
-              childCount: tlist.length,
-            ),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4, childAspectRatio: 1.5),
-          ),
+           timeSlotsContainer(_currentDay),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
@@ -1149,12 +1091,16 @@ class _BookingPageState extends State<BookingPage> {
             _isWeekend = false;
           }*/
         });
+        timeSlotsContainer(_currentDay);
       }),
     );
   }
-   Future GetData() async {
-    var url = "http://10.6.194.92/phpfiles/times.php";
-    var res = await http.get(Uri.parse(url));
+
+  Future GetData() async {
+    var url = "http://10.0.2.2/phpfiles/times.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "date":_currentDay,
+    });
 
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
@@ -1162,8 +1108,58 @@ class _BookingPageState extends State<BookingPage> {
         tlist.addAll(red);
       });
     }
-    
-      }
+  }
+
+  Widget timeSlotsContainer(_currentDay) {
+    return SliverGrid(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          var timeSlots = tlist;
+
+          return InkWell(
+            splashColor: Colors.transparent,
+            onTap: () {
+              setState(() {
+                _currentIndex = index;
+                _timeSelected = true;
+              });
+            },
+            child: Container(
+              margin: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: _currentIndex == index
+                      ? Colors.white
+                      : Color.fromARGB(255, 33, 30, 30),
+                ),
+                borderRadius: BorderRadius.circular(15),
+                color: _currentIndex == index
+                    ? Color.fromARGB(255, 232, 231, 230)
+                    : timeSlots[index]["slotStatus"] == "Both"
+                        ? Colors.green
+                        : timeSlots[index]["slotStatus"] == "OnlySingle"
+                            ? Colors.yellow
+                            : timeSlots[index]["slotStatus"] == "OnlyDouble"
+                                ? Colors.blue
+                                : Colors.grey,
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                '${timeSlots[index]["time"]} $_currentDay',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: _currentIndex == index ? Colors.white : null,
+                ),
+              ),
+            ),
+          );
+        },
+        childCount: tlist.length,
+      ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4, childAspectRatio: 1.5),
+    );
+  }
 }
 /*class BookingCalendarDemoApp extends StatefulWidget {
   const BookingCalendarDemoApp({Key? key}) : super(key: key);
@@ -1426,5 +1422,4 @@ class _BookingPageState extends State<BookingPage> {
      
     }
   */
-
 

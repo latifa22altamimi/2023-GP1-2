@@ -6,6 +6,8 @@
  */
 
 include 'connect.php';
+$date=$_POST['date'];
+
 $sql = "SELECT * FROM vehicle";
 $result = $conn->query($sql);
  while($ro2 = mysqli_fetch_assoc($result)){
