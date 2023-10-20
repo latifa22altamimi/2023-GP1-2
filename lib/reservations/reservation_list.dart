@@ -173,7 +173,7 @@ class ReserveCard extends StatelessWidget {
                     fontWeight: FontWeight.w400),
               ),
               SizedBox(
-                width: 200.0,
+                width: 170.0,
               ),
               Container(
                 margin: EdgeInsets.only(right: 10.0),
