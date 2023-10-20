@@ -19,7 +19,6 @@ String _drivingType = "";
 String getDate = "";
 String getTime = "";
 
-
 //late Map<String, dynamic> time= {"time":"", "date":"" };
 class ReserveVehicle extends StatefulWidget {
   const ReserveVehicle({super.key});
@@ -973,7 +972,6 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
       ),
     );
   }
-
 }
 
 class BookingPage extends StatefulWidget {
@@ -992,7 +990,7 @@ class _BookingPageState extends State<BookingPage> {
   // ignore: unused_field
   static bool _dateSelected = false;
   static bool _timeSelected = false;
-  
+
   List tlist = [];
   Future GetData() async {
     var url = "http://10.0.2.2/phpfiles/times.php";
@@ -1003,9 +1001,8 @@ class _BookingPageState extends State<BookingPage> {
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
       setState(() {
-
         tlist.clear();
-      tlist.addAll(red);
+        tlist.addAll(red);
       });
     }
   }
@@ -1037,10 +1034,46 @@ class _BookingPageState extends State<BookingPage> {
                     ),
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                    Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Color.fromARGB(255, 205, 204, 204)),
+                    ),
+                    SizedBox(width: 5.0,),
+                    Text(
+                      'No available vehicles',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    SizedBox(width:36.0,),
+                    Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Color.fromARGB(255, 231, 229, 208)),
+                    ),
+                    SizedBox(width: 5.0,),
+                    Text(
+                      'OnlySingle',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    
+                  ],
+                ),
+                SizedBox(height: 15.0,),
               ],
             ),
           ),
-        timeSlotsContainer(),
+          
+          timeSlotsContainer(),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
@@ -1096,7 +1129,7 @@ String dateNow=DateFormat('yyyy-mm-dd').format(DateTime.now());*/
           _currentDay = selectedDay;
           _focusDay = focusedDay;
           _dateSelected = true;
-        
+
           timeSlotsContainer();
           GetData();
         });
@@ -1108,18 +1141,19 @@ String dateNow=DateFormat('yyyy-mm-dd').format(DateTime.now());*/
     return SliverGrid(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          
           var timeSlots = tlist;
 
           return InkWell(
             splashColor: Color.fromARGB(0, 255, 255, 255),
             onTap: () {
               setState(() {
-                if(timeSlots[index]["slotStatus"] == "OnlyDouble" || timeSlots[index]["slotStatus"] == "Both" ||timeSlots[index]["slotStatus"] == "OnlySingle" ){
-                _currentIndex = index;
-                _timeSelected = true;
+                if (timeSlots[index]["slotStatus"] == "OnlyDouble" ||
+                    timeSlots[index]["slotStatus"] == "Both" ||
+                    timeSlots[index]["slotStatus"] == "OnlySingle") {
+                  _currentIndex = index;
+                  _timeSelected = true;
+                 
                 }
-
               });
             },
             child: Container(
@@ -1135,14 +1169,11 @@ String dateNow=DateFormat('yyyy-mm-dd').format(DateTime.now());*/
                     ? kPrimaryColor
                     : timeSlots[index]["slotStatus"] == "Both"
                         ? Colors.white
-                       
-                        : timeSlots[index]["slotStatus"] == "OnlySingle"
-                            ? Colors.yellow
+                        : timeSlots[index]["slotStatus"] == "OnlySingle" 
+                            ?Color.fromARGB(255, 231, 229, 208)
                             : timeSlots[index]["slotStatus"] == "OnlyDouble"
                                 ? Colors.blue
                                 : Color.fromARGB(255, 205, 204, 204),
-
-
               ),
               alignment: Alignment.center,
               child: Text(
@@ -1150,7 +1181,6 @@ String dateNow=DateFormat('yyyy-mm-dd').format(DateTime.now());*/
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: _currentIndex == index ? Colors.white : null,
-
                 ),
               ),
             ),
@@ -1162,10 +1192,7 @@ String dateNow=DateFormat('yyyy-mm-dd').format(DateTime.now());*/
           crossAxisCount: 4, childAspectRatio: 1.5),
     );
   }
-  
 }
-
-
 
 /*class BookingCalendarDemoApp extends StatefulWidget {
   const BookingCalendarDemoApp({Key? key}) : super(key: key);
@@ -1428,4 +1455,3 @@ class _BookingPageState extends State<BookingPage> {
      
     }
   */
-
