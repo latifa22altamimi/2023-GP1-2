@@ -44,6 +44,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
     });
     var resp = json.decode(res.body);
     print(resp);
+    //GlobalValues.Vtype="Double";
   }
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -528,7 +529,6 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                             // complete with choose time and date
 
                             //confirm msg
-
                             showDialog(
                               context: context,
                               builder: (context) => Dialog(
@@ -1110,15 +1110,23 @@ String dateNow=DateFormat('yyyy-mm-dd').format(DateTime.now());*/
         (context, index) {
           
           var timeSlots = tlist;
-
+          print(timeSlots);
           return InkWell(
             splashColor: Color.fromARGB(0, 255, 255, 255),
             onTap: () {
               setState(() {
-                if(timeSlots[index]["slotStatus"] == "OnlyDouble" || timeSlots[index]["slotStatus"] == "Both" ||timeSlots[index]["slotStatus"] == "OnlySingle" ){
+                if( timeSlots[index]["slotStatus"] == "Both" ){
                 _currentIndex = index;
                 _timeSelected = true;
                 }
+                if( timeSlots[index]["slotStatus"] == "OnlySingle" && _vehicleType=="Single"){
+                   _currentIndex = index;
+                _timeSelected = true; 
+                }
+if(timeSlots[index]["slotStatus"] == "OnlyDouble" && _vehicleType=="Double"){
+_currentIndex = index;
+                _timeSelected = true;   
+}
 
               });
             },
@@ -1136,10 +1144,14 @@ String dateNow=DateFormat('yyyy-mm-dd').format(DateTime.now());*/
                     : timeSlots[index]["slotStatus"] == "Both"
                         ? Colors.white
                        
-                        : timeSlots[index]["slotStatus"] == "OnlySingle"
+                        : timeSlots[index]["slotStatus"] == "OnlySingle"&& _vehicleType=="Double"
                             ? Colors.yellow
-                            : timeSlots[index]["slotStatus"] == "OnlyDouble"
-                                ? Colors.blue
+                            : timeSlots[index]["slotStatus"] == "OnlyDouble" && _vehicleType=="Single"
+                                ? Colors.blue 
+                                : timeSlots[index]["slotStatus"] == "OnlyDouble" && _vehicleType=="Double"
+                                ?Colors.white
+                                : timeSlots[index]["slotStatus"] == "OnlySingle" && _vehicleType=="Single"
+                                ?Colors.white
                                 : Color.fromARGB(255, 205, 204, 204),
 
 
