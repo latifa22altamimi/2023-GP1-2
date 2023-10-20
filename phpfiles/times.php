@@ -1,7 +1,7 @@
 <?php
 
 
-include 'connect.php';
+/*include 'connect.php';
 $date=$_POST['date'];
 
 $sql = "SELECT * FROM vehicle";
@@ -29,22 +29,23 @@ $ValueOfTimes[]=["time"=>$times,"value"=>"False"];
 }
 
 echo json_encode($ValueOfTimes);
- /*    $CurrentTimeSlots=array();
-  $sql2= "SELECT * from reservation WHERE date=$date AND Status='Confirmed'";
+
+*/
+
+include 'connect.php';
+$date=$_POST['date'];
+
+$sql = "SELECT * FROM vehicle";
+$result = $conn->query($sql);
+$OriginalTimeSlots=array();
+ while($row = mysqli_fetch_assoc($result)){
+     $OriginalTimeSlots[]=$row;
+ }
+
+      $CurrentTimeSlots=array();
+  $sql2= "SELECT * from reservation WHERE date='$date' AND Status='Confirmed'";
   $result2= $conn->query($sql2);
 
-  $count= mysqli_num_rows($result2);
-
-
-
-if($count==$OriginalTimeSlots['numberOfSingleV']+$OriginalTimeSlots['numberOfDoubleV']){
-    json_encode([0=>$OriginalTimeSlots,1=>"true"]);
-}
-else{
-    json_encode([0=>$OriginalTimeSlots,1=>"true"]);
-}
-
-/*
   while($row2 = mysqli_fetch_assoc($result2)){
     $CurrentTimeSlots[]=$row2;
 }
@@ -57,12 +58,14 @@ for ($i=0; $i<count($CurrentTimeSlots); $i++){
 
         if($OriginalTimeSlots[$j]['time']==$time){
                
-            if($vehicleType='Single'){
+            if($vehicleType=='Single'){
                 $numSingle= $OriginalTimeSlots[$j]['numberOfSingleV'];
                 $OriginalTimeSlots[$j]['numberOfSingleV']= $numSingle-1;
             }else 
-            if($vehicleType='Double'){
-               $OriginalTimeSlots[$j]['numberOfDoubleV']= $OriginalTimeSlots[$j]['numberOfDoubleV']-1;
+            if($vehicleType=='Double'){
+                $numDouble= $OriginalTimeSlots[$j]['numberOfDoubleV'];
+               $OriginalTimeSlots[$j]['numberOfDoubleV']= $numDouble-1;
+             
             }
 
             if($OriginalTimeSlots[$j]['numberOfSingleV']==0 && $OriginalTimeSlots[$j]['numberOfDoubleV']!=0){
@@ -83,7 +86,3 @@ for ($i=0; $i<count($CurrentTimeSlots); $i++){
 }
 
 echo json_encode($OriginalTimeSlots);
-
-   */
-  
-

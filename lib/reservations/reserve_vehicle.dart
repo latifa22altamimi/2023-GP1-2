@@ -1096,14 +1096,6 @@ class _BookingPageState extends State<BookingPage> {
           
           timeSlotsContainer();
           GetData();
-          //check if weekend is selected
-          /*if (selectedDay.weekday == 6 || selectedDay.weekday == 7) {
-            _isWeekend = true;
-            _timeSelected = false;
-            _currentIndex = null;
-          } else {
-            _isWeekend = false;
-          }*/
         });
       }),
     );
@@ -1134,13 +1126,13 @@ class _BookingPageState extends State<BookingPage> {
                 borderRadius: BorderRadius.circular(15),
                 color: _currentIndex == index
                     ? Color.fromARGB(255, 232, 231, 230)
-                    : timeSlots[index]["value"] == "True"
+                    : timeSlots[index]["slotStatus"] == "Both"
                         ? Color.fromARGB(255, 131, 165, 131)
-                        /*
+                       
                         : timeSlots[index]["slotStatus"] == "OnlySingle"
                             ? Colors.yellow
                             : timeSlots[index]["slotStatus"] == "OnlyDouble"
-                                ? Colors.blue*/
+                                ? Colors.blue
                                 : Colors.grey,
               ),
               alignment: Alignment.center,
