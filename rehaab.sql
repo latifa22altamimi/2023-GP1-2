@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 19, 2023 at 09:16 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: Oct 20, 2023 at 05:47 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -86,7 +86,7 @@ INSERT INTO `markers` (`id`, `Latitude`, `Longitude`) VALUES
 CREATE TABLE `reservation` (
   `id` int(20) NOT NULL,
   `date` varchar(10) NOT NULL,
-  `time` varchar(6) NOT NULL,
+  `time` varchar(20) NOT NULL,
   `VehicleType` varchar(6) NOT NULL,
   `drivingType` varchar(20) NOT NULL,
   `driverGender` varchar(20) DEFAULT NULL,
@@ -99,23 +99,11 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `visitorId`) VALUES
-(1, '2023-10-23', '18:00', 'Single', 'Self driving', NULL, 'Confirmed', 44),
-(3, '2023-11-10', '16:00', 'Single', 'Self driving', NULL, 'Cancelled', 44),
-(4, '2023-10-16', '19:30', 'Double', 'WithDriver', 'Female', 'Confirmed', 44),
-(44, '2023-10-17', '16:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(45, '2023-10-17', '22:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(46, '2023-10-26', '3:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(47, '2023-10-26', '3:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(48, '2023-10-26', '3:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(49, '2023-10-26', '1:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(50, '2023-10-25', '1:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(51, '2023-10-26', '1:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(52, '2023-10-23', '3:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(53, '2023-10-23', '4:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(55, '2023-11-15', '00:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(60, '2023-11-16', '3:00', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(61, '2023-10-19', '01:30', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(62, '2023-10-19', '21:00', 'Single', 'Self-driving', '', 'Confirmed', 44);
+(1, '2023-10-23', '12:00 AM', 'Single', 'Self driving', NULL, 'Confirmed', 44),
+(3, '2023-11-10', '6:00 AM', 'Single', 'Self driving', NULL, 'Cancelled', 44),
+(4, '2023-10-16', '7:30 AM', 'Double', 'WithDriver', 'Female', 'Confirmed', 44),
+(63, '2023-10-23', '12:00 AM', 'Single', 'Self driving', NULL, 'Confirmed', 44),
+(65, '2023-10-23', '12:00 AM', 'Single', 'Self-driving', '', 'Confirmed', 44);
 
 -- --------------------------------------------------------
 
@@ -159,17 +147,17 @@ CREATE TABLE `vehicle` (
 --
 
 INSERT INTO `vehicle` (`id`, `time`, `numberOfSingleV`, `numberOfDoubleV`, `slotStatus`) VALUES
-(1, '12:00 AM', 3, 0, 'OnlySingle'),
+(1, '12:00 AM', 3, 3, 'Both'),
 (2, '1:30 AM', 3, 3, 'Both'),
 (3, '3:00 AM', 3, 3, 'Both'),
 (4, '4:30 AM', 3, 3, 'Both'),
-(5, '6:00 AM', 0, 0, 'Occupied'),
+(5, '6:00 AM', 3, 3, 'Both'),
 (6, '7:30 AM', 3, 3, 'Both'),
 (7, '9:00 AM', 3, 3, 'Both'),
-(8, '10:30 AM', 0, 3, 'OnlyDouble'),
+(8, '10:30 AM', 3, 3, 'Both'),
 (9, '12:00 PM', 3, 3, 'Both'),
 (10, '1:30 PM', 3, 3, 'Both'),
-(11, '3:00 PM', 0, 0, 'Occupied'),
+(11, '3:00 PM', 3, 3, 'Both'),
 (12, '4:30 PM', 3, 3, 'Both'),
 (13, '6:00 PM', 3, 3, 'Both'),
 (14, '7:30 PM', 3, 3, 'Both'),
@@ -231,7 +219,7 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
 
 --
 -- AUTO_INCREMENT for table `users`

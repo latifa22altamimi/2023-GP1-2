@@ -995,8 +995,20 @@ class _BookingPageState extends State<BookingPage> {
   static bool _timeSelected = false;
   String? token;
   List tlist = [];
+  Future GetData() async {
+    var url = "http://192.168.1.13/phpfiles/times.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "date": DateConverted.getDate(_currentDay),
+    });
 
-  @override
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      setState(() {
+        tlist.addAll(red);
+      });
+    }
+  }
+
   void initState() {
     super.initState();
     GetData();
@@ -1027,7 +1039,7 @@ class _BookingPageState extends State<BookingPage> {
               ],
             ),
           ),
-           timeSlotsContainer(_currentDay),
+         timeSlotsContainer(),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
@@ -1037,7 +1049,7 @@ class _BookingPageState extends State<BookingPage> {
                   //convert date/day/time into string first
                   getDate = DateConverted.getDate(_currentDay);
                   //final getDay = DateConverted.getDay(_currentDay.weekday);
-                  getTime = DateConverted.getTime(_currentIndex!);
+                  getTime = tlist[_currentIndex!]['time'];
 
                   Navigator.pop(context);
 
@@ -1081,7 +1093,7 @@ class _BookingPageState extends State<BookingPage> {
           _currentDay = selectedDay;
           _focusDay = focusedDay;
           _dateSelected = true;
-
+          
           //check if weekend is selected
           /*if (selectedDay.weekday == 6 || selectedDay.weekday == 7) {
             _isWeekend = true;
@@ -1091,26 +1103,11 @@ class _BookingPageState extends State<BookingPage> {
             _isWeekend = false;
           }*/
         });
-        timeSlotsContainer(_currentDay);
       }),
     );
   }
 
-  Future GetData() async {
-    var url = "http://10.0.2.2/phpfiles/times.php";
-    final res = await http.post(Uri.parse(url), body: {
-      "date":_currentDay,
-    });
-
-    if (res.statusCode == 200) {
-      var red = json.decode(res.body);
-      setState(() {
-        tlist.addAll(red);
-      });
-    }
-  }
-
-  Widget timeSlotsContainer(_currentDay) {
+  Widget timeSlotsContainer() {
     return SliverGrid(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
@@ -1145,7 +1142,7 @@ class _BookingPageState extends State<BookingPage> {
               ),
               alignment: Alignment.center,
               child: Text(
-                '${timeSlots[index]["time"]} $_currentDay',
+                '${timeSlots[index]["numberOfSingleV"]}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: _currentIndex == index ? Colors.white : null,
