@@ -19,7 +19,6 @@ String _drivingType = "";
 String getDate = "";
 String getTime = "";
 
-
 //late Map<String, dynamic> time= {"time":"", "date":"" };
 class ReserveVehicle extends StatefulWidget {
   const ReserveVehicle({super.key});
@@ -978,7 +977,6 @@ void initState() {
       ),
     );
   }
-
 }
 
 class BookingPage extends StatefulWidget {
@@ -997,7 +995,7 @@ class _BookingPageState extends State<BookingPage> {
   // ignore: unused_field
   static bool _dateSelected = false;
   static bool _timeSelected = false;
-  
+
   List tlist = [];
   Future GetData() async {
     var url = "http://10.0.2.2/phpfiles/times.php";
@@ -1008,9 +1006,8 @@ class _BookingPageState extends State<BookingPage> {
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
       setState(() {
-
         tlist.clear();
-      tlist.addAll(red);
+        tlist.addAll(red);
       });
     }
   }
@@ -1042,10 +1039,46 @@ class _BookingPageState extends State<BookingPage> {
                     ),
                   ),
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+
+                    Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Color.fromARGB(255, 205, 204, 204)),
+                    ),
+                    SizedBox(width: 5.0,),
+                    Text(
+                      'No available vehicles',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    SizedBox(width:36.0,),
+                    Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Color.fromARGB(255, 231, 229, 208)),
+                    ),
+                    SizedBox(width: 5.0,),
+                    Text(
+                      'OnlySingle',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500
+                      ),
+                    ),
+                    
+                  ],
+                ),
+                SizedBox(height: 15.0,),
               ],
             ),
           ),
-        timeSlotsContainer(),
+          
+          timeSlotsContainer(),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
@@ -1101,7 +1134,7 @@ String dateNow=DateFormat('yyyy-mm-dd').format(DateTime.now());*/
           _currentDay = selectedDay;
           _focusDay = focusedDay;
           _dateSelected = true;
-        
+
           timeSlotsContainer();
           GetData();
         });
@@ -1113,7 +1146,6 @@ String dateNow=DateFormat('yyyy-mm-dd').format(DateTime.now());*/
     return SliverGrid(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          
           var timeSlots = tlist;
           print(timeSlots);
           return InkWell(
@@ -1158,8 +1190,6 @@ _currentIndex = index;
                                 : timeSlots[index]["slotStatus"] == "OnlySingle" && _vehicleType=="Single"
                                 ?Colors.white
                                 : Color.fromARGB(255, 205, 204, 204),
-
-
               ),
               alignment: Alignment.center,
               child: Text(
@@ -1167,7 +1197,6 @@ _currentIndex = index;
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: _currentIndex == index ? Colors.white : null,
-
                 ),
               ),
             ),
@@ -1179,10 +1208,7 @@ _currentIndex = index;
           crossAxisCount: 4, childAspectRatio: 1.5),
     );
   }
-  
 }
-
-
 
 /*class BookingCalendarDemoApp extends StatefulWidget {
   const BookingCalendarDemoApp({Key? key}) : super(key: key);
@@ -1445,4 +1471,3 @@ class _BookingPageState extends State<BookingPage> {
      
     }
   */
-
