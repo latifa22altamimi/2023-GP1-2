@@ -1,9 +1,5 @@
 <?php
 
-/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHP.php to edit this template
- */
 
 include 'connect.php';
 $date=$_POST['date'];
@@ -11,14 +7,44 @@ $date=$_POST['date'];
 $sql = "SELECT * FROM vehicle";
 $result = $conn->query($sql);
 $OriginalTimeSlots=array();
+$numOfvehicle=array();
  while($row = mysqli_fetch_assoc($result)){
-     $OriginalTimeSlots[]=$row;
+     $OriginalTimeSlots[]=$row['time'];
+     $numOfvehicle[$row['time']]=["double"=>$row['numberOfDoubleV'],"single"=>$row['numberOfSingleV']];
  }
 
-      $CurrentTimeSlots=array();
+
+ $ValueOfTimes=array();
+
+foreach($OriginalTimeSlots as $times) {
+    $sql2= "SELECT * from reservation WHERE date='$date' AND Status='Confirmed' AND time='$times'";
+ $result2= $conn->query($sql2);
+ $count= mysqli_num_rows($result2);
+  if($count==$numOfvehicle[$times]['single']){  
+$ValueOfTimes[]=["time"=>$times,"value"=>"False"];
+}
+  else{
+    $ValueOfTimes[]=["time"=>$times,"value"=>"True"];
+}
+}
+
+echo json_encode($ValueOfTimes);
+ /*    $CurrentTimeSlots=array();
   $sql2= "SELECT * from reservation WHERE date=$date AND Status='Confirmed'";
   $result2= $conn->query($sql2);
 
+  $count= mysqli_num_rows($result2);
+
+
+
+if($count==$OriginalTimeSlots['numberOfSingleV']+$OriginalTimeSlots['numberOfDoubleV']){
+    json_encode([0=>$OriginalTimeSlots,1=>"true"]);
+}
+else{
+    json_encode([0=>$OriginalTimeSlots,1=>"true"]);
+}
+
+/*
   while($row2 = mysqli_fetch_assoc($result2)){
     $CurrentTimeSlots[]=$row2;
 }
@@ -58,6 +84,6 @@ for ($i=0; $i<count($CurrentTimeSlots); $i++){
 
 echo json_encode($OriginalTimeSlots);
 
-   
+   */
   
 

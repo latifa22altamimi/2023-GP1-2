@@ -996,7 +996,7 @@ class _BookingPageState extends State<BookingPage> {
   String? token;
   List tlist = [];
   Future GetData() async {
-    var url = "http://192.168.1.13/phpfiles/times.php";
+    var url = "http://10.0.2.2/phpfiles/times.php";
     final res = await http.post(Uri.parse(url), body: {
       "date": DateConverted.getDate(_currentDay),
     });
@@ -1039,6 +1039,7 @@ class _BookingPageState extends State<BookingPage> {
               ],
             ),
           ),
+        
          timeSlotsContainer(),
           SliverToBoxAdapter(
             child: Container(
@@ -1132,17 +1133,18 @@ class _BookingPageState extends State<BookingPage> {
                 borderRadius: BorderRadius.circular(15),
                 color: _currentIndex == index
                     ? Color.fromARGB(255, 232, 231, 230)
-                    : timeSlots[index]["slotStatus"] == "Both"
-                        ? Colors.green
+                    : timeSlots[index]["value"] == "True"
+                        ? Color.fromARGB(255, 131, 165, 131)
+                        /*
                         : timeSlots[index]["slotStatus"] == "OnlySingle"
                             ? Colors.yellow
                             : timeSlots[index]["slotStatus"] == "OnlyDouble"
-                                ? Colors.blue
+                                ? Colors.blue*/
                                 : Colors.grey,
               ),
               alignment: Alignment.center,
               child: Text(
-                '${timeSlots[index]["numberOfSingleV"]}',
+                '${timeSlots[index]["time"]}',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: _currentIndex == index ? Colors.white : null,
