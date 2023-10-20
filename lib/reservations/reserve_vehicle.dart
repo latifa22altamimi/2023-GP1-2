@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
-import 'package:rehaab/reservations/reservation_list.dart';
 import '../customization/clip.dart';
 import 'date.dart';
 import 'package:rehaab/widgets/rounded_button.dart';
@@ -12,15 +11,14 @@ import '../widgets/constants.dart';
 import '../main/home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'package:get/get.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:rehaab/reservations/DatePicker2.dart';
+import 'package:intl/intl.dart';
 
 String _driverGender = "";
 String _vehicleType = "";
 String _drivingType = "";
 String getDate = "";
 String getTime = "";
+
 
 //late Map<String, dynamic> time= {"time":"", "date":"" };
 class ReserveVehicle extends StatefulWidget {
@@ -31,7 +29,6 @@ class ReserveVehicle extends StatefulWidget {
 }
 
 class _ReserveVehicleState extends State<ReserveVehicle> {
-
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
 
@@ -976,6 +973,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
       ),
     );
   }
+
 }
 
 class BookingPage extends StatefulWidget {
@@ -987,7 +985,6 @@ class BookingPage extends StatefulWidget {
 
 class _BookingPageState extends State<BookingPage> {
   //declaration
-  bool _isVisible= false;
   CalendarFormat _format = CalendarFormat.week;
   DateTime _focusDay = DateTime.now();
   DateTime _currentDay = DateTime.now();
@@ -1006,8 +1003,9 @@ class _BookingPageState extends State<BookingPage> {
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
       setState(() {
+
         tlist.clear();
-        tlist.addAll(red);
+      tlist.addAll(red);
       });
     }
   }
@@ -1093,13 +1091,13 @@ class _BookingPageState extends State<BookingPage> {
       },
       onDaySelected: ((selectedDay, focusedDay) {
         setState(() {
-
+/*String timeNow=DateFormat('hh:mm a').format(DateTime.now());
+String dateNow=DateFormat('yyyy-mm-dd').format(DateTime.now());*/
           _currentDay = selectedDay;
           _focusDay = focusedDay;
           _dateSelected = true;
-      
+        
           timeSlotsContainer();
-    
           GetData();
         });
       }),
@@ -1110,14 +1108,18 @@ class _BookingPageState extends State<BookingPage> {
     return SliverGrid(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
+          
           var timeSlots = tlist;
 
           return InkWell(
-            splashColor: Colors.transparent,
+            splashColor: Color.fromARGB(0, 255, 255, 255),
             onTap: () {
               setState(() {
+                if(timeSlots[index]["slotStatus"] == "OnlyDouble" || timeSlots[index]["slotStatus"] == "Both" ||timeSlots[index]["slotStatus"] == "OnlySingle" ){
                 _currentIndex = index;
                 _timeSelected = true;
+                }
+
               });
             },
             child: Container(
@@ -1125,20 +1127,22 @@ class _BookingPageState extends State<BookingPage> {
               decoration: BoxDecoration(
                 border: Border.all(
                   color: _currentIndex == index
-                      ? Colors.white
-                      : Color.fromARGB(255, 33, 30, 30),
+                      ? Color.fromARGB(255, 243, 239, 239)
+                      : Colors.white,
                 ),
                 borderRadius: BorderRadius.circular(15),
                 color: _currentIndex == index
-                    ? Color.fromARGB(255, 232, 231, 230)
+                    ? kPrimaryColor
                     : timeSlots[index]["slotStatus"] == "Both"
-                        ? Color.fromARGB(255, 131, 165, 131)
+                        ? Colors.white
                        
                         : timeSlots[index]["slotStatus"] == "OnlySingle"
                             ? Colors.yellow
                             : timeSlots[index]["slotStatus"] == "OnlyDouble"
                                 ? Colors.blue
-                                : Colors.grey,
+                                : Color.fromARGB(255, 205, 204, 204),
+
+
               ),
               alignment: Alignment.center,
               child: Text(
@@ -1146,6 +1150,7 @@ class _BookingPageState extends State<BookingPage> {
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: _currentIndex == index ? Colors.white : null,
+
                 ),
               ),
             ),

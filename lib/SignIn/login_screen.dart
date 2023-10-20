@@ -7,7 +7,6 @@ import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/components/page_title_bar.dart';
 import 'package:rehaab/components/upside.dart';
 import 'package:rehaab/SignUp/signup_screen.dart';
-import 'package:rehaab/reservations/reservation_list.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:rehaab/widgets/rounded_button.dart';
 import 'package:http/http.dart' as http;
