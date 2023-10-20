@@ -47,7 +47,12 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
     print(resp);
     //GlobalValues.Vtype="Double";
   }
-
+void initState() {
+    setState(() {
+      _vehicleType = "Single";
+    });
+    super.initState();
+  }
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Color getColor(Set<MaterialState> states) {
