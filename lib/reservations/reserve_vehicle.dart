@@ -31,6 +31,7 @@ class ReserveVehicle extends StatefulWidget {
 }
 
 class _ReserveVehicleState extends State<ReserveVehicle> {
+
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
 
@@ -986,6 +987,7 @@ class BookingPage extends StatefulWidget {
 
 class _BookingPageState extends State<BookingPage> {
   //declaration
+  bool _isVisible= false;
   CalendarFormat _format = CalendarFormat.week;
   DateTime _focusDay = DateTime.now();
   DateTime _currentDay = DateTime.now();
@@ -993,7 +995,7 @@ class _BookingPageState extends State<BookingPage> {
   // ignore: unused_field
   static bool _dateSelected = false;
   static bool _timeSelected = false;
-  String? token;
+  
   List tlist = [];
   Future GetData() async {
     var url = "http://10.0.2.2/phpfiles/times.php";
@@ -1004,6 +1006,7 @@ class _BookingPageState extends State<BookingPage> {
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
       setState(() {
+        tlist.clear();
         tlist.addAll(red);
       });
     }
@@ -1039,7 +1042,7 @@ class _BookingPageState extends State<BookingPage> {
               ],
             ),
           ),
-      timeSlotsContainer(),
+        timeSlotsContainer(),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
@@ -1090,11 +1093,13 @@ class _BookingPageState extends State<BookingPage> {
       },
       onDaySelected: ((selectedDay, focusedDay) {
         setState(() {
+
           _currentDay = selectedDay;
           _focusDay = focusedDay;
           _dateSelected = true;
-          
+      
           timeSlotsContainer();
+    
           GetData();
         });
       }),
