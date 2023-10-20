@@ -1039,8 +1039,7 @@ class _BookingPageState extends State<BookingPage> {
               ],
             ),
           ),
-        
-         timeSlotsContainer(),
+      timeSlotsContainer(),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
@@ -1095,6 +1094,8 @@ class _BookingPageState extends State<BookingPage> {
           _focusDay = focusedDay;
           _dateSelected = true;
           
+          timeSlotsContainer();
+          GetData();
           //check if weekend is selected
           /*if (selectedDay.weekday == 6 || selectedDay.weekday == 7) {
             _isWeekend = true;
@@ -1159,7 +1160,11 @@ class _BookingPageState extends State<BookingPage> {
           crossAxisCount: 4, childAspectRatio: 1.5),
     );
   }
+  
 }
+
+
+
 /*class BookingCalendarDemoApp extends StatefulWidget {
   const BookingCalendarDemoApp({Key? key}) : super(key: key);
 
