@@ -183,7 +183,7 @@ class ReserveCard extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: ((context) =>
-                  ReservationDetails(Rid: Rid, Status: status ,date: datee))));
+                                ReservationDetails(Rid: Rid, Status: status ,date: datee ,time: timee))));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromARGB(131, 60, 100, 73),
@@ -219,3 +219,4 @@ class ReserveCard extends StatelessWidget {
     );
   }
 }
+
