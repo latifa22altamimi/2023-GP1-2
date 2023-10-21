@@ -1015,8 +1015,23 @@ class _BookingPageState extends State<BookingPage> {
       var red = json.decode(res.body);
       setState(() {
         tlist.clear();
-        tlist.addAll(red);
-      });
+      /* String dateNow=DateFormat('yyyy-MM-dd').format(DateTime.now());
+        String timeNow=DateFormat('hh:mm a').format(DateTime.now());
+      String curr=DateConverted.getDate(_currentDay);
+      print(dateNow);
+      print(curr);
+        if(curr==dateNow){
+        for(int i=0;i<16;i++){
+          if(red[i]['time'].isAfter(timeNow)){
+            tlist.addAll(red[i]);
+          }
+        }
+        }  else{
+           tlist.addAll(red);
+          }*/
+    tlist.addAll(red); 
+    
+     });
     }
   }
 
