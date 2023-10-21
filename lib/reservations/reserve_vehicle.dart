@@ -34,7 +34,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
   bool isVisibleDriving = false;
 
   Future insert() async {
-    var url = "http://10.0.2.2/phpfiles/reservation.php";
+    var url = "http://10.0.2.2192.168.8.105/phpfiles/reservation.php";
     final res = await http.post(Uri.parse(url), body: {
       "id": GlobalValues.id,
       "date": getDate,
@@ -1003,10 +1003,10 @@ class _BookingPageState extends State<BookingPage> {
   // ignore: unused_field
   static bool _dateSelected = false;
   static bool _timeSelected = false;
-
+  List list=[];
   List tlist = [];
   Future GetData() async {
-    var url = "http://10.0.2.2/phpfiles/times.php";
+    var url = "http://192.168.8.105/phpfiles/times.php";
     final res = await http.post(Uri.parse(url), body: {
       "date": DateConverted.getDate(_currentDay),
     });
@@ -1014,33 +1014,45 @@ class _BookingPageState extends State<BookingPage> {
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
       setState(() {
+        list.addAll(red);
         tlist.clear();
-    /* String dateNow=DateFormat('yyyy-MM-dd').format(DateTime.now());
-        String timeNow=DateFormat('hh:mm a').format(DateTime.now());
 
-        print(timeNow);
-        print(dateNow);
-        print(red[1]['time']);
-      String curr=DateConverted.getDate(_currentDay);
-      print(dateNow);
-      print(curr);
+        String dateNow = DateFormat('yyyy-MM-dd').format(DateTime.now());
+        String timeNow = DateFormat('HH:mm:ss').format(DateTime.now());
+        String curr = DateConverted.getDate(_currentDay);
+        String dateTime =DateFormat('yyyy-MM-dd ').format(DateTime.now()) + timeNow;
 
-        if(curr==dateNow){
-        for(int i=0;i<16;i++){
-      String com=curr+" "+red[i]['time'];
-      String com1=dateNow+" "+timeNow;
-      DateTime t=DateTime.parse(com);
-       DateTime d=DateTime.parse(com1);
-          if(t.isAfter(d)){
-            tlist.addAll(red[i]);
+        if (curr == dateNow) {
+          print(timeNow);
+          for (int i = 0; i < 16; i++) {
+            print(list[i]['time']);
+            String dd = list[i]['time'];
+            String sub = dd.substring(0, 2);
+            String f= dd.substring(3,5);
+            int k= int.parse(f);
+
+           
+
+            String dj= timeNow.substring(0,2);
+            String g= timeNow.substring(3,5);
+            int j= int.parse(g);
+
+
+            int d= int.parse(sub);
+            int l= int.parse(dj);
+           
+            if (l< d || (l==d && k>j)) {
+              
+              tlist.add(list[i]);
+              
+            }
           }
+        } else {
+          tlist.addAll(red);
         }
-        }  else{
-           tlist.addAll(red);
-           }*/
-  tlist.addAll(red); 
-     });
-    }
+        // tlist.addAll(red);
+});
+}
   }
 
   void initState() {
@@ -1118,14 +1130,13 @@ class _BookingPageState extends State<BookingPage> {
                 text: 'Select',
                 press: () async {
                   //convert date/day/time into string first
-                    if(_timeSelected){ 
+                  if(_timeSelected){ 
                   getDate = DateConverted.getDate(_currentDay);
                   //final getDay = DateConverted.getDay(_currentDay.weekday);
                   getTime = tlist[_currentIndex!]['time'];
-
                   Navigator.pop(context);
-                    }
-                    else{
+                  }
+                  else{
                     ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: Duration(seconds: 3),
@@ -1198,7 +1209,6 @@ class _BookingPageState extends State<BookingPage> {
                             );
 
                   }
-
                   //if booking return status code 200, then redirect to success booking page
                 },
                 disable: _timeSelected ? false : true,
