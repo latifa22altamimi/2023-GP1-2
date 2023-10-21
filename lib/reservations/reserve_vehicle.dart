@@ -1192,7 +1192,7 @@ class _BookingPageState extends State<BookingPage> {
                   }
                   //if booking return status code 200, then redirect to success booking page
                 },
-                //disable: _timeSelected ? false : true,
+                disable: _timeSelected ? false : true,
               ),
             ),
           ),
