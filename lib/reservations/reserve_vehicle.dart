@@ -15,9 +15,11 @@ import 'package:intl/intl.dart';
 
 String _driverGender = "";
 String _vehicleType = "";
-String _drivingType = "";
+String _drivingType = "Double";
 String getDate = "";
 String getTime = "";
+String label = "";
+Color labelColor = Colors.white;
 
 //late Map<String, dynamic> time= {"time":"", "date":"" };
 class ReserveVehicle extends StatefulWidget {
@@ -151,6 +153,9 @@ void initState() {
                                   _drivingType = "Self-driving";
                                   isVisibleGender = false;
                                   _driverGender = "";
+                                  label = "Double vehicle available";
+                                  labelColor =
+                                      Color.fromRGBO(174, 193, 174, 1);
                                 });
                               },
                               fillColor:
@@ -200,6 +205,9 @@ void initState() {
                                   _vehicleType =
                                       "Double"; //when I want to know which value user choosed use _vehicleType
                                   isVisibleDriving = false;
+                                  label = "OnlySingle";
+                                  labelColor =
+                                      Color.fromARGB(255, 231, 229, 208);
                                 });
                               },
                               fillColor:
@@ -1042,42 +1050,43 @@ class _BookingPageState extends State<BookingPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-
                     Container(
                       padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Color.fromARGB(255, 205, 204, 204)),
                     ),
-                    SizedBox(width: 5.0,),
+                    SizedBox(
+                      width: 5.0,
+                    ),
                     Text(
                       'No available vehicles',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.w500),
                     ),
-                    SizedBox(width:36.0,),
+                    SizedBox(
+                      width: 36.0,
+                    ),
                     Container(
                       padding: EdgeInsets.all(12),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
-                          color: Color.fromARGB(255, 231, 229, 208)),
+                          color: labelColor),
                     ),
-                    SizedBox(width: 5.0,),
+                    SizedBox(
+                      width: 5.0,
+                    ),
                     Text(
-                      'OnlySingle',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500
-                      ),
+                      '$label',
+                      style: TextStyle(fontWeight: FontWeight.w500),
                     ),
-                    
                   ],
                 ),
-                SizedBox(height: 15.0,),
+                SizedBox(
+                  height: 15.0,
+                ),
               ],
             ),
           ),
-          
           timeSlotsContainer(),
           SliverToBoxAdapter(
             child: Container(
@@ -1147,24 +1156,26 @@ String dateNow=DateFormat('yyyy-mm-dd').format(DateTime.now());*/
       delegate: SliverChildBuilderDelegate(
         (context, index) {
           var timeSlots = tlist;
+
           print(timeSlots);
           return InkWell(
             splashColor: Color.fromARGB(0, 255, 255, 255),
             onTap: () {
               setState(() {
-                if( timeSlots[index]["slotStatus"] == "Both" ){
-                _currentIndex = index;
-                _timeSelected = true;
+                if (timeSlots[index]["slotStatus"] == "Both") {
+                  _currentIndex = index;
+                  _timeSelected = true;
                 }
-                if( timeSlots[index]["slotStatus"] == "OnlySingle" && _vehicleType=="Single"){
-                   _currentIndex = index;
-                _timeSelected = true; 
+                if (timeSlots[index]["slotStatus"] == "OnlySingle" &&
+                    _vehicleType == "Single") {
+                  _currentIndex = index;
+                  _timeSelected = true;
                 }
-if(timeSlots[index]["slotStatus"] == "OnlyDouble" && _vehicleType=="Double"){
-_currentIndex = index;
-                _timeSelected = true;   
-}
-
+                if (timeSlots[index]["slotStatus"] == "OnlyDouble" &&
+                    _vehicleType == "Double") {
+                  _currentIndex = index;
+                  _timeSelected = true;
+                }
               });
             },
             child: Container(
@@ -1180,16 +1191,21 @@ _currentIndex = index;
                     ? kPrimaryColor
                     : timeSlots[index]["slotStatus"] == "Both"
                         ? Colors.white
-                       
-                        : timeSlots[index]["slotStatus"] == "OnlySingle"&& _vehicleType=="Double"
-                            ? Colors.yellow
-                            : timeSlots[index]["slotStatus"] == "OnlyDouble" && _vehicleType=="Single"
-                                ? Colors.blue 
-                                : timeSlots[index]["slotStatus"] == "OnlyDouble" && _vehicleType=="Double"
-                                ?Colors.white
-                                : timeSlots[index]["slotStatus"] == "OnlySingle" && _vehicleType=="Single"
-                                ?Colors.white
-                                : Color.fromARGB(255, 205, 204, 204),
+                        : timeSlots[index]["slotStatus"] == "OnlySingle" &&
+                                _vehicleType == "Double"
+                            ? labelColor
+                            : timeSlots[index]["slotStatus"] == "OnlyDouble" &&
+                                    _vehicleType == "Single"
+                                ? labelColor
+                                : timeSlots[index]["slotStatus"] ==
+                                            "OnlyDouble" &&
+                                        _vehicleType == "Double"
+                                    ? Colors.white
+                                    : timeSlots[index]["slotStatus"] ==
+                                                "OnlySingle" &&
+                                            _vehicleType == "Single"
+                                        ? Colors.white
+                                        : Color.fromARGB(255, 205, 204, 204),
               ),
               alignment: Alignment.center,
               child: Text(
