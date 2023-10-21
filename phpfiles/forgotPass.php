@@ -79,7 +79,6 @@ overflow: hidden;
 .continer h1{
     text-align: center;
     padding:0 0 20px 0;
-    border-bottom: 1px solid silver; 
     color:#3C6348;
 } 
 .continer form{
