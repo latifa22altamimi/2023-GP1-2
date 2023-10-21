@@ -1110,15 +1110,89 @@ class _BookingPageState extends State<BookingPage> {
                 text: 'Select',
                 press: () async {
                   //convert date/day/time into string first
+                  if(_timeSelected){ 
                   getDate = DateConverted.getDate(_currentDay);
                   //final getDay = DateConverted.getDay(_currentDay.weekday);
                   getTime = tlist[_currentIndex!]['time'];
 
                   Navigator.pop(context);
+                  }
+                  else{
+                    ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(seconds: 3),
+                                content: Container(
+                                  height: 80,
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color.fromARGB(221, 224, 41, 41),
+                                          Color.fromARGB(255, 240, 50, 50),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 4.0,
+                                          spreadRadius: .05,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15))),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Error!',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Text(
+                                              "Choose a time!",
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Lottie.asset(
+                                          'assets/images/erorrr.json',
+                                          width: 150,
+                                          height: 150,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                elevation: 0,
+                                backgroundColor: Colors.transparent,
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
 
+                  }
                   //if booking return status code 200, then redirect to success booking page
                 },
-                disable: _timeSelected ? false : true,
+                //disable: _timeSelected ? false : true,
               ),
             ),
           ),
