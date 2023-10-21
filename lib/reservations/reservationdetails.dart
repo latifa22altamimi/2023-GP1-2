@@ -91,7 +91,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
         backgroundColor: kPrimaryLightColor,
         appBar: AppBar(
           leading: Container(
-            padding: EdgeInsets.only(top: 5.0, bottom:55),
+            padding: EdgeInsets.only(top: 5.0, bottom:60.0),
             child: BackButton(),
           ),
           backgroundColor: Colors.transparent,
