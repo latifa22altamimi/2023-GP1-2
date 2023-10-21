@@ -146,15 +146,21 @@ form .f1{
   opacity:0.7;
 } 
 .logo{
-    width: 10%;
+    width: 15%;
+} 
+.log{
+  margin-top:15px;
+  margin-left:150px;
+  width: 20%;
 }
 
   </style>
 </head> 
 <body>  
-    <img Src="http://www.localhost/phpfiles/logo.png"   class="logo" >
+    <img Src="http://www.localhost/phpfiles/logo1.png"   class="logo" >
 
-    <div class="continer">  
+    <div class="continer">   
+    <img Src="https://cdn-icons-png.flaticon.com/512/6146/6146587.png"   class="log" >
       
       <h1>Reset Password <h1>
 <form  action="forgotPass.php?Email=<?php echo $Email?>" method="POST"> 
