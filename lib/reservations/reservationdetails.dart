@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-//import 'package:flutter/foundation.dart';
 import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +12,9 @@ import '../main/home.dart';
 class ReservationDetails extends StatefulWidget {
   String? Rid;
   String? Status;
+  String? date;
 
-  ReservationDetails({this.Rid, this.Status});
+  ReservationDetails({this.Rid, this.Status, this.date});
 
 /*Future Send(Rid) async{
 var s = await http.post(Uri.parse("http://192.168.8.105/phpfiles/details.php"), body: json.encode({"rid": Rid}));
@@ -25,7 +24,7 @@ if(s.statusCode==200){
 }*/
   @override
   State<ReservationDetails> createState() =>
-      _ReservationDetailsState(Rid: Rid, Status: Status);
+      _ReservationDetailsState(Rid: Rid, Status: Status, date:date);
 }
 
 class _ReservationDetailsState extends State<ReservationDetails> {
@@ -33,11 +32,12 @@ class _ReservationDetailsState extends State<ReservationDetails> {
   List list = [];
   String? Rid;
   String? Status;
+  String? date;
   bool cancelIsVisible = false;
-  _ReservationDetailsState({this.Rid, this.Status});
+  _ReservationDetailsState({this.Rid, this.Status, this.date});
 
   Future GetData() async {
-    var url = "http://10.0.2.2/phpfiles/details.php";
+    var url = "http://192.168.8.105/phpfiles/details.php";
     var res = await http.get(Uri.parse(url));
 
     if (res.statusCode == 200) {
@@ -63,19 +63,18 @@ class _ReservationDetailsState extends State<ReservationDetails> {
   }
 
   remove() async {
-    var url = "http://10.0.2.2/phpfiles/removeReserve.php";
+    var url = "http://192.168.8.105/phpfiles/removeReserve.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": Rid,
     });
     var respo = json.decode(res.body);
     print(respo);
   }
-
   bool visibility() {
-    if (Status == 'Confirmed') {
-      return true;
-    } else {
+    if (Status =='Cancelled' ||  list.isNotEmpty &&   DateTime.parse(date!).isBefore(DateTime.now())) {
       return false;
+    } else{
+      return true;
     }
   }
 
@@ -84,7 +83,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
         backgroundColor: kPrimaryLightColor,
         appBar: AppBar(
           leading: Container(
-            padding: EdgeInsets.only(top: 5.0, bottom:30),
+            padding: EdgeInsets.only(top: 5.0, bottom:55),
             child: BackButton(),
           ),
           backgroundColor: Colors.transparent,
@@ -141,6 +140,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                 border: Border.all(width: 1.0, color: Status== "Cancelled"?  Colors.red :   Colors.green ),
               ),
               child:  Center(
+                
                 child: Text(
                   '${Status}',// reservation status 
                   style: Status == "Cancelled"? TextStyle(color: Colors.red , fontWeight: FontWeight.bold):  TextStyle(color: Colors.green , fontWeight: FontWeight.bold),
@@ -154,17 +154,19 @@ class _ReservationDetailsState extends State<ReservationDetails> {
         Padding(
           padding:  const EdgeInsets.only(top: 25.0),
           child: Column(
+          
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                alignment: Alignment.center,
+              //  decoration: BoxDecoration (border: Border.all(color: Status=='Confirmed'? Colors.green : Colors.red ), borderRadius: BorderRadius.circular(30.0), color: Colors.green.shade900),
+                alignment: Alignment.topCenter,
                
                 //margin: EdgeInsets.only(bottom: 20.0),
                 
                 //padding: EdgeInsets.only(top: 50),
                 child: list.isEmpty? Text("") : QrImageView(
                         data:
-                            "Date:${list[ind]["date"]}\nTime:${list[ind]["time"]}\nVehicle Type: ${list[ind]["VehicleType"]}\nDriving Type: ${list[ind]["drivingType"]}\nDriver gender:${list[ind]["driverGender"]} \n Status: ${Status}",
+                            "Date:${list[ind]["date"]}\nTime:${list[ind]["time"]}\nVehicle Type: ${list[ind]["VehicleType"]}\nDriving Type: ${list[ind]["drivingType"]}\n ${list[ind]["VehicleType"]=="Single"? "Driver gender:${list[ind]["driverGender"]}" : ""}\n Status: ${Status}",
                         size: 150,
                       )),
                         Container(
