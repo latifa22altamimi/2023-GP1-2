@@ -1015,22 +1015,30 @@ class _BookingPageState extends State<BookingPage> {
       var red = json.decode(res.body);
       setState(() {
         tlist.clear();
-      /* String dateNow=DateFormat('yyyy-MM-dd').format(DateTime.now());
+    /* String dateNow=DateFormat('yyyy-MM-dd').format(DateTime.now());
         String timeNow=DateFormat('hh:mm a').format(DateTime.now());
+
+        print(timeNow);
+        print(dateNow);
+        print(red[1]['time']);
       String curr=DateConverted.getDate(_currentDay);
       print(dateNow);
       print(curr);
+
         if(curr==dateNow){
         for(int i=0;i<16;i++){
-          if(red[i]['time'].isAfter(timeNow)){
+      String com=curr+" "+red[i]['time'];
+      String com1=dateNow+" "+timeNow;
+      DateTime t=DateTime.parse(com);
+       DateTime d=DateTime.parse(com1);
+          if(t.isAfter(d)){
             tlist.addAll(red[i]);
           }
         }
         }  else{
            tlist.addAll(red);
-          }*/
-    tlist.addAll(red); 
-    
+           }*/
+  tlist.addAll(red); 
      });
     }
   }
@@ -1110,14 +1118,14 @@ class _BookingPageState extends State<BookingPage> {
                 text: 'Select',
                 press: () async {
                   //convert date/day/time into string first
-                  if(_timeSelected){ 
+                    if(_timeSelected){ 
                   getDate = DateConverted.getDate(_currentDay);
                   //final getDay = DateConverted.getDay(_currentDay.weekday);
                   getTime = tlist[_currentIndex!]['time'];
 
                   Navigator.pop(context);
-                  }
-                  else{
+                    }
+                    else{
                     ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: Duration(seconds: 3),
@@ -1190,6 +1198,7 @@ class _BookingPageState extends State<BookingPage> {
                             );
 
                   }
+
                   //if booking return status code 200, then redirect to success booking page
                 },
                 disable: _timeSelected ? false : true,

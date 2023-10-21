@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
+import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/SignIn/login_screen.dart';
 import 'package:rehaab/main/onboardingscreen.dart';
 import 'package:rehaab/reservations/reserve_vehicle.dart';
@@ -318,7 +319,7 @@ class AppBarr extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Hello, \nMrs. Shahad',
+                'Hello, \n'+GlobalValues.name,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 23,

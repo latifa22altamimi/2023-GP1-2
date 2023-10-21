@@ -35,6 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
   var data =json.decode(response.body);
 print(data);
  GlobalValues.id=data[1];
+ GlobalValues.name=data[2];
+ print(GlobalValues.name);
   if(data[0]=="Success"){
     
 
