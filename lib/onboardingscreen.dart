@@ -200,16 +200,17 @@ List<OnboardingModel> tabs = [
   OnboardingModel(
     'assets/images/vehicle.json',
     'Reserve your vehicle easily',
-    'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,\n sed do eiusmod tempor.',
+    'You can reserve a vehicle,\n view your reservation list, \n cancel and reschedule your reservation easily!.',
   ),
   OnboardingModel(
     'assets/images/kaaba.json',
-    'Track your tawaf status',
-    'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,\n sed do eiusmod tempor.',
+    'Track your Tawaf status',
+    "You don't have to count your Tawaf rounds in mind!,\n Rehaab will count them for you!.",
   ),
   OnboardingModel(
+
     'assets/images/loc1.json',
     'Find our location easily',
-    'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,\n sed do eiusmod tempor.',
+    "You don't have to ask for instructions! \n Rehaab will provide you the vehicle's location easily!.",
   ),
 ];
