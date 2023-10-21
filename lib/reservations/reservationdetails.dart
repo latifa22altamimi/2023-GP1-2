@@ -1,3 +1,4 @@
+
 import 'dart:convert';
 import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -13,8 +14,9 @@ class ReservationDetails extends StatefulWidget {
   String? Rid;
   String? Status;
   String? date;
+  String? time;
 
-  ReservationDetails({this.Rid, this.Status, this.date});
+  ReservationDetails({this.Rid, this.Status, this.date , this.time});
 
 /*Future Send(Rid) async{
 var s = await http.post(Uri.parse("http://192.168.8.105/phpfiles/details.php"), body: json.encode({"rid": Rid}));
@@ -24,7 +26,7 @@ if(s.statusCode==200){
 }*/
   @override
   State<ReservationDetails> createState() =>
-      _ReservationDetailsState(Rid: Rid, Status: Status, date:date);
+      _ReservationDetailsState(Rid: Rid, Status: Status, date:date , time:time);
 }
 
 class _ReservationDetailsState extends State<ReservationDetails> {
@@ -33,8 +35,12 @@ class _ReservationDetailsState extends State<ReservationDetails> {
   String? Rid;
   String? Status;
   String? date;
+  String? time;
+  var datetime ;
+
   bool cancelIsVisible = false;
-  _ReservationDetailsState({this.Rid, this.Status, this.date});
+
+  _ReservationDetailsState({this.Rid, this.Status, this.date, this.time});
 
   Future GetData() async {
     var url = "http://10.0.2.2/phpfiles/details.php";
@@ -42,6 +48,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
 
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
+      
       setState(() {
         list.addAll(red);
       });
@@ -63,7 +70,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
   }
 
   remove() async {
-    var url = "http://192.168.8.105/phpfiles/removeReserve.php";
+    var url = "http://10.0.2.2/phpfiles/removeReserve.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": Rid,
     });
@@ -71,7 +78,8 @@ class _ReservationDetailsState extends State<ReservationDetails> {
     print(respo);
   }
   bool visibility() {
-    if (Status =='Cancelled' ||  list.isNotEmpty &&   DateTime.parse(date!).isBefore(DateTime.now())) {
+  datetime = date!+" "+time!.substring(0,5)+":00";
+    if (Status =='Cancelled' ||  DateTime.now().isAfter(DateTime.parse(datetime!))) {
       return false;
     } else{
       return true;
@@ -83,7 +91,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
         backgroundColor: kPrimaryLightColor,
         appBar: AppBar(
           leading: Container(
-            padding: EdgeInsets.only(top: 5.0, bottom:55),
+            padding: EdgeInsets.only(top: 5.0, bottom:60.0),
             child: BackButton(),
           ),
           backgroundColor: Colors.transparent,
