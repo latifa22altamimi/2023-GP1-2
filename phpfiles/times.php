@@ -4,7 +4,7 @@
 include 'connect.php';
 $date=$_POST['date'];
 
-$sql = "SELECT * FROM vehicle";
+$sql = "SELECT * FROM timeslots";
 $result = $conn->query($sql);
 $OriginalTimeSlots=array(); //time slots from database
  while($row = mysqli_fetch_assoc($result)){
