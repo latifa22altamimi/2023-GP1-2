@@ -76,12 +76,11 @@ class _homeState extends State<home> {
                     NavigationDestination(
                         icon: Icon(Icons.home_outlined),
                         selectedIcon: Icon(Icons.home_outlined),
-                        label: 'Home'), 
-                        NavigationDestination( 
-                         icon: Icon(Icons.person), 
-                           selectedIcon: Icon(Icons.person), 
-                           label:"My profile"),
-                    
+                        label: 'Home'),
+                    NavigationDestination(
+                        icon: Icon(Icons.person_2),
+                        selectedIcon: Icon(Icons.person_2),
+                        label: 'My profile')
                   ]),
             ),
           ),
@@ -105,7 +104,6 @@ class AppBarr extends StatelessWidget {
             bottomLeft: Radius.circular(10),
             bottomRight: Radius.circular(20),
           ),
- 
           gradient: LinearGradient(
             colors: [
               Color.fromARGB(255, 60, 100, 73),
@@ -121,7 +119,7 @@ class AppBarr extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Hello, \n'+GlobalValues.name,
+                'Hello, \n' + GlobalValues.name,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 23,
@@ -141,218 +139,215 @@ class BodyHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-            child: Row(
-              children: [
-                Text(
-                  'Our Services',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500),
-                )
-              ],
-            ),
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+          child: Row(
+            children: [
+              Text(
+                'Our Services',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500),
+              )
+            ],
           ),
+        ),
 
-          // cards
+        // cards
 
-          Container(
-            child: Wrap(
-              alignment: WrapAlignment.spaceBetween,
-              direction: Axis.horizontal,
-              spacing: 1,
-              runSpacing: 2,
-              children: <Widget>[
-                InkWell(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ReserveVehicle())),
-                  child: Container(
-                    width: 180,
-                    height: 180,
-                    margin: const EdgeInsets.all(12),
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 255, 255, 255),
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          blurRadius: 4.0,
-                          spreadRadius: .05,
+        Container(
+          child: Wrap(
+            alignment: WrapAlignment.spaceBetween,
+            direction: Axis.horizontal,
+            spacing: 1,
+            runSpacing: 2,
+            children: <Widget>[
+              InkWell(
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ReserveVehicle())),
+                child: Container(
+                  width: 180,
+                  height: 180,
+                  margin: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 255, 255, 255),
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 4.0,
+                        spreadRadius: .05,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image.asset(
+                          'assets/images/vehicle1.png',
+                          height: 115,
+                          width: 115,
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Image.asset(
-                            'assets/images/vehicle1.png',
-                            height: 115,
-                            width: 115,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Reserve vehicle',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Reserve vehicle',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      )
+                    ],
                   ),
                 ),
-                InkWell(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => OnboardingScreen())),
-                  child: Container(
-                    width: 180,
-                    height: 180,
-                    margin: const EdgeInsets.all(12),
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          blurRadius: 4.0,
-                          spreadRadius: .05,
+              ),
+              InkWell(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => OnboardingScreen())),
+                child: Container(
+                  width: 180,
+                  height: 180,
+                  margin: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 4.0,
+                        spreadRadius: .05,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image.asset(
+                          'assets/images/kaaba.png',
+                          height: 120,
+                          width: 120,
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Image.asset(
-                            'assets/images/kaaba.png',
-                            height: 120,
-                            width: 120,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Track tawaf status',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Track tawaf status',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      )
+                    ],
                   ),
                 ),
-                InkWell(
-                  onTap: () => Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => Home())),
-                  child: Container(
-                    width: 180,
-                    height: 180,
-                    margin: const EdgeInsets.all(12),
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          blurRadius: 4.0,
-                          spreadRadius: .05,
+              ),
+              InkWell(
+                onTap: () => Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Home())),
+                child: Container(
+                  width: 180,
+                  height: 180,
+                  margin: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 4.0,
+                        spreadRadius: .05,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image.asset(
+                          'assets/images/loc.png',
+                          height: 120,
+                          width: 109,
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Image.asset(
-                            'assets/images/loc.png',
-                            height: 120,
-                            width: 109,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Vehicles location',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Vehicles location',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      )
+                    ],
                   ),
                 ),
-                InkWell(
-                  onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const OnboardingScreen())),
-                  child: Container(
-                    width: 180,
-                    height: 180,
-                    margin: const EdgeInsets.all(12),
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          blurRadius: 4.0,
-                          spreadRadius: .05,
+              ),
+              InkWell(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const OnboardingScreen())),
+                child: Container(
+                  width: 180,
+                  height: 180,
+                  margin: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 4.0,
+                        spreadRadius: .05,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image.asset(
+                          'assets/images/qibla.png',
+                          height: 120,
+                          width: 120,
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Image.asset(
-                            'assets/images/qibla.png',
-                            height: 120,
-                            width: 120,
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Qibla',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500),
-                        )
-                      ],
-                    ),
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        'Qibla',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500),
+                      )
+                    ],
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      
+        ),
+      ],
     );
   }
 }

@@ -104,7 +104,6 @@ flutter:
     - assets/images/mark_.png
     - assets/images/Confirmed.png
     - assets/images/Cancelled.png
-    - assets/images/anon.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

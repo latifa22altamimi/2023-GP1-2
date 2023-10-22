@@ -3,10 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rehaab/SignIn/login_screen.dart';
-import 'package:rehaab/Signup/signup_screen.dart';
-
-import 'home.dart';
+import 'package:rehaab/main/home.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -121,8 +118,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                         LoginScreen()), //navigate to sign up page
+                    builder: (context) => home()), //navigate to sign up page
               );
             } else {
               _pageController.nextPage(
@@ -204,16 +200,17 @@ List<OnboardingModel> tabs = [
   OnboardingModel(
     'assets/images/vehicle.json',
     'Reserve your vehicle easily',
-    'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,\n sed do eiusmod tempor.',
+    'You can reserve a vehicle,\n view your reservation list, \n cancel and reschedule your reservation easily!.',
   ),
   OnboardingModel(
     'assets/images/kaaba.json',
-    'Track your tawaf status',
-    'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,\n sed do eiusmod tempor.',
+    'Track your Tawaf status',
+    "You don't have to count your Tawaf rounds in mind!,\n Rehaab will count them for you!.",
   ),
   OnboardingModel(
+
     'assets/images/loc1.json',
     'Find our location easily',
-    'Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,\n sed do eiusmod tempor.',
+    "You don't have to ask for instructions! \n Rehaab will provide you the vehicle's location easily!.",
   ),
 ];
