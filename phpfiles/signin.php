@@ -3,7 +3,6 @@
        $id;
         $Email= $_POST['Email'];
          $Password= $_POST['Password'];
-         //$Type=$_POST['Type'];
         
      
      
@@ -25,30 +24,20 @@
           $pw;
           $id;
           $name;
+          $Lname;
           while($row = mysqli_fetch_assoc($result)) {
             $pw=$row['Password'];
             $id=$row['ID'];
             $name=$row['FirstName'];
+            $Lname=$row['LastName'];
          }
          $id=strval($id);
 
          if(password_verify($Password,$pw)){
-          echo json_encode([0=>"Success",1=>$id,2=>$name]); 
+          echo json_encode([0=>"Success",1=>$id,2=>$name,3=>$Lname]); 
 
 
-            
-      
-          /*echo "<html>  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js'></script>
-          <script>    $.get('RList.php', {Userid:$id}); </script> </html>";*/
-        
-
-
-          //$data=array();
-          //$data[0]="Success";
-          //$data[1]=
-         /* while($row = mysqli_fetch_assoc($result)) {
-                $id=$row['ID'];
-             }*/
+          
          
             }  
             else{

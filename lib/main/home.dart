@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/SignIn/login_screen.dart';
 import 'package:rehaab/main/onboardingscreen.dart';
+import 'package:rehaab/profile/profile.dart';
 import 'package:rehaab/reservations/reserve_vehicle.dart';
 import 'package:rehaab/reservations/myreservations.dart';
 import 'package:rehaab/Map_page/map.dart';
@@ -27,7 +28,7 @@ class _homeState extends State<home> {
         BodyHome(),
       ],
     ),
-    Container(), //settings or log out
+    Profile(), //settings or log out
   ];
 
   @override
@@ -75,7 +76,11 @@ class _homeState extends State<home> {
                     NavigationDestination(
                         icon: Icon(Icons.home_outlined),
                         selectedIcon: Icon(Icons.home_outlined),
-                        label: 'Home'),
+                        label: 'Home'), 
+                        NavigationDestination( 
+                         icon: Icon(Icons.person), 
+                           selectedIcon: Icon(Icons.person), 
+                           label:"My profile"),
                     
                   ]),
             ),
@@ -100,13 +105,7 @@ class AppBarr extends StatelessWidget {
             bottomLeft: Radius.circular(10),
             bottomRight: Radius.circular(20),
           ),
-          /* boxShadow:[
-              BoxShadow(
-                color: Colors.black.withOpacity(0.6),
-                blurRadius: 4.0,
-                spreadRadius: .05,
-              ),
-          ],*/
+ 
           gradient: LinearGradient(
             colors: [
               Color.fromARGB(255, 60, 100, 73),

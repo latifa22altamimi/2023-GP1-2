@@ -36,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
 print(data);
  GlobalValues.id=data[1];
  GlobalValues.name=data[2];
+  GlobalValues.Lname=data[3];
  print(GlobalValues.name);
   if(data[0]=="Success"){
     

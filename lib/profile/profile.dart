@@ -4,19 +4,19 @@ import 'package:rehaab/widgets/constants.dart';
 
 class Profile extends StatelessWidget {
   @override
+  String F="hi";
   Widget build(BuildContext context) {
     return MaterialApp(
+      
        debugShowCheckedModeBanner: false,
         home: Scaffold(
-          body: Container(color: Colors.white54,
+          body: Container(
+          
             child: Column(
               children: [
-                 const ListTile(
-                  leading: Icon(Icons.arrow_back),
-              
-                ),
+           
                 const SizedBox(
-                  height: 90,
+                  height: 100,
                 ),
             
                
@@ -44,11 +44,11 @@ class Profile extends StatelessWidget {
               
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                   const Text(
-                    "",
+                  children:  [
+                   Text(
+                    GlobalValues.name+" "+GlobalValues.Lname,
                       style:
-                          TextStyle(fontWeight: FontWeight.w900, fontSize: 26),
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 26,),
                     )
                   ],
                 ),
@@ -61,22 +61,22 @@ class Profile extends StatelessWidget {
                       Card(
                         margin:
                             const EdgeInsets.only(left: 35, right: 35, bottom: 10),
-                        color: kPrimaryColor,
+                        color: Colors.white,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
                         child: const ListTile(
                           leading: Icon(
                             Icons.privacy_tip_sharp,
-                            color: Colors.white,
+                            color:  kPrimaryColor,
                           ),
                           title: Text(
                             'Privacy',
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                                fontSize: 18, fontWeight: FontWeight.bold, color:  kPrimaryColor),
                           ),
                           trailing: Icon(
                             Icons.arrow_forward_ios_outlined,
-                            color: Colors.white,
+                            color:  kPrimaryColor,
                           ),
                         ),
                       ),
@@ -85,22 +85,22 @@ class Profile extends StatelessWidget {
                         height: 10,
                       ),
                       Card(
-                        color: kPrimaryColor,
+                        color: Colors.white,
                         margin:
                             const EdgeInsets.only(left: 35, right: 35, bottom: 10),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
                         child: const ListTile(
                           leading:
-                              Icon(Icons.help_outline, color: Colors.white),
+                              Icon(Icons.help_outline, color:  kPrimaryColor),
                           title: Text(
                             'Help & Support',
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),
+                                fontSize: 18, fontWeight: FontWeight.bold,color:  kPrimaryColor),
                           ),
                           trailing: Icon(
                             Icons.arrow_forward_ios_outlined,
-                            color: Colors.white,
+                            color:  kPrimaryColor,
                           ),
                         ),
                       ),
@@ -108,7 +108,7 @@ class Profile extends StatelessWidget {
                         height: 10,
                       ),
                       Card(
-                        color: kPrimaryColor,
+                        color: Colors.white,
                         margin:
                             const EdgeInsets.only(left: 35, right: 35, bottom: 10),
                         shape: RoundedRectangleBorder(
@@ -116,23 +116,47 @@ class Profile extends StatelessWidget {
                         child: const ListTile(
                           leading: Icon(
                             Icons.privacy_tip_sharp,
-                            color: Colors.white,
+                            color:  kPrimaryColor,
                           ),
                           title: Text(
                             'Settings',
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                                fontSize: 18, fontWeight: FontWeight.bold, color:  kPrimaryColor),
                           ),
-                          trailing: Icon(Icons.arrow_forward_ios_outlined, color: Colors.white
+                          trailing: Icon(Icons.arrow_forward_ios_outlined, color: kPrimaryColor
                           ),
                         ),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
-                    
                       Card(
-                        color: kPrimaryColor,
+                        margin:
+                            const EdgeInsets.only(left: 35, right: 35, bottom: 10),
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        child: const ListTile(
+                          leading: Icon(
+                            Icons.language,
+                            color:  kPrimaryColor,
+                          ),
+                          title: Text(
+                            'Change Language',
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold, color:  kPrimaryColor),
+                          ),
+                          trailing: Icon(
+                            Icons.arrow_forward_ios_outlined,
+                            color:  kPrimaryColor,
+                          ),
+                        ),
+                      ),
+                         const SizedBox(
+                        height: 10,
+                      ),
+                      Card(
+                        color: Colors.white,
                         margin:
                             const EdgeInsets.only(left: 35, right: 35, bottom: 10),
                         shape: RoundedRectangleBorder(
@@ -140,15 +164,15 @@ class Profile extends StatelessWidget {
                         child: const ListTile(
                           leading: Icon(
                             Icons.logout,
-                            color: Colors.white,
+                            color:  kPrimaryColor,
                           ),
                           title: Text(
                             'Logout',
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                                fontSize: 18, fontWeight: FontWeight.bold, color: kPrimaryColor),
                           ),
                           trailing: Icon(Icons.arrow_forward_ios_outlined,
-                          color: Colors.white,),
+                          color:  kPrimaryColor,),
                         ),
                       )
                     ],
