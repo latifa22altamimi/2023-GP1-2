@@ -1198,21 +1198,10 @@ class _BookingPageState extends State<BookingPage> {
                       style: TextStyle(fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
-                      width: 36.0,
+                      width: 15.0,
                     ),
-                    Container(
-                      padding: EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: labelColor),
-                    ),
-                    SizedBox(
-                      width: 5.0,
-                    ),
-                    Text(
-                      '$label',
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
+               
+         
                   ],
                 ),
                 SizedBox(
@@ -1395,10 +1384,10 @@ class _BookingPageState extends State<BookingPage> {
                         ? Colors.white
                         : timeSlots[index]["slotStatus"] == "OnlySingle" &&
                                 _vehicleType == "Double"
-                            ? labelColor
+                            ?Color.fromARGB(255, 205, 204, 204) 
                             : timeSlots[index]["slotStatus"] == "OnlyDouble" &&
                                     _vehicleType == "Single"
-                                ? labelColor
+                                ? Color.fromARGB(255, 205, 204, 204)
                                 : timeSlots[index]["slotStatus"] ==
                                             "OnlyDouble" &&
                                         _vehicleType == "Double"

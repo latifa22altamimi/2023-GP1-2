@@ -7,7 +7,6 @@ import '../SignIn/login_screen.dart';
 
 class Profile extends StatelessWidget {
   @override
-  String F = "hi";
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -370,8 +369,8 @@ class Profile extends StatelessWidget {
                             },
                             child: Container(
                               color: Colors.white,
-                              margin: const EdgeInsets.only(
-                                  left: 35, right: 35, bottom: 10),
+                             margin: const EdgeInsets.only(
+                                left: 35, right: 35, bottom: 1),
                               child: const ListTile(
                                 leading: Icon(
                                   Icons.logout,
