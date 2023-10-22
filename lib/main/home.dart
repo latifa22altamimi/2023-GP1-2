@@ -4,6 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/SignIn/login_screen.dart';
 import 'package:rehaab/main/onboardingscreen.dart';
+import 'package:rehaab/profile/profile.dart';
 import 'package:rehaab/reservations/reserve_vehicle.dart';
 import 'package:rehaab/reservations/myreservations.dart';
 import 'package:rehaab/Map_page/map.dart';
@@ -27,64 +28,61 @@ class _homeState extends State<home> {
         BodyHome(),
       ],
     ),
-    Container(), //settings or log out
+    Profile(), //settings or log out
   ];
 
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: Scaffold(
-          body: IndexedStack(
-            index: index,
-            children: pages,
+      value: SystemUiOverlayStyle.light,
+      child: Scaffold(
+        body: IndexedStack(
+          index: index,
+          children: pages,
+        ),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(40), topLeft: Radius.circular(40)),
+            boxShadow: [
+              BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 1),
+            ],
           ),
-          bottomNavigationBar: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(40), topLeft: Radius.circular(40)),
-              boxShadow: [
-                BoxShadow(
-                    color: Colors.black38, spreadRadius: 0, blurRadius: 1),
-              ],
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(40.0),
+              topRight: Radius.circular(40.0),
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40.0),
-                topRight: Radius.circular(40.0),
+            child: NavigationBarTheme(
+              data: NavigationBarThemeData(
+                height: 80,
+                labelTextStyle: MaterialStateProperty.all(
+                    TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                shadowColor: Colors.black,
+                indicatorColor:
+                    Color.fromARGB(255, 104, 132, 113).withOpacity(0.34),
               ),
-              child: NavigationBarTheme(
-                data: NavigationBarThemeData(
-                  height: 80,
-                  labelTextStyle: MaterialStateProperty.all(
-                      TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
-                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
-                  shadowColor: Colors.black,
-                  indicatorColor:
-                      Color.fromARGB(255, 104, 132, 113).withOpacity(0.34),
-                ),
-                child: NavigationBar(
-                    selectedIndex: index,
-                    onDestinationSelected: (index) =>
-                        setState(() => this.index = index),
-                    destinations: [
-                      NavigationDestination(
-                        icon: Icon(Icons.menu_outlined),
-                        selectedIcon: Icon(Icons.menu_open),
-                        label: 'My reservations',
-                      ),
-                      NavigationDestination(
-                          icon: Icon(Icons.home_outlined),
-                          selectedIcon: Icon(Icons.home_outlined),
-                          label: 'Home'),
-                      NavigationDestination(
-                          icon: Icon(Icons.person_2_rounded),
-                          label: " My profile"),
-                    ]),
-              ),
+              child: NavigationBar(
+                  selectedIndex: index,
+                  onDestinationSelected: (index) =>
+                      setState(() => this.index = index),
+                  destinations: [
+                    NavigationDestination(
+                      icon: Icon(Icons.menu_outlined),
+                      selectedIcon: Icon(Icons.menu_open),
+                      label: 'My reservations',
+                    ),
+                    NavigationDestination(
+                        icon: Icon(Icons.home_outlined),
+                        selectedIcon: Icon(Icons.home_outlined),
+                        label: 'Home'),
+                  ]),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 
@@ -102,13 +100,6 @@ class AppBarr extends StatelessWidget {
             bottomLeft: Radius.circular(10),
             bottomRight: Radius.circular(20),
           ),
-          /* boxShadow:[
-              BoxShadow(
-                color: Colors.black.withOpacity(0.6),
-                blurRadius: 4.0,
-                spreadRadius: .05,
-              ),
-          ],*/
           gradient: LinearGradient(
             colors: [
               Color.fromARGB(255, 60, 100, 73),

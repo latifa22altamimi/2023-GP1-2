@@ -1,37 +1,6 @@
 <?php
 
 
-/*include 'connect.php';
-$date=$_POST['date'];
-
-$sql = "SELECT * FROM vehicle";
-$result = $conn->query($sql);
-$OriginalTimeSlots=array();
-$numOfvehicle=array();
- while($row = mysqli_fetch_assoc($result)){
-     $OriginalTimeSlots[]=$row['time'];
-     $numOfvehicle[$row['time']]=["double"=>$row['numberOfDoubleV'],"single"=>$row['numberOfSingleV']];
- }
-
-
- $ValueOfTimes=array();
-
-foreach($OriginalTimeSlots as $times) {
-    $sql2= "SELECT * from reservation WHERE date='$date' AND Status='Confirmed' AND time='$times'";
- $result2= $conn->query($sql2);
- $count= mysqli_num_rows($result2);
-  if($count==$numOfvehicle[$times]['single']){  
-$ValueOfTimes[]=["time"=>$times,"value"=>"False"];
-}
-  else{
-    $ValueOfTimes[]=["time"=>$times,"value"=>"True"];
-}
-}
-
-echo json_encode($ValueOfTimes);
-
-*/
-
 include 'connect.php';
 $date=$_POST['date'];
 
