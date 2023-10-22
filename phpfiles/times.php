@@ -6,10 +6,11 @@ $date=$_POST['date'];
 
 $sql = "SELECT * FROM vehicle";
 $result = $conn->query($sql);
-$OriginalTimeSlots=array();
+$OriginalTimeSlots=array(); //time slots from database
  while($row = mysqli_fetch_assoc($result)){
      $OriginalTimeSlots[]=$row;
  }
+
 
       $CurrentTimeSlots=array();
   $sql2= "SELECT * from reservation WHERE date='$date' AND Status='Confirmed'";
