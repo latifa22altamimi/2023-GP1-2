@@ -107,7 +107,9 @@ flutter:
     - assets/images/Confirmed.png
     - assets/images/Cancelled.png
     - assets/images/noavailable.json
-  
+    - assets/images/anon.png
+
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
