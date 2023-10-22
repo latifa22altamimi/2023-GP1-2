@@ -1024,7 +1024,7 @@ class _BookingPageState extends State<BookingPage> {
 
         if (curr == dateNow) {
           print(timeNow);
-          for (int i = 0; i < 16; i++) {
+          for (int i = 0; i < red.length; i++) {
             print(list[i]['time']);
             String dd = list[i]['time'];
             String sub = dd.substring(0, 2);
