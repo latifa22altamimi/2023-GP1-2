@@ -77,6 +77,10 @@ class _homeState extends State<home> {
                         icon: Icon(Icons.home_outlined),
                         selectedIcon: Icon(Icons.home_outlined),
                         label: 'Home'),
+                    NavigationDestination(
+                        icon: Icon(Icons.person_2),
+                        selectedIcon: Icon(Icons.person_2),
+                        label: 'My profile')
                   ]),
             ),
           ),
