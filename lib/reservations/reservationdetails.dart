@@ -90,40 +90,40 @@ class _ReservationDetailsState extends State<ReservationDetails> {
     return Scaffold(
         backgroundColor: kPrimaryLightColor,
         appBar: AppBar(
-          leading: Container(
-            padding: EdgeInsets.only(top: 5.0, bottom:60.0),
-            child: BackButton(),
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
-          toolbarHeight: 100,
-          flexibleSpace: ClipPath(
-            clipper: AppbarClip(),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: 120,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color.fromARGB(255, 60, 100, 73),
-                    Color.fromARGB(255, 104, 132, 113)
-                  ],
-                ),
+        leading: Container(
+          padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
+          child: BackButton(),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        toolbarHeight: 100,
+        flexibleSpace: ClipPath(
+          clipper: AppbarClip(),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 180,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color.fromARGB(255, 60, 100, 73),
+                  Color.fromARGB(255, 104, 132, 113)
+                ],
               ),
-              child: Center(
-                child: Text(
-                  'Reservation details',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 19,
-                      fontWeight: FontWeight.w500),
-                ),
+            ),
+            child: Center(
+              child: Text(
+                'Reservation details',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 23,
+                    fontWeight: FontWeight.w500),
               ),
             ),
           ),
         ),
+      ),
         body: Container(
           
           child: Column(children: [Container(alignment: Alignment.topCenter, //width: 350,height: 500,
