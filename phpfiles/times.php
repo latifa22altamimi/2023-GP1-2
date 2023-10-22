@@ -35,7 +35,7 @@ echo json_encode($ValueOfTimes);
 include 'connect.php';
 $date=$_POST['date'];
 
-$sql = "SELECT * FROM vehicle";
+$sql = "SELECT * FROM timeslots";
 $result = $conn->query($sql);
 $OriginalTimeSlots=array();
  while($row = mysqli_fetch_assoc($result)){

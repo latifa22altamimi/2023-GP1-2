@@ -47,12 +47,17 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
     print(resp);
     //GlobalValues.Vtype="Double";
   }
-void initState() {
+
+  void initState() {
     setState(() {
-      _vehicleType = "Single";
+      _vehicleType = "";
+      _drivingType = "";
+      getTime = "";
+      _BookingPageState._timeSelected = false;
     });
     super.initState();
   }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   Color getColor(Set<MaterialState> states) {
@@ -154,8 +159,7 @@ void initState() {
                                   isVisibleGender = false;
                                   _driverGender = "";
                                   label = "Double vehicle available";
-                                  labelColor =
-                                      Color.fromRGBO(174, 193, 174, 1);
+                                  labelColor = Color.fromRGBO(174, 193, 174, 1);
                                 });
                               },
                               fillColor:
@@ -506,16 +510,89 @@ void initState() {
                     ),
                     onPressed: () {
                       //show dates and time
-                      showModalBottomSheet(
-                        isScrollControlled: true,
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Container(
-                            height: 650,
-                            child: BookingPage(),
-                          );
-                        },
-                      );
+                      if (_vehicleType != "") {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              height: 650,
+                              child: BookingPage(),
+                            );
+                          },
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            duration: Duration(seconds: 3),
+                            content: Container(
+                              height: 80,
+                              padding: EdgeInsets.all(10.0),
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color.fromARGB(221, 224, 41, 41),
+                                      Color.fromARGB(255, 240, 50, 50),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      blurRadius: 4.0,
+                                      spreadRadius: .05,
+                                    ),
+                                  ],
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15))),
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 30,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Error!',
+                                          style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 255, 255, 255),
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                        Text(
+                                          "Choose type of vehicle",
+                                          style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 255, 255, 255),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w400),
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    child: Lottie.asset(
+                                      'assets/images/erorrr.json',
+                                      width: 150,
+                                      height: 150,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            elevation: 0,
+                            backgroundColor: Colors.transparent,
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      }
                     },
                   ),
                 ),
@@ -532,12 +609,12 @@ void initState() {
                           //form is valid
 
                           if ((_vehicleType != "" &&
-                                  _drivingType == "Self-driving") ||
+                                  _drivingType == "Self-driving" &&
+                                  _BookingPageState._timeSelected) ||
                               (_vehicleType != "" &&
                                   _drivingType == "With-driver" &&
                                   _driverGender != "" &&
-                                  _BookingPageState._timeSelected &&
-                                  _BookingPageState._dateSelected)) {
+                                  _BookingPageState._timeSelected)) {
                             // complete with choose time and date
 
                             //confirm msg
@@ -762,12 +839,15 @@ void initState() {
                                                     height: 38, width: 100),
                                             child: ElevatedButton(
                                               onPressed: () async {
+                                                
                                                 insert();
                                                 //success msg here , insert in db --------------------------------------------
 
                                                 _drivingType = "";
                                                 _driverGender = "";
                                                 _vehicleType = "";
+                                                getTime = "";
+                                                getDate = '';
 
                                                 Navigator.of(context).pop();
                                                 showDialog(
@@ -889,6 +969,29 @@ void initState() {
                             );
                           } else {
                             //Error msg
+                            String errorMsg = "";
+                            if (!_BookingPageState._timeSelected) {
+                              errorMsg = "Choose time";
+                            }
+                            if (_vehicleType == "") {
+                              errorMsg = "Choose vehicle type";
+                            }
+                            if (_drivingType == "") {
+                              errorMsg = "Choose driving type";
+                            }
+                            if (_vehicleType == "Double" &&
+                                _drivingType == "") {
+                              errorMsg = "Choose driving type";
+                            }
+                            if (_vehicleType == "" &&
+                                _drivingType == "" &&
+                                !_BookingPageState._timeSelected) {
+                              errorMsg = "Empty fields";
+                            }
+                            if (_drivingType == "With-driver" &&
+                                _driverGender == "") {
+                              errorMsg = "Choose driving gender";
+                            }
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
@@ -933,7 +1036,7 @@ void initState() {
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             Text(
-                                              "There is an empty field!",
+                                              "$errorMsg",
                                               style: TextStyle(
                                                   color: Color.fromARGB(
                                                       255, 255, 255, 255),
@@ -1003,7 +1106,7 @@ class _BookingPageState extends State<BookingPage> {
   // ignore: unused_field
   static bool _dateSelected = false;
   static bool _timeSelected = false;
-  List list=[];
+  List list = [];
   List tlist = [];
   Future GetData() async {
     var url = "http://10.0.2.2/phpfiles/times.php";
@@ -1020,7 +1123,8 @@ class _BookingPageState extends State<BookingPage> {
         String dateNow = DateFormat('yyyy-MM-dd').format(DateTime.now());
         String timeNow = DateFormat('HH:mm:ss').format(DateTime.now());
         String curr = DateConverted.getDate(_currentDay);
-        String dateTime =DateFormat('yyyy-MM-dd ').format(DateTime.now()) + timeNow;
+        String dateTime =
+            DateFormat('yyyy-MM-dd ').format(DateTime.now()) + timeNow;
 
         if (curr == dateNow) {
           print(timeNow);
@@ -1028,31 +1132,26 @@ class _BookingPageState extends State<BookingPage> {
             print(list[i]['time']);
             String dd = list[i]['time'];
             String sub = dd.substring(0, 2);
-            String f= dd.substring(3,5);
-            int k= int.parse(f);
+            String f = dd.substring(3, 5);
+            int k = int.parse(f);
 
-           
+            String dj = timeNow.substring(0, 2);
+            String g = timeNow.substring(3, 5);
+            int j = int.parse(g);
 
-            String dj= timeNow.substring(0,2);
-            String g= timeNow.substring(3,5);
-            int j= int.parse(g);
+            int d = int.parse(sub);
+            int l = int.parse(dj);
 
-
-            int d= int.parse(sub);
-            int l= int.parse(dj);
-           
-            if (l< d || (l==d && k>j)) {
-              
+            if (l < d || (l == d && k > j)) {
               tlist.add(list[i]);
-              
             }
           }
         } else {
           tlist.addAll(red);
         }
         // tlist.addAll(red);
-});
-}
+      });
+    }
   }
 
   void initState() {
@@ -1130,84 +1229,81 @@ class _BookingPageState extends State<BookingPage> {
                 text: 'Select',
                 press: () async {
                   //convert date/day/time into string first
-                  if(_timeSelected){ 
-                  getDate = DateConverted.getDate(_currentDay);
-                  //final getDay = DateConverted.getDay(_currentDay.weekday);
-                  getTime = tlist[_currentIndex!]['time'];
-                  Navigator.pop(context);
-                  }
-                  else{
+                  if (_timeSelected) {
+                    getDate = DateConverted.getDate(_currentDay);
+                    //final getDay = DateConverted.getDay(_currentDay.weekday);
+                    getTime = tlist[_currentIndex!]['time'];
+                    Navigator.pop(context);
+                  } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                duration: Duration(seconds: 3),
-                                content: Container(
-                                  height: 80,
-                                  padding: EdgeInsets.all(10.0),
-                                  decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Color.fromARGB(221, 224, 41, 41),
-                                          Color.fromARGB(255, 240, 50, 50),
-                                        ],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.2),
-                                          blurRadius: 4.0,
-                                          spreadRadius: .05,
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(15))),
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 30,
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Error!',
-                                              style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 255, 255, 255),
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w700),
-                                            ),
-                                            Text(
-                                              "Choose a time!",
-                                              style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 255, 255, 255),
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w400),
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 3,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        child: Lottie.asset(
-                                          'assets/images/erorrr.json',
-                                          width: 150,
-                                          height: 150,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                elevation: 0,
-                                backgroundColor: Colors.transparent,
-                                behavior: SnackBarBehavior.floating,
+                      SnackBar(
+                        duration: Duration(seconds: 3),
+                        content: Container(
+                          height: 80,
+                          padding: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromARGB(221, 224, 41, 41),
+                                  Color.fromARGB(255, 240, 50, 50),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
-                            );
-
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 4.0,
+                                  spreadRadius: .05,
+                                ),
+                              ],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Error!',
+                                      style: TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 255, 255, 255),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                      "Choose a time!",
+                                      style: TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 255, 255, 255),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w400),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 3,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: Lottie.asset(
+                                  'assets/images/erorrr.json',
+                                  width: 150,
+                                  height: 150,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        elevation: 0,
+                        backgroundColor: Colors.transparent,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
                   }
                   //if booking return status code 200, then redirect to success booking page
                 },
@@ -1246,7 +1342,6 @@ class _BookingPageState extends State<BookingPage> {
       },
       onDaySelected: ((selectedDay, focusedDay) {
         setState(() {
-
           _currentDay = selectedDay;
           _focusDay = focusedDay;
           _dateSelected = true;
