@@ -203,7 +203,7 @@ class OnboardingModel {
 
 List<OnboardingModel> tabs = [
   OnboardingModel(
-    'assets/images/vehicle.json',
+    'assets/images/reserve.json',
     'Reserve your vehicle easily',
     'You can reserve a vehicle,\nView your reservation list, \nCancel and reschedule your reservation easily!',
   ),
