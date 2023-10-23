@@ -229,16 +229,16 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Container(
-                                    padding: const EdgeInsets.all(20.0),
+                                    padding: const EdgeInsets.all(15.0),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Lottie.asset('assets/images/warn.json',
-                                            width: 150, height: 120),
+                                            width: 100, height: 100),
                                         Text(
-                                          'Warning',
+                                          'Cancel reservation',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 20,
@@ -248,14 +248,14 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                                           height: 10.0,
                                         ),
                                         Text(
-                                          'Do you want to cancel?',
+                                          'Your reservation will be cancelled, and \nyour current time slot will be available to the public, but you can reserve again.',
                                           style: TextStyle(
-                                              color: Colors.black,
+                                              color: Color.fromARGB(255, 48, 48, 48),
                                               fontSize: 17,
                                               fontWeight: FontWeight.w400),
                                         ),
                                         SizedBox(
-                                          height: 10.0,
+                                          height: 15.0,
                                         ),
                                         Row(
                                           crossAxisAlignment:
@@ -397,7 +397,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                                                   );
                                                 },
                                                 child: Text(
-                                                  'Confirm',
+                                                  'Cancel',
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 15,
