@@ -102,6 +102,7 @@ class Profile extends StatelessWidget {
                         height: 10,
                       ),
                       Card(
+                      
                         color: Colors.white,
                         margin: const EdgeInsets.only(
                             left: 35, right: 35, bottom: 10),
@@ -153,7 +154,7 @@ class Profile extends StatelessWidget {
                       const SizedBox(
                         height: 10,
                       ),
-                      Card(
+                        Container(
                         child: new InkWell(
                             onTap: () async {
                               showDialog(
@@ -367,10 +368,10 @@ class Profile extends StatelessWidget {
                                 ),
                               );
                             },
-                            child: Container(
+                            child: Card(
                               color: Colors.white,
                              margin: const EdgeInsets.only(
-                                left: 35, right: 35, bottom: 1),
+                                left: 35, right:35, bottom: 1),
                               child: const ListTile(
                                 leading: Icon(
                                   Icons.logout,
@@ -388,10 +389,10 @@ class Profile extends StatelessWidget {
                                   color: kPrimaryColor,
                                 ),
                               ),
-                            )),
-                        shape: RoundedRectangleBorder(
+                               shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
                       )
+                            )),
                     ],
                   )),
                 )
