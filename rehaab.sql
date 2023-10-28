@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2023 at 04:06 PM
+-- Generation Time: Oct 28, 2023 at 06:16 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -92,11 +92,12 @@ INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `
 (78, '2023-10-22', '18:00 PM', 'Double', 'Self-driving', '', 'Confirmed', 44),
 (79, '2023-10-22', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
 (80, '2023-10-22', '18:00 PM', 'Double', 'Self-driving', '', 'Confirmed', 44),
-(81, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Cancelled', 44),
+(81, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
 (82, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
 (83, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
 (84, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(85, '2023-10-27', '03:00 AM', 'Single', 'Self-driving', '', 'Being used', 44);
+(85, '2023-10-27', '03:00 AM', 'Single', 'Self-driving', '', 'Being used', 44),
+(86, '2023-10-28', '21:00 PM', 'Single', 'Self-driving', '', 'Cancelled', 44);
 
 -- --------------------------------------------------------
 
@@ -233,7 +234,13 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+
+--
+-- AUTO_INCREMENT for table `supportreq`
+--
+ALTER TABLE `supportreq`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `timeslots`
@@ -267,4 +274,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
