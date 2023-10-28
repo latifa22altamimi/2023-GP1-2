@@ -22,7 +22,7 @@ class _ReservationListState extends State<ReservationList> {
   bool empty = true;
   Future GetData() async {
     print(GlobalValues.id);
-    var url = "http://10.0.2.2/phpfiles/RList.php";
+    var url = "http://192.168.8.114/phpfiles/RList.php";
     final res = await http.post(Uri.parse(url), body: {
       "Userid": GlobalValues.id,
     });
@@ -69,6 +69,15 @@ class _ReservationListState extends State<ReservationList> {
                 timee: list[index]["time"],
                 status: list[index]["Status"],
                 colorr: Color.fromARGB(255, 215, 53, 53),
+              );
+            }
+            if (list[index]["Status"] == "Being used") { //new
+              return ReserveCard(
+                Rid: list[index]["id"],
+                datee: list[index]["date"],
+                timee: list[index]["time"],
+                status: list[index]["Status"],
+                colorr: Colors.yellow,
               );
             }
           } else {
