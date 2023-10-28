@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2023 at 05:08 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Oct 28, 2023 at 04:06 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -92,8 +92,25 @@ INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `
 (78, '2023-10-22', '18:00 PM', 'Double', 'Self-driving', '', 'Confirmed', 44),
 (79, '2023-10-22', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
 (80, '2023-10-22', '18:00 PM', 'Double', 'Self-driving', '', 'Confirmed', 44),
-(81, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(82, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44);
+(81, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Cancelled', 44),
+(82, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(83, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(84, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(85, '2023-10-27', '03:00 AM', 'Single', 'Self-driving', '', 'Being used', 44);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supportreq`
+--
+
+CREATE TABLE `supportreq` (
+  `id` int(11) NOT NULL,
+  `reservationNo` int(11) NOT NULL,
+  `Latitude` double NOT NULL,
+  `Longitude` double NOT NULL,
+  `Message` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -178,6 +195,13 @@ ALTER TABLE `reservation`
   ADD KEY `visitorId` (`visitorId`);
 
 --
+-- Indexes for table `supportreq`
+--
+ALTER TABLE `supportreq`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `reservationNo` (`reservationNo`);
+
+--
 -- Indexes for table `timeslots`
 --
 ALTER TABLE `timeslots`
@@ -209,7 +233,7 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT for table `timeslots`
@@ -232,8 +256,15 @@ ALTER TABLE `users`
 --
 ALTER TABLE `reservation`
   ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`visitorId`) REFERENCES `users` (`ID`);
+
+--
+-- Constraints for table `supportreq`
+--
+ALTER TABLE `supportreq`
+  ADD CONSTRAINT `supportreq_ibfk_1` FOREIGN KEY (`reservationNo`) REFERENCES `reservation` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
