@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -9,6 +8,7 @@ import 'package:rehaab/reservations/reservation_list.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:ticket_widget/ticket_widget.dart';
 import '../main/home.dart';
+//import 'package:rehaab/callSupport/support.dart';
 
 class ReservationDetails extends StatefulWidget {
   String? Rid;
@@ -79,10 +79,19 @@ class _ReservationDetailsState extends State<ReservationDetails> {
   }
   bool visibility() {
   datetime = date!+" "+time!.substring(0,5)+":00";
-    if (Status =='Cancelled' ||  DateTime.now().isAfter(DateTime.parse(datetime!))) {
+    if (Status =='Cancelled' ||  DateTime.now().isAfter(DateTime.parse(datetime!))|| Status=='Being used') {
       return false;
     } else{
       return true;
+    }
+  }
+  bool visible(){
+    if(Status=='Being used'){
+      return true;
+
+    }
+    else{
+      return false;
     }
   }
 
@@ -145,13 +154,13 @@ class _ReservationDetailsState extends State<ReservationDetails> {
               height: 25.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.0),
-                border: Border.all(width: 1.0, color: Status== "Cancelled"?  Colors.red :   Colors.green ),
+                border: Border.all(width: 1.0, color: Status== "Cancelled"?  Colors.red : Status=="Confirmed"?   Colors.green: Colors.yellow  ),
               ),
               child:  Center(
                 
                 child: Text(
                   '${Status}',// reservation status 
-                  style: Status == "Cancelled"? TextStyle(color: Colors.red , fontWeight: FontWeight.bold):  TextStyle(color: Colors.green , fontWeight: FontWeight.bold),
+                  style: Status == "Cancelled"? TextStyle(color: Colors.red , fontWeight: FontWeight.bold):Status=="Confirmed"?  TextStyle(color: Colors.green , fontWeight: FontWeight.bold) : TextStyle(color: Colors.yellow , fontWeight: FontWeight.bold ),
                 ),
               ),
             ),
@@ -211,11 +220,8 @@ class _ReservationDetailsState extends State<ReservationDetails> {
     ),
         ),),  Container (
 
-                child: Row(
-              children: [
-               
-                //cancel button
-                Visibility(
+                child: Column(
+              children: [ Row(children: [Visibility(
                   visible: visibility(),
                   child: Container(
                    padding: EdgeInsets.only(left:55, right: 10, top:35),
@@ -437,9 +443,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                       ),
                     ),
                   ),
-                ),
-
-                Visibility(
+                ), Visibility(
                   visible: visibility(),
                   child: Container(
 
@@ -460,11 +464,19 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                       ),
                     ),
                   ),
-                ), Offstage(
-              offstage: true,
-              child: ElevatedButton.icon(
-                onPressed: () async {},
-                label: Text("Call support"),
+                ),],) 
+               
+                //cancel button
+                ,Row(children: [Visibility(
+              visible: visible(),
+              child:    Container ( padding: EdgeInsets.only(left:40, right: 10, top:35),    child:  ElevatedButton.icon(
+                onPressed: () async { /*Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        callSupport()), //navigate to sign up page
+              );*/},
+                label: Text("Call for support"),
                 icon: Icon(Icons.phone),
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith(
@@ -473,13 +485,15 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0))),
                   fixedSize: MaterialStateProperty.resolveWith(
-                      (states) => Size(  150,40 )),
+                      (states) => Size(  170,40 )),
                 ),
-              ),
+              ),)
             ),
-            Offstage(
-                offstage: true,
+            Visibility(
+                visible: visible(),
                 child: Container(
+                                     padding: EdgeInsets.only(right: 6 , top:35),
+
                  // padding: EdgeInsets.only(top: 8),
                   child: ElevatedButton.icon(
                     onPressed: () async {
@@ -716,7 +730,9 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                           (states) => Size(150,40)),
                     ),
                   ),
-                ))
+                ))],)
+
+                 
               ],
             ),
             
