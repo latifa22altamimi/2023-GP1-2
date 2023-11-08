@@ -27,16 +27,16 @@ class _LoginScreenState extends State<LoginScreen> {
  TextEditingController email = TextEditingController();
  TextEditingController Password=TextEditingController();
  bool _isSecurePassword=true;
-  Future rehaab() async{
+  Future signin() async{
     var url ="http://10.0.2.2/phpfiles/signin.php";
     final response= await http.post(Uri.parse(url),body:{
     "Email":email.text,
     "Password":Password.text});
   var data =json.decode(response.body);
 print(data);
- GlobalValues.id=data[1];
- GlobalValues.name=data[2];
-  GlobalValues.Lname=data[3];
+GlobalValues.id=data[1];
+GlobalValues.name=data[2];
+GlobalValues.Lname=data[3];
  print(GlobalValues.name);
   if(data[0]=="Success"){
     
@@ -452,7 +452,7 @@ print(data);
                                 height: 13,
                               ),
                       
-                              RoundedButton(text: 'SIGN IN', press: () {rehaab();
+                              RoundedButton(text: 'SIGN IN', press: () {signin();
                             // sendigID();
                              }),
                               const SizedBox(

@@ -93,7 +93,7 @@ class _HomeState extends State<Home> {
                 markerId: MarkerId(list[0]["id"]),
                 position: LatLng(double.parse(lat), double.parse(lon)),
                 infoWindow: InfoWindow(
-                  title: "Electric Vehicle Pick-up Point ",
+                  title: "Electric Vehicle Pick-up/Return Point ",
                   snippet: "Click for the location",
                 ),
                 icon: customMarker,

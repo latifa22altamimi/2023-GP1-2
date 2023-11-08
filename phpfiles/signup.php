@@ -1,12 +1,12 @@
 <?php
    include 'connect.php';
-        $FirstName= $_POST['FirstName'];
-        $LastName=$_POST['LastName'];
+         $FirstName= $_POST['FirstName'];
+         $LastName=$_POST['LastName'];
          $Password= $_POST['Password'];
          $Email=$_POST['Email'];
          $hashPass=password_hash($Password, PASSWORD_DEFAULT);
          
-         $uppercase = preg_match('@[A-Z]@', $Password);
+$uppercase = preg_match('@[A-Z]@', $Password);
 $lowercase = preg_match('@[a-z]@', $Password);
 $number    = preg_match('@[0-9]@', $Password);
 $specialChars = preg_match('@[^\w]@', $Password);

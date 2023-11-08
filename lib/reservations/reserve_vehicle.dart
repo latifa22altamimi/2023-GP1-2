@@ -21,7 +21,6 @@ String getTime = "";
 String label = "";
 Color labelColor = Colors.white;
 
-//late Map<String, dynamic> time= {"time":"", "date":"" };
 class ReserveVehicle extends StatefulWidget {
   const ReserveVehicle({super.key});
 
@@ -45,7 +44,6 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
     });
     var resp = json.decode(res.body);
     print(resp);
-    //GlobalValues.Vtype="Double";
   }
 
   void initState() {
