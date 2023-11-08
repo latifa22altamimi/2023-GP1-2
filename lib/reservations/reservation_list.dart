@@ -71,6 +71,15 @@ class _ReservationListState extends State<ReservationList> {
                 colorr: Color.fromARGB(255, 215, 53, 53),
               );
             }
+            if (list[index]["Status"] == "Being used") { //new
+              return ReserveCard(
+                Rid: list[index]["id"],
+                datee: list[index]["date"],
+                timee: list[index]["time"],
+                status: list[index]["Status"],
+                colorr: Colors.yellow,
+              );
+            }
           } else {
            
           }

@@ -166,19 +166,19 @@ class Profile extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Container(
                                     padding: const EdgeInsets.only(
-                                        left: 30.0,
-                                        right: 30.0,
-                                        top: 30.0,
-                                        bottom: 50.0),
+                                        left: 10.0,
+                                        right: 10.0,
+                                        top: 20.0,
+                                        bottom: 30.0),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
                                         Lottie.asset('assets/images/warn.json',
-                                            width: 80, height: 80),
+                                            width: 100, height: 100),
                                         Text(
-                                          'Log Out of Your Account?',
+                                          'Log Out',
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 18,
@@ -188,10 +188,9 @@ class Profile extends StatelessWidget {
                                           height: 10.0,
                                         ),
                                         Text(
-                                          'if you continue,you will be returned to start page',
+                                          'Logging out of your account \nwill return you to the start page.',
                                           style: TextStyle(
-                                              color: const Color.fromARGB(
-                                                  255, 110, 108, 108),
+                                              color: Color.fromARGB(255, 48, 48, 48),
                                               fontSize: 15,
                                               fontWeight: FontWeight.w400),
                                         ),
@@ -340,7 +339,7 @@ class Profile extends StatelessWidget {
                                                       });
                                                 },
                                                 child: Text(
-                                                  'Confirm',
+                                                  'Log out',
                                                   style: TextStyle(
                                                       color: Colors.white,
                                                       fontSize: 15,

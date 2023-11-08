@@ -48,7 +48,7 @@ dependencies:
   table_calendar: ^3.0.9
   ticket_widget: ^0.0.1
   get:
-  
+ 
 
 
 
@@ -108,7 +108,7 @@ flutter:
     - assets/images/Cancelled.png
     - assets/images/noavailable.json
     - assets/images/anon.png
-
+    - assets/images/reserve.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

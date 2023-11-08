@@ -648,7 +648,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                       Text(
                                         'Your reservation will be confirmed with the following information \n',
                                         style: TextStyle(
-                                            color: Colors.black,
+                                            color: Color.fromARGB(255, 48, 48, 48),
                                             fontSize: 17,
                                             fontWeight: FontWeight.w400),
                                       ),

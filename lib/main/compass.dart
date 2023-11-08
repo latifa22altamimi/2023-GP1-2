@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
-/*
+/*import 'package:flutter/material.dart';
+
 import 'package:smooth_compass/utils/src/compass_ui.dart';
 
 class Compass extends StatelessWidget {
@@ -51,5 +51,4 @@ class Compass extends StatelessWidget {
           },
         )));
   }
-}
-*/
+}*/
