@@ -27,14 +27,13 @@
           $Lname;
           while($row = mysqli_fetch_assoc($result)) {
             $pw=$row['Password'];
-            $id=$row['ID'];
-            $name=$row['FirstName'];
-            $Lname=$row['LastName'];
+            $id=$row['userID'];
+            $name=$row['FullName'];
          }
          $id=strval($id);
 
          if(password_verify($Password,$pw)){
-          echo json_encode([0=>"Success",1=>$id,2=>$name,3=>$Lname]); 
+          echo json_encode([0=>"Success",1=>$id,2=>$name]); 
 
 
           

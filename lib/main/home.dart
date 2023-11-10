@@ -119,7 +119,7 @@ class AppBarr extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Hello, \n' + GlobalValues.name,
+                'Hello, \n' + GlobalValues.Fullname,
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 23,

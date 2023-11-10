@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2023 at 06:16 PM
+-- Generation Time: Nov 10, 2023 at 04:55 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -156,9 +156,8 @@ INSERT INTO `timeslots` (`id`, `time`, `numberOfSingleV`, `numberOfDoubleV`, `sl
 --
 
 CREATE TABLE `users` (
-  `ID` int(11) NOT NULL,
-  `FirstName` varchar(30) NOT NULL,
-  `LastName` varchar(30) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `FullName` varchar(30) NOT NULL,
   `Email` varchar(200) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `Type` varchar(30) NOT NULL DEFAULT 'Al-Haram visitor',
@@ -169,8 +168,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`ID`, `FirstName`, `LastName`, `Email`, `Password`, `Type`, `Status`) VALUES
-(44, 'Fatimah', 'alnaser', 'alnaserfatimah344@gmail.com', '$2y$10$KIqLBapuEtypAVCMqhOs7eSwNKrnZ1lqjknxO5uCTIV.sNaa0BZNS', 'Al-Haram visitor', 1);
+INSERT INTO `users` (`userID`, `FullName`, `Email`, `Password`, `Type`, `Status`) VALUES
+(44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$KIqLBapuEtypAVCMqhOs7eSwNKrnZ1lqjknxO5uCTIV.sNaa0BZNS', 'Al-Haram visitor', 1);
 
 --
 -- Indexes for dumped tables
@@ -212,7 +211,7 @@ ALTER TABLE `timeslots`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`userID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -252,7 +251,7 @@ ALTER TABLE `timeslots`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- Constraints for dumped tables
@@ -262,7 +261,7 @@ ALTER TABLE `users`
 -- Constraints for table `reservation`
 --
 ALTER TABLE `reservation`
-  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`visitorId`) REFERENCES `users` (`ID`);
+  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`visitorId`) REFERENCES `users` (`userID`);
 
 --
 -- Constraints for table `supportreq`

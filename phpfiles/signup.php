@@ -1,8 +1,8 @@
 <?php
    include 'connect.php';
-         $FirstName= $_POST['FirstName'];
-         $LastName=$_POST['LastName'];
+         $FullName= $_POST['FullName'];
          $Password= $_POST['Password'];
+         $ConfirmPass=$_POST['ConfirmPass'];
          $Email=$_POST['Email'];
          $hashPass=password_hash($Password, PASSWORD_DEFAULT);
          
@@ -19,18 +19,23 @@ $specialChars = preg_match('@[^\w]@', $Password);
          if($count== 1){
              echo json_encode("Error");
          }
-         else if(empty($FirstName)|| empty($Password)|| empty($Email)|| empty($LastName)){
+         else if(empty($FullName)|| empty($Password)|| empty($Email) || empty($ConfirmPass)){
              echo json_encode("empty");
              }
+             else if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
+                echo json_encode("invalidEmail");
+   } 
+           
          else if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($Password) < 8) {
              echo json_encode("invalidPass");
     }
-         else if (!filter_var($Email, FILTER_VALIDATE_EMAIL)) {
-             echo json_encode("invalidEmail");
-} 
+    else if(strcmp($Password, $ConfirmPass) != 0){
+        echo json_encode("PassDoesntMatch");
+        }
+
          else {
              $id;
-             $insert= "INSERT INTO users(FirstName,LastName,Email,Password) VALUES('".$FirstName."','".$LastName."','".$Email."','".$hashPass."')";
+             $insert= "INSERT INTO users(FullName,Email,Password) VALUES('".$FullName."','".$Email."','".$hashPass."')";
              $query= mysqli_query($conn, $insert);
              
   

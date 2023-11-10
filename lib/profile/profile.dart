@@ -37,7 +37,7 @@ class Profile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      GlobalValues.name + " " + GlobalValues.Lname,
+                      GlobalValues.Fullname,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 26,
