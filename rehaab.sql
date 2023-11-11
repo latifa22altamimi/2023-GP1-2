@@ -96,16 +96,9 @@ INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `
 (82, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
 (83, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
 (84, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(85, '2023-10-27', '03:00 AM', 'Single', 'Self-driving', '', 'In-active', 44),
 (86, '2023-10-28', '21:00 PM', 'Single', 'Self-driving', '', 'Cancelled', 44),
 (87, '2023-11-11', '15:00 PM', 'Single', 'Self-driving', '', 'Cancelled', 44),
-(88, '2023-11-11', '13:30 PM', 'Single', 'Self-driving', '', 'In-active', 44),
-(89, '2023-11-11', '15:00 PM', 'Single', 'Self-driving', '', 'In-active', 44),
-(90, '2023-11-11', '21:00 PM', 'Single', 'Self-driving', '', 'In-active', 44),
-(91, '2023-11-11', '21:00 PM', 'Single', 'Self-driving', '', 'In-active', 44),
-(92, '2023-11-11', '22:30 PM', 'Single', 'Self-driving', '', 'In-active', 44),
-(93, '2023-11-11', '22:30 PM', 'Single', 'Self-driving', '', 'In-active', 44),
-(94, '2023-11-11', '22:30 PM', 'Double', 'With-driver', 'Female', 'In-active', 44);
+(94, '2023-11-11', '22:30 PM', 'Double', 'With-driver', 'Female', 'Confirmed', 44);
 
 -- --------------------------------------------------------
 
