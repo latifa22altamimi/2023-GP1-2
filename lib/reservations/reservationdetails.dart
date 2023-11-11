@@ -8,6 +8,8 @@ import 'package:rehaab/reservations/reservation_list.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:ticket_widget/ticket_widget.dart';
 import '../main/home.dart';
+import 'package:intl/intl.dart';
+
 //import 'package:rehaab/callSupport/support.dart';
 
 class ReservationDetails extends StatefulWidget {
@@ -68,7 +70,15 @@ class _ReservationDetailsState extends State<ReservationDetails> {
     super.initState();
     GetData();
   }
-
+  StartTawaf() async{
+    var url = "http://10.0.2.2/phpfiles/startTawaf.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "Rid": Rid,
+    });
+    var respo = json.decode(res.body);
+    print(respo);
+  
+  }
   remove() async {
     var url = "http://10.0.2.2/phpfiles/removeReserve.php";
     final res = await http.post(Uri.parse(url), body: {
@@ -79,16 +89,26 @@ class _ReservationDetailsState extends State<ReservationDetails> {
   }
   bool visibility() {
   datetime = date!+" "+time!.substring(0,5)+":00";
-    if (Status =='Cancelled' ||  DateTime.now().isAfter(DateTime.parse(datetime!))|| Status=='Being used') {
+    if (Status =='Cancelled' ||  DateTime.now().isAfter(DateTime.parse(datetime!))|| Status=='In-active') {
       return false;
     } else{
       return true;
     }
   }
   bool visible(){
-    if(Status=='Being used'){
+    if(Status=='In-active'){
       return true;
 
+    }
+    else{
+      return false;
+    }
+  }
+  bool start(){
+      datetime = date!+" "+time!.substring(0,5)+":00";
+
+    if(Status=="Confirmed" && DateFormat('yyyy-MM-dd').format(DateTime.now())==date){
+      return true;
     }
     else{
       return false;
@@ -164,6 +184,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                 ),
               ),
             ),
+            
            
           ],
         ),
@@ -218,7 +239,227 @@ class _ReservationDetailsState extends State<ReservationDetails> {
       
       ],
     ),
-        ),),  Container (
+        ),),
+        Visibility(
+                  visible: start(),
+                  child: Container(
+
+                    //padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
+                   padding: EdgeInsets.only(right: 6 , top:25),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        showDialog(
+                            context: context,
+                            builder: (context) => Dialog(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 247, 247, 247),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(15.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Lottie.asset('assets/images/warn.json',
+                                            width: 100, height: 100),
+                                        Text(
+                                          'Are you sure you want to start Tawaf?',
+                                          style: TextStyle(
+                                              color: Colors.black,
+
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600),textAlign: TextAlign.center,
+                                        ),
+                                        
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        
+                                        SizedBox(
+                                          height: 15.0,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ConstrainedBox(
+                                              constraints:
+                                                  BoxConstraints.tightFor(
+                                                      height: 38, width: 100),
+                                              child: ElevatedButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context).pop(),
+                                                child: Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 255, 255, 255),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(50),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+
+                                            SizedBox(
+                                              width: 30.0,
+                                            ),
+                                            //when press on confirm
+
+                                            ConstrainedBox(
+                                              constraints:
+                                                  BoxConstraints.tightFor(
+                                                      height: 38, width: 100),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  StartTawaf();
+                                                  Navigator.of(context).pop();
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      Future.delayed(
+                                                          Duration(seconds: 2),
+                                                          () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      home()),
+                                                        );
+                                                      });
+                                                      return Dialog(
+                                                        backgroundColor:
+                                                            Color.fromARGB(255,
+                                                                247, 247, 247),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(20.0),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Lottie.asset(
+                                                                  'assets/images/success.json',
+                                                                  width: 100,
+                                                                  height: 100),
+                                                              Text(
+                                                                'Success',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Text(
+                                                                'Starting Tawaf is done sucessfully',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        17,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  ConstrainedBox(
+                                                                    constraints: BoxConstraints.tightFor(
+                                                                        height:
+                                                                            38,
+                                                                        width:
+                                                                            100),
+                                                                  ),
+                                                                ],
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                child: Text(
+                                                  'Start',
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 60, 100, 73),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(50),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ));
+                      },
+                      child: Text("Start Tawaf", style: TextStyle(fontSize: 17),),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            (states) => kPrimaryColor),
+                        shape: MaterialStateProperty.resolveWith((states) =>
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        fixedSize: MaterialStateProperty.resolveWith(
+                            (states) => Size(300, 50)),
+                      ),
+                    ),
+                  ),
+                ),
+          Container (
 
                 child: Column(
               children: [ Row(children: [Visibility(
