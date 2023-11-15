@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 10, 2023 at 04:55 PM
+-- Generation Time: Nov 11, 2023 at 11:45 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -96,8 +96,9 @@ INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `
 (82, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
 (83, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
 (84, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(85, '2023-10-27', '03:00 AM', 'Single', 'Self-driving', '', 'Being used', 44),
-(86, '2023-10-28', '21:00 PM', 'Single', 'Self-driving', '', 'Cancelled', 44);
+(86, '2023-10-28', '21:00 PM', 'Single', 'Self-driving', '', 'Cancelled', 44),
+(87, '2023-11-11', '15:00 PM', 'Single', 'Self-driving', '', 'Cancelled', 44),
+(94, '2023-11-11', '22:30 PM', 'Double', 'With-driver', 'Female', 'Confirmed', 44);
 
 -- --------------------------------------------------------
 
@@ -233,7 +234,7 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
 
 --
 -- AUTO_INCREMENT for table `supportreq`
@@ -273,3 +274,4 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
