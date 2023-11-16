@@ -8,8 +8,10 @@ import "package:flutter_map/flutter_map.dart";
 import "package:flutter_map_location_marker/flutter_map_location_marker.dart";
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import "package:lottie/lottie.dart";
 import "package:rehaab/GlobalValues.dart";
 import "package:rehaab/customization/clip.dart";
+import "package:rehaab/main/home.dart";
 import "package:rehaab/widgets/constants.dart";
 import "package:rehaab/widgets/rounded_button.dart";
 
@@ -33,6 +35,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Duration? elapsed;
   double? controller;
   bool _isVisible = false;
+
 
 
   Future duration() async{
@@ -119,9 +122,100 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
           });
         } else if (count == 14) {
           laps = count / 2;
-          dispose();
+         dispose();
           setState(() {
             _isVisible = !_isVisible;
+             showDialog(
+                                                  context: context,
+                                                  builder: (context) 
+                                                  
+                                                  {
+                        Future.delayed(Duration(seconds:3), () {
+                              Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) =>  home()),
+  );
+                        });
+                                                  return Dialog(
+                                                   
+                                                    backgroundColor:
+                                                        Color.fromARGB(
+                                                            255, 247, 247, 247),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              20.0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Lottie.asset(
+                                                              'assets/images/success.json',
+                                                              width: 100,
+                                                              height: 100),
+                                                          Text(
+                                                            'Success',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10.0,
+                                                          ),
+                                                          Text(
+                                                            "Well done you've finish 7 rounds successfully!",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10.0,
+                                                          ),
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              ConstrainedBox(
+                                                                constraints: BoxConstraints
+                                                                    .tightFor(
+                                                                        height:
+                                                                            38,
+                                                                        width:
+                                                                            100),
+                                                         
+                                                                  
+                                                                ),
+                                                            
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                  }
+                                                );
+            
           });
         }
         if (distance > 200) {
@@ -246,17 +340,29 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                 ),
               ),
            Container(child: Padding( padding:EdgeInsets.only(top: 500,left: 50,right:50), child: RoundedButton(
-          text: 'Start Tawaf', press: () {
+          text: 'Start Tracking', press: () {
           _getCurrentPosition();
           stopwatch.start();
           listenToStream();
           setState(() {
-            _isVisible = !_isVisible;
+          _isVisible = !_isVisible;
          
           });
                              })
                              ),),
                               Padding(
+                            padding: const EdgeInsets.only(top: 575,left: 50,right:50),
+                            child: Visibility(
+                              visible: GlobalValues.isShowen,
+                              child: RoundedButton(  text: 'Call for support', press: () {
+          setState(() {
+          });
+                              }
+          
+          ),)),
+
+    
+                             /* Padding(
                             padding: const EdgeInsets.only(top:610),
                             child: Visibility(
                               visible: _isVisible,
@@ -278,7 +384,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
           });
                               }
           
-          ),)) 
+          ),)) */
             ],
           ),
           // Container(child: Text("$start_lat , $start_lon"))

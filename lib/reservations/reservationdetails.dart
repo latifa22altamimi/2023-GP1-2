@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:rehaab/GlobalValues.dart';
+import 'package:rehaab/TrackTawafStatus/TrackTawaf.dart';
 import 'package:rehaab/customization/clip.dart';
 import 'package:http/http.dart' as http;
 import 'package:rehaab/reservations/reservation_list.dart';
@@ -325,7 +327,9 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                                                       height: 38, width: 100),
                                               child: ElevatedButton(
                                                 onPressed: () {
+
                                                   StartTawaf();
+                                                   GlobalValues.isShowen=true;
                                                   Navigator.of(context).pop();
                                                   showDialog(
                                                     context: context,
@@ -338,7 +342,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                                                           MaterialPageRoute(
                                                               builder:
                                                                   (context) =>
-                                                                      home()),
+                                                                      TrackTawaf()),
                                                         );
                                                       });
                                                       return Dialog(
