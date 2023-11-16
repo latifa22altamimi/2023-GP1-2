@@ -1,3 +1,5 @@
+import "dart:convert";
+
 import "package:flutter/material.dart";
 import "package:get/get.dart";
 import "dart:async";
@@ -31,6 +33,15 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Duration? elapsed;
   double? controller;
   bool _isVisible = false;
+
+
+  Future duration() async{
+    var url ="http://10.0.2.2/phpfiles/Duration.php";
+    final response= await http.post(Uri.parse(url),body:{
+    "Duration":elapsed,
+    "Userid":GlobalValues.id});
+  var data =json.decode(response.body);
+  }
 
   void dispose() {
     super.dispose();
@@ -100,6 +111,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
           stopwatch.stop();
           elapsed = stopwatch.elapsed;
           stopwatch.reset();
+          duration();
           final snackBar = SnackBar(content: Text('Lap Time: $elapsed'));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
           setState(() {

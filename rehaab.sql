@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 11, 2023 at 11:45 AM
+-- Generation Time: Nov 16, 2023 at 01:23 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -44,6 +44,18 @@ CREATE TABLE `adminpram` (
 
 INSERT INTO `adminpram` (`id`, `NumOfSingleV`, `NumOfDoubleV`, `NumOfVehicles`, `ReservationDur`, `numOfVehiclesInSlot`, `date`, `time`) VALUES
 (1, 7, 13, 20, 90, 3, '2023-10-16', '19:30');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `duration`
+--
+
+CREATE TABLE `duration` (
+  `DurationId` int(11) NOT NULL,
+  `UserId` int(11) NOT NULL,
+  `Duration` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -96,9 +108,8 @@ INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `
 (82, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
 (83, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
 (84, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(86, '2023-10-28', '21:00 PM', 'Single', 'Self-driving', '', 'Cancelled', 44),
-(87, '2023-11-11', '15:00 PM', 'Single', 'Self-driving', '', 'Cancelled', 44),
-(94, '2023-11-11', '22:30 PM', 'Double', 'With-driver', 'Female', 'Confirmed', 44);
+(85, '2023-10-27', '03:00 AM', 'Single', 'Self-driving', '', 'Being used', 44),
+(86, '2023-10-28', '21:00 PM', 'Single', 'Self-driving', '', 'Cancelled', 44);
 
 -- --------------------------------------------------------
 
@@ -183,6 +194,13 @@ ALTER TABLE `adminpram`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `duration`
+--
+ALTER TABLE `duration`
+  ADD PRIMARY KEY (`DurationId`),
+  ADD KEY `UserId` (`UserId`);
+
+--
 -- Indexes for table `markers`
 --
 ALTER TABLE `markers`
@@ -225,6 +243,12 @@ ALTER TABLE `adminpram`
   MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `duration`
+--
+ALTER TABLE `duration`
+  MODIFY `DurationId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `markers`
 --
 ALTER TABLE `markers`
@@ -234,7 +258,7 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=95;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT for table `supportreq`
@@ -252,11 +276,17 @@ ALTER TABLE `timeslots`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `duration`
+--
+ALTER TABLE `duration`
+  ADD CONSTRAINT `duration_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `users` (`userID`);
 
 --
 -- Constraints for table `reservation`
@@ -274,4 +304,3 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
