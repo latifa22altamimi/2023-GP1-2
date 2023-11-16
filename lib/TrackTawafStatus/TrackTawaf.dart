@@ -36,9 +36,9 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
 
 
   Future duration() async{
-    var url ="http://10.0.2.2/phpfiles/Duration.php";
+    var url ="http://10.0.2.2/phpfiles/TDuration.php";
     final response= await http.post(Uri.parse(url),body:{
-    "Duration":elapsed,
+    "TDuration":elapsed,
     "Userid":GlobalValues.id});
   var data =json.decode(response.body);
   }
@@ -252,9 +252,33 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
           listenToStream();
           setState(() {
             _isVisible = !_isVisible;
-          
+         
           });
-                             })),),
+                             })
+                             ),),
+                              Padding(
+                            padding: const EdgeInsets.only(top:610),
+                            child: Visibility(
+                              visible: _isVisible,
+                              child: Text(
+                                "your expected finish time:\n THE TIME WILL BE SHOWEN AFTER YOU FINISH ONE ROUND",
+                                textAlign:TextAlign.center, style: TextStyle(color: kPrimaryColor,fontSize: 18,fontWeight: FontWeight.bold),
+                              ),)),
+                               Padding(
+                            padding: const EdgeInsets.only(top: 500,left: 50,right:50),
+                            child: Visibility(
+                              visible: _isVisible,
+                              child: RoundedButton(  text: 'Stop Tawaf', press: () {
+          _getCurrentPosition();
+          stopwatch.start();
+          listenToStream();
+          setState(() {
+            _isVisible = !_isVisible;
+         
+          });
+                              }
+          
+          ),)) 
             ],
           ),
           // Container(child: Text("$start_lat , $start_lon"))

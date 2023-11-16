@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2023 at 01:23 AM
+-- Generation Time: Nov 16, 2023 at 04:30 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -44,18 +44,6 @@ CREATE TABLE `adminpram` (
 
 INSERT INTO `adminpram` (`id`, `NumOfSingleV`, `NumOfDoubleV`, `NumOfVehicles`, `ReservationDur`, `numOfVehiclesInSlot`, `date`, `time`) VALUES
 (1, 7, 13, 20, 90, 3, '2023-10-16', '19:30');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `duration`
---
-
-CREATE TABLE `duration` (
-  `DurationId` int(11) NOT NULL,
-  `UserId` int(11) NOT NULL,
-  `Duration` decimal(10,0) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -128,6 +116,18 @@ CREATE TABLE `supportreq` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tawafduration`
+--
+
+CREATE TABLE `tawafduration` (
+  `TDurationId` int(11) NOT NULL,
+  `UserId` int(11) NOT NULL,
+  `TDuration` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `timeslots`
 --
 
@@ -194,13 +194,6 @@ ALTER TABLE `adminpram`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `duration`
---
-ALTER TABLE `duration`
-  ADD PRIMARY KEY (`DurationId`),
-  ADD KEY `UserId` (`UserId`);
-
---
 -- Indexes for table `markers`
 --
 ALTER TABLE `markers`
@@ -219,6 +212,13 @@ ALTER TABLE `reservation`
 ALTER TABLE `supportreq`
   ADD PRIMARY KEY (`id`),
   ADD KEY `reservationNo` (`reservationNo`);
+
+--
+-- Indexes for table `tawafduration`
+--
+ALTER TABLE `tawafduration`
+  ADD PRIMARY KEY (`TDurationId`),
+  ADD KEY `UserId` (`UserId`);
 
 --
 -- Indexes for table `timeslots`
@@ -243,12 +243,6 @@ ALTER TABLE `adminpram`
   MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `duration`
---
-ALTER TABLE `duration`
-  MODIFY `DurationId` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `markers`
 --
 ALTER TABLE `markers`
@@ -267,6 +261,12 @@ ALTER TABLE `supportreq`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `tawafduration`
+--
+ALTER TABLE `tawafduration`
+  MODIFY `TDurationId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `timeslots`
 --
 ALTER TABLE `timeslots`
@@ -283,12 +283,6 @@ ALTER TABLE `users`
 --
 
 --
--- Constraints for table `duration`
---
-ALTER TABLE `duration`
-  ADD CONSTRAINT `duration_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `users` (`userID`);
-
---
 -- Constraints for table `reservation`
 --
 ALTER TABLE `reservation`
@@ -299,6 +293,12 @@ ALTER TABLE `reservation`
 --
 ALTER TABLE `supportreq`
   ADD CONSTRAINT `supportreq_ibfk_1` FOREIGN KEY (`reservationNo`) REFERENCES `reservation` (`id`);
+
+--
+-- Constraints for table `tawafduration`
+--
+ALTER TABLE `tawafduration`
+  ADD CONSTRAINT `tawafduration_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `users` (`userID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
