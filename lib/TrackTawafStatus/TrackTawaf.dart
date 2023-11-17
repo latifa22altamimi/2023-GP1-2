@@ -35,7 +35,6 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Duration? elapsed;
   double? controller;
   bool _isVisible = false;
-  bool _isShowen=false;
 
 
   Future duration() async{
@@ -228,15 +227,9 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
     });
   }
 
-void isShowen(){
-if(GlobalValues.Status=="In-active"){
-  _isShowen=true;
-}
-}
 
  void initState() {
     super.initState();
-   isShowen();
   }
 
 
@@ -352,64 +345,10 @@ if(GlobalValues.Status=="In-active"){
                    
                 ),
               ),
-           Container(
-            child:Column(
-              children: [Row(
-                children: [
-                  Visibility(child: Container(
-                    padding: EdgeInsets.only(top: 500 ,left: 35), child:
-                 ElevatedButton.icon(onPressed: () {
-          _getCurrentPosition();
-          stopwatch.start();
-          listenToStream();
-          setState(() {
-          _isVisible = !_isVisible;
-         
-          });
-                             },
-            label: Text("Start Tracking"), 
-            icon: Icon(Icons.start),                
-            style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.resolveWith(
-                            (states) => kPrimaryColor),
-                        shape: MaterialStateProperty.resolveWith((states) =>
-                            RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(30.0))),
-                        fixedSize: MaterialStateProperty.resolveWith(
-                            (states) => Size(150, 40)),
-                      ),                )
-         ,
-                  )
-                  ,visible: _isShowen)
-                  ,Visibility(child: Container ( padding: EdgeInsets.only(left:30, right: 5, top:500),    child:  ElevatedButton.icon(
-                onPressed: () async { /*Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        callSupport()), //navigate to sign up page
-              );*/},
-                label: Text("Call for support"),
-                icon: Icon(Icons.phone),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith(
-                      (states) => Colors.grey),
-                  shape: MaterialStateProperty.resolveWith((states) =>
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0))),
-                  fixedSize: MaterialStateProperty.resolveWith(
-                      (states) => Size(  170,40 )),
-                ),
-              ),),
-              visible: _isShowen,
-            ),
-                ],
-              )]
-              ,
-            ),)
+    
           
-          ,Padding( padding:EdgeInsets.only(top: 500,left: 50,right:50), 
+        Padding( padding:EdgeInsets.only(top: 500,left: 50,right:50), 
           child:Visibility(
-            visible: !_isShowen,
             child: RoundedButton(
           text: 'Start Tracking', press: () {
           _getCurrentPosition();

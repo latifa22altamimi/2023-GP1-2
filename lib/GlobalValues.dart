@@ -3,5 +3,4 @@ GlobalValues._();
 
 static String id='';
 static String Fullname='';
-static String Status='unknown';
 }
