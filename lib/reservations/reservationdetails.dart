@@ -79,7 +79,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
     });
     var respo = json.decode(res.body);
     print(respo);
-  
+    GlobalValues.Status="In-active";
   }
   remove() async {
     var url = "http://10.0.2.2/phpfiles/removeReserve.php";
@@ -327,9 +327,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                                                       height: 38, width: 100),
                                               child: ElevatedButton(
                                                 onPressed: () {
-
                                                   StartTawaf();
-                                                   GlobalValues.isShowen=true;
                                                   Navigator.of(context).pop();
                                                   showDialog(
                                                     context: context,

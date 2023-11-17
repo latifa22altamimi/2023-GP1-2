@@ -3,6 +3,5 @@ GlobalValues._();
 
 static String id='';
 static String Fullname='';
-
-static bool isShowen=false;
+static String Status='unknown';
 }

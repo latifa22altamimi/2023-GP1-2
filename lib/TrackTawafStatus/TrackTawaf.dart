@@ -35,7 +35,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Duration? elapsed;
   double? controller;
   bool _isVisible = false;
-
+  bool _isShowen=false;
 
 
   Future duration() async{
@@ -228,6 +228,19 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
     });
   }
 
+void isShowen(){
+if(GlobalValues.Status=="In-active"){
+  _isShowen=true;
+}
+}
+
+ void initState() {
+    super.initState();
+   isShowen();
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -367,7 +380,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                       ),                )
          ,
                   )
-                  ,visible: GlobalValues.isShowen)
+                  ,visible: _isShowen)
                   ,Visibility(child: Container ( padding: EdgeInsets.only(left:30, right: 5, top:500),    child:  ElevatedButton.icon(
                 onPressed: () async { /*Navigator.push(
                 context,
@@ -387,7 +400,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                       (states) => Size(  170,40 )),
                 ),
               ),),
-              visible: GlobalValues.isShowen,
+              visible: _isShowen,
             ),
                 ],
               )]
@@ -396,7 +409,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
           
           ,Padding( padding:EdgeInsets.only(top: 500,left: 50,right:50), 
           child:Visibility(
-            visible: !GlobalValues.isShowen,
+            visible: !_isShowen,
             child: RoundedButton(
           text: 'Start Tracking', press: () {
           _getCurrentPosition();
