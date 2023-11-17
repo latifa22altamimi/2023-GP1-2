@@ -196,8 +196,8 @@ ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 duration: Duration(seconds: 5),
                                 content: Container(
-                                  height: 80,
-                                  padding: EdgeInsets.all(10.0),
+                                  height: 100,
+                                  padding: EdgeInsets.only(top:10.0,right:10.0,left:10.0),
                                   decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
@@ -235,11 +235,11 @@ ScaffoldMessenger.of(context).showSnackBar(
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             Text(
-                                              "Password must be strong!",
+                                              "Password At least must be 8 characters, one lowercase letter, a uppercase letter,\na special character, and a digit!",
                                               style: TextStyle(
                                                   color: Color.fromARGB(
                                                       255, 255, 255, 255),
-                                                  fontSize: 15,
+                                                  fontSize: 12,
                                                   fontWeight: FontWeight.w400),
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 3,
@@ -250,8 +250,8 @@ ScaffoldMessenger.of(context).showSnackBar(
                                       Container(
                                         child: Lottie.asset(
                                           'assets/images/erorrr.json',
-                                          width: 150,
-                                          height: 150,
+                                          width: 80,
+                                          height: 80,
                                         ),
                                       ),
                                     ],

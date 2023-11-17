@@ -181,6 +181,7 @@ class ReserveCard extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
+                          
                             builder: ((context) => ReservationDetails(
                                 Rid: Rid,
                                 Status: status,
@@ -188,7 +189,8 @@ class ReserveCard extends StatelessWidget {
                                 time: timee))));
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(131, 60, 100, 73),
+                    backgroundColor: Color.fromARGB(218, 60, 100, 73),
+                    //Color.fromARGB(131, 60, 100, 73)
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(500),

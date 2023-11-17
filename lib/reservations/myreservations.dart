@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/reservations/reservation_list.dart';
 import 'package:http/http.dart' as http;
+import 'package:rehaab/widgets/constants.dart';
 import '../customization/clip.dart';
 import 'package:rehaab/GlobalValues.dart';
 
@@ -52,22 +53,16 @@ class _MyReservationsState extends State<MyReservations> {
               width: MediaQuery.of(context).size.width,
               height: 180,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [
-                    Color.fromARGB(255, 60, 100, 73),
-                    Color.fromARGB(255, 104, 132, 113)
-                  ],
-                ),
+              color: kPrimaryColor
               ),
               child: Stack(
                 children: [
                   BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                    filter: ImageFilter.blur(sigmaX: 0.0, sigmaY: 0.0),
                     child: Container(
                       decoration: BoxDecoration(
                           border: Border.all(
+                            /*
                               color: Color.fromARGB(255, 255, 255, 255)
                                   .withOpacity(0.2)),
                           gradient: LinearGradient(
@@ -76,7 +71,7 @@ class _MyReservationsState extends State<MyReservations> {
                               colors: [
                                 Colors.white.withOpacity(0.09),
                                 Colors.white.withOpacity(0.1),
-                              ])),
+                              ]*/)),
                     ),
                   ),
                   Container(

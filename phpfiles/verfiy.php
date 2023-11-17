@@ -45,6 +45,7 @@ overflow: hidden;
     text-align: center;
     padding:0 0 20px 0;
     color:#3C6348;
+    font-size:21px;
 }  
 .logo{
     width: 15%;
@@ -52,7 +53,7 @@ overflow: hidden;
 .log{
     margin-top:15px;
   margin-left:180px;
-  width: 20%;
+  width: 18%;
 }
 </style> 
 </head> 

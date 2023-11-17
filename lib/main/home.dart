@@ -8,7 +8,7 @@ import 'package:rehaab/profile/profile.dart';
 import 'package:rehaab/reservations/reserve_vehicle.dart';
 import 'package:rehaab/reservations/myreservations.dart';
 import 'package:rehaab/Map_page/map.dart';
-
+import 'package:rehaab/widgets/constants.dart';
 class home extends StatefulWidget {
   home({Key? key}) : super(key: key);
   @override
@@ -52,6 +52,7 @@ class _homeState extends State<home> {
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(40.0),
               topRight: Radius.circular(40.0),
+              
             ),
             child: NavigationBarTheme(
               data: NavigationBarThemeData(
@@ -104,14 +105,8 @@ class AppBarr extends StatelessWidget {
             bottomLeft: Radius.circular(10),
             bottomRight: Radius.circular(20),
           ),
-          gradient: LinearGradient(
-            colors: [
-              Color.fromARGB(255, 60, 100, 73),
-              Color.fromARGB(255, 104, 132, 113)
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          )),
+          color: kPrimaryColor
+        ),
       child: Column(
         children: [
           Row(
