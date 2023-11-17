@@ -709,7 +709,8 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                       ),
                     ),
                   ),
-                ),],) 
+                ),],
+                ) 
                
                 //cancel button
                 ,Row(children: [Visibility(

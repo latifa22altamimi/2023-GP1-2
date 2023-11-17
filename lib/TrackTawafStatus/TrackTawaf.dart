@@ -339,7 +339,65 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                    
                 ),
               ),
-           Container(child: Padding( padding:EdgeInsets.only(top: 500,left: 50,right:50), child: RoundedButton(
+           Container(
+            child:Column(
+              children: [Row(
+                children: [
+                  Visibility(child: Container(
+                    padding: EdgeInsets.only(top: 500 ,left: 35), child:
+                 ElevatedButton.icon(onPressed: () {
+          _getCurrentPosition();
+          stopwatch.start();
+          listenToStream();
+          setState(() {
+          _isVisible = !_isVisible;
+         
+          });
+                             },
+            label: Text("Start Tracking"), 
+            icon: Icon(Icons.start),                
+            style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            (states) => kPrimaryColor),
+                        shape: MaterialStateProperty.resolveWith((states) =>
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        fixedSize: MaterialStateProperty.resolveWith(
+                            (states) => Size(150, 40)),
+                      ),                )
+         ,
+                  )
+                  ,visible: GlobalValues.isShowen)
+                  ,Visibility(child: Container ( padding: EdgeInsets.only(left:30, right: 5, top:500),    child:  ElevatedButton.icon(
+                onPressed: () async { /*Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        callSupport()), //navigate to sign up page
+              );*/},
+                label: Text("Call for support"),
+                icon: Icon(Icons.phone),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => Colors.grey),
+                  shape: MaterialStateProperty.resolveWith((states) =>
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0))),
+                  fixedSize: MaterialStateProperty.resolveWith(
+                      (states) => Size(  170,40 )),
+                ),
+              ),),
+              visible: GlobalValues.isShowen,
+            ),
+                ],
+              )]
+              ,
+            ),)
+          
+          ,Padding( padding:EdgeInsets.only(top: 500,left: 50,right:50), 
+          child:Visibility(
+            visible: !GlobalValues.isShowen,
+            child: RoundedButton(
           text: 'Start Tracking', press: () {
           _getCurrentPosition();
           stopwatch.start();
@@ -349,7 +407,9 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
          
           });
                              })
-                             ),),
+                             ) 
+                             )
+/*
                               Padding(
                             padding: const EdgeInsets.only(top: 575,left: 50,right:50),
                             child: Visibility(
@@ -361,8 +421,8 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
           
           ),)),
 
-    
-                             /* Padding(
+    */
+                            , Padding(
                             padding: const EdgeInsets.only(top:610),
                             child: Visibility(
                               visible: _isVisible,
@@ -370,6 +430,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                                 "your expected finish time:\n THE TIME WILL BE SHOWEN AFTER YOU FINISH ONE ROUND",
                                 textAlign:TextAlign.center, style: TextStyle(color: kPrimaryColor,fontSize: 18,fontWeight: FontWeight.bold),
                               ),)),
+                              /*
                                Padding(
                             padding: const EdgeInsets.only(top: 500,left: 50,right:50),
                             child: Visibility(
