@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2023 at 05:08 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Nov 16, 2023 at 04:30 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -93,7 +93,37 @@ INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `
 (79, '2023-10-22', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
 (80, '2023-10-22', '18:00 PM', 'Double', 'Self-driving', '', 'Confirmed', 44),
 (81, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(82, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44);
+(82, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(83, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(84, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(85, '2023-10-27', '03:00 AM', 'Single', 'Self-driving', '', 'Being used', 44),
+(86, '2023-10-28', '21:00 PM', 'Single', 'Self-driving', '', 'Cancelled', 44);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `supportreq`
+--
+
+CREATE TABLE `supportreq` (
+  `id` int(11) NOT NULL,
+  `reservationNo` int(11) NOT NULL,
+  `Latitude` double NOT NULL,
+  `Longitude` double NOT NULL,
+  `Message` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tawafduration`
+--
+
+CREATE TABLE `tawafduration` (
+  `TDurationId` int(11) NOT NULL,
+  `UserId` int(11) NOT NULL,
+  `TDuration` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -138,9 +168,8 @@ INSERT INTO `timeslots` (`id`, `time`, `numberOfSingleV`, `numberOfDoubleV`, `sl
 --
 
 CREATE TABLE `users` (
-  `ID` int(11) NOT NULL,
-  `FirstName` varchar(30) NOT NULL,
-  `LastName` varchar(30) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `FullName` varchar(30) NOT NULL,
   `Email` varchar(200) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `Type` varchar(30) NOT NULL DEFAULT 'Al-Haram visitor',
@@ -151,8 +180,8 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`ID`, `FirstName`, `LastName`, `Email`, `Password`, `Type`, `Status`) VALUES
-(44, 'Fatimah', 'alnaser', 'alnaserfatimah344@gmail.com', '$2y$10$KIqLBapuEtypAVCMqhOs7eSwNKrnZ1lqjknxO5uCTIV.sNaa0BZNS', 'Al-Haram visitor', 1);
+INSERT INTO `users` (`userID`, `FullName`, `Email`, `Password`, `Type`, `Status`) VALUES
+(44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$KIqLBapuEtypAVCMqhOs7eSwNKrnZ1lqjknxO5uCTIV.sNaa0BZNS', 'Al-Haram visitor', 1);
 
 --
 -- Indexes for dumped tables
@@ -178,6 +207,20 @@ ALTER TABLE `reservation`
   ADD KEY `visitorId` (`visitorId`);
 
 --
+-- Indexes for table `supportreq`
+--
+ALTER TABLE `supportreq`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `reservationNo` (`reservationNo`);
+
+--
+-- Indexes for table `tawafduration`
+--
+ALTER TABLE `tawafduration`
+  ADD PRIMARY KEY (`TDurationId`),
+  ADD KEY `UserId` (`UserId`);
+
+--
 -- Indexes for table `timeslots`
 --
 ALTER TABLE `timeslots`
@@ -187,7 +230,7 @@ ALTER TABLE `timeslots`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`userID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -209,7 +252,19 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=83;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+
+--
+-- AUTO_INCREMENT for table `supportreq`
+--
+ALTER TABLE `supportreq`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tawafduration`
+--
+ALTER TABLE `tawafduration`
+  MODIFY `TDurationId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `timeslots`
@@ -221,7 +276,7 @@ ALTER TABLE `timeslots`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- Constraints for dumped tables
@@ -231,7 +286,19 @@ ALTER TABLE `users`
 -- Constraints for table `reservation`
 --
 ALTER TABLE `reservation`
-  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`visitorId`) REFERENCES `users` (`ID`);
+  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`visitorId`) REFERENCES `users` (`userID`);
+
+--
+-- Constraints for table `supportreq`
+--
+ALTER TABLE `supportreq`
+  ADD CONSTRAINT `supportreq_ibfk_1` FOREIGN KEY (`reservationNo`) REFERENCES `reservation` (`id`);
+
+--
+-- Constraints for table `tawafduration`
+--
+ALTER TABLE `tawafduration`
+  ADD CONSTRAINT `tawafduration_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `users` (`userID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

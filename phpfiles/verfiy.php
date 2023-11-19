@@ -45,7 +45,7 @@ overflow: hidden;
     text-align: center;
     padding:0 0 20px 0;
     color:#3C6348;
-    font-size:21px;
+    font-size: 21px;
 }  
 .logo{
     width: 15%;

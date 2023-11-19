@@ -24,22 +24,21 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   
- TextEditingController FirstName = TextEditingController();
+ TextEditingController FullName = TextEditingController();
  TextEditingController email = TextEditingController();
- TextEditingController LastName = TextEditingController();
  TextEditingController Password=TextEditingController();
+  TextEditingController ConfirmPassword=TextEditingController();
   bool _isSecurePassword=true;
 var verifylink;
   Future signup() async{
-    var url ="http://192.168.1.13/phpfiles/signup.php";
+    var url ="http://192.168.100.167/phpfiles/signup.php";
     final response= await http.post(Uri.parse(url),body:{
-    "FirstName":FirstName.text,
+    "FullName":FullName.text,
     "Email":email.text,
-    "LastName":LastName.text,
     "Password":Password.text,
+    "ConfirmPass":ConfirmPassword.text
   });
   var data =json.decode(response.body);
-  print(data);
 
   if(data == "Error"){
 
@@ -197,7 +196,7 @@ ScaffoldMessenger.of(context).showSnackBar(
                                 duration: Duration(seconds: 5),
                                 content: Container(
                                   height: 100,
-                                  padding: EdgeInsets.only(top:10.0,right:10.0,left:10.0),
+                                  padding: EdgeInsets.only(top: 10,right:10,left: 10),
                                   decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
@@ -235,7 +234,7 @@ ScaffoldMessenger.of(context).showSnackBar(
                                                   fontWeight: FontWeight.w700),
                                             ),
                                             Text(
-                                              "Password At least must be 8 characters, one lowercase letter, a uppercase letter,\na special character, and a digit!",
+                                              "Password At least must be 8 characters, one lowercase letter, a uppercase letter,\na special character, and a digit!",
                                               style: TextStyle(
                                                   color: Color.fromARGB(
                                                       255, 255, 255, 255),
@@ -323,8 +322,8 @@ ScaffoldMessenger.of(context).showSnackBar(
                                       Container(
                                         child: Lottie.asset(
                                           'assets/images/erorrr.json',
-                                          width: 150,
-                                          height: 150,
+                                          width: 80,
+                                          height: 80,
                                         ),
                                       ),
                                     ],
@@ -336,6 +335,79 @@ ScaffoldMessenger.of(context).showSnackBar(
                               ),
                             );
 
+  }
+
+  else if( data== "PassDoesntMatch" ){
+    ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                duration: Duration(seconds: 5),
+                                content: Container(
+                                  height: 60,
+                                  padding: EdgeInsets.only(top: 10,right:10,left: 10),
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Color.fromARGB(221, 224, 41, 41),
+                                          Color.fromARGB(255, 240, 50, 50),
+                                        ],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.2),
+                                          blurRadius: 4.0,
+                                          spreadRadius: .05,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(15))),
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 30,
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Error!',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Text(
+                                              "Passwords don't match!",
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 255, 255, 255),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w400),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 3,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        child: Lottie.asset(
+                                          'assets/images/erorrr.json',
+                                          width: 80,
+                                          height: 80,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                elevation: 0,
+                                backgroundColor: Colors.transparent,
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
   }
   else{
     verifylink=data;
@@ -505,32 +577,19 @@ ScaffoldMessenger.of(context).showSnackBar(
                               const RoundedPasswordField(),*/
                               TextFieldContainer(
       child: TextField(
-        controller:FirstName,
+        controller:FullName,
         cursorColor: kPrimaryColor,
         decoration: InputDecoration(
             icon: Icon(
               Icons.person,
               color: kPrimaryColor,
             ),
-            hintText: "First name",
+            hintText: "Full name",
             hintStyle: const TextStyle(fontFamily: 'OpenSans'),
             border: InputBorder.none),
       ),
     ),
-                            TextFieldContainer(
-      child: TextField(
-        controller:LastName,
-        cursorColor: kPrimaryColor,
-        decoration: InputDecoration(
-            icon: Icon(
-              Icons.person,
-              color: kPrimaryColor,
-            ),
-            hintText: "Last name",
-            hintStyle: const TextStyle(fontFamily: 'OpenSans'),
-            border: InputBorder.none),
-      ),
-    ),                        TextFieldContainer(
+                      TextFieldContainer(
       child: TextField(
         controller:email,
         cursorColor: kPrimaryColor,
@@ -555,6 +614,22 @@ ScaffoldMessenger.of(context).showSnackBar(
               color: kPrimaryColor,
             ),
             hintText: "Password",
+            hintStyle:  TextStyle(fontFamily: 'OpenSans'),
+            suffixIcon: togglePassword(),
+            border: InputBorder.none),
+      ),
+    ),
+      TextFieldContainer(
+      child: TextField(
+        controller: ConfirmPassword,
+        obscureText: _isSecurePassword,
+        cursorColor: kPrimaryColor,
+         decoration:  InputDecoration(
+            icon: Icon(
+              Icons.lock,
+              color: kPrimaryColor,
+            ),
+            hintText: "Confirm password",
             hintStyle:  TextStyle(fontFamily: 'OpenSans'),
             suffixIcon: togglePassword(),
             border: InputBorder.none),
