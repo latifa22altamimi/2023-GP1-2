@@ -3,12 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rehaab/GlobalValues.dart';
-import 'package:rehaab/main/home.dart';
-import 'package:rehaab/reservations/myreservations.dart';
 import 'package:rehaab/reservations/reservationdetails.dart';
 import 'package:http/http.dart' as http;
-import 'package:rehaab/reservations/reserve_vehicle.dart';
-import 'package:rehaab/Signin/login_screen.dart';
 
 class ReservationList extends StatefulWidget {
   ReservationList({Key? key}) : super(key: key);
@@ -71,7 +67,8 @@ class _ReservationListState extends State<ReservationList> {
                 colorr: Color.fromARGB(255, 215, 53, 53),
               );
             }
-            if (list[index]["Status"] == "In-active") { //new
+            if (list[index]["Status"] == "In-active") {
+              //new
               return ReserveCard(
                 Rid: list[index]["id"],
                 datee: list[index]["date"],
@@ -81,8 +78,9 @@ class _ReservationListState extends State<ReservationList> {
               );
             }
           } else {
-           
+             print("sss");
           }
+         
         },
       ),
     );
@@ -197,7 +195,8 @@ class ReserveCard extends StatelessWidget {
                                 time: timee))));
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(131, 60, 100, 73),
+                    backgroundColor: Color.fromARGB(218, 60, 100, 73),
+                    //Color.fromARGB(131, 60, 100, 73)
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
                         Radius.circular(500),
