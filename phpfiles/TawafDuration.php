@@ -6,7 +6,7 @@ $UserId=$_POST['Userid'];
 
 
 
-$query="INSERT INTO TawafDuration (UserId,TDuration) VALUES ('".$UserId."', '".$TDuration."')";
+$query="INSERT INTO Tawaf (UserId,TDuration) VALUES ('".$UserId."', '".$TDuration."')";
 
 $result=mysqli_query($conn,$query);
 

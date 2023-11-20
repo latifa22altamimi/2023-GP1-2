@@ -1,11 +1,9 @@
 import "dart:convert";
 
 import "package:flutter/material.dart";
-import "package:get/get.dart";
 import "dart:async";
 import "package:http/http.dart" as http;
 import "package:flutter_map/flutter_map.dart";
-import "package:flutter_map_location_marker/flutter_map_location_marker.dart";
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import "package:lottie/lottie.dart";
@@ -24,8 +22,6 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   double kaaba_lat = 21.422487;
   double kaaba_lon = 39.826206;
   double? c_lat, c_lon, m;
-  // double? start_lat, start_lon;
-  // Position? c_position;
   Position? startPosition;
   final stopwatch = Stopwatch();
   StreamSubscription<Position>? positionStream;
@@ -35,15 +31,6 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Duration? elapsed;
   double? controller;
   bool _isVisible = false;
-
-
-  Future duration() async{
-    var url ="http://10.0.2.2/phpfiles/TDuration.php";
-    final response= await http.post(Uri.parse(url),body:{
-    "TDuration":elapsed,
-    "Userid":GlobalValues.id});
-  var data =json.decode(response.body);
-  }
 
   void dispose() {
     super.dispose();
@@ -90,7 +77,13 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
       debugPrint(e);
     });
   }
-
+Future duration() async{
+    var url ="http://10.0.2.2/phpfiles/TawafDuration.php";
+    final response= await http.post(Uri.parse(url),body:{
+    "TDuration":elapsed,
+    "Userid":GlobalValues.id});
+  var data =json.decode(response.body);
+  }
   void listenToStream() {
     const LocationSettings locationSettings = LocationSettings(
       accuracy: LocationAccuracy.high,
@@ -361,19 +354,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                              })
                              ) 
                              )
-/*
-                              Padding(
-                            padding: const EdgeInsets.only(top: 575,left: 50,right:50),
-                            child: Visibility(
-                              visible: GlobalValues.isShowen,
-                              child: RoundedButton(  text: 'Call for support', press: () {
-          setState(() {
-          });
-                              }
-          
-          ),)),
 
-    */
                             , Padding(
                             padding: const EdgeInsets.only(top:610),
                             child: Visibility(
@@ -382,25 +363,9 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                                 "your expected finish time:\n THE TIME WILL BE SHOWEN AFTER YOU FINISH ONE ROUND",
                                 textAlign:TextAlign.center, style: TextStyle(color: kPrimaryColor,fontSize: 18,fontWeight: FontWeight.bold),
                               ),)),
-                              /*
-                               Padding(
-                            padding: const EdgeInsets.only(top: 500,left: 50,right:50),
-                            child: Visibility(
-                              visible: _isVisible,
-                              child: RoundedButton(  text: 'Stop Tawaf', press: () {
-          _getCurrentPosition();
-          stopwatch.start();
-          listenToStream();
-          setState(() {
-            _isVisible = !_isVisible;
-         
-          });
-                              }
-          
-          ),)) */
+                           
             ],
-          ),
-          // Container(child: Text("$start_lat , $start_lon"))
+          )
         ],
         
       ),)

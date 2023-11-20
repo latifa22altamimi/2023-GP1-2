@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2023 at 04:30 AM
+-- Generation Time: Nov 20, 2023 at 03:23 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -88,16 +88,7 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `visitorId`) VALUES
-(77, '2023-10-22', '18:00 PM', 'Double', 'Self-driving', '', 'Confirmed', 44),
-(78, '2023-10-22', '18:00 PM', 'Double', 'Self-driving', '', 'Confirmed', 44),
-(79, '2023-10-22', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(80, '2023-10-22', '18:00 PM', 'Double', 'Self-driving', '', 'Confirmed', 44),
-(81, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(82, '2023-10-22', '19:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(83, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(84, '2023-10-26', '18:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
-(85, '2023-10-27', '03:00 AM', 'Single', 'Self-driving', '', 'Being used', 44),
-(86, '2023-10-28', '21:00 PM', 'Single', 'Self-driving', '', 'Cancelled', 44);
+(102, '2023-11-17', '22:30 PM', 'Single', 'Self-driving', '', 'In-active', 44);
 
 -- --------------------------------------------------------
 
@@ -116,10 +107,10 @@ CREATE TABLE `supportreq` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tawafduration`
+-- Table structure for table `tawaf`
 --
 
-CREATE TABLE `tawafduration` (
+CREATE TABLE `tawaf` (
   `TDurationId` int(11) NOT NULL,
   `UserId` int(11) NOT NULL,
   `TDuration` decimal(10,0) NOT NULL
@@ -173,15 +164,16 @@ CREATE TABLE `users` (
   `Email` varchar(200) NOT NULL,
   `Password` varchar(255) NOT NULL,
   `Type` varchar(30) NOT NULL DEFAULT 'Al-Haram visitor',
-  `Status` int(11) NOT NULL DEFAULT 0
+  `VerificationStatus` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`userID`, `FullName`, `Email`, `Password`, `Type`, `Status`) VALUES
-(44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$KIqLBapuEtypAVCMqhOs7eSwNKrnZ1lqjknxO5uCTIV.sNaa0BZNS', 'Al-Haram visitor', 1);
+INSERT INTO `users` (`userID`, `FullName`, `Email`, `Password`, `Type`, `VerificationStatus`) VALUES
+(44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$7xFLClUeua9sUgzuXqFy.OntRYLpxloW5yc9bX7/e9smMFIMmKD9y', 'Al-Haram visitor', 1),
+(51, 'fa', 'alnaserfatimah4@gmail.com', '$2y$10$LIBZfiFkJ.HVGyLnhAQFeOhWTC/Hx/uOBf0NKlvCMJzI5w/Qj/iYi', 'Al-Haram visitor', 1);
 
 --
 -- Indexes for dumped tables
@@ -214,9 +206,9 @@ ALTER TABLE `supportreq`
   ADD KEY `reservationNo` (`reservationNo`);
 
 --
--- Indexes for table `tawafduration`
+-- Indexes for table `tawaf`
 --
-ALTER TABLE `tawafduration`
+ALTER TABLE `tawaf`
   ADD PRIMARY KEY (`TDurationId`),
   ADD KEY `UserId` (`UserId`);
 
@@ -252,7 +244,7 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 
 --
 -- AUTO_INCREMENT for table `supportreq`
@@ -261,9 +253,9 @@ ALTER TABLE `supportreq`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `tawafduration`
+-- AUTO_INCREMENT for table `tawaf`
 --
-ALTER TABLE `tawafduration`
+ALTER TABLE `tawaf`
   MODIFY `TDurationId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -276,7 +268,7 @@ ALTER TABLE `timeslots`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- Constraints for dumped tables
@@ -295,10 +287,10 @@ ALTER TABLE `supportreq`
   ADD CONSTRAINT `supportreq_ibfk_1` FOREIGN KEY (`reservationNo`) REFERENCES `reservation` (`id`);
 
 --
--- Constraints for table `tawafduration`
+-- Constraints for table `tawaf`
 --
-ALTER TABLE `tawafduration`
-  ADD CONSTRAINT `tawafduration_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `users` (`userID`);
+ALTER TABLE `tawaf`
+  ADD CONSTRAINT `tawaf_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `users` (`userID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

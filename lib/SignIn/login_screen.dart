@@ -208,7 +208,7 @@ GlobalValues.Fullname=data[2];
                             );
 
   }
-      else if( data == "notVerfied"){
+      else if( data == "notVerified"){
 
      ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
