@@ -178,7 +178,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `FullName`, `Email`, `Password`, `Type`, `VerificationStatus`) VALUES
-(44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$KIqLBapuEtypAVCMqhOs7eSwNKrnZ1lqjknxO5uCTIV.sNaa0BZNS', 'Al-Haram visitor', 1),
+(44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$7xFLClUeua9sUgzuXqFy.OntRYLpxloW5yc9bX7/e9smMFIMmKD9y', 'Al-Haram visitor', 1),
 (51, 'fa', 'alnaserfatimah4@gmail.com', '$2y$10$LIBZfiFkJ.HVGyLnhAQFeOhWTC/Hx/uOBf0NKlvCMJzI5w/Qj/iYi', 'Al-Haram visitor', 1),
 (52, 'Manal Alyami', 'manalalyami7@gmail.com', '$2y$10$y.S07Y5Cm25vK3pCWZn1O.Uk8BZSw5OOaptTVFliaQIa0NLfrJfn2', 'Al-Haram visitor', 1);
 
