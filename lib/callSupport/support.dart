@@ -31,10 +31,10 @@ class _CallSupportState extends State<callSupport>{
   Color getColor(Set<MaterialState> states) {
     return Color.fromARGB(219, 69, 95, 77);
   }
-Future insert() async {
+/*Future insert() async {
     var url = "http://192.168.8.109/phpfiles/support.php";
     final res = await http.post(Uri.parse(url), body: {
-      "Rid": GlobalValues.Rid,
+      "Userid": GlobalValues.id,
       "message": _currentIndex==2? message.text : types[_currentIndex!],
       "lo": long,
       "la": lat
@@ -42,7 +42,7 @@ Future insert() async {
     });
     var resp = json.decode(res.body);
     print(resp);
-  }
+  }*/
 
   Widget build(BuildContext context){
     return Scaffold(
@@ -336,7 +336,7 @@ SliverToBoxAdapter(
                                                     height: 38, width: 100),
                                             child: ElevatedButton(
                                               onPressed: () {
-                                                insert();
+                                              //  insert();
                                                 Navigator.of(context).pop();
                                                 showDialog(
                                                   context: context,
