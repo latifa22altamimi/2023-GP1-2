@@ -106,7 +106,7 @@ Future duration() async{
           stopwatch.stop();
           elapsed = stopwatch.elapsed;
           stopwatch.reset();
-          duration();
+          duration(); ////
           final snackBar = SnackBar(content: Text('Lap Time: $elapsed'));
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
           setState(() {
@@ -285,7 +285,7 @@ Future duration() async{
                         child:  ListTile(
                         
                           title: Text(
-                            "Hello "+GlobalValues.Fullname+"! \nare you ready to make Rehaab count your Tawaf rounds?",
+                            "Are you ready to make Rehaab count your Tawaf rounds?",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 20,
