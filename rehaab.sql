@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2023 at 09:15 PM
+-- Generation Time: Nov 22, 2023 at 11:37 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -104,7 +104,7 @@ INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `
 
 CREATE TABLE `support` (
   `supportID` int(11) NOT NULL,
-  `reservationNo` int(11) NOT NULL,
+  `UserId` int(11) NOT NULL,
   `Latitude` double NOT NULL,
   `Longitude` double NOT NULL,
   `Message` varchar(200) NOT NULL
@@ -178,7 +178,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `FullName`, `Email`, `Password`, `Type`, `VerificationStatus`) VALUES
-(44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$7xFLClUeua9sUgzuXqFy.OntRYLpxloW5yc9bX7/e9smMFIMmKD9y', 'Al-Haram visitor', 1),
+(44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$KIqLBapuEtypAVCMqhOs7eSwNKrnZ1lqjknxO5uCTIV.sNaa0BZNS', 'Al-Haram visitor', 1),
 (51, 'fa', 'alnaserfatimah4@gmail.com', '$2y$10$LIBZfiFkJ.HVGyLnhAQFeOhWTC/Hx/uOBf0NKlvCMJzI5w/Qj/iYi', 'Al-Haram visitor', 1),
 (52, 'Manal Alyami', 'manalalyami7@gmail.com', '$2y$10$y.S07Y5Cm25vK3pCWZn1O.Uk8BZSw5OOaptTVFliaQIa0NLfrJfn2', 'Al-Haram visitor', 1);
 
@@ -210,7 +210,7 @@ ALTER TABLE `reservation`
 --
 ALTER TABLE `support`
   ADD PRIMARY KEY (`supportID`),
-  ADD KEY `reservationNo` (`reservationNo`);
+  ADD KEY `support_ibfk_1` (`UserId`);
 
 --
 -- Indexes for table `tawaf`
@@ -291,7 +291,7 @@ ALTER TABLE `reservation`
 -- Constraints for table `support`
 --
 ALTER TABLE `support`
-  ADD CONSTRAINT `support_ibfk_1` FOREIGN KEY (`reservationNo`) REFERENCES `reservation` (`id`);
+  ADD CONSTRAINT `support_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `users` (`userID`);
 
 --
 -- Constraints for table `tawaf`
