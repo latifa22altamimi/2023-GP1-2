@@ -10,6 +10,7 @@ import 'package:rehaab/reservations/reserve_vehicle.dart';
 import 'package:rehaab/reservations/myreservations.dart';
 import 'package:rehaab/Map_page/map.dart';
 import 'package:rehaab/widgets/constants.dart';
+import 'package:rehaab/callSupport/support.dart';
 class home extends StatefulWidget {
   home({Key? key}) : super(key: key);
   @override
@@ -120,7 +121,29 @@ class AppBarr extends StatelessWidget {
                     color: Colors.white,
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
-              )
+              ), Visibility(
+           //   visible: GlobalValues.Status=="Active"? true: false,
+           visible: true,
+              child:    Container ( padding: EdgeInsets.only(left:40, right: 10, top:5),    child:  ElevatedButton.icon(
+                onPressed: () async { Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        callSupport()), //navigate to sign up page
+              );},
+                label: Text("Call for support"),
+                icon: Icon(Icons.phone),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith(
+                      (states) => Color.fromARGB(255, 207, 202, 202)),
+                  shape: MaterialStateProperty.resolveWith((states) =>
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0))),
+                  fixedSize: MaterialStateProperty.resolveWith(
+                      (states) => Size(  170,40 )),
+                ),
+              ),)
+            ),
             ],
           )
         ],

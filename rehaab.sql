@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2023 at 03:23 AM
+-- Generation Time: Nov 21, 2023 at 09:15 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -88,16 +88,22 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `visitorId`) VALUES
-(102, '2023-11-17', '22:30 PM', 'Single', 'Self-driving', '', 'In-active', 44);
+(102, '2023-11-17', '22:30 PM', 'Single', 'Self-driving', '', 'Active', 44),
+(104, '2023-11-20', '22:30 PM', 'Single', 'Self-driving', '', 'Cancelled', 44),
+(105, '2023-11-20', '22:30 PM', 'Single', 'Self-driving', '', 'Active', 44),
+(106, '2023-11-20', '22:30 PM', 'Single', 'Self-driving', '', 'Active', 44),
+(107, '2023-11-20', '22:30 PM', 'Single', 'Self-driving', '', 'Active', 52),
+(108, '2023-11-20', '22:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 52),
+(109, '2023-11-20', '22:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `supportreq`
+-- Table structure for table `support`
 --
 
-CREATE TABLE `supportreq` (
-  `id` int(11) NOT NULL,
+CREATE TABLE `support` (
+  `supportID` int(11) NOT NULL,
   `reservationNo` int(11) NOT NULL,
   `Latitude` double NOT NULL,
   `Longitude` double NOT NULL,
@@ -173,7 +179,8 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`userID`, `FullName`, `Email`, `Password`, `Type`, `VerificationStatus`) VALUES
 (44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$7xFLClUeua9sUgzuXqFy.OntRYLpxloW5yc9bX7/e9smMFIMmKD9y', 'Al-Haram visitor', 1),
-(51, 'fa', 'alnaserfatimah4@gmail.com', '$2y$10$LIBZfiFkJ.HVGyLnhAQFeOhWTC/Hx/uOBf0NKlvCMJzI5w/Qj/iYi', 'Al-Haram visitor', 1);
+(51, 'fa', 'alnaserfatimah4@gmail.com', '$2y$10$LIBZfiFkJ.HVGyLnhAQFeOhWTC/Hx/uOBf0NKlvCMJzI5w/Qj/iYi', 'Al-Haram visitor', 1),
+(52, 'Manal Alyami', 'manalalyami7@gmail.com', '$2y$10$y.S07Y5Cm25vK3pCWZn1O.Uk8BZSw5OOaptTVFliaQIa0NLfrJfn2', 'Al-Haram visitor', 1);
 
 --
 -- Indexes for dumped tables
@@ -199,10 +206,10 @@ ALTER TABLE `reservation`
   ADD KEY `visitorId` (`visitorId`);
 
 --
--- Indexes for table `supportreq`
+-- Indexes for table `support`
 --
-ALTER TABLE `supportreq`
-  ADD PRIMARY KEY (`id`),
+ALTER TABLE `support`
+  ADD PRIMARY KEY (`supportID`),
   ADD KEY `reservationNo` (`reservationNo`);
 
 --
@@ -244,13 +251,13 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 
 --
--- AUTO_INCREMENT for table `supportreq`
+-- AUTO_INCREMENT for table `support`
 --
-ALTER TABLE `supportreq`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `support`
+  MODIFY `supportID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tawaf`
@@ -268,7 +275,7 @@ ALTER TABLE `timeslots`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- Constraints for dumped tables
@@ -281,10 +288,10 @@ ALTER TABLE `reservation`
   ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`visitorId`) REFERENCES `users` (`userID`);
 
 --
--- Constraints for table `supportreq`
+-- Constraints for table `support`
 --
-ALTER TABLE `supportreq`
-  ADD CONSTRAINT `supportreq_ibfk_1` FOREIGN KEY (`reservationNo`) REFERENCES `reservation` (`id`);
+ALTER TABLE `support`
+  ADD CONSTRAINT `support_ibfk_1` FOREIGN KEY (`reservationNo`) REFERENCES `reservation` (`id`);
 
 --
 -- Constraints for table `tawaf`
