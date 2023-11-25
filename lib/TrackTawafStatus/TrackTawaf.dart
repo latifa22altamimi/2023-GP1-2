@@ -4,6 +4,7 @@ import "package:http/http.dart" as http;
 // import "package:flutter_map/flutter_map.dart";
 import "dart:math";
 import 'package:location/location.dart';
+import "package:rehaab/widgets/constants.dart";
 import "package:stop_watch_timer/stop_watch_timer.dart";
 
 class TrackTawaf extends StatefulWidget {
@@ -21,6 +22,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   int counter = 0;
   double? controller;
   bool _isVisible = false;
+  var time;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
 
@@ -64,8 +66,8 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
       l = d(position.latitude, position.longitude, currentLocation.latitude,
               currentLocation.longitude)
           .floor();
-      if (stopwatch.elapsed.inMilliseconds > 10000) {
-        if (l < 5) {
+      if (stopwatch.elapsed.inMilliseconds > 15000) {
+        if (l < 3) {
           setState(() {
             counter = counter + 1;
             print(counter);
@@ -79,6 +81,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
           dispose();
         } else if (counter == 1) {
           _stopWatchTimer.onStopTimer();
+        time=(stopwatch.elapsed.inMilliseconds/1000).floor();
         }
       }
     });
@@ -90,7 +93,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Color(0xFF251AC2),
+          backgroundColor: kPrimaryColor,
           title: const Text("Tawaf"),
           actions: const []),
       body: Container(
@@ -192,7 +195,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xFF251AC2),
+        backgroundColor:kPrimaryColor,
         child: const Icon(Icons.start),
         onPressed: () async {
           _stopWatchTimer.onStartTimer();
