@@ -49,6 +49,9 @@ dependencies:
   ticket_widget: ^0.0.1
   get:
   flutter_map_location_marker: ^8.0.2
+  stop_watch_timer: ^3.0.2
+  location: ^5.0.2
+
  
 
 
