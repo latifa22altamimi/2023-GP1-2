@@ -11,8 +11,8 @@ import 'package:rehaab/GlobalValues.dart';
 import 'package:http/http.dart' as http;
 
 
-var long;
-var lat;
+String long='';
+String lat='';
 
 
 class callSupport extends StatefulWidget {
@@ -37,13 +37,19 @@ Future insert() async {
     var url = "http://10.0.2.2/phpfiles/support.php";
     final res = await http.post(Uri.parse(url), body: {
       "UserId": GlobalValues.id,
-      "la": double.parse(lat),
-      "lo": double.parse(long),
+      "la": lat,
+      "lo": long,
       "message": _currentIndex==2? message.text : types[_currentIndex!],
-      
     });
-    var resp = json.decode(res.body);
-    print(resp);
+  if(res.statusCode==200){
+      print("success");
+        var resp = json.decode(res.body);
+        print(resp);
+
+    }
+    else{
+      print("fail");
+    }
   }
  
   Widget build(BuildContext context){
@@ -261,7 +267,7 @@ SliverToBoxAdapter(
               child: RoundedButton(
                 text: 'Send',
                 press: () async {
-                  if( (problemSelected|| problemTyped) && lat!= null && long != null ){  
+                  if( (problemSelected|| problemTyped && message.text!='' ) && lat!= '' && long != '' ){  
                  showDialog(
                               context: context,
                               builder: (context) => Dialog(
@@ -345,6 +351,9 @@ SliverToBoxAdapter(
                                                 child: ElevatedButton(
                                                   onPressed: () {
                                                     insert();
+                                                    print(_currentIndex==2? message.text: types[_currentIndex!]);
+                                                    print(lat);
+                                                    print(long);
                                                     Navigator.of(context).pop();
                                                     showDialog(
                                                       context: context,
@@ -461,7 +470,7 @@ SliverToBoxAdapter(
                                   ));
                   }
                   else{ 
-                    if(!(problemSelected|| problemTyped)){  
+                    if(!(problemSelected|| (problemTyped && message.text!=''))){  
 ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         duration: Duration(seconds: 3),
@@ -568,7 +577,7 @@ late BitmapDescriptor customMarker;
   }
   getCustomMarker() async {
     customMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, 'assets/images/marker_1.png');
+        ImageConfiguration.empty, 'assets/images/marker_1.png');//--------------------put new marker image
   }
 
   _getCurrentLocation() async {
@@ -606,8 +615,8 @@ late BitmapDescriptor customMarker;
       LatLng location = LatLng(position.latitude, position.longitude);
       _currentPosition = location;
     setState(() {
-      long= position.longitude;
-      lat=position.latitude;
+      long= position.longitude.toString();
+      lat=position.latitude.toString();
     });
       return location;
   }
@@ -623,9 +632,9 @@ late BitmapDescriptor customMarker;
             return Center (
               child: GoogleMap(
               initialCameraPosition: CameraPosition(
-                target: _currentPosition ??
+                 target: _currentPosition ??
                     LatLng(56.324293441187315, 38.13961947281509),
-                zoom: 19.0,
+                zoom: 16.0,
               ),
          onMapCreated: (GoogleMapController googleMapController) {
               mapController = googleMapController;
