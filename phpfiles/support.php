@@ -6,14 +6,12 @@
  */
 
 include 'connect.php';
-
 $UserId=$_POST['UserId'];
 $LAT = $_POST['la'];
 $lONG =$_POST['lo'];
 $mess = $_POST['message'];
-        
-       
-$stmt = $conn->prepare("INSERT INTO support(UserId, Latitude, Longitude, Message) VALUES ($UserId,$LAT,$lONG,?)");
-$stmt->bind_param("s", $mess);
-$stmt->execute();
-$result = $stmt->get_result();
+
+      
+$stmt ="INSERT INTO support(UserId, Latitude, Longitude, Message) VALUES ('".$UserId."','".$LAT."','".$lONG."','".$mess."')";
+
+$result = mysqli_query($conn,$stmt);
