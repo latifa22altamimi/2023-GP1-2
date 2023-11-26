@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:rehaab/main/home.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:lottie/lottie.dart' as lottie;
 import 'package:rehaab/customization/clip.dart';
@@ -25,6 +26,8 @@ class _CallSupportState extends State<callSupport>{
   int? _currentIndex;
   List types=["Sudden stop","Empty battery"];
    TextEditingController message = TextEditingController();
+   bool problemSelected=false;
+   bool problemTyped=false;
 
 
   Color getColor(Set<MaterialState> states) {
@@ -137,6 +140,8 @@ Future insert() async {
             onTap: () {
               setState(() {
              _currentIndex = index;
+             problemSelected=true;
+             problemTyped=false;
               });
 
             },
@@ -228,6 +233,8 @@ SliverToBoxAdapter(
 
         setState(() {
           _currentIndex=2;
+          problemSelected=false;
+             problemTyped=true;
         });
       },
           minLines: 5,
@@ -254,230 +261,280 @@ SliverToBoxAdapter(
               child: RoundedButton(
                 text: 'Send',
                 press: () async {
-                  //convert date/day/time into string first
-                  showDialog(
-                          context: context,
-                          builder: (context) => Dialog(
-                                backgroundColor:
-                                    Color.fromARGB(255, 247, 247, 247),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Container(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      lottie.Lottie.asset('assets/images/warn.json',
-                                          width: 150, height: 120),
-                                      Text(
-                                        'Warning',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      Text(
-                                        'Are you sure you want to call for support?',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                  if( (problemSelected|| problemTyped) && lat!= null && long != null ){  
+                 showDialog(
+                              context: context,
+                              builder: (context) => Dialog(
+                                    backgroundColor:
+                                        Color.fromARGB(255, 247, 247, 247),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20)),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          ConstrainedBox(
-                                            constraints:
-                                                BoxConstraints.tightFor(
-                                                    height: 38, width: 100),
-                                            child: ElevatedButton(
-                                              onPressed: () =>
-                                                  Navigator.of(context).pop(),
-                                              child: Text(
-                                                'Close',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color.fromARGB(
-                                                    255, 255, 255, 255),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(50),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                          lottie.Lottie.asset('assets/images/warn.json',
+                                              width: 100, height: 100),
+                                          Text(
+                                            'Warning',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600),
                                           ),
-
                                           SizedBox(
-                                            width: 30.0,
+                                            height: 10.0,
                                           ),
-                                          //when press on confirm
-
-                                          ConstrainedBox(
-                                            constraints:
-                                                BoxConstraints.tightFor(
-                                                    height: 38, width: 100),
-                                            child: ElevatedButton(
-                                              onPressed: () {
-                                                insert();
-                                                Navigator.of(context).pop();
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (context) => Dialog(
+                                          Text(
+                                            'Are you sure you want to call for support?',
+                                            style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 48, 48, 48),
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.w400), textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(
+                                            height: 15.0,
+                                          ),
+                                          Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              ConstrainedBox(
+                                                constraints:
+                                                    BoxConstraints.tightFor(
+                                                        height: 38, width: 100),
+                                                child: ElevatedButton(
+                                                  onPressed: () =>
+                                                      Navigator.of(context).pop(),
+                                                  child: Text(
+                                                    'Close',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  style: ElevatedButton.styleFrom(
                                                     backgroundColor:
                                                         Color.fromARGB(
-                                                            255, 247, 247, 247),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20)),
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              20.0),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          lottie.Lottie.asset(
-                                                              'assets/images/success.json',
-                                                              width: 100,
-                                                              height: 100),
-                                                          Text(
-                                                            'Success',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 20,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10.0,
-                                                          ),
-                                                          Text(
-                                                            'Your location is sent to the administrators, they are coming to help you',
-                                                            textAlign: TextAlign.center,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 17,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10.0,
-                                                          ),
-                                                          Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            children: [
-                                                              ConstrainedBox(
-                                                                constraints: BoxConstraints
-                                                                    .tightFor(
-                                                                        height:
-                                                                            38,
-                                                                        width:
-                                                                            100),
-                                                                child:
-                                                                    ElevatedButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  child: Text(
-                                                                    'Done',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black,
-                                                                        fontSize:
-                                                                            15,
-                                                                        fontWeight:
-                                                                            FontWeight.w500),
-                                                                  ),
-                                                                  style: ElevatedButton
-                                                                      .styleFrom(
-                                                                    backgroundColor:
-                                                                        Color.fromARGB(
-                                                                            255,
-                                                                            255,
-                                                                            255,
-                                                                            255),
-                                                                    shape:
-                                                                        RoundedRectangleBorder(
-                                                                      borderRadius:
-                                                                          BorderRadius
-                                                                              .all(
-                                                                        Radius.circular(
-                                                                            50),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          )
-                                                        ],
+                                                            255, 255, 255, 255),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(50),
                                                       ),
                                                     ),
                                                   ),
-                                                );
-                                              },
-                                              child: Text(
-                                                'Confirm',
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color.fromARGB(
-                                                    255, 60, 100, 73),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(50),
-                                                  ),
                                                 ),
                                               ),
-                                            ),
+                  
+                                              SizedBox(
+                                                width: 30.0,
+                                              ),
+                                              //when press on confirm
+                  
+                                              ConstrainedBox(
+                                                constraints:
+                                                    BoxConstraints.tightFor(
+                                                        height: 38, width: 100),
+                                                child: ElevatedButton(
+                                                  onPressed: () {
+                                                    insert();
+                                                    Navigator.of(context).pop();
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        Future.delayed(
+                                                            Duration(seconds: 2),
+                                                            () {
+                                                          Navigator.push(context, MaterialPageRoute(builder: (context)=> home()));
+                                                        });
+                                                        return Dialog(
+                                                          backgroundColor:
+                                                              Color.fromARGB(255,
+                                                                  247, 247, 247),
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20)),
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(20.0),
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                              lottie.Lottie.asset(
+                                                                    'assets/images/success.json',
+                                                                    width: 100,
+                                                                    height: 100),
+                                                                Text(
+                                                                  'Success',
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          20,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 10.0,
+                                                                ),
+                                                                Text(
+                                                                  'Your location is sent to the administrators, they are coming to help you', 
+                                                                  textAlign: TextAlign.center,
+                                                                  style: TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          17,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 10.0,
+                                                                ),
+                                                                Row(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    ConstrainedBox(
+                                                                      constraints: BoxConstraints.tightFor(
+                                                                          height:
+                                                                              38,
+                                                                          width:
+                                                                              100),
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        );
+                                                      },
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                    'Confirm',
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w500),
+                                                  ),
+                                                  style: ElevatedButton.styleFrom(
+                                                    backgroundColor:
+                                                        Color.fromARGB(
+                                                            255, 60, 100, 73),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                        Radius.circular(50),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
                                           )
                                         ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ));
+                                      ),
+                                    ),
+                                  ));
                   }
+                  else{ 
+                    if(!(problemSelected|| problemTyped)){  
+ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: Duration(seconds: 3),
+                        content: Container(
+                          height: 80,
+                          padding: EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color.fromARGB(221, 224, 41, 41),
+                                  Color.fromARGB(255, 240, 50, 50),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  blurRadius: 4.0,
+                                  spreadRadius: .05,
+                                ),
+                              ],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15))),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 30,
+                              ),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Error!',
+                                      style: TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 255, 255, 255),
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                    Text(
+                                      "Type the problem or choose from the options!",
+                                      style: TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 255, 255, 255),
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w400),
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 3,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: lottie.Lottie.asset(
+                                  'assets/images/erorrr.json',
+                                  width: 150,
+                                  height: 150,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        elevation: 0,
+                        backgroundColor: Colors.transparent,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
+                    }
+                  }
+                }
+               
                
               ),
             ),
@@ -552,8 +609,7 @@ late BitmapDescriptor customMarker;
       long= position.longitude;
       lat=position.latitude;
     });
-
-    return true;
+      return location;
   }
 
   @override
