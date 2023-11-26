@@ -7,7 +7,7 @@
 
 include 'connect.php';
 $Rid=$_POST['Rid'];
-$select= "UPDATE `reservation` SET `Status`='In-active' WHERE id=$Rid";
+$select= "UPDATE `reservation` SET `Status`='Active' WHERE id=$Rid";
 $result= mysqli_query($conn, $select);
 if($result){
     echo json_encode("started successfully");
