@@ -4,7 +4,9 @@ import "package:http/http.dart" as http;
 // import "package:flutter_map/flutter_map.dart";
 import "dart:math";
 import 'package:location/location.dart';
+import "package:rehaab/customization/clip.dart";
 import "package:rehaab/widgets/constants.dart";
+import "package:rehaab/widgets/rounded_button.dart";
 import "package:stop_watch_timer/stop_watch_timer.dart";
 
 class TrackTawaf extends StatefulWidget {
@@ -92,16 +94,67 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: kPrimaryColor,
-          title: const Text("Tawaf"),
-          actions: const []),
+     appBar: AppBar(
+        leading: Container(
+          padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
+          child: BackButton(),
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        toolbarHeight: 100,
+        flexibleSpace: ClipPath(
+          clipper: AppbarClip(),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 180,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Color.fromARGB(255, 60, 100, 73),
+                  Color.fromARGB(255, 104, 132, 113)
+                ],
+              ),
+            ),
+            child: Center(
+              child: Text(
+                'Track Tawaf Status',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 23,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+        ),
+      ),
       body: Container(
         decoration: const BoxDecoration(
       
         ),
         child: Stack(
           children: [
+             Card(
+                        margin: const EdgeInsets.only(
+                            top:65, left: 35, right: 35, bottom: 10),
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30)),
+                        child:  ListTile(
+                        
+                          title: Text(
+                            "Are you ready to make Rehaab count your Tawaf rounds?",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: kPrimaryColor)
+                                ,
+                          ),
+                         
+                        ),
+                      ),
             SizedBox(
               child: Center(
                 child: Visibility(
@@ -130,7 +183,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.5),
+                        color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
                         spreadRadius: 5,
                         blurRadius: 7,
                         offset: Offset(0, 3),
@@ -166,6 +219,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                         offset: Offset(0, 3),
                       )
                     ]),
+                    
                 child: StreamBuilder<int>(
                   stream: _stopWatchTimer.rawTime,
                   initialData: 0,
@@ -191,9 +245,26 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                 ),
               ),
             ),
+            Padding( padding:EdgeInsets.only(top: 500,left: 50,right:50), 
+          child:Visibility(
+            child: RoundedButton(
+          text: 'Start Tracking', press: () async {
+          _stopWatchTimer.onStartTimer();
+          stopwatch.start();
+          getCurrentLocation();
+        },
+        
+                             )
+                             ) 
+                             )
+
           ],
+          
         ),
+        
       ),
+      
+      /*
       floatingActionButton: FloatingActionButton(
         backgroundColor:kPrimaryColor,
         child: const Icon(Icons.start),
@@ -202,7 +273,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
           stopwatch.start();
           getCurrentLocation();
         },
-      ),
+      ),*/
      
     );
   }
