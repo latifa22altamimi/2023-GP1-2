@@ -8,10 +8,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:rehaab/widgets/rounded_button.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:http/http.dart' as http;
-//import 'package:rehaab/widgets/text_field_container.dart';
 
 
-String SupportType="";
 var long;
 var lat;
 
@@ -92,7 +90,7 @@ Future insert() async {
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
             margin: EdgeInsets.all(10),
             height: 220,
-            child:MapPage()) ,),
+            child:Center(child: MapPage())) ,),
           SliverToBoxAdapter(
             child: Column(
               children: <Widget>[
@@ -561,15 +559,17 @@ late BitmapDescriptor customMarker;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
+      body: Center(
+        child: FutureBuilder(
         future: _getCurrentLocationFuture,
         builder: (context, snapshot) {
             if (snapshot.hasData) {
-            return GoogleMap(
+            return Center (
+              child: GoogleMap(
               initialCameraPosition: CameraPosition(
                 target: _currentPosition ??
                     LatLng(56.324293441187315, 38.13961947281509),
-                zoom: 16.0,
+                zoom: 19.0,
               ),
          onMapCreated: (GoogleMapController googleMapController) {
               mapController = googleMapController;
@@ -583,15 +583,20 @@ late BitmapDescriptor customMarker;
               ),
             );
             
-          });
+          }
+          );
         },
         markers: Set<Marker>.from(markers),
+            )
             );
           } else {
-            return CircularProgressIndicator();
+            return Center(
+              child:CircularProgressIndicator()
+              );
           }
         },
       ),
+    )
     );
   }
 
