@@ -2,10 +2,8 @@ import 'dart:convert';
 import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:rehaab/TrackTawafStatus/TrackTawaf.dart';
 import 'package:rehaab/customization/clip.dart';
 import 'package:http/http.dart' as http;
-import 'package:rehaab/reservations/reservation_list.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:ticket_widget/ticket_widget.dart';
@@ -14,6 +12,8 @@ import '../widgets/rounded_button.dart';
 import 'date.dart';
 import 'package:intl/intl.dart';
 import 'package:rehaab/GlobalValues.dart';
+import 'package:progress_border/progress_border.dart';
+
 
 String getUpdatedTime = "";
 String getUpdatedDate = "";
@@ -42,15 +42,22 @@ List list = [];
 
 var datetime;
 
-class _ReservationDetailsState extends State<ReservationDetails> {
+class _ReservationDetailsState extends State<ReservationDetails>  with SingleTickerProviderStateMixin {
   String? Rid;
   String? Status;
   String? date;
   String? time;
+  
 
   bool cancelIsVisible = false;
+  late final animationController = AnimationController(
+    vsync: this,
+      // this isthe duration of the progress
+    duration: const Duration(seconds: 7), 
+  );
 
   _ReservationDetailsState({this.Rid, this.Status, this.date, this.time});
+  
 
   Future GetData() async {
     var url = "http://10.0.2.2/phpfiles/details.php";
@@ -74,6 +81,24 @@ class _ReservationDetailsState extends State<ReservationDetails> {
   void initState() {
     super.initState();
     GetData();
+    animationController.addListener(() {
+      setState(() {});
+    });
+
+    restart();
+  }
+  @override
+  void dispose() {
+    animationController.dispose();
+    super.dispose();
+  }
+
+  void restart() {
+    
+    
+    animationController.repeat();
+    
+
   }
   StartTawaf() async{
     var url = "http://10.0.2.2/phpfiles/startTawaf.php";
@@ -121,6 +146,7 @@ class _ReservationDetailsState extends State<ReservationDetails> {
       return false;
     }
   }
+  
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -180,38 +206,55 @@ class _ReservationDetailsState extends State<ReservationDetails> {
                       Container(
                         width: 120.0,
                         height: 25.0,
-                        decoration: Status!="Active"? BoxDecoration(
+                        decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30.0),
                           border: Border.all(
                               width: 1.0,
                               color: Status == "Cancelled"
-                                  ? Colors.red
-                                : Colors.green),
-                        ): null,
+                                  ?  Colors.red
+                                : Status == "Confirmed"? 
+                                Colors.green
+                                :  Color.fromRGBO(255, 196, 4, 1)
+                                ),
+                        ),
                         child: Center(
-                          child:Status!="Active"? Text(
+                          child:Text(
                             '${Status}', // reservation status
                             style: Status == "Cancelled"
                                 ? TextStyle(
-                                    color: Colors.red,
+                                    color:  Colors.red,
                                     fontWeight: FontWeight.bold)
-                                : TextStyle(
+                                : Status == "Confirmed"? TextStyle(
                                     color: Colors.green,
+                                    fontWeight: FontWeight.bold): 
+                                    TextStyle(
+                                    color:  Color.fromRGBO(255, 196, 4, 1),
                                     fontWeight: FontWeight.bold),
-                          ): null,
+                          ),
                         ),
                       ),
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 25.0),
+                    padding: const EdgeInsets.only(top: 20.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                     // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                            //  decoration: BoxDecoration (border: Border.all(color: Status=='Confirmed'? Colors.green : Colors.red ), borderRadius: BorderRadius.circular(30.0), color: Colors.green.shade900),
-                            alignment: Alignment.topCenter,
 
+                          width: 150,
+                          height: 150,
+                            //  decoration: BoxDecoration (border: Border.all(color: Status=='Confirmed'? Colors.green : Colors.red ), borderRadius: BorderRadius.circular(30.0), color: Colors.green.shade900),
+                            alignment: Alignment.center,
+                           decoration: BoxDecoration(  
+                            border:Status=="Active"? 
+                           ProgressBorder.all(
+                           color:  Color.fromRGBO(255, 196, 4, 1),
+                           width: 5.5,
+                           progress: animationController.value,
+                           clockwise: true,)
+                           : null , ),
+                          
                             //margin: EdgeInsets.only(bottom: 20.0),
 
                             //padding: EdgeInsets.only(top: 50),
