@@ -1,17 +1,13 @@
-import "dart:convert";
-
 import "package:flutter/material.dart";
 import "dart:async";
 import "package:http/http.dart" as http;
-import "package:flutter_map/flutter_map.dart";
-import 'package:latlong2/latlong.dart';
-import 'package:geolocator/geolocator.dart';
-import "package:lottie/lottie.dart";
-import "package:rehaab/GlobalValues.dart";
+// import "package:flutter_map/flutter_map.dart";
+import "dart:math";
+import 'package:location/location.dart';
 import "package:rehaab/customization/clip.dart";
-import "package:rehaab/main/home.dart";
 import "package:rehaab/widgets/constants.dart";
 import "package:rehaab/widgets/rounded_button.dart";
+import "package:stop_watch_timer/stop_watch_timer.dart";
 
 class TrackTawaf extends StatefulWidget {
   @override
@@ -19,218 +15,86 @@ class TrackTawaf extends StatefulWidget {
 }
 
 class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
-  double kaaba_lat = 21.422487;
-  double kaaba_lon = 39.826206;
-  double? c_lat, c_lon, m;
-  Position? startPosition;
+  Location location = Location();
+  double kaaba_lat = 24.7884335;
+  double kaaba_lon = 46.6724390;
+  double c_lat = 0, c_lon = 0, m = 0;
+  var l;
   final stopwatch = Stopwatch();
-  StreamSubscription<Position>? positionStream;
-  int count = 0;
   int counter = 0;
-  double? laps;
-  Duration? elapsed;
   double? controller;
   bool _isVisible = false;
+  var time;
 
+  final StopWatchTimer _stopWatchTimer = StopWatchTimer();
+
+  @override
   void dispose() {
     super.dispose();
-    positionStream?.cancel();
   }
 
-  Future<bool> _handleLocationPermission() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+  double d(lat1, lon1, lat2, lon2) {
+    var p = 0.017453292519943295;
+    var c = cos;
+    var a = 0.5 -
+        c((lat2 - lat1) * p) / 2 +
+        c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
+    return 12742 * asin(sqrt(a)) * 1000;
+  }
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+  Future<bool> requestPermission() async {
+    final permission = await location.requestPermission();
+    return permission == PermissionStatus.granted;
+  }
+
+  Future<LocationData> getCurrentLocation() async {
+    setState(() {
+      _isVisible = !_isVisible;
+    });
+    _isVisible = true;
+    final serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location services are disabled. Please enable the services')));
-      return false;
-    }
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')));
-        return false;
+      final result = await location.requestService;
+      if (result == true) {
+        print('Service has been enabled');
+      } else {
+        throw Exception('GPS service not enabled');
       }
     }
-    if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location permissions are permanently denied, we cannot request permissions.')));
-      return false;
-    }
-    return true;
-  }
-
-  Future<void> _getCurrentPosition() async {
-    final hasPermission = await _handleLocationPermission();
-    if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
-        .then((Position position) {
-      setState(() => startPosition = position);
-      m = (kaaba_lat - position.latitude) / (kaaba_lon - position.longitude);
-    }).catchError((e) {
-      debugPrint(e);
-    });
-  }
-Future duration() async{
-    var url ="http://10.0.2.2/phpfiles/TawafDuration.php";
-    final response= await http.post(Uri.parse(url),body:{
-    "TDuration":elapsed,
-    "Userid":GlobalValues.id});
-  var data =json.decode(response.body);
-  }
-  void listenToStream() {
-    const LocationSettings locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 1,
-    );
-    positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position? position) {
-      print(position);
-      setState(() {
-        c_lat = position!.latitude;
-        c_lon = position.longitude;
-      });
-      double distance =
-          Geolocator.distanceBetween(kaaba_lat, kaaba_lon, c_lat!, c_lon!);
-      // print("distance: $distance");
-      if (c_lon == (m! * c_lat!) - (m! * kaaba_lat) + kaaba_lon) {
-        count++;
-        if (count == 2) {
-          stopwatch.stop();
-          elapsed = stopwatch.elapsed;
-          stopwatch.reset();
-          duration(); ////
-          final snackBar = SnackBar(content: Text('Lap Time: $elapsed'));
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    final position = await location.getLocation();
+    var x =
+        d(position.latitude, position.longitude, kaaba_lat, kaaba_lon).floor();
+    location.onLocationChanged.listen((LocationData currentLocation) {
+      l = d(position.latitude, position.longitude, currentLocation.latitude,
+              currentLocation.longitude)
+          .floor();
+      if (stopwatch.elapsed.inMilliseconds > 15000) {
+        if (l < 3) {
           setState(() {
             counter = counter + 1;
+            print(counter);
           });
-        } else if (count == 14) {
-          laps = count / 2;
-         dispose();
-          setState(() {
-            _isVisible = !_isVisible;
-             showDialog(
-                                                  context: context,
-                                                  builder: (context) 
-                                                  
-                                                  {
-                        Future.delayed(Duration(seconds:3), () {
-                              Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) =>  home()),
-  );
-                        });
-                                                  return Dialog(
-                                                   
-                                                    backgroundColor:
-                                                        Color.fromARGB(
-                                                            255, 247, 247, 247),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        20)),
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              20.0),
-                                                      child: Column(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          Lottie.asset(
-                                                              'assets/images/success.json',
-                                                              width: 100,
-                                                              height: 100),
-                                                          Text(
-                                                            'Success',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 20,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10.0,
-                                                          ),
-                                                          Text(
-                                                            "Well done you've finish 7 rounds successfully!",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 17,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400),
-                                                          ),
-                                                          SizedBox(
-                                                            height: 10.0,
-                                                          ),
-                                                          Row(
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .center,
-                                                            mainAxisSize:
-                                                                MainAxisSize
-                                                                    .min,
-                                                            children: [
-                                                              ConstrainedBox(
-                                                                constraints: BoxConstraints
-                                                                    .tightFor(
-                                                                        height:
-                                                                            38,
-                                                                        width:
-                                                                            100),
-                                                         
-                                                                  
-                                                                ),
-                                                            
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                  }
-                                                );
-            
-          });
-        }
-        if (distance > 200) {
+        } else if (x > 200) {
+          _isVisible = false;
           dispose();
-          setState(() {
-            _isVisible = false;
-          });
+          _stopWatchTimer.onStopTimer();
+        }
+        if (counter >= 7) {
+          dispose();
+        } else if (counter == 1) {
+          _stopWatchTimer.onStopTimer();
+        time=(stopwatch.elapsed.inMilliseconds/1000).floor();
         }
       }
     });
+
+    return position;
   }
-
-
- void initState() {
-    super.initState();
-  }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+     appBar: AppBar(
         leading: Container(
           padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
           child: BackButton(),
@@ -257,7 +121,7 @@ Future duration() async{
               child: Text(
                 'Track Tawaf Status',
                 style: TextStyle(
-                    color: Color.fromARGB(255, 244, 244, 244),
+                    color: Colors.white,
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
               ),
@@ -265,18 +129,13 @@ Future duration() async{
           ),
         ),
       ),
-      body:Container(
+      body: Container(
+        decoration: const BoxDecoration(
+      
+        ),
         child: Stack(
-        children: [
-        FlutterMap(
-            options: MapOptions(
-              center: LatLng(kaaba_lat, kaaba_lon),
-              zoom: 18,
-              backgroundColor: Color.fromRGBO(250,250,250,1),
-            ),
-
-            children: [
-               Card(
+          children: [
+             Card(
                         margin: const EdgeInsets.only(
                             top:65, left: 35, right: 35, bottom: 10),
                         color: Colors.white,
@@ -296,79 +155,126 @@ Future duration() async{
                          
                         ),
                       ),
-                         SizedBox(
-                child: Center(
-                  child: Visibility(
-                    visible: _isVisible,
-                    child: SizedBox(
-                      width: 200,
-                      height: 200,
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.grey,
-                        color: Color.fromARGB(255, 120, 138, 121),
-                        strokeWidth: 11,
-                        value: controller,
-                        semanticsLabel: 'progress',
-                      ),
+            SizedBox(
+              child: Center(
+                child: Visibility(
+                  visible: _isVisible,
+                  child: SizedBox(
+                    width: 200,
+                    height: 200,
+                    child: CircularProgressIndicator(
+                      backgroundColor: Colors.grey,
+                      color: Color.fromARGB(255, 89, 95, 133),
+                      strokeWidth: 8,
+                      value: controller,
+                      semanticsLabel: 'progress',
                     ),
                   ),
                 ),
               ),
-              CircleLayer(
-                circles: [
-                  CircleMarker(
-                    point: LatLng(kaaba_lat, kaaba_lon),
-                    radius: 60,
-                    useRadiusInMeter: true,
-                    color: const Color.fromARGB(50, 51, 51, 51),
-                    borderStrokeWidth: 10.0,
-                    borderColor: kPrimaryColor,
-                  ),
-                ],
+            ),
+            Container(
+                child: Center(
+              child: Container(
+                width: 200,
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white, width: 5),
+                    color: const Color.fromRGBO(255, 255, 255, 0.9),
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
+                      )
+                    ]),
               ),
-              Container(
-                child: Visibility(
-                  visible: _isVisible,
-                  child: Center(
-                    child: Text('$count',
-                        style: const TextStyle(
-                            fontSize: 120, fontWeight: FontWeight.bold, color: kPrimaryColor)),
-                    
-                  ),
-                   
+            )),
+            Container(
+              child: Visibility(
+                visible: _isVisible,
+                child: Center(
+                  child: Text('$counter',
+                      style: const TextStyle(
+                          fontSize: 120, fontWeight: FontWeight.bold)),
                 ),
               ),
-    
-          
-        Padding( padding:EdgeInsets.only(top: 500,left: 50,right:50), 
+            ),
+            Positioned(
+              bottom: 50,
+              left: 20,
+              // bottom: 20,
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(0, 16.0, 0, 16.0),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: Colors.black),
+                    color: const Color.fromARGB(133, 255, 255, 255),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3),
+                      )
+                    ]),
+                    
+                child: StreamBuilder<int>(
+                  stream: _stopWatchTimer.rawTime,
+                  initialData: 0,
+                  builder: (context, snap) {
+                    final value = snap.data;
+                    final displayTime = StopWatchTimer.getDisplayTime(value!);
+                    return Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            "Lap Time: $displayTime",
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontFamily: 'Helvetica',
+                                fontWeight: FontWeight.w900),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+            Padding( padding:EdgeInsets.only(top: 500,left: 50,right:50), 
           child:Visibility(
             child: RoundedButton(
-          text: 'Start Tracking', press: () {
-          _getCurrentPosition();
+          text: 'Start Tracking', press: () async {
+          _stopWatchTimer.onStartTimer();
           stopwatch.start();
-          listenToStream();
-          setState(() {
-          _isVisible = !_isVisible;
-         
-          });
-                             })
+          getCurrentLocation();
+        },
+        
+                             )
                              ) 
                              )
 
-                            , Padding(
-                            padding: const EdgeInsets.only(top:610),
-                            child: Visibility(
-                              visible: _isVisible,
-                              child: Text(
-                                "your expected finish time:\n THE TIME WILL BE SHOWEN AFTER YOU FINISH ONE ROUND",
-                                textAlign:TextAlign.center, style: TextStyle(color: kPrimaryColor,fontSize: 18,fontWeight: FontWeight.bold),
-                              ),)),
-                           
-            ],
-          )
-        ],
+          ],
+          
+        ),
         
-      ),)
+      ),
+      
+      /*
+      floatingActionButton: FloatingActionButton(
+        backgroundColor:kPrimaryColor,
+        child: const Icon(Icons.start),
+        onPressed: () async {
+          _stopWatchTimer.onStartTimer();
+          stopwatch.start();
+          getCurrentLocation();
+        },
+      ),*/
+     
     );
   }
 }

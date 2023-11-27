@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 22, 2023 at 11:37 AM
+-- Generation Time: Nov 26, 2023 at 10:21 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -94,7 +94,10 @@ INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `
 (106, '2023-11-20', '22:30 PM', 'Single', 'Self-driving', '', 'Active', 44),
 (107, '2023-11-20', '22:30 PM', 'Single', 'Self-driving', '', 'Active', 52),
 (108, '2023-11-20', '22:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 52),
-(109, '2023-11-20', '22:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44);
+(109, '2023-11-20', '22:30 PM', 'Single', 'Self-driving', '', 'Confirmed', 44),
+(110, '2023-11-22', '15:00 PM', 'Single', 'Self-driving', '', 'Active', 44),
+(111, '2023-11-22', '22:30 PM', 'Single', 'Self-driving', '', 'Active', 44),
+(112, '2023-11-22', '22:30 PM', 'Single', 'Self-driving', '', 'Active', 44);
 
 -- --------------------------------------------------------
 
@@ -105,10 +108,18 @@ INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `
 CREATE TABLE `support` (
   `supportID` int(11) NOT NULL,
   `UserId` int(11) NOT NULL,
-  `Latitude` double NOT NULL,
-  `Longitude` double NOT NULL,
+  `Latitude` varchar(200) NOT NULL,
+  `Longitude` varchar(200) NOT NULL,
   `Message` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `support`
+--
+
+INSERT INTO `support` (`supportID`, `UserId`, `Latitude`, `Longitude`, `Message`) VALUES
+(1, 44, '24.752490096677022', '46.57267837057907', 'Sudden stop'),
+
 
 -- --------------------------------------------------------
 
@@ -251,13 +262,13 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
 
 --
 -- AUTO_INCREMENT for table `support`
 --
 ALTER TABLE `support`
-  MODIFY `supportID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `supportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tawaf`
