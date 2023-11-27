@@ -66,17 +66,7 @@ class _ReservationListState extends State<ReservationList> {
           height: 60,
           margin: const EdgeInsets.all(12),
           padding: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-            color: Color.fromARGB(255, 255, 255, 255),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.2),
-                blurRadius: 1.0,
-                spreadRadius: .05,
-              ),
-            ],
-          ),
+          
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -87,12 +77,12 @@ class _ReservationListState extends State<ReservationList> {
                   //previous button
                   onPressed: () {
                     setState(() {
-                      prevColor = Colors.black.withOpacity(0);
-                      curColor = Color.fromARGB(255, 255, 255, 255);
-                      prevBG = Color.fromARGB(255, 255, 255, 255);
-                      curBG = kPrimaryColor;
-                      curTxt = Colors.white;
-                      prevTxt = Colors.black;
+                      curColor = Colors.black.withOpacity(0.5);
+                      prevColor = Color.fromARGB(255, 255, 255, 255);
+                      curBG = Color.fromARGB(255, 255, 255, 255);
+                      prevBG = kPrimaryColor;
+                      curTxt = Colors.black;
+                      prevTxt = Colors.white;
                       //previous reservations
                       history = 1;
                       historyList.clear();
@@ -137,12 +127,12 @@ class _ReservationListState extends State<ReservationList> {
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      prevColor = Color.fromARGB(255, 255, 255, 255);
-                      curColor = Colors.black.withOpacity(0);
-                      curBG = Color.fromARGB(255, 255, 255, 255);
-                      prevBG = kPrimaryColor;
-                      curTxt = Colors.black;
-                      prevTxt = Colors.white;
+                      prevColor = Colors.black.withOpacity(0.5);
+                      curColor = Color.fromARGB(255, 255, 255, 255);
+                      curBG = kPrimaryColor;
+                      prevBG = Color.fromARGB(255, 255, 255, 255);
+                      curTxt = Colors.white;
+                      prevTxt = Colors.black;
                       //current reservations
                       history = 0;
                       historyList.clear();
@@ -168,7 +158,7 @@ class _ReservationListState extends State<ReservationList> {
                   ),
                   child: Text(
                     'Current',
-                    style: TextStyle(color:curTxt),
+                    style: TextStyle(color: curTxt),
                   ),
                 ),
               ),

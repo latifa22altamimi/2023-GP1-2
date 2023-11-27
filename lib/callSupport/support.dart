@@ -577,7 +577,7 @@ late BitmapDescriptor customMarker;
   }
   getCustomMarker() async {
     customMarker = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration.empty, 'assets/images/marker_1.png');//--------------------put new marker image
+        ImageConfiguration.empty, 'assets/images/support.json');//--------------------put new marker image
   }
 
   _getCurrentLocation() async {
