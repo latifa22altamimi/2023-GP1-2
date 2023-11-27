@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
-import 'package:rehaab/SignIn/login_screen.dart';
 import 'package:rehaab/TrackTawafStatus/TrackTawaf.dart';
 import 'package:rehaab/main/onboardingscreen.dart';
 import 'package:rehaab/profile/profile.dart';
@@ -120,8 +118,44 @@ class AppBarr extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 23,
-                    fontWeight: FontWeight.w500),
-              ), Visibility(
+                    fontWeight: FontWeight.w500),)
+                    , 
+                    Visibility(
+                      visible: GlobalValues.Status=="Active"? true: false,
+                      child: FloatingActionButton(  
+                      onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => callSupport())),
+                    child: Container(
+                  width: 65,
+                  height: 65,
+                  decoration: BoxDecoration(
+                    color:Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                   
+                    
+                  ),
+                  child: Column(
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Center (child: Icon(Icons.support_agent, size:55), 
+                       // child: Center (child: Image.asset('assets/images/support_icon.png' , width :55 , height: 55),
+                        )
+                       
+                      ),
+                     
+                    /*  Text(
+                        'Call for support',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 9,
+                            fontWeight: FontWeight.bold),
+                      )*/
+                    ],
+                  ),
+                ),)
+              ),
+            /*  Visibility(
            //   visible: GlobalValues.Status=="Active"? true: false,
            visible: true,
               child:    Container ( padding: EdgeInsets.only(left:40, right: 10, top:5),    child:  ElevatedButton.icon(
@@ -143,7 +177,7 @@ class AppBarr extends StatelessWidget {
                       (states) => Size(  170,40 )),
                 ),
               ),)
-            ),
+            ),*/
             ],
           )
         ],
