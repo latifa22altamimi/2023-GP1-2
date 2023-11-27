@@ -15,8 +15,8 @@ class TrackTawaf extends StatefulWidget {
 
 class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Location location = Location();
-  double kaaba_lat = 24.7884335;
-  double kaaba_lon = 46.6724390;
+  double kaaba_lat = 24.778565;
+  double kaaba_lon = 46.669633;
   double c_lat = 0, c_lon = 0, m = 0;
   var l;
   final stopwatch = Stopwatch();
@@ -39,7 +39,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
     var a = 0.5 -
         c((lat2 - lat1) * p) / 2 +
         c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p)) / 2;
-    return 12742 * asin(sqrt(a)) * 1000;
+    return 2 * 6371 * asin(sqrt(a)) * 1000;
   }
 
   Future<bool> requestPermission() async {
@@ -69,7 +69,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
               currentLocation.longitude)
           .floor();
       // if (stopwatch.elapsed.inMilliseconds > 15000) {
-      if (l < 3) {
+      if (l < 5) {
         if (stopwatch.elapsed.inMilliseconds - gap > 15000) {
           setState(() {
             counter = counter + 1;
@@ -77,7 +77,8 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
           });
         }
         gap = stopwatch.elapsed.inMilliseconds;
-      } else if (x > 200) {
+      } else if (x > 50) {
+        print("checkedout");
         _isVisible = false;
         dispose();
         _stopWatchTimer.onStopTimer();
@@ -97,7 +98,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar: AppBar(
+      appBar: AppBar(
         leading: Container(
           padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
           child: BackButton(),
@@ -133,31 +134,26 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
         ),
       ),
       body: Container(
-        decoration: const BoxDecoration(
-       
-        ),
+        decoration: const BoxDecoration(),
         child: Stack(
           children: [
-              Card(
-                        margin: const EdgeInsets.only(
-                            top:65, left: 35, right: 35, bottom: 10),
-                        color: Colors.white,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30)),
-                        child:  ListTile(
-                        
-                          title: Text(
-                            "Are you ready to make Rehaab count your Tawaf rounds?",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: kPrimaryColor)
-                                ,
-                          ),
-                         
-                        ),
-                      ),
+            Card(
+              margin: const EdgeInsets.only(
+                  top: 65, left: 35, right: 35, bottom: 10),
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
+              child: ListTile(
+                title: Text(
+                  "Are you ready to make Rehaab count your Tawaf rounds?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: kPrimaryColor),
+                ),
+              ),
+            ),
             SizedBox(
               child: Center(
                 child: Visibility(
@@ -247,23 +243,22 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                 ),
               ),
             ),
-             Padding( padding:EdgeInsets.only(top: 500,left: 50,right:50), 
-          child:Visibility(
-            child: RoundedButton(
-          text: 'Start Tracking', press: () async {
-          _stopWatchTimer.onStartTimer();
-          stopwatch.start();
-          getCurrentLocation();
-        },
-        
-                             )
-                             ) 
-                             )
+            Padding(
+                padding: EdgeInsets.only(top: 500, left: 50, right: 50),
+                child: Visibility(
+                    child: RoundedButton(
+                  text: 'Start Tracking',
+                  press: () async {
+                    _stopWatchTimer.onStartTimer();
+                    stopwatch.start();
+                    getCurrentLocation();
+                  },
+                )))
           ],
         ),
       ),
-    
-    /*  floatingActionButton: FloatingActionButton(
+
+      /*  floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xFF251AC2),
         child: const Icon(Icons.start),
         onPressed: () async {
@@ -272,7 +267,6 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
           getCurrentLocation();
         },
       ),*/
-      
     );
   }
 }
