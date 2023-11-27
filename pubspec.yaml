@@ -110,6 +110,7 @@ flutter:
     - assets/images/noavailable.json
     - assets/images/anon.png
     - assets/images/reserve.json
+    - assets/images/Active.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -48,39 +48,27 @@ class _MyReservationsState extends State<MyReservations> {
         elevation: 0.0,
         toolbarHeight: 100,
         flexibleSpace: ClipPath(
-          clipper: AppbarClip(),
+          
           child: Container(
               width: MediaQuery.of(context).size.width,
-              height: 180,
+              height: 140,
               decoration: BoxDecoration(
-              color: kPrimaryColor
-              ),
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(10),
+            bottomRight: Radius.circular(20),
+          ),
+          color: kPrimaryColor
+        ),
               child: Stack(
                 children: [
-                  BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 0.0, sigmaY: 0.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            /*
-                              color: Color.fromARGB(255, 255, 255, 255)
-                                  .withOpacity(0.2)),
-                          gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.white.withOpacity(0.09),
-                                Colors.white.withOpacity(0.1),
-                              ]*/)),
-                    ),
-                  ),
+                 
                   Container(
                     alignment: Alignment.center,
                     child: Text(
                       'My reservations',
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 23,
+                          fontSize: 25,
                           fontWeight: FontWeight.w500),
                     ),
                   ),

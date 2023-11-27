@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/reservations/reservationdetails.dart';
 import 'package:http/http.dart' as http;
+import 'package:rehaab/widgets/constants.dart';
 
 class ReservationList extends StatefulWidget {
   ReservationList({Key? key}) : super(key: key);
@@ -16,6 +17,15 @@ class ReservationList extends StatefulWidget {
 class _ReservationListState extends State<ReservationList> {
   List list = [];
   bool empty = true;
+  int history = 1;
+  List historyList = [];
+  Color prevColor = Color.fromARGB(255, 255, 255, 255);
+  Color curColor = Colors.black.withOpacity(0);
+  Color curBG = Color.fromARGB(255, 255, 255, 255);
+  Color prevBG = Color.fromARGB(255, 255, 255, 255);
+  Color prevTxt = Colors.white;
+  Color curTxt = Colors.black;
+
   Future GetData() async {
     print(GlobalValues.id);
     var url = "http://10.0.2.2/phpfiles/RList.php";
@@ -27,6 +37,13 @@ class _ReservationListState extends State<ReservationList> {
       var red = json.decode(res.body);
       setState(() {
         list.addAll(red);
+        //inital current list
+        for (int i = 0; i < list.length; i++) {
+          if ((list[i]["Status"] == "Confirmed" ||
+              list[i]["Status"] == "Active")) {
+            historyList.add(list[i]);
+          }
+        }
       });
     }
   }
@@ -34,55 +51,176 @@ class _ReservationListState extends State<ReservationList> {
   void initState() {
     super.initState();
     GetData();
+    curColor = Colors.black.withOpacity(0);
+    prevColor = Color.fromARGB(255, 255, 255, 255);
+    prevBG = kPrimaryColor;
+    prevTxt = Colors.white;
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: double.infinity,
-      child: ListView.separated(
-        itemCount: list.length,
-        separatorBuilder: (context, index) {
-          return const SizedBox(
-            height: 9,
-          );
-        },
-        itemBuilder: (BuildContext context, int index) {
-          if (list[0] != null) {
-            if (list[index]["Status"] == "Confirmed") {
-              return ReserveCard(
-                Rid: list[index]["id"],
-                datee: list[index]["date"],
-                timee: list[index]["time"],
-                status: list[index]["Status"],
-                colorr: Color.fromARGB(255, 33, 152, 51),
-              );
-            }
-            if (list[index]["Status"] == "Cancelled") {
-              return ReserveCard(
-                Rid: list[index]["id"],
-                datee: list[index]["date"],
-                timee: list[index]["time"],
-                status: list[index]["Status"],
-                colorr: Color.fromARGB(255, 215, 53, 53),
-              );
-            }
-            if (list[index]["Status"] == "In-active") {
-              //new
-              return ReserveCard(
-                Rid: list[index]["id"],
-                datee: list[index]["date"],
-                timee: list[index]["time"],
-                status: list[index]["Status"],
-                colorr: Colors.yellow,
-              );
-            }
-          } else {
-             print("sss");
-          }
-         
-        },
-      ),
+    return Column(
+      children: <Widget>[
+        Container(
+          width: MediaQuery.of(context).size.width,
+          height: 60,
+          margin: const EdgeInsets.all(12),
+          padding: const EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 255, 255, 255),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 1.0,
+                spreadRadius: .05,
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                height: 60,
+                width: 180,
+                child: ElevatedButton(
+                  //previous button
+                  onPressed: () {
+                    setState(() {
+                      prevColor = Colors.black.withOpacity(0);
+                      curColor = Color.fromARGB(255, 255, 255, 255);
+                      prevBG = Color.fromARGB(255, 255, 255, 255);
+                      curBG = kPrimaryColor;
+                      curTxt = Colors.white;
+                      prevTxt = Colors.black;
+                      //previous reservations
+                      history = 1;
+                      historyList.clear();
+                      for (int i = 0; i < list.length; i++) {
+                        if (list[i]["Status"] == "Cancelled") {
+                          historyList.add(list[i]);
+                        }
+                      }
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shadowColor: prevColor,
+                    elevation: 5,
+                    backgroundColor: prevBG,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(19),
+                          bottomLeft: Radius.circular(19),
+                          topRight: Radius.circular(5),
+                          bottomRight: Radius.circular(5)),
+                    ),
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Text(
+                        'Previous',
+                        style: TextStyle(color: prevTxt),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Container(
+                height: 40,
+                width: 2,
+                color: Colors.black.withOpacity(0.2),
+              ),
+              SizedBox(
+                height: 60,
+                width: 185,
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      prevColor = Color.fromARGB(255, 255, 255, 255);
+                      curColor = Colors.black.withOpacity(0);
+                      curBG = Color.fromARGB(255, 255, 255, 255);
+                      prevBG = kPrimaryColor;
+                      curTxt = Colors.black;
+                      prevTxt = Colors.white;
+                      //current reservations
+                      history = 0;
+                      historyList.clear();
+                      for (int i = 0; i < list.length; i++) {
+                        if ((list[i]["Status"] == "Confirmed" ||
+                            list[i]["Status"] == "Active")) {
+                          historyList.add(list[i]);
+                        }
+                      }
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    elevation: 5,
+                    shadowColor: curColor,
+                    backgroundColor: curBG,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(19),
+                          bottomRight: Radius.circular(19),
+                          topLeft: Radius.circular(5),
+                          bottomLeft: Radius.circular(5)),
+                    ),
+                  ),
+                  child: Text(
+                    'Current',
+                    style: TextStyle(color:curTxt),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: SizedBox(
+            height: double.infinity,
+            child: ListView.separated(
+              itemCount: historyList.length,
+              separatorBuilder: (context, index) {
+                return const SizedBox(
+                  height: 9,
+                );
+              },
+              itemBuilder: (BuildContext context, int index) {
+                if (historyList[0] != null) {
+                  if (historyList[index]["Status"] == "Confirmed") {
+                    return ReserveCard(
+                      Rid: historyList[index]["id"],
+                      datee: historyList[index]["date"],
+                      timee: historyList[index]["time"],
+                      status: historyList[index]["Status"],
+                      colorr: Color.fromARGB(255, 33, 152, 51),
+                    );
+                  }
+                  if (historyList[index]["Status"] == "Cancelled") {
+                    return ReserveCard(
+                      Rid: historyList[index]["id"],
+                      datee: historyList[index]["date"],
+                      timee: historyList[index]["time"],
+                      status: historyList[index]["Status"],
+                      colorr: Color.fromARGB(255, 215, 53, 53),
+                    );
+                  }
+                  if (historyList[index]["Status"] == "Active") {
+                    return ReserveCard(
+                        Rid: historyList[index]["id"],
+                        datee: historyList[index]["date"],
+                        timee: historyList[index]["time"],
+                        status: historyList[index]["Status"],
+                        colorr: Color.fromRGBO(255, 196, 4, 1));
+                  }
+                } else {
+                  print("empty list");
+                }
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
