@@ -644,7 +644,6 @@ late BitmapDescriptor customMarker;
              new Marker(
                 markerId: MarkerId("1"),
                 position: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
-                icon: customMarker,
               ),
             );
             
