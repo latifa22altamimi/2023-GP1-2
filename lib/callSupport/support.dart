@@ -359,7 +359,7 @@ SliverToBoxAdapter(
                                                       context: context,
                                                       builder: (context) {
                                                         Future.delayed(
-                                                            Duration(seconds: 2),
+                                                            Duration(seconds: 5),
                                                             () {
                                                           Navigator.push(context, MaterialPageRoute(builder: (context)=> home()));
                                                         });
