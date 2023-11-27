@@ -262,7 +262,7 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                                 ? Text("")
                                 : QrImageView(
                                     data:
-                                        "Date:${list[ind]["date"]}\nTime:${list[ind]["time"]}\nVehicle Type: ${list[ind]["VehicleType"]}\nDriving Type: ${list[ind]["drivingType"]}\n ${list[ind]["VehicleType"] == "Single" ? "Driver gender:${list[ind]["driverGender"]}" : ""}\n Status: ${Status}",
+                                        "Date:${list[ind]["date"]}\nTime:${list[ind]["time"]}\nVehicle Type: ${list[ind]["VehicleType"]}\nDriving Type: ${list[ind]["drivingType"]}\n ${list[ind]["VehicleType"] == "Double" ? "Driver gender:${list[ind]["driverGender"]}" : ""}\n Status: ${Status}",
                                     size: 150,
                                   )),
                         Container(
