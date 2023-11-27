@@ -1,7 +1,6 @@
 import "package:flutter/material.dart";
 import "dart:async";
 import "package:http/http.dart" as http;
-// import "package:flutter_map/flutter_map.dart";
 import "dart:math";
 import 'package:location/location.dart';
 import "package:rehaab/customization/clip.dart";
@@ -16,15 +15,16 @@ class TrackTawaf extends StatefulWidget {
 
 class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Location location = Location();
-  double kaaba_lat = 24.7884335;
-  double kaaba_lon = 46.6724390;
+  double kaaba_lat = 34.71446582516598;
+  double kaaba_lon = 36.71972231498224;
   double c_lat = 0, c_lon = 0, m = 0;
   var l;
   final stopwatch = Stopwatch();
   int counter = 0;
   double? controller;
   bool _isVisible = false;
-  var time;
+  var lap_time;
+  var gap = 0;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
 
@@ -68,24 +68,27 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
       l = d(position.latitude, position.longitude, currentLocation.latitude,
               currentLocation.longitude)
           .floor();
-      if (stopwatch.elapsed.inMilliseconds > 15000) {
-        if (l < 3) {
+      // if (stopwatch.elapsed.inMilliseconds > 15000) {
+      if (l < 3) {
+        if (stopwatch.elapsed.inMilliseconds - gap > 15000) {
           setState(() {
             counter = counter + 1;
             print(counter);
           });
-        } else if (x > 200) {
-          _isVisible = false;
-          dispose();
-          _stopWatchTimer.onStopTimer();
         }
-        if (counter >= 7) {
-          dispose();
-        } else if (counter == 1) {
-          _stopWatchTimer.onStopTimer();
-        time=(stopwatch.elapsed.inMilliseconds/1000).floor();
-        }
+        gap = stopwatch.elapsed.inMilliseconds;
+      } else if (x > 200) {
+        _isVisible = false;
+        dispose();
+        _stopWatchTimer.onStopTimer();
       }
+      if (counter >= 7) {
+        dispose();
+      } else if (counter == 1) {
+        _stopWatchTimer.onStopTimer();
+        // lap_time = (stopwatch.elapsed.inMilliseconds / 1000).floor();
+      }
+      // }
     });
 
     return position;
@@ -94,7 +97,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: AppBar(
+    appBar: AppBar(
         leading: Container(
           padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
           child: BackButton(),
@@ -131,11 +134,14 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
       ),
       body: Container(
         decoration: const BoxDecoration(
-      
+          image: DecorationImage(
+            image: AssetImage("images/background.png"),
+            fit: BoxFit.cover,
+          ),
         ),
         child: Stack(
           children: [
-             Card(
+              Card(
                         margin: const EdgeInsets.only(
                             top:65, left: 35, right: 35, bottom: 10),
                         color: Colors.white,
@@ -183,7 +189,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
+                        color: Colors.black.withOpacity(0.5),
                         spreadRadius: 5,
                         blurRadius: 7,
                         offset: Offset(0, 3),
@@ -219,7 +225,6 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                         offset: Offset(0, 3),
                       )
                     ]),
-                    
                 child: StreamBuilder<int>(
                   stream: _stopWatchTimer.rawTime,
                   initialData: 0,
@@ -231,7 +236,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                         Padding(
                           padding: const EdgeInsets.all(8),
                           child: Text(
-                            "Lap Time: $displayTime",
+                            "Timer: $displayTime",
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 20,
@@ -245,7 +250,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            Padding( padding:EdgeInsets.only(top: 500,left: 50,right:50), 
+             Padding( padding:EdgeInsets.only(top: 500,left: 50,right:50), 
           child:Visibility(
             child: RoundedButton(
           text: 'Start Tracking', press: () async {
@@ -257,16 +262,12 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                              )
                              ) 
                              )
-
           ],
-          
         ),
-        
       ),
-      
-      /*
-      floatingActionButton: FloatingActionButton(
-        backgroundColor:kPrimaryColor,
+    
+    /*  floatingActionButton: FloatingActionButton(
+        backgroundColor: Color(0xFF251AC2),
         child: const Icon(Icons.start),
         onPressed: () async {
           _stopWatchTimer.onStartTimer();
@@ -274,7 +275,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
           getCurrentLocation();
         },
       ),*/
-     
+      
     );
   }
 }
