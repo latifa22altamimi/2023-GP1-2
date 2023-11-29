@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:rehaab/CheckOut/CheckOut.dart';
+import 'package:rehaab/CheckOut/CheckOut.dart';
 import 'package:rehaab/customization/clip.dart';
 import 'package:http/http.dart' as http;
 import 'package:rehaab/widgets/constants.dart';
@@ -13,6 +15,7 @@ import 'date.dart';
 import 'package:intl/intl.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:progress_border/progress_border.dart';
+import '../CheckOut/CheckOut.dart';
 
 
 String getUpdatedTime = "";
@@ -23,6 +26,7 @@ class ReservationDetails extends StatefulWidget {
   String? Status;
   String? date;
   String? time;
+final CheckOut checkOut = new CheckOut();
 
   ReservationDetails({this.Rid, this.Status, this.date, this.time});
 
@@ -47,7 +51,7 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
   String? Status;
   String? date;
   String? time;
-  
+
 
   bool cancelIsVisible = false;
   late final animationController = AnimationController(
@@ -100,6 +104,7 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
     
 
   }
+    
   StartTawaf() async{
     var url = "http://10.0.2.2/phpfiles/startTawaf.php";
     final res = await http.post(Uri.parse(url), body: {
@@ -405,6 +410,7 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                                               child: ElevatedButton(
                                                 onPressed: () {
                                                   StartTawaf();
+                                               //  checkOut.Checkout();
                                                   setState(() {
                                                     GlobalValues.Status="Active";
                                                   });

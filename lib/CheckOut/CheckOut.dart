@@ -13,8 +13,8 @@ class CheckOut extends StatefulWidget {
 
 class _CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
   Location location = Location();
-  double kaaba_lat = 24.7884335;
-  double kaaba_lon = 46.6724390;
+  double kaaba_lat = 24.778676;
+  double kaaba_lon = 46.669766;
   double c_lat = 0, c_lon = 0, m = 0;
   var l, Tawaf_time;
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
@@ -50,7 +50,7 @@ double d(lat1, lon1, lat2, lon2) {
     return 2* 6371 * asin(sqrt(a)) * 1000;
   }
 
-void CheckOut(){
+void Checkout(){
    Future<bool> requestPermission() async {
     final permission = await location.requestPermission();
     return permission == PermissionStatus.granted;
@@ -75,8 +75,9 @@ void CheckOut(){
       l = d(position.latitude, position.longitude, currentLocation.latitude,
               currentLocation.longitude)
           .floor();
-          if (x > 200 || l> 200) {
+          if (x > 50 || l> 50) {
 
+        print("far");
         dispose();
         _stopWatchTimer.onStopTimer();
          Tawaf_time = (stopwatch.elapsed.inMilliseconds /1000/ 60).ceil();

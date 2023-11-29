@@ -19,8 +19,8 @@ class TrackTawaf extends StatefulWidget {
 
 class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Location location = Location();
-  double kaaba_lat = 24.7884335;
-  double kaaba_lon = 46.6724390;
+  double kaaba_lat = 24.778676;
+  double kaaba_lon = 46.669766;
   double c_lat = 0, c_lon = 0, m = 0;
   var l;
   final stopwatch = Stopwatch();
