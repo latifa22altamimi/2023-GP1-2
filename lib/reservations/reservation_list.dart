@@ -51,10 +51,11 @@ class _ReservationListState extends State<ReservationList> {
   void initState() {
     super.initState();
     GetData();
-    curColor = Colors.black.withOpacity(0);
+    curColor = Colors.black.withOpacity(0.5);
     prevColor = Color.fromARGB(255, 255, 255, 255);
-    prevBG = kPrimaryColor;
-    prevTxt = Colors.white;
+    curBG = kPrimaryColor;
+    curTxt = Colors.white;
+    prevTxt = Colors.black;
   }
 
   @override
@@ -66,7 +67,6 @@ class _ReservationListState extends State<ReservationList> {
           height: 60,
           margin: const EdgeInsets.all(12),
           padding: const EdgeInsets.all(5),
-          
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -323,7 +323,7 @@ class ReserveCard extends StatelessWidget {
                                 time: timee))));
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(218, 60, 100, 73),
+                    backgroundColor: kPrimaryColor,
                     //Color.fromARGB(131, 60, 100, 73)
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(
