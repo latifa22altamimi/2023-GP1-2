@@ -31,12 +31,72 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   var isFar;
   String? finalTime;
   int? StoppedTimeMinutes;
+  var icon= Icons.start;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
 
   @override
   void dispose() {
     super.dispose();
+        GlobalValues.Status = "Completed";
+          showDialog(
+              context: context,
+              builder: (context) {
+                Future.delayed(Duration(seconds: 10), () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) =>
+                              home()))); /////should we navigate to home?
+                });
+                return Dialog(
+                  backgroundColor: Color.fromARGB(255, 247, 247, 247),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Container(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Lottie.asset('assets/images/success.json',
+                            width: 100, height: 100),
+                        Text(
+                          'Success',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
+                          "Congrats you have finished your Tawaf! \n اللَّهُمَّ اجْعَلْنِي مِنْ أَئِمَّةِ الْمُتَّقِينَ، وَاجْعَلْنِي مِنْ وَرَثَةِ جَنَّةِ النَّعِيمِ، وَاغْفِرْ لِي خَطِيئَتِي يَوْمَ الدِّينِ ",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ConstrainedBox(
+                              constraints: BoxConstraints.tightFor(
+                                  height: 38, width: 100),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              });
   }
 
   double d(lat1, lon1, lat2, lon2) {
@@ -119,66 +179,8 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
         }
         if (counter >= 7) {
           rest = 0;
-          //dispose();
-          GlobalValues.Status = "Completed";
-          showDialog(
-              context: context,
-              builder: (context) {
-                Future.delayed(Duration(seconds: 10), () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) =>
-                              home()))); /////should we navigate to home?
-                });
-                return Dialog(
-                  backgroundColor: Color.fromARGB(255, 247, 247, 247),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Container(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Lottie.asset('assets/images/success.json',
-                            width: 100, height: 100),
-                        Text(
-                          'Success',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Text(
-                          "Congrats you have finished your Tawaf! \n اللَّهُمَّ اجْعَلْنِي مِنْ أَئِمَّةِ الْمُتَّقِينَ، وَاجْعَلْنِي مِنْ وَرَثَةِ جَنَّةِ النَّعِيمِ، وَاغْفِرْ لِي خَطِيئَتِي يَوْمَ الدِّينِ ",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(
-                                  height: 38, width: 100),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              });
+          dispose();
+     
         } else if (counter == 1) {
           _stopWatchTimer.onStopTimer();
           round_time = (stopwatch.elapsed.inMilliseconds / 1000 / 60).ceil();
@@ -360,32 +362,64 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: kPrimaryColor,
-        child: const Icon(Icons.start),
+        child: Icon(icon),
         onPressed: () async {
-          if (rest == 0) {
+      if (rest == 0) {
+
             rest = 1;
+
             _stopWatchTimer.onStartTimer();
+
             stopwatch.start();
+
+            setState(() {
+
+              icon = Icons.stop;
+
+            });
+
             getCurrentLocation();
+
           } else if (rest == 1) {
+
             rest = 2;
+
             stopwatch.stop();
+
             setState(() {
+
+              icon = Icons.start;
+
               _isVisible = false;
+
               _stopWatchTimer.onStopTimer();
+
             });
+
           } else if (rest == 2) {
+
             rest = 1;
+
             stopwatch.start();
+
             setState(() {
+
+              icon = Icons.stop;
+
               _isVisible = true;
+
               if (counter < 1) {
+
                 _stopWatchTimer.onStartTimer();
+
               }
+
             });
+
           }
         },
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       bottomSheet: finalTime != null
           ? Container(
               width: double.infinity,

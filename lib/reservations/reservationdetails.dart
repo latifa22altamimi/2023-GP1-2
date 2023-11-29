@@ -50,7 +50,6 @@ class _ReservationDetailsState extends State<ReservationDetails>
   String? Status;
   String? date;
   String? time;
-
   bool cancelIsVisible = false;
   late final animationController = AnimationController(
     vsync: this,
@@ -403,7 +402,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                               child: ElevatedButton(
                                                 onPressed: () {
                                                   StartTawaf();
-                                                  //  checkOut.Checkout();
+                                               //   CheckOut().Checkout();
                                                   setState(() {
                                                     GlobalValues.Status =
                                                         "Active";
