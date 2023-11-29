@@ -1,7 +1,7 @@
 <?php
 
 include 'connect.php';
-$TDuration=$_POST['TDuration']*7;
+$TDuration=$_POST['TDuration'];
 $UserId=$_POST['Userid'];
 
 
