@@ -344,7 +344,7 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                                         Lottie.asset('assets/images/warn.json',
                                             width: 100, height: 100),
                                         Text(
-                                          'Are you sure you want to start Tawaf?',
+                                          'Start Tawaf',
                                           style: TextStyle(
                                               color: Colors.black,
 
@@ -528,7 +528,7 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                                   ),
                                 ));
                       },
-                      child: Text("Start Tawaf", style: TextStyle(fontSize: 16),),
+                      child: Text("Check in", style: TextStyle(fontSize: 16),),//vehicle manager checks in (temp for testing)
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith(
                             (states) => kPrimaryColor),
@@ -542,8 +542,42 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                   ),
                 ),
 
+               
+                //Reschedule
+                Visibility(
+                  visible: visibility(),
+                  child: Container(  
+                 padding: EdgeInsets.only(right: 5.0, top: 15, left: 5.0),
 
-                //cancel button
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Container(
+                                height: 650,
+                                child: RescheduleBookingPage(Rid: Rid),
+                              );
+                            },
+                          );
+                        },
+                        label: Text("Reschdule", style: TextStyle(fontSize: 16),),
+                        icon: Icon(Icons.schedule),
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.resolveWith(
+                              (states) => kPrimaryColor),
+                          shape: MaterialStateProperty.resolveWith((states) =>
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30.0))),
+                          fixedSize: MaterialStateProperty.resolveWith(
+                              (states) => Size(300, 45)),
+                        ),
+                      ),
+                    
+                  ),
+                ),
+                //cancel feature 
                 Visibility(
                   visible: visibility(),
                   
@@ -559,7 +593,7 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(20)),
                                     child: Container(
-                                      padding: const EdgeInsets.all(15.0),
+                                      padding: const EdgeInsets.all(16.0),
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -601,7 +635,7 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                                                   onPressed: () =>
                                                       Navigator.of(context).pop(),
                                                   child: Text(
-                                                    'Close',
+                                                    'Cancel',
                                                     style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 15,
@@ -630,7 +664,7 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                                               ConstrainedBox(
                                                 constraints:
                                                     BoxConstraints.tightFor(
-                                                        height: 38, width: 100),
+                                                        height: 38, width: 109),
                                                 child: ElevatedButton(
                                                   onPressed: () {
                                                     remove();
@@ -729,6 +763,7 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                                                   },
                                                   child: Text(
                                                     'Cancel reservation',
+                                                    textAlign:TextAlign.center,
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 15,
@@ -759,40 +794,7 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                         icon: Icon(Icons.close),
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.resolveWith(
-                              (states) => Colors.red),
-                          shape: MaterialStateProperty.resolveWith((states) =>
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0))),
-                          fixedSize: MaterialStateProperty.resolveWith(
-                              (states) => Size(300, 45)),
-                        ),
-                      ),
-                    
-                  ),
-                ),
-                Visibility(
-                  visible: visibility(),
-                  child: Container(  
-                 padding: EdgeInsets.only(right: 5.0, top: 15, left: 5.0),
-
-                      child: ElevatedButton.icon(
-                        onPressed: () async {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Container(
-                                height: 650,
-                                child: RescheduleBookingPage(Rid: Rid),
-                              );
-                            },
-                          );
-                        },
-                        label: Text("Reschdule", style: TextStyle(fontSize: 16),),
-                        icon: Icon(Icons.schedule),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith(
-                              (states) => Color.fromARGB(255, 207, 202, 202)),
+                              (states) => ErrorColor),
                           shape: MaterialStateProperty.resolveWith((states) =>
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30.0))),
@@ -1543,8 +1545,8 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
-                                  Color.fromARGB(221, 224, 41, 41),
-                                  Color.fromARGB(255, 240, 50, 50),
+                                 ErrorColor,
+                                  Color.fromARGB(255, 237, 66, 66),
                                 ],
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,

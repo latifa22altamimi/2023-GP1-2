@@ -185,7 +185,7 @@ packages:
     source: hosted
     version: "8.2.2"
   geolocator:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: geolocator
       sha256: e946395fc608842bb2f6c914807e9183f86f3cb787f6b8f832753e5251036f02
@@ -504,6 +504,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
+  progress_border:
+    dependency: "direct main"
+    description:
+      name: progress_border
+      sha256: f47c2b951c29f04d7a2232d9f72210874df893ea45c7bd313076291d8c4d8a57
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.5"
   proj4dart:
     dependency: transitive
     description:
