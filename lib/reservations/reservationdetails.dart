@@ -402,7 +402,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                               child: ElevatedButton(
                                                 onPressed: () {
                                                   StartTawaf();
-                                               //   CheckOut().Checkout();
+                                                  CheckOutState().Checkout();
                                                   setState(() {
                                                     GlobalValues.Status =
                                                         "Active";
