@@ -406,6 +406,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                   setState(() {
                                                     GlobalValues.Status =
                                                         "Active";
+                                                     GlobalValues.Rid=Rid;
                                                   });
                                                   Navigator.of(context).pop();
                                                   showDialog(

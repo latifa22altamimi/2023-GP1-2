@@ -6,12 +6,12 @@
  */
 
 include 'connect.php';
-$UserId=$_POST['UserId'];
+$RId=$_POST['RId'];
 $LAT = $_POST['la'];
 $lONG =$_POST['lo'];
 $mess = $_POST['message'];
 
       
-$stmt ="INSERT INTO support(UserId, Latitude, Longitude, Message) VALUES ('".$UserId."','".$LAT."','".$lONG."','".$mess."')";
+$stmt ="INSERT INTO support(ReservationId, Latitude, Longitude, Message) VALUES ('".$RId."','".$LAT."','".$lONG."','".$mess."')";
 
 $result = mysqli_query($conn,$stmt);
