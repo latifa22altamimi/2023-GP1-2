@@ -17,7 +17,6 @@ import 'package:rehaab/GlobalValues.dart';
 import 'package:progress_border/progress_border.dart';
 import '../CheckOut/CheckOut.dart';
 
-
 String getUpdatedTime = "";
 String getUpdatedDate = "";
 
@@ -26,7 +25,6 @@ class ReservationDetails extends StatefulWidget {
   String? Status;
   String? date;
   String? time;
-final CheckOut checkOut = new CheckOut();
 
   ReservationDetails({this.Rid, this.Status, this.date, this.time});
 
@@ -46,22 +44,21 @@ List list = [];
 
 var datetime;
 
-class _ReservationDetailsState extends State<ReservationDetails>  with SingleTickerProviderStateMixin {
+class _ReservationDetailsState extends State<ReservationDetails>
+    with SingleTickerProviderStateMixin {
   String? Rid;
   String? Status;
   String? date;
   String? time;
 
-
   bool cancelIsVisible = false;
   late final animationController = AnimationController(
     vsync: this,
-      // this isthe duration of the progress
-    duration: const Duration(seconds: 7), 
+    // this isthe duration of the progress
+    duration: const Duration(seconds: 7),
   );
 
   _ReservationDetailsState({this.Rid, this.Status, this.date, this.time});
-  
 
   Future GetData() async {
     var url = "http://10.0.2.2/phpfiles/details.php";
@@ -91,6 +88,7 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
 
     restart();
   }
+
   @override
   void dispose() {
     animationController.dispose();
@@ -98,21 +96,17 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
   }
 
   void restart() {
-    
-    
     animationController.repeat();
-    
-
   }
-    
-  StartTawaf() async{
+
+  StartTawaf() async {
     var url = "http://10.0.2.2/phpfiles/startTawaf.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": Rid,
     });
     var respo = json.decode(res.body);
     print(respo);
-    GlobalValues.Status="Active";
+    GlobalValues.Status = "Active";
   }
 
   remove() async {
@@ -126,32 +120,33 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
 
   bool visibility() {
     datetime = date! + " " + time!.substring(0, 5) + ":00";
-    if (Status == 'Cancelled' || DateTime.now().isAfter(DateTime.parse(datetime!)) || Status=="Active") {
+    if (Status == 'Cancelled' ||
+        DateTime.now().isAfter(DateTime.parse(datetime!)) ||
+        Status == "Active") {
       return false;
     } else {
       return true;
     }
   }
-  bool visible(){
-    if(Status=='Active'){
-      return true;
 
-    }
-    else{
+  bool visible() {
+    if (Status == 'Active') {
+      return true;
+    } else {
       return false;
     }
   }
-  bool start(){
-      datetime = date!+" "+time!.substring(0,5)+":00";
 
-    if(Status=="Confirmed" && DateFormat('yyyy-MM-dd').format(DateTime.now())==date){
+  bool start() {
+    datetime = date! + " " + time!.substring(0, 5) + ":00";
+
+    if (Status == "Confirmed" &&
+        DateFormat('yyyy-MM-dd').format(DateTime.now()) == date) {
       return true;
-    }
-    else{
+    } else {
       return false;
     }
   }
-  
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -216,25 +211,25 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                           border: Border.all(
                               width: 1.0,
                               color: Status == "Cancelled"
-                                  ?  Colors.red
-                                : Status == "Confirmed"? 
-                                Colors.green
-                                :  Color.fromRGBO(255, 196, 4, 1)
-                                ),
+                                  ? Colors.red
+                                  : Status == "Confirmed"
+                                      ? Colors.green
+                                      : Color.fromRGBO(255, 196, 4, 1)),
                         ),
                         child: Center(
-                          child:Text(
+                          child: Text(
                             '${Status}', // reservation status
                             style: Status == "Cancelled"
                                 ? TextStyle(
-                                    color:  Colors.red,
+                                    color: Colors.red,
                                     fontWeight: FontWeight.bold)
-                                : Status == "Confirmed"? TextStyle(
-                                    color: Colors.green,
-                                    fontWeight: FontWeight.bold): 
-                                    TextStyle(
-                                    color:  Color.fromRGBO(255, 196, 4, 1),
-                                    fontWeight: FontWeight.bold),
+                                : Status == "Confirmed"
+                                    ? TextStyle(
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.bold)
+                                    : TextStyle(
+                                        color: Color.fromRGBO(255, 196, 4, 1),
+                                        fontWeight: FontWeight.bold),
                           ),
                         ),
                       ),
@@ -243,23 +238,24 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0),
                     child: Column(
-                     // crossAxisAlignment: CrossAxisAlignment.start,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-
-                          width: 150,
-                          height: 150,
+                            width: 150,
+                            height: 150,
                             //  decoration: BoxDecoration (border: Border.all(color: Status=='Confirmed'? Colors.green : Colors.red ), borderRadius: BorderRadius.circular(30.0), color: Colors.green.shade900),
                             alignment: Alignment.center,
-                           decoration: BoxDecoration(  
-                            border:Status=="Active"? 
-                           ProgressBorder.all(
-                           color:  Color.fromRGBO(255, 196, 4, 1),
-                           width: 5.5,
-                           progress: animationController.value,
-                           clockwise: true,)
-                           : null , ),
-                          
+                            decoration: BoxDecoration(
+                              border: Status == "Active"
+                                  ? ProgressBorder.all(
+                                      color: Color.fromRGBO(255, 196, 4, 1),
+                                      width: 5.5,
+                                      progress: animationController.value,
+                                      clockwise: true,
+                                    )
+                                  : null,
+                            ),
+
                             //margin: EdgeInsets.only(bottom: 20.0),
 
                             //padding: EdgeInsets.only(top: 50),
@@ -327,9 +323,8 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                 Visibility(
                   visible: start(),
                   child: Container(
-
                     //padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
-                   padding: EdgeInsets.only(right: 6 , top:15),
+                    padding: EdgeInsets.only(right: 6, top: 15),
                     child: ElevatedButton(
                       onPressed: () async {
                         showDialog(
@@ -352,15 +347,13 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                                           'Start Tawaf',
                                           style: TextStyle(
                                               color: Colors.black,
-
                                               fontSize: 20,
-                                              fontWeight: FontWeight.w600),textAlign: TextAlign.center,
+                                              fontWeight: FontWeight.w600),
+                                          textAlign: TextAlign.center,
                                         ),
-                                        
                                         SizedBox(
                                           height: 10.0,
                                         ),
-                                        
                                         SizedBox(
                                           height: 15.0,
                                         ),
@@ -410,9 +403,10 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                                               child: ElevatedButton(
                                                 onPressed: () {
                                                   StartTawaf();
-                                               //  checkOut.Checkout();
+                                                  //  checkOut.Checkout();
                                                   setState(() {
-                                                    GlobalValues.Status="Active";
+                                                    GlobalValues.Status =
+                                                        "Active";
                                                   });
                                                   Navigator.of(context).pop();
                                                   showDialog(
@@ -534,7 +528,10 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                                   ),
                                 ));
                       },
-                      child: Text("Check in", style: TextStyle(fontSize: 16),),//vehicle manager checks in (temp for testing)
+                      child: Text(
+                        "Check in",
+                        style: TextStyle(fontSize: 16),
+                      ), //vehicle manager checks in (temp for testing)
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith(
                             (states) => kPrimaryColor),
@@ -548,267 +545,269 @@ class _ReservationDetailsState extends State<ReservationDetails>  with SingleTic
                   ),
                 ),
 
-               
                 //Reschedule
                 Visibility(
                   visible: visibility(),
-                  child: Container(  
-                 padding: EdgeInsets.only(right: 5.0, top: 15, left: 5.0),
-
-                      child: ElevatedButton.icon(
-                        onPressed: () async {
-                          showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            builder: (BuildContext context) {
-                              return Container(
-                                height: 650,
-                                child: RescheduleBookingPage(Rid: Rid),
-                              );
-                            },
-                          );
-                        },
-                        label: Text("Reschdule", style: TextStyle(fontSize: 16),),
-                        icon: Icon(Icons.schedule),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith(
-                              (states) => kPrimaryColor),
-                          shape: MaterialStateProperty.resolveWith((states) =>
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0))),
-                          fixedSize: MaterialStateProperty.resolveWith(
-                              (states) => Size(300, 45)),
-                        ),
+                  child: Container(
+                    padding: EdgeInsets.only(right: 5.0, top: 15, left: 5.0),
+                    child: ElevatedButton.icon(
+                      onPressed: () async {
+                        showModalBottomSheet(
+                          isScrollControlled: true,
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              height: 650,
+                              child: RescheduleBookingPage(Rid: Rid),
+                            );
+                          },
+                        );
+                      },
+                      label: Text(
+                        "Reschdule",
+                        style: TextStyle(fontSize: 16),
                       ),
-                    
+                      icon: Icon(Icons.schedule),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            (states) => kPrimaryColor),
+                        shape: MaterialStateProperty.resolveWith((states) =>
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        fixedSize: MaterialStateProperty.resolveWith(
+                            (states) => Size(300, 45)),
+                      ),
+                    ),
                   ),
                 ),
-                //cancel feature 
+                //cancel feature
                 Visibility(
                   visible: visibility(),
-                  
                   child: Container(
-                     padding: EdgeInsets.only(right: 5.0, top: 15, left: 5.0),
+                    padding: EdgeInsets.only(right: 5.0, top: 15, left: 5.0),
                     child: ElevatedButton.icon(
-                        onPressed: () async {
-                          showDialog(
-                              context: context,
-                              builder: (context) => Dialog(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 247, 247, 247),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20)),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Lottie.asset('assets/images/warn.json',
-                                              width: 100, height: 100),
-                                          Text(
-                                            'Cancel reservation',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          SizedBox(
-                                            height: 10.0,
-                                          ),
-                                          Text(
-                                            'Your reservation will be cancelled, and \nyour current time slot will be available to the public, but you can reserve again.',
-                                            style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 48, 48, 48),
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w400), textAlign: TextAlign.justify,
-                                          ),
-                                          SizedBox(
-                                            height: 15.0,
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              ConstrainedBox(
-                                                constraints:
-                                                    BoxConstraints.tightFor(
-                                                        height: 38, width: 100),
-                                                child: ElevatedButton(
-                                                  onPressed: () =>
-                                                      Navigator.of(context).pop(),
-                                                  child: Text(
-                                                    'Cancel',
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Color.fromARGB(
-                                                            255, 255, 255, 255),
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(50),
-                                                      ),
+                      onPressed: () async {
+                        showDialog(
+                            context: context,
+                            builder: (context) => Dialog(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 247, 247, 247),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Lottie.asset('assets/images/warn.json',
+                                            width: 100, height: 100),
+                                        Text(
+                                          'Cancel reservation',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Text(
+                                          'Your reservation will be cancelled, and \nyour current time slot will be available to the public, but you can reserve again.',
+                                          style: TextStyle(
+                                              color: Color.fromARGB(
+                                                  255, 48, 48, 48),
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w400),
+                                          textAlign: TextAlign.justify,
+                                        ),
+                                        SizedBox(
+                                          height: 15.0,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ConstrainedBox(
+                                              constraints:
+                                                  BoxConstraints.tightFor(
+                                                      height: 38, width: 100),
+                                              child: ElevatedButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context).pop(),
+                                                child: Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 255, 255, 255),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(50),
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                  
-                                              SizedBox(
-                                                width: 30.0,
-                                              ),
-                                              //when press on confirm
-                  
-                                              ConstrainedBox(
-                                                constraints:
-                                                    BoxConstraints.tightFor(
-                                                        height: 38, width: 109),
-                                                child: ElevatedButton(
-                                                  onPressed: () {
-                                                    remove();
-                                                    cancelIsVisible = false;
-                                                    Navigator.of(context).pop();
-                                                    showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        Future.delayed(
-                                                            Duration(seconds: 2),
-                                                            () {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        home()),
-                                                          );
-                                                        });
-                                                        return Dialog(
-                                                          backgroundColor:
-                                                              Color.fromARGB(255,
-                                                                  247, 247, 247),
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20)),
-                                                          child: Container(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(20.0),
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: [
-                                                                Lottie.asset(
-                                                                    'assets/images/success.json',
-                                                                    width: 100,
-                                                                    height: 100),
-                                                                Text(
-                                                                  'Success',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          20,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10.0,
-                                                                ),
-                                                                Text(
-                                                                  'Cancellation is done successfully',
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          17,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10.0,
-                                                                ),
-                                                                Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .center,
-                                                                  mainAxisSize:
-                                                                      MainAxisSize
-                                                                          .min,
-                                                                  children: [
-                                                                    ConstrainedBox(
-                                                                      constraints: BoxConstraints.tightFor(
-                                                                          height:
-                                                                              38,
-                                                                          width:
-                                                                              100),
-                                                                    ),
-                                                                  ],
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
+                                            ),
+
+                                            SizedBox(
+                                              width: 30.0,
+                                            ),
+                                            //when press on confirm
+
+                                            ConstrainedBox(
+                                              constraints:
+                                                  BoxConstraints.tightFor(
+                                                      height: 38, width: 109),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  remove();
+                                                  cancelIsVisible = false;
+                                                  Navigator.of(context).pop();
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      Future.delayed(
+                                                          Duration(seconds: 2),
+                                                          () {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      home()),
                                                         );
-                                                      },
-                                                    );
-                                                  },
-                                                  child: Text(
-                                                    'Cancel reservation',
-                                                    textAlign:TextAlign.center,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 15,
-                                                        fontWeight:
-                                                            FontWeight.w500),
-                                                  ),
-                                                  style: ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Color.fromARGB(
-                                                            255, 60, 100, 73),
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                        Radius.circular(50),
-                                                      ),
+                                                      });
+                                                      return Dialog(
+                                                        backgroundColor:
+                                                            Color.fromARGB(255,
+                                                                247, 247, 247),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(20.0),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Lottie.asset(
+                                                                  'assets/images/success.json',
+                                                                  width: 100,
+                                                                  height: 100),
+                                                              Text(
+                                                                'Success',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Text(
+                                                                'Cancellation is done successfully',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        17,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  ConstrainedBox(
+                                                                    constraints: BoxConstraints.tightFor(
+                                                                        height:
+                                                                            38,
+                                                                        width:
+                                                                            100),
+                                                                  ),
+                                                                ],
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  );
+                                                },
+                                                child: Text(
+                                                  'Cancel reservation',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 60, 100, 73),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(50),
                                                     ),
                                                   ),
                                                 ),
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      ),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
                                     ),
-                                  ));
-                        },
-                        label: Text("Cancel", style: TextStyle(fontSize: 16),),
-                        icon: Icon(Icons.close),
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.resolveWith(
-                              (states) => ErrorColor),
-                          shape: MaterialStateProperty.resolveWith((states) =>
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30.0))),
-                          fixedSize: MaterialStateProperty.resolveWith(
-                              (states) => Size(300, 45)),
-                        ),
+                                  ),
+                                ));
+                      },
+                      label: Text(
+                        "Cancel",
+                        style: TextStyle(fontSize: 16),
                       ),
-                    
+                      icon: Icon(Icons.close),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.resolveWith(
+                            (states) => ErrorColor),
+                        shape: MaterialStateProperty.resolveWith((states) =>
+                            RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.0))),
+                        fixedSize: MaterialStateProperty.resolveWith(
+                            (states) => Size(300, 45)),
+                      ),
+                    ),
                   ),
                 ),
                 Offstage(
@@ -1319,70 +1318,71 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
                                           fontSize: 17,
                                           fontWeight: FontWeight.w400),
                                     ),
-                                     Container(
-                                        width: 350,
-                                        height: 70,
-                                        margin: const EdgeInsets.all(12),
-                                        padding: const EdgeInsets.all(10),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white.withOpacity(0.6),
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.black.withOpacity(0.2),
-                                              blurRadius: 2.0,
-                                              spreadRadius: .01,
-                                            ),
-                                          ],
-                                        ),
-                                        child: Column(
-                                       children: [
-                                         Row(
-                                           children: [
-                                             Text(
-                                                          'Date: ',
-                                                          style: TextStyle(
-                                                              color: Colors.black,
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight.w500),
-                                                        ),
-                                                        Text(
-                                                          '$getUpdatedDate',
-                                                          style: TextStyle(
-                                                              color: Colors.black,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight.w400),
-                                                        ),
-                                           ],
-                                         ),
-                                         SizedBox(height: 5.0,),
+                                    Container(
+                                      width: 350,
+                                      height: 70,
+                                      margin: const EdgeInsets.all(12),
+                                      padding: const EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white.withOpacity(0.6),
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.2),
+                                            blurRadius: 2.0,
+                                            spreadRadius: .01,
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        children: [
                                           Row(
-                                           children: [
-                                             Text(
-                                                          'Time: ',
-                                                          style: TextStyle(
-                                                              color: Colors.black,
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight.w500),
-                                                        ),
-                                                        Text(
-                                                          '$getUpdatedTime',
-                                                          style: TextStyle(
-                                                              color: Colors.black,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight.w400),
-                                                        ),
-                                           ],
-                                         ),
-                                       ],
-                                     ),
-                                     ),
+                                            children: [
+                                              Text(
+                                                'Date: ',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 17,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              Text(
+                                                '$getUpdatedDate',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 5.0,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Time: ',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 17,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              Text(
+                                                '$getUpdatedTime',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                     SizedBox(
                                       height: 18.0,
                                     ),
@@ -1551,7 +1551,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
                           decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
-                                 ErrorColor,
+                                  ErrorColor,
                                   Color.fromARGB(255, 237, 66, 66),
                                 ],
                                 begin: Alignment.topLeft,
