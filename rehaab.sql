@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2023 at 02:55 PM
+-- Generation Time: Nov 30, 2023 at 12:15 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -104,7 +104,7 @@ INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `
 
 CREATE TABLE `support` (
   `supportID` int(11) NOT NULL,
-  `UserId` int(11) NOT NULL,
+  `ReservationId` int(11) NOT NULL,
   `Latitude` varchar(200) NOT NULL,
   `Longitude` varchar(200) NOT NULL,
   `Meesage` varchar(200) NOT NULL
@@ -210,7 +210,7 @@ ALTER TABLE `reservation`
 --
 ALTER TABLE `support`
   ADD PRIMARY KEY (`supportID`),
-  ADD KEY `UserId` (`UserId`);
+  ADD KEY `support_ibfk_1` (`ReservationId`);
 
 --
 -- Indexes for table `tawaf`
@@ -291,7 +291,7 @@ ALTER TABLE `reservation`
 -- Constraints for table `support`
 --
 ALTER TABLE `support`
-  ADD CONSTRAINT `support_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `users` (`userID`);
+  ADD CONSTRAINT `support_ibfk_1` FOREIGN KEY (`ReservationId`) REFERENCES `reservation` (`id`);
 
 --
 -- Constraints for table `tawaf`
