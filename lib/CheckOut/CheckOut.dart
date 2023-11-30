@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import "package:http/http.dart" as http;
@@ -14,17 +15,18 @@ class CheckOut extends StatefulWidget {
 
 class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
   Location location = Location();
-  double kaaba_lat = 24.723240;
-  double kaaba_lon = 46.635494;
+  double kaaba_lat = 24.723251;
+  double kaaba_lon = 46.635499;
   double c_lat = 0, c_lon = 0, m = 0;
   var l, Tawaf_time;
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
   final stopwatch = Stopwatch();
   String? finalTime;
   var isFar;
+  StreamSubscription<LocationData>? locationSubscription;
 
   Future TawafTime() async {
-    var url = "http://10.0.2.2/phpfiles/TawafDuration.php";
+    var url = "http://10.6.194.195/phpfiles/TawafDuration.php";
     final response = await http.post(Uri.parse(url), body: {
       "TDuration": finalTime,
       "Userid": GlobalValues.id,
@@ -52,15 +54,10 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
     return 2 * 6371 * asin(sqrt(a)) * 1000;
   }
 
-  void Checkout() {
-    Future<bool> requestPermission() async {
-      final permission = await location.requestPermission();
-      return permission == PermissionStatus.granted;
-    }
-
-    Future<LocationData> getCurrentLocation() async {
-      setState(() {});
-
+  void Checkoutt() async {
+    print("enter");
+    final permission = await location.requestPermission();
+    if (permission == PermissionStatus.granted) {
       final serviceEnabled = await location.serviceEnabled();
       if (!serviceEnabled) {
         final result = await location.requestService;
@@ -73,14 +70,22 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
       final position = await location.getLocation();
       var x = d(position.latitude, position.longitude, kaaba_lat, kaaba_lon)
           .floor();
-      location.onLocationChanged.listen((LocationData currentLocation) {
+      locationSubscription =
+          location.onLocationChanged.listen((LocationData currentLocation) {
         l = d(position.latitude, position.longitude, currentLocation.latitude,
                 currentLocation.longitude)
             .floor();
+        print("p");
+        print(position.latitude);
+        print(position.longitude);
+        print("c");
+        print(currentLocation.latitude);
+        print(currentLocation.longitude);
         isFar = d(kaaba_lat, kaaba_lon, currentLocation.latitude,
                 currentLocation.longitude)
             .floor();
-        if (isFar > 150 && isFar < 200) {
+        print(isFar);
+        if (isFar > 40 && isFar < 50) {
           showDialog(
               context: context,
               builder: (context) {
@@ -133,15 +138,19 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
                   ),
                 );
               });
-        } else if (isFar > 50) {
-          dispose();
+          print("near");
+        } else if (isFar > 60) {
+          print("che");
+
           _stopWatchTimer.onStopTimer();
           Tawaf_time = (stopwatch.elapsed.inMilliseconds / 1000 / 60).ceil();
+          print(Tawaf_time);
+
           calculateFinalTime();
           TawafTime();
+          locationSubscription?.cancel();
         }
       });
-      return position;
     }
   }
 
@@ -152,7 +161,6 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
       final int minutes = totalTimeInMinutes % 60;
       finalTime =
           '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
-      setState(() {});
     }
   }
 }

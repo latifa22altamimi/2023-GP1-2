@@ -33,7 +33,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
   bool isVisibleDriving = false;
 
   Future insert() async {
-    var url = "http://10.0.2.2/phpfiles/reservation.php";
+    var url = "http://10.6.194.195/phpfiles/reservation.php";
     final res = await http.post(Uri.parse(url), body: {
       "id": GlobalValues.id,
       "date": getDate,
@@ -648,7 +648,8 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                       Text(
                                         'Your reservation will be confirmed with the following information \n',
                                         style: TextStyle(
-                                            color: Color.fromARGB(255, 48, 48, 48),
+                                            color:
+                                                Color.fromARGB(255, 48, 48, 48),
                                             fontSize: 17,
                                             fontWeight: FontWeight.w400),
                                       ),
@@ -837,7 +838,6 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                     height: 38, width: 100),
                                             child: ElevatedButton(
                                               onPressed: () async {
-                                                
                                                 insert();
                                                 //success msg here , insert in db --------------------------------------------
 
@@ -1107,7 +1107,7 @@ class _BookingPageState extends State<BookingPage> {
   List list = [];
   List tlist = [];
   Future GetData() async {
-    var url = "http://10.0.2.2/phpfiles/times.php";
+    var url = "http://10.6.194.195/phpfiles/times.php";
     final res = await http.post(Uri.parse(url), body: {
       "date": DateConverted.getDate(_currentDay),
     });
@@ -1198,8 +1198,6 @@ class _BookingPageState extends State<BookingPage> {
                     SizedBox(
                       width: 15.0,
                     ),
-               
-         
                   ],
                 ),
                 SizedBox(
@@ -1382,7 +1380,7 @@ class _BookingPageState extends State<BookingPage> {
                         ? Colors.white
                         : timeSlots[index]["slotStatus"] == "OnlySingle" &&
                                 _vehicleType == "Double"
-                            ?Color.fromARGB(255, 205, 204, 204) 
+                            ? Color.fromARGB(255, 205, 204, 204)
                             : timeSlots[index]["slotStatus"] == "OnlyDouble" &&
                                     _vehicleType == "Single"
                                 ? Color.fromARGB(255, 205, 204, 204)
@@ -1662,7 +1660,7 @@ class _BookingPageState extends State<BookingPage> {
   }
   
   Future GetData() async {
-    var url = "http://10.0.2.2/phpfiles/times.php";
+    var url = "http://10.6.194.195/phpfiles/times.php";
     var res = await http.get(Uri.parse(url));
 
     if (res.statusCode == 200) {

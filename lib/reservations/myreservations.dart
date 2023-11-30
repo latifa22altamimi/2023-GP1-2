@@ -20,7 +20,7 @@ class _MyReservationsState extends State<MyReservations> {
 
   Future GetData() async {
     print(GlobalValues.id);
-    var url = "http://10.0.2.2/phpfiles/RList.php";
+    var url = "http://10.6.194.195/phpfiles/RList.php";
     final res = await http.post(Uri.parse(url), body: {
       "Userid": GlobalValues.id,
     });
@@ -48,20 +48,17 @@ class _MyReservationsState extends State<MyReservations> {
         elevation: 0.0,
         toolbarHeight: 100,
         flexibleSpace: ClipPath(
-          
           child: Container(
               width: MediaQuery.of(context).size.width,
               height: 140,
               decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(10),
-            bottomRight: Radius.circular(20),
-          ),
-          color: kPrimaryColor
-        ),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(20),
+                  ),
+                  color: kPrimaryColor),
               child: Stack(
                 children: [
-                 
                   Container(
                     alignment: Alignment.center,
                     child: Text(
@@ -83,22 +80,18 @@ class _MyReservationsState extends State<MyReservations> {
   Widget content() {
     if (list.isEmpty) {
       return Container(
-        margin: EdgeInsets.only(top:110),
+        margin: EdgeInsets.only(top: 110),
         child: Column(
           children: [
             Lottie.asset('assets/images/noavailable.json',
                 width: 250, height: 250),
-                Text(
-                  'No reservations yet',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                   fontSize: 16,
-                   color: const Color.fromARGB(255, 132, 131, 131)
-                   
-                   
-
-                  ),
-                )
+            Text(
+              'No reservations yet',
+              style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  color: const Color.fromARGB(255, 132, 131, 131)),
+            )
           ],
         ),
         alignment: Alignment.center,
