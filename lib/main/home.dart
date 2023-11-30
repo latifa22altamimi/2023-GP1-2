@@ -121,39 +121,30 @@ class AppBarr extends StatelessWidget {
                     fontWeight: FontWeight.w500),)
                     , 
                     Visibility(
-                      visible: GlobalValues.Status=="Active"? true: false,
-                      child: FloatingActionButton(  
+                    visible: GlobalValues.Status=="Active"? true: false,
+                      child: TextButton( 
+                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kPrimaryColor)), 
                       onPressed: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => callSupport())),
-                    child: Container(
-                  width: 65,
-                  height: 65,
-                  decoration: BoxDecoration(
-                    color:Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                   
-                    
-                  ),
+                 
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Center (child: Icon(Icons.support_agent, size:55), 
-                       // child: Center (child: Image.asset('assets/images/support_icon.png' , width :55 , height: 55),
-                        )
+                        SizedBox(height: 20, width: 20,),
+                   Row(children: [ 
+                    Container(child: Text('Help' , style: TextStyle(color: Colors.white, fontSize: 18),),),
+                       SizedBox(height: 10, width: 10,),
+                    
+                     //  Container (child: Icon(Icons.support_agent, size:35, color:Colors.white ,), 
+                        
+                        Container (child: Image.asset('assets/images/support_icon.png' , width :55 , height: 55),
+                        ),],)
                        
-                      ),
                      
-                    /*  Text(
-                        'Call for support',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 9,
-                            fontWeight: FontWeight.bold),
-                      )*/
+               
                     ],
                   ),
-                ),)
+                 )
               ),
             /*  Visibility(
            //   visible: GlobalValues.Status=="Active"? true: false,

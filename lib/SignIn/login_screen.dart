@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
  TextEditingController Password=TextEditingController();
  bool _isSecurePassword=true;
   Future signin() async{
-    var url ="http://10.0.2.2/phpfiles/signin.php";
+    var url ="http://10.6.205.217/phpfiles/signin.php";
     final response= await http.post(Uri.parse(url),body:{
     "Email":email.text,
     "Password":Password.text});

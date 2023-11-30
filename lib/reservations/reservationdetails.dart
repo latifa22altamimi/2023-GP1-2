@@ -60,7 +60,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
   _ReservationDetailsState({this.Rid, this.Status, this.date, this.time});
 
   Future GetData() async {
-    var url = "http://10.0.2.2/phpfiles/details.php";
+    var url = "http://10.6.205.217/phpfiles/details.php";
     var res = await http.get(Uri.parse(url));
 
     if (res.statusCode == 200) {
@@ -99,7 +99,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
   }
 
   StartTawaf() async {
-    var url = "http://10.0.2.2/phpfiles/startTawaf.php";
+    var url = "http://10.6.205.217/phpfiles/startTawaf.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": Rid,
     });
