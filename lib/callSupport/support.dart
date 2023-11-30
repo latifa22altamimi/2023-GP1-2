@@ -36,22 +36,18 @@ class _CallSupportState extends State<callSupport>{
 Future insert() async {
     var url = "http://10.0.2.2/phpfiles/support.php";
     final res = await http.post(Uri.parse(url), body: {
-      "RId": GlobalValues.Rid,
+      "Rid": GlobalValues.Rid,
       "la": lat,
       "lo": long,
       "message": _currentIndex==2? message.text : types[_currentIndex!],
     });
   if(res.statusCode==200){
       print("success");
-        var resp = json.decode(res.body);
-        print(resp);
-
     }
     else{
       print("fail");
     }
   }
- 
   Widget build(BuildContext context){
     return Scaffold(
       
