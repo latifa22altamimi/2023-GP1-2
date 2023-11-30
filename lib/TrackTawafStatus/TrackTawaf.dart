@@ -16,12 +16,12 @@ class TrackTawaf extends StatefulWidget {
 
 class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Location location = Location();
-  double kaaba_lat = 24.723251;
-  double kaaba_lon = 46.635499;
+  double kaaba_lat = 24.7884335;
+  double kaaba_lon = 46.6724390;
   double c_lat = 0, c_lon = 0, m = 0;
   var l;
   final stopwatch = Stopwatch();
-  int counter = 6;
+  int counter = 0;
   double? controller;
   bool _isVisible = false;
   var round_time;
@@ -38,7 +38,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
 @override
  void FinishStream() {
  locationSubscription?.cancel();
-GlobalValues.Status = "Completed";
+//GlobalValues.Status = "Completed";
       showDialog(
               context: context,
               builder: (context) {
@@ -73,7 +73,6 @@ GlobalValues.Status = "Completed";
                         ),
                         Text(
                           "Congrats you have finished your Tawaf! \n اللَّهُمَّ اجْعَلْنِي مِنْ أَئِمَّةِ الْمُتَّقِينَ، وَاجْعَلْنِي مِنْ وَرَثَةِ جَنَّةِ النَّعِيمِ، وَاغْفِرْ لِي خَطِيئَتِي يَوْمَ الدِّينِ ",
-                          textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 17,
@@ -87,39 +86,10 @@ GlobalValues.Status = "Completed";
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                             ConstrainedBox(
-                                            constraints:
-                                                BoxConstraints.tightFor(
-                                                    height: 38, width: 100),
-                                            child: ElevatedButton(
-                                              onPressed: () =>
-                                                  Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                      home()),
-                                                        ),
-                                              child: Text(
-                                                'Done',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color.fromARGB(
-                                                    255, 255, 255, 255),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(50),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                            ConstrainedBox(
+                              constraints: BoxConstraints.tightFor(
+                                  height: 38, width: 100),
+                            ),
                           ],
                         )
                       ],
@@ -212,14 +182,13 @@ GlobalValues.Status = "Completed";
         }
         if (counter >= 7) {
           rest = 0;
-          //dispose();
           FinishStream();
      
         } else if (!enter){
           if(counter == 1) {
           _stopWatchTimer.onStopTimer();
          final round_time = (stopwatch.elapsed.inMilliseconds / 1000).floor();
-          print(round_time);
+         print(round_time);
           final int totalTimeInSeconds = round_time * 7;
 final int hours = totalTimeInSeconds ~/ 3600;
 final int minutes = (totalTimeInSeconds % 3600) ~/ 60;
@@ -399,8 +368,12 @@ finalTime =
           ],
         ),
       ),
-      
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: Padding(
+  padding: EdgeInsets.all(100), 
+  child: SizedBox(
+    width: 75,
+    height: 75,
+      child: FloatingActionButton(
         backgroundColor: kPrimaryColor,
         child: Icon(icon),
         onPressed: () async {
@@ -458,6 +431,8 @@ finalTime =
 
           }
         },
+      ),
+      ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       bottomSheet: finalTime != null
