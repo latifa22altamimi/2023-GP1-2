@@ -16,12 +16,12 @@ class TrackTawaf extends StatefulWidget {
 
 class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Location location = Location();
-  double kaaba_lat = 24.723251;
-  double kaaba_lon = 46.635499;
+  double kaaba_lat = 24.7789928;
+  double kaaba_lon = 46.5846196;
   double c_lat = 0, c_lon = 0, m = 0;
   var l;
   final stopwatch = Stopwatch();
-  int counter = 6;
+  int counter = 0;
   double? controller;
   bool _isVisible = false;
   var round_time;
@@ -30,106 +30,96 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   var isFar;
   String? finalTime;
   int? StoppedTimeMinutes;
-  var icon= Icons.start;
-  bool enter=false;
+  var icon = Icons.start;
+  bool enter = false;
   StreamSubscription<LocationData>? locationSubscription;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
-@override
- void FinishStream() {
- locationSubscription?.cancel();
-GlobalValues.Status = "Completed";
-      showDialog(
-              context: context,
-              builder: (context) {
-                Future.delayed(Duration(seconds: 10), () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) =>
-                              home()))); /////should we navigate to home?
-                });
-                return Dialog(
-                  backgroundColor: Color.fromARGB(255, 247, 247, 247),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Container(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Lottie.asset('assets/images/success.json',
-                            width: 100, height: 100),
-                        Text(
-                          'Success',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Text(
-                          "Congrats you have finished your Tawaf! \n اللَّهُمَّ اجْعَلْنِي مِنْ أَئِمَّةِ الْمُتَّقِينَ، وَاجْعَلْنِي مِنْ وَرَثَةِ جَنَّةِ النَّعِيمِ، وَاغْفِرْ لِي خَطِيئَتِي يَوْمَ الدِّينِ ",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                             ConstrainedBox(
-                                            constraints:
-                                                BoxConstraints.tightFor(
-                                                    height: 38, width: 100),
-                                            child: ElevatedButton(
-                                              onPressed: () =>
-                                                  Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                      home()),
-                                                        ),
-                                              child: Text(
-                                                'Done',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Color.fromARGB(
-                                                    255, 255, 255, 255),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                    Radius.circular(50),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                          ],
-                        )
-                      ],
+  @override
+  void FinishStream() {
+    locationSubscription?.cancel();
+    GlobalValues.Status = "Completed";
+    showDialog(
+        context: context,
+        builder: (context) {
+          Future.delayed(Duration(seconds: 10), () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: ((context) =>
+                        home()))); /////should we navigate to home?
+          });
+          return Dialog(
+            backgroundColor: Color.fromARGB(255, 247, 247, 247),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Container(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Lottie.asset('assets/images/success.json',
+                      width: 100, height: 100),
+                  Text(
+                    'Success',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Text(
+                    "Congrats you have finished your Tawaf! \n اللَّهُمَّ اجْعَلْنِي مِنْ أَئِمَّةِ الْمُتَّقِينَ، وَاجْعَلْنِي مِنْ وَرَثَةِ جَنَّةِ النَّعِيمِ، وَاغْفِرْ لِي خَطِيئَتِي يَوْمَ الدِّينِ ",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
-                );
-              });
-}
-
- 
+                  SizedBox(
+                    height: 10.0,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ConstrainedBox(
+                        constraints:
+                            BoxConstraints.tightFor(height: 38, width: 100),
+                        child: ElevatedButton(
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => home()),
+                          ),
+                          child: Text(
+                            'Done',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 255, 255, 255),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(50),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        });
+  }
 
   double d(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
@@ -162,8 +152,9 @@ GlobalValues.Status = "Completed";
     final position = await location.getLocation();
     var x =
         d(position.latitude, position.longitude, kaaba_lat, kaaba_lon).floor();
-  
-     locationSubscription= location.onLocationChanged.listen((LocationData currentLocation) {
+
+    locationSubscription =
+        location.onLocationChanged.listen((LocationData currentLocation) {
       l = d(position.latitude, position.longitude, currentLocation.latitude,
               currentLocation.longitude)
           .floor();
@@ -214,22 +205,21 @@ GlobalValues.Status = "Completed";
           rest = 0;
           //dispose();
           FinishStream();
-     
-        } else if (!enter){
-          if(counter == 1) {
-          _stopWatchTimer.onStopTimer();
-         final round_time = (stopwatch.elapsed.inMilliseconds / 1000).floor();
-          print(round_time);
-          final int totalTimeInSeconds = round_time * 7;
-final int hours = totalTimeInSeconds ~/ 3600;
-final int minutes = (totalTimeInSeconds % 3600) ~/ 60;
-final int seconds = totalTimeInSeconds % 60;
-finalTime =
-  '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-        enter=true;
+        } else if (!enter) {
+          if (counter == 1) {
+            _stopWatchTimer.onStopTimer();
+            final round_time =
+                (stopwatch.elapsed.inMilliseconds / 1000).floor();
+            print(round_time);
+            final int totalTimeInSeconds = round_time * 7;
+            final int hours = totalTimeInSeconds ~/ 3600;
+            final int minutes = (totalTimeInSeconds % 3600) ~/ 60;
+            final int seconds = totalTimeInSeconds % 60;
+            finalTime =
+                '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+            enter = true;
+          }
         }
-        }
-
       }
     });
 
@@ -399,13 +389,11 @@ finalTime =
           ],
         ),
       ),
-      
       floatingActionButton: FloatingActionButton(
         backgroundColor: kPrimaryColor,
         child: Icon(icon),
         onPressed: () async {
-      if (rest == 0) {
-
+          if (rest == 0) {
             rest = 1;
 
             _stopWatchTimer.onStartTimer();
@@ -413,49 +401,36 @@ finalTime =
             stopwatch.start();
 
             setState(() {
-
               icon = Icons.stop;
-
             });
 
             getCurrentLocation();
-
           } else if (rest == 1) {
-
             rest = 2;
 
             stopwatch.stop();
 
             setState(() {
-
               icon = Icons.start;
 
               _isVisible = false;
 
               _stopWatchTimer.onStopTimer();
-
             });
-
           } else if (rest == 2) {
-
             rest = 1;
 
             stopwatch.start();
 
             setState(() {
-
               icon = Icons.stop;
 
               _isVisible = true;
 
               if (counter < 1) {
-
                 _stopWatchTimer.onStartTimer();
-
               }
-
             });
-
           }
         },
       ),
