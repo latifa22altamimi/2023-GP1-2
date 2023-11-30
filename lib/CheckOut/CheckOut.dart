@@ -14,8 +14,8 @@ class CheckOut extends StatefulWidget {
 
 class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
   Location location = Location();
-  double kaaba_lat = 24.778676;
-  double kaaba_lon = 46.669766;
+  double kaaba_lat = 24.723240;
+  double kaaba_lon = 46.635494;
   double c_lat = 0, c_lon = 0, m = 0;
   var l, Tawaf_time;
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();

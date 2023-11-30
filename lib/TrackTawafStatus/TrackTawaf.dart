@@ -17,8 +17,8 @@ class TrackTawaf extends StatefulWidget {
 
 class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Location location = Location();
-  double kaaba_lat = 24.7786643;
-  double kaaba_lon = 46.6697723;
+  double kaaba_lat = 24.723240;
+  double kaaba_lon = 46.635494;
   double c_lat = 0, c_lon = 0, m = 0;
   var l;
   final stopwatch = Stopwatch();
@@ -183,7 +183,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
      
         } else if (counter == 1) {
           _stopWatchTimer.onStopTimer();
-          round_time = (stopwatch.elapsed.inMilliseconds / 1000 / 60).ceil();
+          round_time = (stopwatch.elapsed.inMilliseconds / 1000).floor();
           print(round_time);
           final int totalTimeInMinutes = round_time * 7;
           final int hours = totalTimeInMinutes ~/ 60;
@@ -360,6 +360,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
           ],
         ),
       ),
+      
       floatingActionButton: FloatingActionButton(
         backgroundColor: kPrimaryColor,
         child: Icon(icon),
