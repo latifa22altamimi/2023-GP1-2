@@ -73,6 +73,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                         ),
                         Text(
                           "Congrats you have finished your Tawaf! \n اللَّهُمَّ اجْعَلْنِي مِنْ أَئِمَّةِ الْمُتَّقِينَ، وَاجْعَلْنِي مِنْ وَرَثَةِ جَنَّةِ النَّعِيمِ، وَاغْفِرْ لِي خَطِيئَتِي يَوْمَ الدِّينِ ",
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 17,
@@ -86,10 +87,39 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(
-                                  height: 38, width: 100),
-                            ),
+                             ConstrainedBox(
+                                            constraints:
+                                                BoxConstraints.tightFor(
+                                                    height: 38, width: 100),
+                                            child: ElevatedButton(
+                                              onPressed: () =>
+                                                  Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      home()),
+                                                        ),
+                                              child: Text(
+                                                'Done',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Color.fromARGB(
+                                                    255, 255, 255, 255),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(50),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                           ],
                         )
                       ],
