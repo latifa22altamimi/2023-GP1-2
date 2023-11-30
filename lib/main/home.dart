@@ -135,9 +135,9 @@ class AppBarr extends StatelessWidget {
                     Container(child: Text('Help' , style: TextStyle(color: Colors.white, fontSize: 18),),),
                        SizedBox(height: 10, width: 10,),
                     
-                       Container (child: Icon(Icons.support_agent, size:35, color:Colors.white ,), 
+                     //  Container (child: Icon(Icons.support_agent, size:35, color:Colors.white ,), 
                         
-                      //  Container (child: Image.asset('assets/images/support_icon.png' , width :55 , height: 55),
+                        Container (child: Image.asset('assets/images/support_icon.png' , width :55 , height: 55),
                         ),],)
                        
                      
