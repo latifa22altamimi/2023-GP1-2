@@ -24,6 +24,16 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
   String? finalTime;
   var isFar;
   StreamSubscription<LocationData>? locationSubscription;
+  
+  checkout() async {
+    var url = "http://192.168.8.103/phpfiles/checkout.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "Rid": GlobalValues.Rid,
+    });
+    var respo = json.decode(res.body);
+    print(respo);
+    GlobalValues.Status = "Completed";
+  }
 
   Future TawafTime() async {
     var url = "http://172.20.10.2/phpfiles/TawafDuration.php";
@@ -149,6 +159,8 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
           calculateFinalTime();
           TawafTime();
           locationSubscription?.cancel();
+          checkout();
+
         }
       });
     }
