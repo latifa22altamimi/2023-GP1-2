@@ -6,12 +6,13 @@
  */
 
 include 'connect.php';
-$RId=$_POST['RId'];
+$Rid=$_POST['Rid'];
 $LAT = $_POST['la'];
 $lONG =$_POST['lo'];
 $mess = $_POST['message'];
 
+
       
-$stmt ="INSERT INTO support(ReservationId, Latitude, Longitude, Message) VALUES ('".$RId."','".$LAT."','".$lONG."','".$mess."')";
+$stmt ="INSERT INTO support(ReservationId, Latitude, Longitude, Message) VALUES ('".$Rid."','".$LAT."','".$lONG."','".$mess."')";
 
 $result = mysqli_query($conn,$stmt);
