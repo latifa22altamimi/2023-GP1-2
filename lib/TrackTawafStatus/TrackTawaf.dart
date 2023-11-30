@@ -5,7 +5,6 @@ import 'package:location/location.dart';
 import "package:lottie/lottie.dart";
 import "package:rehaab/widgets/constants.dart";
 import "package:stop_watch_timer/stop_watch_timer.dart";
-
 import "../GlobalValues.dart";
 import "../customization/clip.dart";
 import "../main/home.dart";
@@ -17,12 +16,12 @@ class TrackTawaf extends StatefulWidget {
 
 class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Location location = Location();
-  double kaaba_lat = 24.723240;
-  double kaaba_lon = 46.635494;
+  double kaaba_lat = 24.723251;
+  double kaaba_lon = 46.635499;
   double c_lat = 0, c_lon = 0, m = 0;
   var l;
   final stopwatch = Stopwatch();
-  int counter = 0;
+  int counter = 6;
   double? controller;
   bool _isVisible = false;
   var round_time;
@@ -32,14 +31,15 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   String? finalTime;
   int? StoppedTimeMinutes;
   var icon= Icons.start;
+  bool enter=false;
+  StreamSubscription<LocationData>? locationSubscription;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
-
-  @override
-  void dispose() {
-    super.dispose();
-        GlobalValues.Status = "Completed";
-          showDialog(
+@override
+ void FinishStream() {
+ locationSubscription?.cancel();
+GlobalValues.Status = "Completed";
+      showDialog(
               context: context,
               builder: (context) {
                 Future.delayed(Duration(seconds: 10), () {
@@ -73,6 +73,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                         ),
                         Text(
                           "Congrats you have finished your Tawaf! \n اللَّهُمَّ اجْعَلْنِي مِنْ أَئِمَّةِ الْمُتَّقِينَ، وَاجْعَلْنِي مِنْ وَرَثَةِ جَنَّةِ النَّعِيمِ، وَاغْفِرْ لِي خَطِيئَتِي يَوْمَ الدِّينِ ",
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 17,
@@ -86,10 +87,39 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(
-                                  height: 38, width: 100),
-                            ),
+                             ConstrainedBox(
+                                            constraints:
+                                                BoxConstraints.tightFor(
+                                                    height: 38, width: 100),
+                                            child: ElevatedButton(
+                                              onPressed: () =>
+                                                  Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      home()),
+                                                        ),
+                                              child: Text(
+                                                'Done',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 15,
+                                                    fontWeight:
+                                                        FontWeight.w500),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Color.fromARGB(
+                                                    255, 255, 255, 255),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(50),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                           ],
                         )
                       ],
@@ -97,7 +127,9 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                   ),
                 );
               });
-  }
+}
+
+ 
 
   double d(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
@@ -130,7 +162,8 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
     final position = await location.getLocation();
     var x =
         d(position.latitude, position.longitude, kaaba_lat, kaaba_lon).floor();
-    location.onLocationChanged.listen((LocationData currentLocation) {
+  
+     locationSubscription= location.onLocationChanged.listen((LocationData currentLocation) {
       l = d(position.latitude, position.longitude, currentLocation.latitude,
               currentLocation.longitude)
           .floor();
@@ -179,18 +212,24 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
         }
         if (counter >= 7) {
           rest = 0;
-          dispose();
+          //dispose();
+          FinishStream();
      
-        } else if (counter == 1) {
+        } else if (!enter){
+          if(counter == 1) {
           _stopWatchTimer.onStopTimer();
-          round_time = (stopwatch.elapsed.inMilliseconds / 1000).floor();
+         final round_time = (stopwatch.elapsed.inMilliseconds / 1000).floor();
           print(round_time);
-          final int totalTimeInMinutes = round_time * 7;
-          final int hours = totalTimeInMinutes ~/ 60;
-          final int minutes = totalTimeInMinutes % 60;
-          finalTime =
-              '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
+          final int totalTimeInSeconds = round_time * 7;
+final int hours = totalTimeInSeconds ~/ 3600;
+final int minutes = (totalTimeInSeconds % 3600) ~/ 60;
+final int seconds = totalTimeInSeconds % 60;
+finalTime =
+  '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+        enter=true;
         }
+        }
+
       }
     });
 
