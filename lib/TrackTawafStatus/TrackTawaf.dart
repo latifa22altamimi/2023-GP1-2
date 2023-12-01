@@ -5,7 +5,6 @@ import 'package:location/location.dart';
 import "package:lottie/lottie.dart";
 import "package:rehaab/widgets/constants.dart";
 import "package:stop_watch_timer/stop_watch_timer.dart";
-import "../GlobalValues.dart";
 import "../customization/clip.dart";
 import "../main/home.dart";
 
@@ -18,25 +17,26 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Location location = Location();
   double kaaba_lat = 24.7786729;
   double kaaba_lon = 46.6697697;
-  double c_lat = 0, c_lon = 0, m = 0;
-  var l;
+  var Distance; ////////the distance between my current location and the starting point
   final stopwatch = Stopwatch();
   int counter = 0;
   double? controller;
   bool _isVisible = false;
   var round_time;
-  var gap = 0;
+  var gap = 0; 
   var rest = 0;
   var isFar;
-  String? finalTime;
-  int? StoppedTimeMinutes;
+  String? TotalTime; //////////round time*7 to get the approximant finish time 
+  int? StoppedTimeMinutes; ///////convert time to mins
   var icon= Icons.start;
-  bool enter=false;
+  bool oneRound=false; /////////////to check if the user finished one round or not
   StreamSubscription<LocationData>? locationSubscription;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
+
+
 @override
- void FinishStream() {
+ void EndStream() { /////////when user complete 7 rounds
  locationSubscription?.cancel();
 //GlobalValues.Status = "Completed";
       showDialog(
@@ -101,7 +101,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
 
  
 
-  double d(lat1, lon1, lat2, lon2) {
+  double distance(lat1, lon1, lat2, lon2) { ////////////// Haversine formula to calculate the distance between 2 points
     var p = 0.017453292519943295;
     var c = cos;
     var a = 0.5 -
@@ -130,14 +130,14 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
       }
     }
     final position = await location.getLocation();
-    var x =
-        d(position.latitude, position.longitude, kaaba_lat, kaaba_lon).floor();
+    var DistanceCenter =
+        distance(position.latitude, position.longitude, kaaba_lat, kaaba_lon).floor(); /////////the distance between the starting point and the center
   
      locationSubscription= location.onLocationChanged.listen((LocationData currentLocation) {
-      l = d(position.latitude, position.longitude, currentLocation.latitude,
+      Distance = distance(position.latitude, position.longitude, currentLocation.latitude,
               currentLocation.longitude)
           .floor();
-      isFar = d(kaaba_lat, kaaba_lon, currentLocation.latitude,
+      isFar = distance(kaaba_lat, kaaba_lon, currentLocation.latitude,
               currentLocation.longitude)
           .floor();
       print("p");
@@ -146,8 +146,8 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
       print("c");
       print(currentLocation.latitude);
       print(currentLocation.longitude);
-      if (stopwatch.elapsed.inMilliseconds > 15000 && x < 200) {
-        if (l < 5) {
+      if (stopwatch.elapsed.inMilliseconds > 15000 && DistanceCenter < 200) {
+        if (Distance < 5) {
           print("enter");
           if (stopwatch.elapsed.inMilliseconds - gap > 15000) {
             setState(() {
@@ -182,9 +182,9 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
         }
         if (counter >= 7) {
           rest = 0;
-          FinishStream();
+          EndStream();
      
-        } else if (!enter){
+        } else if (!oneRound){
           if(counter == 1) {
           _stopWatchTimer.onStopTimer();
         final round_time = (stopwatch.elapsed.inMilliseconds / 1000).floor();
@@ -193,9 +193,9 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
 final int hours = totalTimeInSeconds ~/ 3600;
 final int minutes = (totalTimeInSeconds % 3600) ~/ 60;
 final int seconds = totalTimeInSeconds % 60;
-finalTime =
+TotalTime =
   '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-        enter=true;
+        oneRound=true;
         }
         }
 
@@ -205,14 +205,6 @@ finalTime =
     return position;
   }
 
-  /* void calculateFinalTime() {
-    final int totalTimeInMinutes = round_time * 7;
-    final int hours = totalTimeInMinutes ~/ 60;
-    final int minutes = totalTimeInMinutes % 60;
-    finalTime =
-        '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
-    setState(() {});
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -324,7 +316,6 @@ finalTime =
               child: Positioned(
                 bottom: 50,
                 left: 20,
-                // bottom: 20,
                 child: Container(
                   padding: const EdgeInsets.fromLTRB(0, 16.0, 0, 16.0),
                   decoration: BoxDecoration(
@@ -435,13 +426,13 @@ finalTime =
       ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      bottomSheet: finalTime != null
+      bottomSheet: TotalTime != null
           ? Container(
               width: double.infinity,
               padding: const EdgeInsets.all(16.0),
               color: Colors.grey[200],
               child: Text(
-                'You will in approximately after: $finalTime',
+                'You will in approximately after: $TotalTime',
                 style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,

@@ -17,12 +17,11 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
   Location location = Location();
   double kaaba_lat = 24.723251;
   double kaaba_lon = 46.635499;
-  double c_lat = 0, c_lon = 0, m = 0;
-  var l, Tawaf_time;
+  var Distance, Tawaf_time; 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
   final stopwatch = Stopwatch();
   String? finalTime;
-  var isFar;
+  var isFar; ////////////////the distance between the user's current location and the center
   StreamSubscription<LocationData>? locationSubscription;
   
   checkout() async {
@@ -55,7 +54,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
     throw UnimplementedError();
   }
 
-  double d(lat1, lon1, lat2, lon2) {
+  double distance(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
     var c = cos;
     var a = 0.5 -
@@ -78,11 +77,10 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
         }
       }
       final position = await location.getLocation();
-      var x = d(position.latitude, position.longitude, kaaba_lat, kaaba_lon)
-          .floor();
+     
       locationSubscription =
           location.onLocationChanged.listen((LocationData currentLocation) {
-        l = d(position.latitude, position.longitude, currentLocation.latitude,
+        Distance = distance(position.latitude, position.longitude, currentLocation.latitude,
                 currentLocation.longitude)
             .floor();
         print("p");
@@ -91,10 +89,13 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
         print("c");
         print(currentLocation.latitude);
         print(currentLocation.longitude);
-        isFar = d(kaaba_lat, kaaba_lon, currentLocation.latitude,
+
+        isFar = distance(kaaba_lat, kaaba_lon, currentLocation.latitude,
                 currentLocation.longitude)
             .floor();
+
         print(isFar);
+
         if (isFar > 40 && isFar < 50) {
           showDialog(
               context: context,
@@ -153,9 +154,8 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
           print("che");
 
           _stopWatchTimer.onStopTimer();
-          Tawaf_time = (stopwatch.elapsed.inMilliseconds / 1000 / 60).ceil();
+          Tawaf_time = (stopwatch.elapsed.inMilliseconds / 1000 / 60).floor();
           print(Tawaf_time);
-
           calculateFinalTime();
           TawafTime();
           locationSubscription?.cancel();
