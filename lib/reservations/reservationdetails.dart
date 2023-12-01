@@ -146,6 +146,15 @@ class _ReservationDetailsState extends State<ReservationDetails>
       return false;
     }
   }
+  /* bool start() {
+    datetime = date! + " " + time!.substring(0, 5) + ":00";
+    final d= DateTime.parse(datetime).difference(DateTime.now());
+      if(Status == "Confirmed" && d.inMinutes<=30 && d.inMinutes>=0 ){  // "check in" button appears before 30 minutes of reservation time
+      return true;
+    } else {
+      return false;
+    }
+  }*/
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -463,7 +472,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                                 height: 10.0,
                                                               ),
                                                               Text(
-                                                                'Starting Tawaf is done sucessfully',
+                                                                'Starting Tawaf is done successfully',
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .black,

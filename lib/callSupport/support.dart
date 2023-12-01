@@ -32,7 +32,7 @@ class _CallSupportState extends State<callSupport> {
   }
 
   Future insert() async {
-    var url = "http://10.6.194.195/phpfiles/support.php";
+    var url = "http://10.0.2.2/phpfiles/support.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": GlobalValues.Rid,
       "la": lat,
