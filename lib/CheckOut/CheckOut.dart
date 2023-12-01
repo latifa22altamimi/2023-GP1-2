@@ -154,7 +154,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
           print("che");
 
           _stopWatchTimer.onStopTimer();
-          Tawaf_time = (stopwatch.elapsed.inMilliseconds / 1000 / 60).floor();
+          Tawaf_time = (stopwatch.elapsed.inMilliseconds / 1000).floor();
           print(Tawaf_time);
           calculateFinalTime();
           TawafTime();
@@ -168,11 +168,12 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
 
   void calculateFinalTime() {
     if (Tawaf_time != null) {
-      final int totalTimeInMinutes = Tawaf_time;
-      final int hours = totalTimeInMinutes ~/ 60;
-      final int minutes = totalTimeInMinutes % 60;
-      finalTime =
-          '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}';
+  final int totalTimeInSeconds = Tawaf_time;
+final int hours = totalTimeInSeconds ~/ 3600;
+final int minutes = (totalTimeInSeconds % 3600) ~/ 60;
+final int seconds = totalTimeInSeconds % 60;
+finalTime =
+  '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
     }
   }
 }
