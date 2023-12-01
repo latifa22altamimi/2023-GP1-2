@@ -223,7 +223,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                   : Status == "Confirmed"
                                       ? Colors.green
                                       : Status=="Completed"?
-                                      Colors.blue
+                                      Color.fromRGBO(38, 161, 244, 1)
                                       : Color.fromRGBO(255, 196, 4, 1)),
                         ),
                         child: Center(
@@ -239,7 +239,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                         fontWeight: FontWeight.bold):
                                         Status=="Completed"?
                                         TextStyle(
-                                        color: Colors.blue,
+                                        color: Color.fromRGBO(38, 161, 244, 1),
                                         fontWeight: FontWeight.bold)
                                     : TextStyle(
                                         color: Color.fromRGBO(255, 196, 4, 1),
