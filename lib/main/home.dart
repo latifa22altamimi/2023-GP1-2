@@ -130,10 +130,13 @@ class AppBarr extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                        SizedBox(height: 20, width: 20,),
+                        SizedBox(height: 10, width: 10,),
                    Row(children: [ 
+                   
+                    
+                     //  Container (child: Icon(Icons.support_agent, size:35, color:Colors.white ,), 
                         
-                        Container (child: Image.asset('assets/images/support_icon.png' , width :55 , height: 55),
+                        Container (child: Image.asset('assets/images/support_icon.png' , width :50 , height: 50),
                         ),],)
                        
                      
@@ -142,6 +145,54 @@ class AppBarr extends StatelessWidget {
                   ),
                  )
               ),
+             /*   Visibility(
+                    visible: false,
+                      child: FloatingActionButton( 
+                        backgroundColor: Colors.white,
+                      onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => callSupport())),
+                 
+                  
+                   child: Container(
+                    child:
+                   
+                    
+                     //  Container (child: Icon(Icons.support_agent, size:35, color:Colors.white ,), 
+                        
+                        Center (child: Image.asset('assets/images/support_icon.png' , width :40 , height: 40, color: Colors.black,),
+                        ),)
+                       
+                     
+               
+                    
+                  
+                 )
+              ),
+              Visibility(
+                    visible: false,
+                      child: ElevatedButton( 
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                        padding: EdgeInsets.all(20)
+                        ),
+                      onPressed: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => callSupport())),
+                 
+                  
+                   child: Container(child:
+                   
+                    
+                     //  Container (child: Icon(Icons.support_agent, size:35, color:Colors.white ,), 
+                        
+                        Center (child: Image.asset('assets/images/support_icon.png' , width :40 , height: 40, color: Colors.black,),
+                        ),)
+                       
+                     
+               
+                    
+                  
+                 )
+              ),*/
             /*  Visibility(
            //   visible: GlobalValues.Status=="Active"? true: false,
            visible: true,
