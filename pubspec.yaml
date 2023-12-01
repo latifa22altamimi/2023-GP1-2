@@ -120,7 +120,7 @@ flutter:
     - assets/images/support_icon.png
     - assets/images/supp.png
     - assets/images/support.png
-
+    - assets/images/Congrats.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

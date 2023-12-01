@@ -472,7 +472,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                                 height: 10.0,
                                                               ),
                                                               Text(
-                                                                'Starting Tawaf is done sucessfully',
+                                                                'Starting Tawaf is done successfully',
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .black,

@@ -6,6 +6,7 @@ import 'package:location/location.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
+import 'package:rehaab/main/home.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class CheckOut extends StatefulWidget {
@@ -43,10 +44,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
     var data = json.decode(response.body);
   }
 
-void EndStream() { /////////when user gets far enough
- locationSubscription?.cancel();
-    
-}
+
 
   @override
   Widget build(BuildContext context) {
@@ -80,9 +78,9 @@ void EndStream() { /////////when user gets far enough
      
       locationSubscription =
           location.onLocationChanged.listen((LocationData currentLocation) {
-        Distance = distance(position.latitude, position.longitude, currentLocation.latitude,
+      /*  Distance = distance(position.latitude, position.longitude, currentLocation.latitude,
                 currentLocation.longitude)
-            .floor();
+            .floor();*/ // I think we don't need it here 
         print("p");
         print(position.latitude);
         print(position.longitude);
@@ -97,7 +95,7 @@ void EndStream() { /////////when user gets far enough
         print(isFar);
 
         if (isFar > 40 && isFar < 50) {
-          showDialog(
+         /* showDialog(
               context: context,
               builder: (context) {
                 Future.delayed(Duration(seconds: 10), () {});
@@ -148,8 +146,10 @@ void EndStream() { /////////when user gets far enough
                     ),
                   ),
                 );
-              });
+              });*/
           print("near");
+
+
         } else if (isFar > 60) {
           print("che");
           _stopWatchTimer.onStopTimer();
@@ -163,7 +163,64 @@ void EndStream() { /////////when user gets far enough
           locationSubscription?.cancel();
           TawafTime();
           checkout();
-           
+                   /*showDialog(
+              context: context,
+              builder: (context) {
+                Future.delayed(Duration(seconds: 10), () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) =>
+                              TrackTawaf()))); /////should we navigate to home?
+                });
+                return Dialog(
+                  backgroundColor: Color.fromARGB(255, 247, 247, 247),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Container(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Lottie.asset('assets/images/success.json',
+                            width: 100, height: 100),
+                        Text(
+                          'Success',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
+                          "Checked out",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ConstrainedBox(
+                              constraints: BoxConstraints.tightFor(
+                                  height: 38, width: 100),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              });*/
         }
       });
     }
@@ -171,3 +228,6 @@ void EndStream() { /////////when user gets far enough
 
 
 }
+
+
+

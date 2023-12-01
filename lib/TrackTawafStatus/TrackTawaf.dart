@@ -35,7 +35,6 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
 
 
-@override
  void EndStream() { /////////when user complete 7 rounds
  locationSubscription?.cancel();
       showDialog(
@@ -58,10 +57,10 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                       mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Lottie.asset('assets/images/success.json',
-                            width: 100, height: 100),
+                        Lottie.asset('assets/images/Congrats.json',
+                            width: 150, height: 150),
                         Text(
-                          'Success',
+                          "You've finished your Tawaf!",
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 20,
@@ -70,14 +69,17 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                         SizedBox(
                           height: 10.0,
                         ),
-                        Text(
-                          "Congrats you have finished your Tawaf! \n اللَّهُمَّ اجْعَلْنِي مِنْ أَئِمَّةِ الْمُتَّقِينَ، وَاجْعَلْنِي مِنْ وَرَثَةِ جَنَّةِ النَّعِيمِ، وَاغْفِرْ لِي خَطِيئَتِي يَوْمَ الدِّينِ ",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
+                Center(
+              child: Text(
+                "اللَّهُمَّ اجْعَلْنِي مِنْ أَئِمَّةِ الْمُتَّقِينَ، وَاجْعَلْنِي مِنْ وَرَثَةِ جَنَّةِ النَّعِيمِ، وَاغْفِرْ لِي خَطِيئَتِي يَوْمَ الدِّينِ",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 19,
+                  fontWeight: FontWeight.w400,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
                         SizedBox(
                           height: 10.0,
                         ),
@@ -145,7 +147,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
       print("c");
       print(currentLocation.latitude);
       print(currentLocation.longitude);
-      if (stopwatch.elapsed.inMilliseconds > 15000 && DistanceCenter < 200) {
+      if (stopwatch.elapsed.inMilliseconds > 15000) {
         if (Distance < 5) {
           print("enter");
           if (stopwatch.elapsed.inMilliseconds - gap > 15000) {
@@ -169,8 +171,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                       ),
                     ],
                   ));
-        } else if (isFar > 200) {
-          // print("so far");
+        } /*else if (isFar > 200) {
           _isVisible = false;
           rest = 0;
           dispose();
@@ -178,7 +179,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
           _stopWatchTimer.onResetTimer();
           stopwatch.stop();
           stopwatch.reset();
-        }
+        }*/
         if (counter >= 7) {
           rest = 0;
           EndStream();
