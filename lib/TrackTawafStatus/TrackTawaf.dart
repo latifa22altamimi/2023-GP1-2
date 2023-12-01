@@ -38,7 +38,6 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
 @override
  void EndStream() { /////////when user complete 7 rounds
  locationSubscription?.cancel();
-//GlobalValues.Status = "Completed";
       showDialog(
               context: context,
               builder: (context) {
