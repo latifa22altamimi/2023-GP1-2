@@ -25,7 +25,6 @@ class _ReservationListState extends State<ReservationList> {
   Color prevBG = Color.fromARGB(255, 255, 255, 255);
   Color prevTxt = Colors.white;
   Color curTxt = Colors.black;
-
   Future GetData() async {
     print(GlobalValues.id);
     var url = "http://10.0.2.2/phpfiles/RList.php";
@@ -87,7 +86,8 @@ class _ReservationListState extends State<ReservationList> {
                       history = 1;
                       historyList.clear();
                       for (int i = 0; i < list.length; i++) {
-                        if (list[i]["Status"] == "Cancelled") {
+                        if ((list[i]["Status"] == "Cancelled") ||
+                            (list[i]["Status"] == "Completed")) {
                           historyList.add(list[i]);
                         }
                       }
@@ -179,12 +179,12 @@ class _ReservationListState extends State<ReservationList> {
                 if (historyList[0] != null) {
                   if (historyList[index]["Status"] == "Confirmed") {
                     return ReserveCard(
-                      Rid: historyList[index]["id"],
-                      datee: historyList[index]["date"],
-                      timee: historyList[index]["time"],
-                      status: historyList[index]["Status"],
-                      colorr: Color.fromARGB(255, 33, 152, 51),
-                    );
+                        Rid: historyList[index]["id"],
+                        datee: historyList[index]["date"],
+                        timee: historyList[index]["time"],
+                        status: historyList[index]["Status"],
+                        colorr: Color.fromARGB(255, 33, 152, 51),
+                        widthAdjust: 90.0);
                   }
                   if (historyList[index]["Status"] == "Cancelled") {
                     return ReserveCard(
@@ -193,15 +193,28 @@ class _ReservationListState extends State<ReservationList> {
                       timee: historyList[index]["time"],
                       status: historyList[index]["Status"],
                       colorr: Color.fromARGB(255, 215, 53, 53),
+                      widthAdjust: 95.0,
                     );
                   }
                   if (historyList[index]["Status"] == "Active") {
                     return ReserveCard(
-                        Rid: historyList[index]["id"],
-                        datee: historyList[index]["date"],
-                        timee: historyList[index]["time"],
-                        status: historyList[index]["Status"],
-                        colorr: Color.fromRGBO(255, 196, 4, 1));
+                      Rid: historyList[index]["id"],
+                      datee: historyList[index]["date"],
+                      timee: historyList[index]["time"],
+                      status: historyList[index]["Status"],
+                      colorr: Color.fromRGBO(255, 196, 4, 1),
+                      widthAdjust: 125.0,
+                    );
+                  }
+                  if (historyList[index]["Status"] == "Completed") {
+                    return ReserveCard(
+                      Rid: historyList[index]["id"],
+                      datee: historyList[index]["date"],
+                      timee: historyList[index]["time"],
+                      status: historyList[index]["Status"],
+                      colorr: Color.fromRGBO(38, 161, 244, 1),
+                      widthAdjust: 88.0,
+                    );
                   }
                 } else {
                   print("empty list");
@@ -221,8 +234,8 @@ class ReserveCard extends StatelessWidget {
   String? timee;
   String? status;
   Color? colorr;
-
-  ReserveCard({this.Rid, this.datee, this.timee, this.status, this.colorr});
+  double? widthAdjust;
+  ReserveCard({this.Rid, this.datee, this.timee, this.status, this.colorr, this.widthAdjust});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -240,7 +253,7 @@ class ReserveCard extends StatelessWidget {
                       fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
-                  width: 110.0,
+                  width: widthAdjust,
                 ),
                 Text(
                   '$status ',
