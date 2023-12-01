@@ -146,6 +146,15 @@ class _ReservationDetailsState extends State<ReservationDetails>
       return false;
     }
   }
+  /* bool start() {
+    datetime = date! + " " + time!.substring(0, 5) + ":00";
+    final d= DateTime.parse(datetime).difference(DateTime.now());
+      if(d.inMinutes<=30 && d.inMinutes>=0 ){  // "check in" button appears before 30 minutes of reservation time
+      return true;
+    } else {
+      return false;
+    }
+  }*/
 
   Widget build(BuildContext context) {
     return Scaffold(
