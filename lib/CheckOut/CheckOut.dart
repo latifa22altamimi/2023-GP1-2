@@ -24,18 +24,18 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
   var isFar; ////////////////the distance between the user's current location and the center
   StreamSubscription<LocationData>? locationSubscription;
   
-  checkout() async {
-    var url = "http://192.168.8.103/phpfiles/checkout.php";
+  Future checkout() async {
+    var url = "http://10.0.2.2/phpfiles/checkout.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": GlobalValues.Rid,
     });
     var respo = json.decode(res.body);
     print(respo);
-    GlobalValues.Status = "Completed";
+    //GlobalValues.Status = "Completed";
   }
 
   Future TawafTime() async {
-    var url = "http://172.20.10.2/phpfiles/TawafDuration.php";
+    var url = "http://10.0.2.2/phpfiles/TawafDuration.php";
     final response = await http.post(Uri.parse(url), body: {
       "TDuration": finalTime,
       "Userid": GlobalValues.id,
@@ -43,10 +43,10 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
     var data = json.decode(response.body);
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
+void EndStream() { /////////when user gets far enough
+ locationSubscription?.cancel();
+    
+}
 
   @override
   Widget build(BuildContext context) {
@@ -152,28 +152,22 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
           print("near");
         } else if (isFar > 60) {
           print("che");
-
           _stopWatchTimer.onStopTimer();
           Tawaf_time = (stopwatch.elapsed.inMilliseconds / 1000).floor();
-          print(Tawaf_time);
-          calculateFinalTime();
-          TawafTime();
+          final int totalTimeInSeconds = Tawaf_time;
+          final int hours = totalTimeInSeconds ~/ 3600;
+          final int minutes = (totalTimeInSeconds % 3600) ~/ 60;
+          final int seconds = totalTimeInSeconds % 60;
+          finalTime ='${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+          GlobalValues.Status = "Completed";
           locationSubscription?.cancel();
+          TawafTime();
           checkout();
-
+           
         }
       });
     }
   }
 
-  void calculateFinalTime() {
-    if (Tawaf_time != null) {
-  final int totalTimeInSeconds = Tawaf_time;
-final int hours = totalTimeInSeconds ~/ 3600;
-final int minutes = (totalTimeInSeconds % 3600) ~/ 60;
-final int seconds = totalTimeInSeconds % 60;
-finalTime =
-  '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-    }
-  }
+
 }
