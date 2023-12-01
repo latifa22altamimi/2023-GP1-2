@@ -26,7 +26,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
   StreamSubscription<LocationData>? locationSubscription;
 
   Future TawafTime() async {
-    var url = "http://10.6.194.195/phpfiles/TawafDuration.php";
+    var url = "http://10.0.2.2/phpfiles/TawafDuration.php";
     final response = await http.post(Uri.parse(url), body: {
       "TDuration": finalTime,
       "Userid": GlobalValues.id,
