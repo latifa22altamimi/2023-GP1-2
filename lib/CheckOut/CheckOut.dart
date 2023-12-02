@@ -17,12 +17,11 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
   double kaaba_lat = 24.723251;
   double kaaba_lon = 46.635499;
   var Distance, Tawaf_time; 
-   final stopwatch = Stopwatch();
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
   String? finalTime;
   var isFar; ////////////////the distance between the user's current location and the center
   StreamSubscription<LocationData>? locationSubscription;
-  
+
   Future checkout() async {
     var url = "http://10.0.2.2/phpfiles/checkout.php";
     final res = await http.post(Uri.parse(url), body: {
@@ -30,6 +29,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
     });
     var respo = json.decode(res.body);
     print(respo);
+   // GlobalValues.Status = "Completed";
   }
 
   Future TawafTime() async {
@@ -40,8 +40,6 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
     });
     var data = json.decode(response.body);
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +70,12 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
         }
       }
       final position = await location.getLocation();
-     
+
       locationSubscription =
           location.onLocationChanged.listen((LocationData currentLocation) {
-       stopwatch.start();
+      /*  Distance = distance(position.latitude, position.longitude, currentLocation.latitude,
+                currentLocation.longitude)
+            .floor();*/ // I think we don't need it here 
         print("p");
         print(position.latitude);
         print(position.longitude);
@@ -92,6 +92,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
         if (isFar > 40 && isFar < 50) {
           print("near");
 
+
         } else if (isFar > 60) {
           print("che");
           _stopWatchTimer.onStopTimer();
@@ -101,19 +102,74 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
           final int minutes = (totalTimeInSeconds % 3600) ~/ 60;
           final int seconds = totalTimeInSeconds % 60;
           finalTime ='${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-          print(finalTime);
           GlobalValues.Status = "Completed";
+          setState(() {
+            GlobalValues.Status="Completed";
+          });
           locationSubscription?.cancel();
           TawafTime();
           checkout();
-
+           
+                   /*showDialog(
+              context: context,
+              builder: (context) {
+                Future.delayed(Duration(seconds: 10), () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) =>
+                              TrackTawaf()))); /////should we navigate to home?
+                });
+                return Dialog(
+                  backgroundColor: Color.fromARGB(255, 247, 247, 247),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Container(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Lottie.asset('assets/images/success.json',
+                            width: 100, height: 100),
+                        Text(
+                          'Success',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Text(
+                          "Checked out",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10.0,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ConstrainedBox(
+                              constraints: BoxConstraints.tightFor(
+                                  height: 38, width: 100),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              });*/
         }
       });
     }
   }
-
-
 }
-
-
-
