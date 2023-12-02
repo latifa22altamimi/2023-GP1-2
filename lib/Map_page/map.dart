@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: 180,
-             color: kPrimaryColor,
+            color: kPrimaryColor,
             child: Center(
               child: Text(
                 'Our location',
@@ -82,7 +82,7 @@ class _HomeState extends State<Home> {
           setState(() {
             markers.add(
               Marker(
-                markerId: MarkerId(list[0]["id"]),
+                markerId: MarkerId(list[0]["MarkerId"]),
                 position: LatLng(double.parse(lat), double.parse(lon)),
                 infoWindow: InfoWindow(
                   title: "Electric Vehicle Pick-up/Return Point ",
