@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2023 at 04:10 AM
+-- Generation Time: Dec 02, 2023 at 03:42 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -80,20 +80,17 @@ CREATE TABLE `reservation` (
   `drivingType` varchar(20) NOT NULL,
   `driverGender` varchar(20) DEFAULT NULL,
   `Status` varchar(20) NOT NULL,
-  `visitorId` int(20) NOT NULL
+  `visitorId` int(20) NOT NULL,
+  `slotId` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `reservation`
 --
 
-INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `visitorId`) VALUES
-(176, '2023-12-02', '15:00 PM', 'Single', 'Self-driving', '', 'Completed', 44),
-(177, '2023-12-02', '07:30 AM', 'Single', 'Self-driving', '', 'Cancelled', 44),
-(178, '2023-12-02', '09:00 AM', 'Single', 'Self-driving', '', 'Completed', 44),
-(179, '2023-12-02', '10:30 AM', 'Single', 'Self-driving', '', 'Completed', 44),
-(180, '2023-12-02', '15:00 PM', 'Single', 'Self-driving', '', 'Completed', 44),
-(181, '2023-12-02', '22:30 PM', 'Single', 'Self-driving', '', 'Cancelled', 44);
+INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `visitorId`, `slotId`) VALUES
+(182, '2023-12-02', '21:00 PM', 'Single', 'Self-driving', '', 'Active', 44, 15),
+(183, '2023-12-02', '21:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44, 15);
 
 -- --------------------------------------------------------
 
@@ -270,7 +267,8 @@ ALTER TABLE `markers`
 --
 ALTER TABLE `reservation`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `visitorId` (`visitorId`);
+  ADD KEY `visitorId` (`visitorId`),
+  ADD KEY `slotId` (`slotId`);
 
 --
 -- Indexes for table `support`
@@ -318,7 +316,7 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=182;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
 
 --
 -- AUTO_INCREMENT for table `support`
@@ -352,7 +350,9 @@ ALTER TABLE `users`
 -- Constraints for table `reservation`
 --
 ALTER TABLE `reservation`
-  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`visitorId`) REFERENCES `users` (`userID`);
+  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`visitorId`) REFERENCES `users` (`userID`),
+  ADD CONSTRAINT `reservation_ibfk_3` FOREIGN KEY (`slotId`) REFERENCES `timeslots` (`slotId`);
+
 --
 -- Constraints for table `support`
 --
