@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2023 at 11:02 PM
+-- Generation Time: Dec 02, 2023 at 11:11 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,30 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `rehaab`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `adminpram`
---
-
-CREATE TABLE `adminpram` (
-  `id` int(20) NOT NULL,
-  `NumOfSingleV` int(7) NOT NULL,
-  `NumOfDoubleV` int(7) NOT NULL,
-  `NumOfVehicles` int(7) NOT NULL,
-  `ReservationDur` int(3) NOT NULL,
-  `numOfVehiclesInSlot` int(7) NOT NULL,
-  `date` varchar(10) NOT NULL,
-  `time` varchar(5) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `adminpram`
---
-
-INSERT INTO `adminpram` (`id`, `NumOfSingleV`, `NumOfDoubleV`, `NumOfVehicles`, `ReservationDur`, `numOfVehiclesInSlot`, `date`, `time`) VALUES
-(1, 7, 13, 20, 90, 3, '2023-10-16', '19:30');
 
 -- --------------------------------------------------------
 
@@ -65,6 +41,19 @@ INSERT INTO `markers` (`MarkerId`, `Latitude`, `Longitude`) VALUES
 (1, 21.425391904127395, 39.824971878215585),
 (2, 21.424083547667347, 39.82654901701323),
 (3, 21.427279512254483, 39.82886644545058);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `parameters`
+--
+
+CREATE TABLE `parameters` (
+  `ParametersId` int(15) NOT NULL,
+  `ReservationDur` varchar(30) NOT NULL,
+  `NumOfWalkInVehicles` int(15) NOT NULL,
+  `NumOfBackUpVehicles` int(15) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -188,16 +177,16 @@ INSERT INTO `users` (`userID`, `FullName`, `Email`, `Password`, `Type`, `Verific
 --
 
 --
--- Indexes for table `adminpram`
---
-ALTER TABLE `adminpram`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `markers`
 --
 ALTER TABLE `markers`
   ADD PRIMARY KEY (`MarkerId`);
+
+--
+-- Indexes for table `parameters`
+--
+ALTER TABLE `parameters`
+  ADD PRIMARY KEY (`ParametersId`);
 
 --
 -- Indexes for table `reservation`
@@ -238,16 +227,16 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT for table `adminpram`
---
-ALTER TABLE `adminpram`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
 -- AUTO_INCREMENT for table `markers`
 --
 ALTER TABLE `markers`
   MODIFY `MarkerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `parameters`
+--
+ALTER TABLE `parameters`
+  MODIFY `ParametersId` int(15) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `reservation`
