@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/reservations/reservationdetails.dart';
 import 'package:http/http.dart' as http;
@@ -25,7 +26,14 @@ class _ReservationListState extends State<ReservationList> {
   Color prevBG = Color.fromARGB(255, 255, 255, 255);
   Color prevTxt = Colors.white;
   Color curTxt = Colors.black;
+  bool prevpressed = false;
+  bool curpressed = true;
+  List currentList = [];
+  List previousList = [];
+  bool currentEmpty = false;
+  bool listVisible = true;
   Future GetData() async {
+    historyList.clear();
     print(GlobalValues.id);
     var url = "http://10.0.2.2/phpfiles/RList.php";
     final res = await http.post(Uri.parse(url), body: {
@@ -43,12 +51,30 @@ class _ReservationListState extends State<ReservationList> {
           }
         }
         //inital current list
+        for (int i = 0; i < list.length; i++) {
+          if ((list[i]["Status"] == "Confirmed" ||
+              list[i]["Status"] == "Active")) {
+            currentList.add(list[i]);
+          }
+        }
+
+        for (int i = 0; i < list.length; i++) {
+          if ((list[i]["Status"] == "Confirmed" ||
+              list[i]["Status"] == "Active")) {
+            previousList.add(list[i]);
+          }
+        }
+        if (curpressed && currentList.isEmpty) {
+          currentEmpty = true;
+          listVisible = false;
+        }
       });
     }
   }
 
   Future refresh() async {
     historyList.clear();
+    list.clear();
     print(GlobalValues.id);
     var url = "http://10.0.2.2/phpfiles/RList.php";
     final res = await http.post(Uri.parse(url), body: {
@@ -59,7 +85,23 @@ class _ReservationListState extends State<ReservationList> {
       var red = json.decode(res.body);
       setState(() {
         list.addAll(red);
-
+        if (curpressed) {
+          for (int i = 0; i < list.length; i++) {
+            if ((list[i]["Status"] == "Confirmed" ||
+                list[i]["Status"] == "Active")) {
+              historyList.add(list[i]);
+            }
+          }
+        }
+        if (prevpressed) {
+          for (int i = 0; i < list.length; i++) {
+            if ((list[i]["Status"] == "Cancelled") ||
+                (list[i]["Status"] == "Completed")) {
+              historyList.add(list[i]);
+            }
+          }
+        }
+        
         //inital current list
       });
     }
@@ -67,7 +109,7 @@ class _ReservationListState extends State<ReservationList> {
 
   void initState() {
     super.initState();
-    list.clear();
+    curpressed = true;
     GetData();
     curColor = Colors.black.withOpacity(0.5);
     prevColor = Color.fromARGB(255, 255, 255, 255);
@@ -95,6 +137,12 @@ class _ReservationListState extends State<ReservationList> {
                   //previous button
                   onPressed: () {
                     setState(() {
+                      currentEmpty = false;
+                      listVisible = true;
+                      print('previous');
+
+                      prevpressed = true;
+                      curpressed = false;
                       curColor = Colors.black.withOpacity(0.5);
                       prevColor = Color.fromARGB(255, 255, 255, 255);
                       curBG = Color.fromARGB(255, 255, 255, 255);
@@ -147,6 +195,13 @@ class _ReservationListState extends State<ReservationList> {
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {
+                      if (currentList.isEmpty) {
+                        currentEmpty = true;
+                        listVisible = false;
+                        print('current');
+                      }
+                      curpressed = true;
+                      prevpressed = false;
                       prevColor = Colors.black.withOpacity(0.5);
                       curColor = Color.fromARGB(255, 255, 255, 255);
                       curBG = kPrimaryColor;
@@ -185,65 +240,88 @@ class _ReservationListState extends State<ReservationList> {
             ],
           ),
         ),
-        Expanded(
-          child: SizedBox(
-            height: double.infinity,
-            child: RefreshIndicator(
-              onRefresh: refresh,
-              child: ListView.separated(
-                itemCount: historyList.length,
-                separatorBuilder: (context, index) {
-                  return const SizedBox(
-                    height: 9,
-                  );
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  if (historyList[0] != null) {
-                    if (historyList[index]["Status"] == "Confirmed") {
-                      return ReserveCard(
+        Visibility(
+          visible: listVisible,
+          child: Expanded(
+            child: SizedBox(
+              height: double.infinity,
+              child: RefreshIndicator(
+                onRefresh: refresh,
+                child: ListView.separated(
+                  itemCount: historyList.length,
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(
+                      height: 9,
+                    );
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    if (historyList[0] != null) {
+                      if (historyList[index]["Status"] == "Confirmed") {
+                        return ReserveCard(
+                            Rid: historyList[index]["id"],
+                            datee: historyList[index]["date"],
+                            timee: historyList[index]["time"],
+                            status: historyList[index]["Status"],
+                            colorr: Color.fromARGB(255, 33, 152, 51),
+                            widthAdjust: 90.0);
+                      }
+                      if (historyList[index]["Status"] == "Cancelled") {
+                        return ReserveCard(
                           Rid: historyList[index]["id"],
                           datee: historyList[index]["date"],
                           timee: historyList[index]["time"],
                           status: historyList[index]["Status"],
-                          colorr: Color.fromARGB(255, 33, 152, 51),
-                          widthAdjust: 90.0);
+                          colorr: Color.fromARGB(255, 215, 53, 53),
+                          widthAdjust: 95.0,
+                        );
+                      }
+                      if (historyList[index]["Status"] == "Active") {
+                        return ReserveCard(
+                          Rid: historyList[index]["id"],
+                          datee: historyList[index]["date"],
+                          timee: historyList[index]["time"],
+                          status: historyList[index]["Status"],
+                          colorr: Color.fromRGBO(255, 196, 4, 1),
+                          widthAdjust: 125.0,
+                        );
+                      }
+                      if (historyList[index]["Status"] == "Completed") {
+                        return ReserveCard(
+                          Rid: historyList[index]["id"],
+                          datee: historyList[index]["date"],
+                          timee: historyList[index]["time"],
+                          status: historyList[index]["Status"],
+                          colorr: Color.fromRGBO(38, 161, 244, 1),
+                          widthAdjust: 88.0,
+                        );
+                      }
+                    } else {
+                      print("empty list");
                     }
-                    if (historyList[index]["Status"] == "Cancelled") {
-                      return ReserveCard(
-                        Rid: historyList[index]["id"],
-                        datee: historyList[index]["date"],
-                        timee: historyList[index]["time"],
-                        status: historyList[index]["Status"],
-                        colorr: Color.fromARGB(255, 215, 53, 53),
-                        widthAdjust: 95.0,
-                      );
-                    }
-                    if (historyList[index]["Status"] == "Active") {
-                      return ReserveCard(
-                        Rid: historyList[index]["id"],
-                        datee: historyList[index]["date"],
-                        timee: historyList[index]["time"],
-                        status: historyList[index]["Status"],
-                        colorr: Color.fromRGBO(255, 196, 4, 1),
-                        widthAdjust: 125.0,
-                      );
-                    }
-                    if (historyList[index]["Status"] == "Completed") {
-                      return ReserveCard(
-                        Rid: historyList[index]["id"],
-                        datee: historyList[index]["date"],
-                        timee: historyList[index]["time"],
-                        status: historyList[index]["Status"],
-                        colorr: Color.fromRGBO(38, 161, 244, 1),
-                        widthAdjust: 88.0,
-                      );
-                    }
-                  } else {
-                    print("empty list");
-                  }
-                },
+                  },
+                ),
               ),
             ),
+          ),
+        ),
+        Visibility(
+          visible: currentEmpty,
+          child: Container(
+            margin: EdgeInsets.only(top: 140),
+            child: Column(
+              children: [
+                Lottie.asset('assets/images/noavailable.json',
+                    width: 250, height: 250),
+                Text(
+                  'No current reservations yet',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: const Color.fromARGB(255, 132, 131, 131)),
+                )
+              ],
+            ),
+            alignment: Alignment.center,
           ),
         ),
       ],

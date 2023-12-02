@@ -222,16 +222,7 @@ TotalTime =
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: 180,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color.fromARGB(255, 60, 100, 73),
-                  Color.fromARGB(255, 104, 132, 113)
-                ],
-              ),
-            ),
+             color: kPrimaryColor,
             child: Center(
               child: Text(
                 'Track Tawaf Status',

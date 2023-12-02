@@ -17,7 +17,7 @@ class MyReservations extends StatefulWidget {
 
 class _MyReservationsState extends State<MyReservations> {
   List list = [];
-
+  List currentList = [];
   Future GetData() async {
     print(GlobalValues.id);
     var url = "http://10.0.2.2/phpfiles/RList.php";
@@ -29,6 +29,7 @@ class _MyReservationsState extends State<MyReservations> {
       var red = json.decode(res.body);
       setState(() {
         list.addAll(red);
+        
       });
     }
   }
@@ -96,7 +97,8 @@ class _MyReservationsState extends State<MyReservations> {
         ),
         alignment: Alignment.center,
       );
-    } else {
+    } 
+    else {
       return ReservationList();
     }
   }

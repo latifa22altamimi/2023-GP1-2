@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
 import '../customization/clip.dart';
+import '../widgets/constants.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -58,16 +59,7 @@ class _HomeState extends State<Home> {
           child: Container(
             width: MediaQuery.of(context).size.width,
             height: 180,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Color.fromARGB(255, 60, 100, 73),
-                  Color.fromARGB(255, 104, 132, 113)
-                ],
-              ),
-            ),
+             color: kPrimaryColor,
             child: Center(
               child: Text(
                 'Our location',
