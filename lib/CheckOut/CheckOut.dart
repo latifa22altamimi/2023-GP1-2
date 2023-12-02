@@ -163,6 +163,9 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
           locationSubscription?.cancel();
           TawafTime();
           checkout();
+           setState(() {
+            GlobalValues.Status="Completed";
+          });
                    /*showDialog(
               context: context,
               builder: (context) {
