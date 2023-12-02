@@ -60,7 +60,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
   _ReservationDetailsState({this.Rid, this.Status, this.date, this.time});
 
   Future GetData() async {
-    var url = "http://10.0.2.2/phpfiles/details.php";
+    var url = "http://192.168.8.107/phpfiles/details.php";
     var res = await http.get(Uri.parse(url));
 
     if (res.statusCode == 200) {
@@ -99,7 +99,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
   }
 
   StartTawaf() async {
-    var url = "http://10.0.2.2/phpfiles/startTawaf.php";
+    var url = "http://192.168.8.107/phpfiles/startTawaf.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": Rid,
     });
@@ -109,7 +109,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
   }
 
   remove() async {
-    var url = "http://10.0.2.2/phpfiles/removeReserve.php";
+    var url = "http://192.168.8.107/phpfiles/removeReserve.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": Rid,
     });
@@ -194,7 +194,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
             //  decoration: BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(20)    ,color: Colors.white, border: Border.all(color: Colors.white)),
             child: TicketWidget(
               width: 350,
-              height: 500,
+              height: 480,
               isCornerRounded: true,
               padding: EdgeInsets.all(20),
               child: Column(
@@ -325,7 +325,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
               ),
             ),
           ),
-          SizedBox(height: 20.0),
+          SizedBox(height: 10.0),
           Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -1175,7 +1175,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
   List olist = [];
   List tlist = [];
   Future GetData() async {
-    var url = "http://10.0.2.2/phpfiles/times.php";
+    var url = "http://192.168.8.107/phpfiles/times.php";
     final res = await http.post(Uri.parse(url), body: {
       "date": DateConverted.getDate(_currentDay),
     });
@@ -1226,7 +1226,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
   }
 
   reschedule() async {
-    var url = "http://10.0.2.2/phpfiles/reschedule.php";
+    var url = "http://192.168.8.107/phpfiles/reschedule.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": Rid,
       "UpdatedTime": getUpdatedTime,
