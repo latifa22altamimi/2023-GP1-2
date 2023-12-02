@@ -158,7 +158,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
             gap = stopwatch.elapsed.inMilliseconds;
           }
         }
-        if (isFar > 150 && isFar < 200) {
+       /* if (isFar > 150 && isFar < 200) {
           showDialog<String>(
               context: context,
               builder: (BuildContext context) => AlertDialog(
@@ -171,7 +171,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                       ),
                     ],
                   ));
-        } /*else if (isFar > 200) {
+        } else if (isFar > 200) {
           _isVisible = false;
           rest = 0;
           dispose();
