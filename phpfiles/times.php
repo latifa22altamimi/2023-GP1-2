@@ -21,12 +21,12 @@ $OriginalTimeSlots=array(); //time slots from database
 }
 
 for ($i=0; $i<count($CurrentTimeSlots); $i++){
-    $time= $CurrentTimeSlots[$i]['time'];
+    $time= $CurrentTimeSlots[$i]['slotId'];
     $vehicleType= $CurrentTimeSlots[$i]['VehicleType'];
     
     for($j=0;$j<count($OriginalTimeSlots);$j++){
 
-        if($OriginalTimeSlots[$j]['time']==$time){
+        if($OriginalTimeSlots[$j]['slotId']==$time){
                
             if($vehicleType=='Single'){
                 $numSingle= $OriginalTimeSlots[$j]['numberOfSingleV'];
