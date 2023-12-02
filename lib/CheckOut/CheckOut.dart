@@ -4,9 +4,7 @@ import 'dart:math';
 import "package:http/http.dart" as http;
 import 'package:location/location.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
-import 'package:rehaab/main/home.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 class CheckOut extends StatefulWidget {
@@ -18,9 +16,9 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
   Location location = Location();
   double kaaba_lat = 24.723251;
   double kaaba_lon = 46.635499;
-  var Distance, Tawaf_time;
+  var Distance, Tawaf_time; 
+   final stopwatch = Stopwatch();
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
-  final stopwatch = Stopwatch();
   String? finalTime;
   var isFar; ////////////////the distance between the user's current location and the center
   StreamSubscription<LocationData>? locationSubscription;
@@ -32,7 +30,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
     });
     var respo = json.decode(res.body);
     print(respo);
-    // GlobalValues.Status = "Completed";
+   // GlobalValues.Status = "Completed";
   }
 
   Future TawafTime() async {
@@ -60,7 +58,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
   }
 
   void Checkoutt() async {
-    print("enter");
+  //  print("enter");
     final permission = await location.requestPermission();
     if (permission == PermissionStatus.granted) {
       final serviceEnabled = await location.serviceEnabled();
@@ -73,9 +71,10 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
         }
       }
       final position = await location.getLocation();
-
+     stopwatch.start();
       locationSubscription =
           location.onLocationChanged.listen((LocationData currentLocation) {
+
         print("p");
         print(position.latitude);
         print(position.longitude);
@@ -91,6 +90,8 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
 
         if (isFar > 40 && isFar < 50) {
           print("near");
+
+
         } else if (isFar > 60) {
           print("che");
           _stopWatchTimer.onStopTimer();
@@ -99,13 +100,13 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
           final int hours = totalTimeInSeconds ~/ 3600;
           final int minutes = (totalTimeInSeconds % 3600) ~/ 60;
           final int seconds = totalTimeInSeconds % 60;
-          finalTime =
-              '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+          finalTime ='${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+          print(finalTime);
           GlobalValues.Status = "Completed";
-
           locationSubscription?.cancel();
           TawafTime();
           checkout();
+           
         }
       });
     }

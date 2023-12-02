@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2023 at 03:42 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Dec 02, 2023 at 10:06 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -90,7 +90,11 @@ CREATE TABLE `reservation` (
 
 INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `visitorId`, `slotId`) VALUES
 (182, '2023-12-02', '21:00 PM', 'Single', 'Self-driving', '', 'Active', 44, 15),
-(183, '2023-12-02', '21:00 PM', 'Single', 'Self-driving', '', 'Confirmed', 44, 15);
+(183, '2023-12-02', '21:00 PM', 'Single', 'Self-driving', '', 'Completed', 44, 15),
+(184, '2023-12-03', '00:00 AM', 'Single', 'Self-driving', '', 'Completed', 44, 1),
+(185, '2023-12-03', '01:30 AM', 'Single', 'Self-driving', '', 'Completed', 44, 2),
+(186, '2023-12-03', '03:00 AM', 'Single', 'Self-driving', '', 'Completed', 44, 3),
+(187, '2023-12-03', '03:00 AM', 'Single', 'Self-driving', '', 'Completed', 44, 3);
 
 -- --------------------------------------------------------
 
@@ -115,76 +119,8 @@ CREATE TABLE `support` (
 CREATE TABLE `tawaf` (
   `TDurationId` int(11) NOT NULL,
   `UserId` int(11) NOT NULL,
-  `TDuration` decimal(10,0) NOT NULL
+  `TDuration` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tawaf`
---
-
-INSERT INTO `tawaf` (`TDurationId`, `UserId`, `TDuration`) VALUES
-(1, 44, '0'),
-(2, 44, '0'),
-(3, 44, '0'),
-(4, 44, '0'),
-(5, 44, '0'),
-(6, 44, '0'),
-(7, 44, '0'),
-(8, 44, '0'),
-(9, 44, '0'),
-(10, 44, '0'),
-(11, 44, '0'),
-(12, 44, '0'),
-(13, 44, '0'),
-(14, 44, '0'),
-(15, 44, '0'),
-(16, 44, '0'),
-(17, 44, '0'),
-(18, 44, '0'),
-(19, 44, '0'),
-(20, 44, '0'),
-(21, 44, '0'),
-(22, 44, '0'),
-(23, 44, '0'),
-(24, 44, '0'),
-(25, 44, '0'),
-(26, 44, '0'),
-(27, 44, '0'),
-(28, 44, '0'),
-(29, 44, '0'),
-(30, 44, '0'),
-(31, 44, '0'),
-(32, 44, '0'),
-(33, 44, '0'),
-(34, 44, '0'),
-(35, 44, '0'),
-(36, 44, '0'),
-(37, 44, '0'),
-(38, 44, '0'),
-(39, 44, '0'),
-(40, 44, '0'),
-(41, 44, '0'),
-(42, 44, '0'),
-(43, 44, '0'),
-(44, 44, '0'),
-(45, 44, '0'),
-(46, 44, '0'),
-(47, 44, '0'),
-(48, 44, '0'),
-(49, 44, '0'),
-(50, 44, '0'),
-(51, 44, '0'),
-(52, 44, '0'),
-(53, 44, '0'),
-(54, 44, '0'),
-(55, 44, '0'),
-(56, 44, '0'),
-(57, 44, '0'),
-(58, 44, '0'),
-(59, 44, '0'),
-(60, 44, '0'),
-(61, 44, '0'),
-(62, 44, '0');
 
 -- --------------------------------------------------------
 
@@ -316,7 +252,7 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=184;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
 
 --
 -- AUTO_INCREMENT for table `support`
@@ -328,7 +264,7 @@ ALTER TABLE `support`
 -- AUTO_INCREMENT for table `tawaf`
 --
 ALTER TABLE `tawaf`
-  MODIFY `TDurationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `TDurationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- AUTO_INCREMENT for table `timeslots`
