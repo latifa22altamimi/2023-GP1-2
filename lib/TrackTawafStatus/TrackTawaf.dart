@@ -158,7 +158,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
             gap = stopwatch.elapsed.inMilliseconds;
           }
         }
-       /* if (isFar > 150 && isFar < 200) {
+       /* if (isFar > 90 && isFar < 130) {
           showDialog<String>(
               context: context,
               builder: (BuildContext context) => AlertDialog(
@@ -170,16 +170,8 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                         child: const Text('OK'),
                       ),
                     ],
-                  ));
-        } else if (isFar > 200) {
-          _isVisible = false;
-          rest = 0;
-          dispose();
-          _stopWatchTimer.onStopTimer();
-          _stopWatchTimer.onResetTimer();
-          stopwatch.stop();
-          stopwatch.reset();
-        }*/
+                  ));}
+        */
         if (counter >= 7) {
           rest = 0;
           EndStream();

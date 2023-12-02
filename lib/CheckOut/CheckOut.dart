@@ -88,11 +88,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
 
         print(isFar);
 
-        if (isFar > 40 && isFar < 50) {
-          print("near");
-
-
-        } else if (isFar > 60) {
+        if (isFar >= 130) {
           print("che");
           _stopWatchTimer.onStopTimer();
           Tawaf_time = (stopwatch.elapsed.inMilliseconds / 1000).floor();

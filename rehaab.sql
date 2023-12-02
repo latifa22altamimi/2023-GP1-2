@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2023 at 10:06 PM
+-- Generation Time: Dec 02, 2023 at 11:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -52,7 +52,7 @@ INSERT INTO `adminpram` (`id`, `NumOfSingleV`, `NumOfDoubleV`, `NumOfVehicles`, 
 --
 
 CREATE TABLE `markers` (
-  `id` int(11) NOT NULL,
+  `MarkerId` int(11) NOT NULL,
   `Latitude` double NOT NULL,
   `Longitude` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -61,7 +61,7 @@ CREATE TABLE `markers` (
 -- Dumping data for table `markers`
 --
 
-INSERT INTO `markers` (`id`, `Latitude`, `Longitude`) VALUES
+INSERT INTO `markers` (`MarkerId`, `Latitude`, `Longitude`) VALUES
 (1, 21.425391904127395, 39.824971878215585),
 (2, 21.424083547667347, 39.82654901701323),
 (3, 21.427279512254483, 39.82886644545058);
@@ -89,12 +89,7 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `visitorId`, `slotId`) VALUES
-(182, '2023-12-02', '21:00 PM', 'Single', 'Self-driving', '', 'Active', 44, 15),
-(183, '2023-12-02', '21:00 PM', 'Single', 'Self-driving', '', 'Completed', 44, 15),
-(184, '2023-12-03', '00:00 AM', 'Single', 'Self-driving', '', 'Completed', 44, 1),
-(185, '2023-12-03', '01:30 AM', 'Single', 'Self-driving', '', 'Completed', 44, 2),
-(186, '2023-12-03', '03:00 AM', 'Single', 'Self-driving', '', 'Completed', 44, 3),
-(187, '2023-12-03', '03:00 AM', 'Single', 'Self-driving', '', 'Completed', 44, 3);
+(190, '2023-12-03', '03:00 AM', 'Single', 'Self-driving', '', 'Completed', 44, 3);
 
 -- --------------------------------------------------------
 
@@ -121,6 +116,13 @@ CREATE TABLE `tawaf` (
   `UserId` int(11) NOT NULL,
   `TDuration` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tawaf`
+--
+
+INSERT INTO `tawaf` (`TDurationId`, `UserId`, `TDuration`) VALUES
+(69, 44, '00:00:00');
 
 -- --------------------------------------------------------
 
@@ -179,7 +181,6 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`userID`, `FullName`, `Email`, `Password`, `Type`, `VerificationStatus`) VALUES
 (44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$7xFLClUeua9sUgzuXqFy.OntRYLpxloW5yc9bX7/e9smMFIMmKD9y', 'Al-Haram visitor', 1),
-(51, 'fa', 'alnaserfatimah4@gmail.com', '$2y$10$LIBZfiFkJ.HVGyLnhAQFeOhWTC/Hx/uOBf0NKlvCMJzI5w/Qj/iYi', 'Al-Haram visitor', 1),
 (52, 'Manal Alyami', 'manalalyami7@gmail.com', '$2y$10$y.S07Y5Cm25vK3pCWZn1O.Uk8BZSw5OOaptTVFliaQIa0NLfrJfn2', 'Al-Haram visitor', 1);
 
 --
@@ -196,7 +197,7 @@ ALTER TABLE `adminpram`
 -- Indexes for table `markers`
 --
 ALTER TABLE `markers`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`MarkerId`);
 
 --
 -- Indexes for table `reservation`
@@ -246,25 +247,25 @@ ALTER TABLE `adminpram`
 -- AUTO_INCREMENT for table `markers`
 --
 ALTER TABLE `markers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `MarkerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=188;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
 
 --
 -- AUTO_INCREMENT for table `support`
 --
 ALTER TABLE `support`
-  MODIFY `supportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `supportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tawaf`
 --
 ALTER TABLE `tawaf`
-  MODIFY `TDurationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `TDurationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `timeslots`
