@@ -32,7 +32,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
     });
     var respo = json.decode(res.body);
     print(respo);
-    GlobalValues.Status = "Completed";
+   // GlobalValues.Status = "Completed";
   }
 
   Future TawafTime() async {
@@ -160,12 +160,13 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
           final int seconds = totalTimeInSeconds % 60;
           finalTime ='${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
           GlobalValues.Status = "Completed";
+          setState(() {
+            GlobalValues.Status="Completed";
+          });
           locationSubscription?.cancel();
           TawafTime();
           checkout();
-           setState(() {
-            GlobalValues.Status="Completed";
-          });
+           
                    /*showDialog(
               context: context,
               builder: (context) {
