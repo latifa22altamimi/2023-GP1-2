@@ -150,7 +150,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
       if (stopwatch.elapsed.inMilliseconds > 15000) {
         if (Distance < 5) {
           print("enter");
-          if (stopwatch.elapsed.inMilliseconds - gap > 15000) {
+          if (stopwatch.elapsed.inMilliseconds - gap > 15000 && DistanceCenter> 200) {
             setState(() {
               counter = counter + 1;
               print(counter);

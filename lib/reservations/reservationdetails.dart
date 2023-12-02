@@ -121,7 +121,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
     datetime = date! + " " + time!.substring(0, 5) + ":00";
     if (Status == 'Cancelled' ||
         DateTime.now().isAfter(DateTime.parse(datetime!)) ||
-        Status == "Active") {
+        Status == "Active" || Status == "Completed") {
       return false;
     } else {
       return true;
@@ -211,7 +211,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Container(
+                     Container(
                         width: 120.0,
                         height: 25.0,
                         decoration: BoxDecoration(
@@ -222,6 +222,8 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                   ? Colors.red
                                   : Status == "Confirmed"
                                       ? Colors.green
+                                      : Status=="Completed"?
+                                      Color.fromRGBO(38, 161, 244, 1)
                                       : Color.fromRGBO(255, 196, 4, 1)),
                         ),
                         child: Center(
@@ -234,6 +236,10 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                 : Status == "Confirmed"
                                     ? TextStyle(
                                         color: Colors.green,
+                                        fontWeight: FontWeight.bold):
+                                        Status=="Completed"?
+                                        TextStyle(
+                                        color: Color.fromRGBO(38, 161, 244, 1),
                                         fontWeight: FontWeight.bold)
                                     : TextStyle(
                                         color: Color.fromRGBO(255, 196, 4, 1),
