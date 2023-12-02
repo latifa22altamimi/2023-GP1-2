@@ -36,19 +36,38 @@ class _ReservationListState extends State<ReservationList> {
       var red = json.decode(res.body);
       setState(() {
         list.addAll(red);
-        //inital current list
         for (int i = 0; i < list.length; i++) {
           if ((list[i]["Status"] == "Confirmed" ||
               list[i]["Status"] == "Active")) {
             historyList.add(list[i]);
           }
         }
+        //inital current list
+      });
+    }
+  }
+
+  Future refresh() async {
+    historyList.clear();
+    print(GlobalValues.id);
+    var url = "http://10.0.2.2/phpfiles/RList.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "Userid": GlobalValues.id,
+    });
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      setState(() {
+        list.addAll(red);
+
+        //inital current list
       });
     }
   }
 
   void initState() {
     super.initState();
+    list.clear();
     GetData();
     curColor = Colors.black.withOpacity(0.5);
     prevColor = Color.fromARGB(255, 255, 255, 255);
@@ -85,6 +104,7 @@ class _ReservationListState extends State<ReservationList> {
                       //previous reservations
                       history = 1;
                       historyList.clear();
+
                       for (int i = 0; i < list.length; i++) {
                         if ((list[i]["Status"] == "Cancelled") ||
                             (list[i]["Status"] == "Completed")) {
@@ -168,58 +188,61 @@ class _ReservationListState extends State<ReservationList> {
         Expanded(
           child: SizedBox(
             height: double.infinity,
-            child: ListView.separated(
-              itemCount: historyList.length,
-              separatorBuilder: (context, index) {
-                return const SizedBox(
-                  height: 9,
-                );
-              },
-              itemBuilder: (BuildContext context, int index) {
-                if (historyList[0] != null) {
-                  if (historyList[index]["Status"] == "Confirmed") {
-                    return ReserveCard(
+            child: RefreshIndicator(
+              onRefresh: refresh,
+              child: ListView.separated(
+                itemCount: historyList.length,
+                separatorBuilder: (context, index) {
+                  return const SizedBox(
+                    height: 9,
+                  );
+                },
+                itemBuilder: (BuildContext context, int index) {
+                  if (historyList[0] != null) {
+                    if (historyList[index]["Status"] == "Confirmed") {
+                      return ReserveCard(
+                          Rid: historyList[index]["id"],
+                          datee: historyList[index]["date"],
+                          timee: historyList[index]["time"],
+                          status: historyList[index]["Status"],
+                          colorr: Color.fromARGB(255, 33, 152, 51),
+                          widthAdjust: 90.0);
+                    }
+                    if (historyList[index]["Status"] == "Cancelled") {
+                      return ReserveCard(
                         Rid: historyList[index]["id"],
                         datee: historyList[index]["date"],
                         timee: historyList[index]["time"],
                         status: historyList[index]["Status"],
-                        colorr: Color.fromARGB(255, 33, 152, 51),
-                        widthAdjust: 90.0);
+                        colorr: Color.fromARGB(255, 215, 53, 53),
+                        widthAdjust: 95.0,
+                      );
+                    }
+                    if (historyList[index]["Status"] == "Active") {
+                      return ReserveCard(
+                        Rid: historyList[index]["id"],
+                        datee: historyList[index]["date"],
+                        timee: historyList[index]["time"],
+                        status: historyList[index]["Status"],
+                        colorr: Color.fromRGBO(255, 196, 4, 1),
+                        widthAdjust: 125.0,
+                      );
+                    }
+                    if (historyList[index]["Status"] == "Completed") {
+                      return ReserveCard(
+                        Rid: historyList[index]["id"],
+                        datee: historyList[index]["date"],
+                        timee: historyList[index]["time"],
+                        status: historyList[index]["Status"],
+                        colorr: Color.fromRGBO(38, 161, 244, 1),
+                        widthAdjust: 88.0,
+                      );
+                    }
+                  } else {
+                    print("empty list");
                   }
-                  if (historyList[index]["Status"] == "Cancelled") {
-                    return ReserveCard(
-                      Rid: historyList[index]["id"],
-                      datee: historyList[index]["date"],
-                      timee: historyList[index]["time"],
-                      status: historyList[index]["Status"],
-                      colorr: Color.fromARGB(255, 215, 53, 53),
-                      widthAdjust: 95.0,
-                    );
-                  }
-                  if (historyList[index]["Status"] == "Active") {
-                    return ReserveCard(
-                      Rid: historyList[index]["id"],
-                      datee: historyList[index]["date"],
-                      timee: historyList[index]["time"],
-                      status: historyList[index]["Status"],
-                      colorr: Color.fromRGBO(255, 196, 4, 1),
-                      widthAdjust: 125.0,
-                    );
-                  }
-                  if (historyList[index]["Status"] == "Completed") {
-                    return ReserveCard(
-                      Rid: historyList[index]["id"],
-                      datee: historyList[index]["date"],
-                      timee: historyList[index]["time"],
-                      status: historyList[index]["Status"],
-                      colorr: Color.fromRGBO(38, 161, 244, 1),
-                      widthAdjust: 88.0,
-                    );
-                  }
-                } else {
-                  print("empty list");
-                }
-              },
+                },
+              ),
             ),
           ),
         ),
@@ -235,7 +258,13 @@ class ReserveCard extends StatelessWidget {
   String? status;
   Color? colorr;
   double? widthAdjust;
-  ReserveCard({this.Rid, this.datee, this.timee, this.status, this.colorr, this.widthAdjust});
+  ReserveCard(
+      {this.Rid,
+      this.datee,
+      this.timee,
+      this.status,
+      this.colorr,
+      this.widthAdjust});
   @override
   Widget build(BuildContext context) {
     return Container(
