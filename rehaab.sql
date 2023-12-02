@@ -353,6 +353,17 @@ ALTER TABLE `users`
 --
 ALTER TABLE `reservation`
   ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`visitorId`) REFERENCES `users` (`userID`);
+--
+-- Constraints for table `support`
+--
+ALTER TABLE `support`
+  ADD CONSTRAINT `support_ibfk_1` FOREIGN KEY (`ReservationId`) REFERENCES `reservation` (`id`);
+
+--
+-- Constraints for table `tawaf`
+--
+ALTER TABLE `tawaf`
+  ADD CONSTRAINT `tawaf_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `users` (`userID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
