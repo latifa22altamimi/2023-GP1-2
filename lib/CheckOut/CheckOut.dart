@@ -17,6 +17,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
   double kaaba_lat = 24.723251;
   double kaaba_lon = 46.635499;
   var Distance, Tawaf_time; 
+   final stopwatch = Stopwatch();
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
   String? finalTime;
   var isFar; ////////////////the distance between the user's current location and the center
@@ -57,7 +58,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
   }
 
   void Checkoutt() async {
-    print("enter");
+  //  print("enter");
     final permission = await location.requestPermission();
     if (permission == PermissionStatus.granted) {
       final serviceEnabled = await location.serviceEnabled();
@@ -70,12 +71,10 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
         }
       }
       final position = await location.getLocation();
-
+     stopwatch.start();
       locationSubscription =
           location.onLocationChanged.listen((LocationData currentLocation) {
-      /*  Distance = distance(position.latitude, position.longitude, currentLocation.latitude,
-                currentLocation.longitude)
-            .floor();*/ // I think we don't need it here 
+
         print("p");
         print(position.latitude);
         print(position.longitude);
@@ -102,72 +101,12 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
           final int minutes = (totalTimeInSeconds % 3600) ~/ 60;
           final int seconds = totalTimeInSeconds % 60;
           finalTime ='${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+          print(finalTime);
           GlobalValues.Status = "Completed";
-          setState(() {
-            GlobalValues.Status="Completed";
-          });
           locationSubscription?.cancel();
           TawafTime();
           checkout();
            
-                   /*showDialog(
-              context: context,
-              builder: (context) {
-                Future.delayed(Duration(seconds: 10), () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) =>
-                              TrackTawaf()))); /////should we navigate to home?
-                });
-                return Dialog(
-                  backgroundColor: Color.fromARGB(255, 247, 247, 247),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Container(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Lottie.asset('assets/images/success.json',
-                            width: 100, height: 100),
-                        Text(
-                          'Success',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Text(
-                          "Checked out",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ConstrainedBox(
-                              constraints: BoxConstraints.tightFor(
-                                  height: 38, width: 100),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              });*/
         }
       });
     }
