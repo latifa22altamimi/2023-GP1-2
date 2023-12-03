@@ -71,7 +71,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
       });
     }
     for (var i = 0; i < list.length; i++) {
-      if (int.parse(list[i]["id"]) == int.parse(Rid!)) {
+      if (int.parse(list[i]["reservationId"]) == int.parse(Rid!)) {
         ind = i;
       }
     }
@@ -289,7 +289,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                           child: list.isNotEmpty
                               ? ticketDetailsWidget(
                                   'Reservation no.',
-                                  '#${list[ind]["id"]}',
+                                  '#${list[ind]["reservationId"]}',
                                   'Vehicle type',
                                   '${list[ind]["VehicleType"]}')
                               : ticketDetailsWidget("", "", "", ""),
