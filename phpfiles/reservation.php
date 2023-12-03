@@ -12,6 +12,6 @@ $slotIdResult =  mysqli_query($conn, $slots);
 $row = mysqli_fetch_assoc($slotIdResult);
 $slotId = $row['slotId'];
 
-$s ="INSERT INTO reservation (date,time,VehicleType,drivingType,driverGender,Status,visitorId,slotId) VALUES ('".$date."','".$time."','".$VehicleType."','".$DrivingType."','".$DriverGender."','Confirmed','".$id."','".$slotId."')";
+$s ="INSERT INTO reservation (date,VehicleType,drivingType,driverGender,Status,visitorId,slotId) VALUES ('".$date."','".$VehicleType."','".$DrivingType."','".$DriverGender."','Confirmed','".$id."','".$slotId."')";
 
 $result2 = mysqli_query($conn, $s);

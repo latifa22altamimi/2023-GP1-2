@@ -1175,7 +1175,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
   List olist = [];
   List tlist = [];
   Future GetData() async {
-    var url = "http://192.168.8.107/phpfiles/times.php";
+    var url = "http://10.0.2.2/phpfiles/times.php";
     final res = await http.post(Uri.parse(url), body: {
       "date": DateConverted.getDate(_currentDay),
     });
@@ -1226,7 +1226,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
   }
 
   reschedule() async {
-    var url = "http://192.168.8.107/phpfiles/reschedule.php";
+    var url = "http://10.0.2.2/phpfiles/reschedule.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": Rid,
       "UpdatedTime": getUpdatedTime,

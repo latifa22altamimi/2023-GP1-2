@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2023 at 11:11 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Dec 03, 2023 at 03:03 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -64,7 +64,6 @@ CREATE TABLE `parameters` (
 CREATE TABLE `reservation` (
   `id` int(20) NOT NULL,
   `date` varchar(10) NOT NULL,
-  `time` varchar(20) NOT NULL,
   `VehicleType` varchar(6) NOT NULL,
   `drivingType` varchar(20) NOT NULL,
   `driverGender` varchar(20) DEFAULT NULL,
@@ -77,8 +76,12 @@ CREATE TABLE `reservation` (
 -- Dumping data for table `reservation`
 --
 
-INSERT INTO `reservation` (`id`, `date`, `time`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `visitorId`, `slotId`) VALUES
-(190, '2023-12-03', '03:00 AM', 'Single', 'Self-driving', '', 'Completed', 44, 3);
+INSERT INTO `reservation` (`id`, `date`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `visitorId`, `slotId`) VALUES
+(194, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 5),
+(195, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 7),
+(196, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 7),
+(197, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 7),
+(198, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 12);
 
 -- --------------------------------------------------------
 
@@ -93,6 +96,14 @@ CREATE TABLE `support` (
   `Longitude` varchar(200) NOT NULL,
   `Message` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `support`
+--
+
+INSERT INTO `support` (`supportID`, `ReservationId`, `Latitude`, `Longitude`, `Message`) VALUES
+(5, 194, '37.4219983', '-122.084', 'Sudden stop'),
+(6, 198, '37.4219983', '-122.084', 'Sudden stop');
 
 -- --------------------------------------------------------
 
@@ -111,7 +122,14 @@ CREATE TABLE `tawaf` (
 --
 
 INSERT INTO `tawaf` (`TDurationId`, `UserId`, `TDuration`) VALUES
-(69, 44, '00:00:00');
+(69, 44, '00:00:00'),
+(70, 44, '00:00:00'),
+(71, 44, '00:00:00'),
+(72, 44, '00:00:00'),
+(73, 44, '00:00:00'),
+(74, 44, '00:00:00'),
+(75, 44, '00:00:00'),
+(76, 44, '00:00:00');
 
 -- --------------------------------------------------------
 
@@ -242,19 +260,19 @@ ALTER TABLE `parameters`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=191;
+  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=199;
 
 --
 -- AUTO_INCREMENT for table `support`
 --
 ALTER TABLE `support`
-  MODIFY `supportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `supportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `tawaf`
 --
 ALTER TABLE `tawaf`
-  MODIFY `TDurationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `TDurationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `timeslots`

@@ -6,7 +6,7 @@
  */
 
 include 'connect.php';
-$sql = "SELECT id, date, time, VehicleType, drivingType, driverGender, Status, visitorId FROM reservation";
+$sql ="SELECT r.*, t.time FROM reservation r JOIN timeslots t ON r.slotId = t.slotId";
 $result = $conn->query($sql);
  while($ro2 = mysqli_fetch_assoc($result)){
      $data[]=$ro2;

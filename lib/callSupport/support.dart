@@ -259,7 +259,7 @@ class _CallSupportState extends State<callSupport> {
                                           width: 100,
                                           height: 100),
                                       Text(
-                                        'Warning',
+                                        'Ask for support',
                                         style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 20,
@@ -269,7 +269,7 @@ class _CallSupportState extends State<callSupport> {
                                         height: 10.0,
                                       ),
                                       Text(
-                                        'Are you sure you want to call for support?',
+                                        'Your request will be forwarded to the support team',
                                         style: TextStyle(
                                             color:
                                                 Color.fromARGB(255, 48, 48, 48),
@@ -383,7 +383,7 @@ class _CallSupportState extends State<callSupport> {
                                                               height: 10.0,
                                                             ),
                                                             Text(
-                                                              'Your location is sent to the administrators, they are coming to help you',
+                                                              'The support team has received your request and will provide assistance as soon as possible.\nWe kindly ask for your patience during this process.',
                                                               textAlign:
                                                                   TextAlign
                                                                       .center,
@@ -425,7 +425,7 @@ class _CallSupportState extends State<callSupport> {
                                                 );
                                               },
                                               child: Text(
-                                                'Confirm',
+                                                'Request',
                                                 style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 14,

@@ -2,7 +2,7 @@
 
 include 'connect.php';
 $visitorId=$_POST['Userid'];
-$sql = "SELECT * FROM reservation Join timeslots on reservation.slotId=timeslots.slotId WHERE visitorId=$visitorId";
+$sql = "SELECT r.*, t.time FROM reservation r JOIN timeslots t ON r.slotId = t.slotId WHERE visitorId=$visitorId";
 $result = $conn->query($sql);
   $array= array();
 while($row = mysqli_fetch_assoc($result)) {
