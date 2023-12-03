@@ -28,12 +28,6 @@ class ReservationDetails extends StatefulWidget {
 
   ReservationDetails({this.Rid, this.Status, this.date, this.time});
 
-/*Future Send(Rid) async{
-var s = await http.post(Uri.parse("http://192.168.8.105/phpfiles/details.php"), body: json.encode({"rid": Rid}));
-if(s.statusCode==200){
-
-}
-}*/
   @override
   State<ReservationDetails> createState() => _ReservationDetailsState(
       Rid: Rid, Status: Status, date: date, time: time);

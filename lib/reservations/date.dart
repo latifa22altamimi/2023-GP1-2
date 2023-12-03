@@ -10,30 +10,14 @@ class DateConverted {
   }
 }
 
-/*var red;
-Future GetData() async{
-
-  var url = "http://10.0.2.2/rehaab/duration.php";
-  var res = await http.get(Uri.parse(url));
-
-  if(res.statusCode ==200){
-     red = json.decode(res.body);
-    
-
-  red = int.parse(red);
-  }
-
-}*/
 
 var duration = 90; // take from database
 List<String> solts() {
   DateTime now = DateTime.now();
   DateTime startTime = DateTime(now.year, now.month, now.day, 0, 0, 0);
   DateTime endTime = DateTime(now.year, now.month, now.day, 23, 59, 0);
-  //DateTimeRange timep = DateTimeRange(start:now.subtract(Duration(hours: now.hour) ), end:now ) ;
-  //TimeOfDay TODAY = TimeOfDay.now();
 
-  //print('${TODAY}');
+
 
   Duration step = Duration(minutes: duration);
   int count = 1;

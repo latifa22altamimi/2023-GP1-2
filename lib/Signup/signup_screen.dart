@@ -31,7 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _isSecurePassword=true;
 var verifylink;
   Future signup() async{
-    var url ="http://192.168.100.208/phpfiles/signup.php";
+    var url ="http://10.0.2.2/phpfiles/signup.php";
     final response= await http.post(Uri.parse(url),body:{
     "FullName":FullName.text,
     "Email":email.text,

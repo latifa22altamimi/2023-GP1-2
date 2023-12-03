@@ -15,8 +15,8 @@ class TrackTawaf extends StatefulWidget {
 
 class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   Location location = Location();
-  double kaaba_lat = 24.7786729;
-  double kaaba_lon = 46.6697697;
+  double kaaba_lat = 21.4224779; ////lat of center of kaaba
+  double kaaba_lon = 39.8251832;////long of center of kaaba
   var Distance; ////////the distance between my current location and the starting point
   final stopwatch = Stopwatch();
   int counter = 0;
