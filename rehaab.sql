@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2023 at 03:03 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Dec 03, 2023 at 03:47 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -62,7 +62,7 @@ CREATE TABLE `parameters` (
 --
 
 CREATE TABLE `reservation` (
-  `id` int(20) NOT NULL,
+  `reservationId` int(20) NOT NULL,
   `date` varchar(10) NOT NULL,
   `VehicleType` varchar(6) NOT NULL,
   `drivingType` varchar(20) NOT NULL,
@@ -76,12 +76,13 @@ CREATE TABLE `reservation` (
 -- Dumping data for table `reservation`
 --
 
-INSERT INTO `reservation` (`id`, `date`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `visitorId`, `slotId`) VALUES
+INSERT INTO `reservation` (`reservationId`, `date`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `visitorId`, `slotId`) VALUES
 (194, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 5),
 (195, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 7),
 (196, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 7),
 (197, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 7),
-(198, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 12);
+(198, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 12),
+(199, '2023-12-03', 'Single', 'Self-driving', '', 'Confirmed', 44, 10);
 
 -- --------------------------------------------------------
 
@@ -210,7 +211,7 @@ ALTER TABLE `parameters`
 -- Indexes for table `reservation`
 --
 ALTER TABLE `reservation`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`reservationId`),
   ADD KEY `visitorId` (`visitorId`),
   ADD KEY `slotId` (`slotId`);
 
@@ -260,7 +261,7 @@ ALTER TABLE `parameters`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=199;
+  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=200;
 
 --
 -- AUTO_INCREMENT for table `support`
@@ -301,7 +302,7 @@ ALTER TABLE `reservation`
 -- Constraints for table `support`
 --
 ALTER TABLE `support`
-  ADD CONSTRAINT `support_ibfk_1` FOREIGN KEY (`ReservationId`) REFERENCES `reservation` (`id`);
+  ADD CONSTRAINT `support_ibfk_1` FOREIGN KEY (`ReservationId`) REFERENCES `reservation` (`reservationId`);
 
 --
 -- Constraints for table `tawaf`
