@@ -37,6 +37,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
 
  void EndStream() { /////////when user complete 7 rounds
  locationSubscription?.cancel();
+ Future.delayed(Duration(seconds: 2), () {
       showDialog(
               context: context,
               builder: (context) {
@@ -98,6 +99,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                   ),
                 );
               });
+                  });
 }
 
  
@@ -148,9 +150,10 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
       print(currentLocation.latitude);
       print(currentLocation.longitude);
       if (stopwatch.elapsed.inMilliseconds > 15000) {
+        
         if (Distance < 5) {
           print("enter");
-          if (stopwatch.elapsed.inMilliseconds - gap > 15000 && DistanceCenter> 200) {
+          if (stopwatch.elapsed.inMilliseconds - gap > 15000  && DistanceCenter < 130) {
             setState(() {
               counter = counter + 1;
               print(counter);
@@ -158,20 +161,6 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
             gap = stopwatch.elapsed.inMilliseconds;
           }
         }
-       /* if (isFar > 90 && isFar < 130) {
-          showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                    title: const Text('Alert'),
-                    content: const Text('You are getting so far'),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'OK'),
-                        child: const Text('OK'),
-                      ),
-                    ],
-                  ));}
-        */
         if (counter >= 7) {
           rest = 0;
           EndStream();
