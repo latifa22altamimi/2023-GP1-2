@@ -35,7 +35,7 @@ class _ReservationListState extends State<ReservationList> {
   Future GetData() async {
     historyList.clear();
     print(GlobalValues.id);
-    var url = "http://192.168.1.29/phpfiles/RList.php";
+    var url = "http://10.0.2.2/phpfiles/RList.php";
     final res = await http.post(Uri.parse(url), body: {
       "Userid": GlobalValues.id,
     });
@@ -258,7 +258,7 @@ class _ReservationListState extends State<ReservationList> {
                     if (historyList[0] != null) {
                       if (historyList[index]["Status"] == "Confirmed") {
                         return ReserveCard(
-                            Rid: historyList[index]["id"],
+                            Rid: historyList[index]["reservationId"],
                             datee: historyList[index]["date"],
                             timee: historyList[index]["time"],
                             status: historyList[index]["Status"],
@@ -267,7 +267,7 @@ class _ReservationListState extends State<ReservationList> {
                       }
                       if (historyList[index]["Status"] == "Cancelled") {
                         return ReserveCard(
-                          Rid: historyList[index]["id"],
+                          Rid: historyList[index]["reservationId"],
                           datee: historyList[index]["date"],
                           timee: historyList[index]["time"],
                           status: historyList[index]["Status"],
@@ -277,7 +277,7 @@ class _ReservationListState extends State<ReservationList> {
                       }
                       if (historyList[index]["Status"] == "Active") {
                         return ReserveCard(
-                          Rid: historyList[index]["id"],
+                          Rid: historyList[index]["reservationId"],
                           datee: historyList[index]["date"],
                           timee: historyList[index]["time"],
                           status: historyList[index]["Status"],
@@ -287,7 +287,7 @@ class _ReservationListState extends State<ReservationList> {
                       }
                       if (historyList[index]["Status"] == "Completed") {
                         return ReserveCard(
-                          Rid: historyList[index]["id"],
+                          Rid: historyList[index]["reservationId"],
                           datee: historyList[index]["date"],
                           timee: historyList[index]["time"],
                           status: historyList[index]["Status"],
