@@ -30,7 +30,6 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
     });
     var respo = json.decode(res.body);
     print(respo);
-   // GlobalValues.Status = "Completed";
   }
 
   Future TawafTime() async {
