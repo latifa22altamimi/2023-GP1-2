@@ -154,6 +154,22 @@ form .f1{
   width: 20%;
 }
 
+@media only screen and (max-width: 500px) {
+  .continer {
+    width: 90%;
+  }
+  
+  .logo {
+    width: 30%;
+    margin-left: 35%;
+  }
+  
+  .log {
+    margin-left: 40%;
+    width: 30%;
+  }
+}
+
   </style>
 </head> 
 <body>  

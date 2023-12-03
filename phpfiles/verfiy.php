@@ -47,6 +47,26 @@ overflow: hidden;
   margin-left:180px;
   width: 18%;
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+@media only screen and (max-width: 500px) {
+  .continer {
+    width: 90%;
+  }
+  
+  .logo {
+    width: 30%;
+    margin-left: 35%;
+  }
+  
+  .log {
+    margin-left: 40%;
+    width: 30%;
+  }
+}
 </style> 
 </head> 
 <body>  
