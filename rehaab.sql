@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2023 at 03:47 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: Dec 03, 2023 at 12:14 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -72,18 +72,6 @@ CREATE TABLE `reservation` (
   `slotId` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `reservation`
---
-
-INSERT INTO `reservation` (`reservationId`, `date`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `visitorId`, `slotId`) VALUES
-(194, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 5),
-(195, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 7),
-(196, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 7),
-(197, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 7),
-(198, '2023-12-03', 'Single', 'Self-driving', '', 'Completed', 44, 12),
-(199, '2023-12-03', 'Single', 'Self-driving', '', 'Confirmed', 44, 10);
-
 -- --------------------------------------------------------
 
 --
@@ -98,14 +86,6 @@ CREATE TABLE `support` (
   `Message` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `support`
---
-
-INSERT INTO `support` (`supportID`, `ReservationId`, `Latitude`, `Longitude`, `Message`) VALUES
-(5, 194, '37.4219983', '-122.084', 'Sudden stop'),
-(6, 198, '37.4219983', '-122.084', 'Sudden stop');
-
 -- --------------------------------------------------------
 
 --
@@ -117,20 +97,6 @@ CREATE TABLE `tawaf` (
   `UserId` int(11) NOT NULL,
   `TDuration` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `tawaf`
---
-
-INSERT INTO `tawaf` (`TDurationId`, `UserId`, `TDuration`) VALUES
-(69, 44, '00:00:00'),
-(70, 44, '00:00:00'),
-(71, 44, '00:00:00'),
-(72, 44, '00:00:00'),
-(73, 44, '00:00:00'),
-(74, 44, '00:00:00'),
-(75, 44, '00:00:00'),
-(76, 44, '00:00:00');
 
 -- --------------------------------------------------------
 
@@ -188,8 +154,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `FullName`, `Email`, `Password`, `Type`, `VerificationStatus`) VALUES
-(44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$7xFLClUeua9sUgzuXqFy.OntRYLpxloW5yc9bX7/e9smMFIMmKD9y', 'Al-Haram visitor', 1),
-(52, 'Manal Alyami', 'manalalyami7@gmail.com', '$2y$10$y.S07Y5Cm25vK3pCWZn1O.Uk8BZSw5OOaptTVFliaQIa0NLfrJfn2', 'Al-Haram visitor', 1);
+(44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$7xFLClUeua9sUgzuXqFy.OntRYLpxloW5yc9bX7/e9smMFIMmKD9y', 'Al-Haram visitor', 1);
 
 --
 -- Indexes for dumped tables
@@ -261,19 +226,19 @@ ALTER TABLE `parameters`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=200;
+  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=205;
 
 --
 -- AUTO_INCREMENT for table `support`
 --
 ALTER TABLE `support`
-  MODIFY `supportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `supportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tawaf`
 --
 ALTER TABLE `tawaf`
-  MODIFY `TDurationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `TDurationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `timeslots`
@@ -285,7 +250,7 @@ ALTER TABLE `timeslots`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- Constraints for dumped tables

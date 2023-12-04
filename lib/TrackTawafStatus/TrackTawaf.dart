@@ -404,7 +404,7 @@ TotalTime =
               padding: const EdgeInsets.all(16.0),
               color: Colors.grey[200],
               child: Text(
-                'You will in approximately after: $TotalTime',
+                'You will finish in approximately after: $TotalTime',
                 style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
