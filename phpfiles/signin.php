@@ -25,9 +25,10 @@
     $pw = $row['Password'];
     $id = strval($row['userID']);
     $name = $row['FullName'];
+    $type= $row['Type'];
 
     if (password_verify($Password, $pw)) {
-      echo json_encode([0 => "Success", 1 => $id, 2 => $name]);
+      echo json_encode([0 => "Success", 1 => $id, 2 => $name, 3 => $type]);
     }
     else {
       echo json_encode("Fail");

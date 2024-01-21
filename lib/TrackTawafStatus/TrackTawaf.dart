@@ -25,11 +25,13 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   var round_time;
   var gap = 0; 
   var rest = 0;
-  var isFar;
+  int OutOfRange=130; ///////////////out of tawaf area range
+  int Near=5;//////are the users near to their starting point by 5 meters?
+  int WaitingTime=15000; //////////the system should wait around 15 s before increments rounds
   String? TotalTime; //////////round time*7 to get the approximant finish time 
   int? StoppedTimeMinutes; ///////convert time to mins
   var icon= Icons.start;
-  bool oneRound=false; /////////////to check if the user finished one round or not
+  bool oneRound=false; /////////////to check if the user finished first round or not
   StreamSubscription<LocationData>? locationSubscription;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
@@ -46,7 +48,7 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
                       context,
                       MaterialPageRoute(
                           builder: ((context) =>
-                              home()))); /////should we navigate to home?
+                              home())));
                 });
                 return Dialog(
                   backgroundColor: Color.fromARGB(255, 247, 247, 247),
@@ -140,20 +142,19 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
       Distance = distance(position.latitude, position.longitude, currentLocation.latitude,
               currentLocation.longitude)
           .floor();
-      isFar = distance(kaaba_lat, kaaba_lon, currentLocation.latitude,
-              currentLocation.longitude)
-          .floor();
+
       print("p");
       print(position.latitude);
       print(position.longitude);
       print("c");
       print(currentLocation.latitude);
       print(currentLocation.longitude);
-      if (stopwatch.elapsed.inMilliseconds > 15000) {
+
+      if (stopwatch.elapsed.inMilliseconds > WaitingTime) {
         
-        if (Distance < 5) {
+        if (Distance < Near) {
           print("enter");
-          if (stopwatch.elapsed.inMilliseconds - gap > 15000  && DistanceCenter < 130) {
+          if (stopwatch.elapsed.inMilliseconds - gap > WaitingTime  && DistanceCenter < OutOfRange) {
             setState(() {
               counter = counter + 1;
               print(counter);
@@ -404,7 +405,7 @@ TotalTime =
               padding: const EdgeInsets.all(16.0),
               color: Colors.grey[200],
               child: Text(
-                'You will in approximately after: $TotalTime',
+                'You will finish in approximately after: $TotalTime',
                 style: const TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,

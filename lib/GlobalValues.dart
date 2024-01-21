@@ -5,5 +5,6 @@ static String id='';
 static String Fullname='';
 static String Rid='';
 static String Status='';
+static String type='';
 
 }

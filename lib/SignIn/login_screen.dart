@@ -33,7 +33,133 @@ class _LoginScreenState extends State<LoginScreen> {
     print(data);
     GlobalValues.id = data[1];
     GlobalValues.Fullname = data[2];
+    GlobalValues.type=data[3];
+
     if (data[0] == "Success") {
+      if(GlobalValues.type=="Vehicle manager"){
+          showDialog(
+          context: context,
+          builder: (context) {
+            Future.delayed(Duration(seconds: 2), () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: ((context) => home())));
+            });
+            return Dialog(
+              backgroundColor: Color.fromARGB(255, 247, 247, 247),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset('assets/images/success.json',
+                        width: 100, height: 100),
+                    Text(
+                      'Success',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Text(
+                      'Signed in successfully',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tightFor(height: 38, width: 100),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+          });
+    } else if (data == "empty") {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          duration: Duration(seconds: 3),
+          content: Container(
+            height: 80,
+            padding: EdgeInsets.all(10.0),
+            decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(221, 224, 41, 41),
+                    Color.fromARGB(255, 240, 50, 50),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 4.0,
+                    spreadRadius: .05,
+                  ),
+                ],
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 30,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Error!',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700),
+                      ),
+                      Text(
+                        "There is an empty field!",
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 255, 255, 255),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400),
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 3,
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  child: Lottie.asset(
+                    'assets/images/erorrr.json',
+                    width: 150,
+                    height: 150,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      }
+      else{
       showDialog(
           context: context,
           builder: (context) {
@@ -88,6 +214,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             );
           });
+      } 
     } else if (data == "empty") {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

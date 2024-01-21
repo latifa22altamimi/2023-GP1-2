@@ -17,6 +17,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
   double kaaba_lat = 24.723251;
   double kaaba_lon = 46.635499;
   var Distance, Tawaf_time; 
+  int OutOfRange=130; ///////////////out of tawaf area range
    final stopwatch = Stopwatch();
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
   String? finalTime;
@@ -87,7 +88,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
 
         print(isFar);
 
-        if (isFar >= 130) {
+        if (isFar >= OutOfRange) {
           print("che");
           _stopWatchTimer.onStopTimer();
           Tawaf_time = (stopwatch.elapsed.inMilliseconds / 1000).floor();
