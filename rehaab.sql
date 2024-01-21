@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 03, 2023 at 12:14 PM
+-- Generation Time: Jan 21, 2024 at 06:26 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -52,7 +52,8 @@ CREATE TABLE `parameters` (
   `ParametersId` int(15) NOT NULL,
   `ReservationDur` varchar(30) NOT NULL,
   `NumOfWalkInVehicles` int(15) NOT NULL,
-  `NumOfBackUpVehicles` int(15) NOT NULL
+  `NumOfBackUpVehicles` int(15) NOT NULL,
+  `CancelDur` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
