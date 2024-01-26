@@ -36,6 +36,8 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
     var url = "http://10.0.2.2/phpfiles/reservation.php";
     final res = await http.post(Uri.parse(url), body: {
       "id": GlobalValues.id,
+      "visitorName": GlobalValues.Fullname,
+      "Vnumber": "",
       "date": getDate,
       "time": getTime,
       "VehicleType": _vehicleType,
