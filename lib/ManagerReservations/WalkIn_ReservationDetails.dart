@@ -3,7 +3,6 @@ import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:rehaab/CheckOut/CheckOut.dart';
-import 'package:rehaab/CheckOut/CheckOut.dart';
 import 'package:rehaab/customization/clip.dart';
 import 'package:http/http.dart' as http;
 import 'package:rehaab/widgets/constants.dart';
@@ -15,7 +14,6 @@ import 'package:rehaab/reservations/date.dart';
 import 'package:intl/intl.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:progress_border/progress_border.dart';
-import '../CheckOut/CheckOut.dart';
 
 String getUpdatedTime = "";
 String getUpdatedDate = "";
@@ -179,7 +177,7 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
             //  decoration: BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(20)    ,color: Colors.white, border: Border.all(color: Colors.white)),
             child: TicketWidget(
               width: 350,
-              height: 480,
+              height: 500,
               isCornerRounded: true,
               padding: EdgeInsets.all(20),
               child: Column(
@@ -275,6 +273,16 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
                               ? ticketDetailsWidget(
                                   'Reservation no.',
                                   '#${list[ind]["reservationId"]}',
+                                  'Vistor name',
+                                  '${list[ind]["visitorName"]}')
+                              : ticketDetailsWidget("", "", "", ""),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6, right: 52.0),
+                          child: list.isNotEmpty
+                              ? ticketDetailsWidget(
+                                  'Visitor Number',
+                                  '${list[ind]["VphoneNumber"]}',
                                   'Vehicle type',
                                   '${list[ind]["VehicleType"]}')
                               : ticketDetailsWidget("", "", "", ""),
@@ -292,7 +300,7 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
                         Padding(
                           padding: const EdgeInsets.only(top: 6.0, right: 43.0),
                           child: list.isNotEmpty &&
-                                  list[ind]["VehicleType"] == "Double"
+                                  list[ind]["VehicleType"] == "Self-driving"
                               ? ticketDetailsWidget(
                                   'Time',
                                   '${list[ind]["time"]}',
@@ -317,7 +325,7 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
               mainAxisSize: MainAxisSize.min,
               children: [
                 Visibility(
-                  visible: start(),
+                  visible: false,
                   child: Container(
                     //padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
                     padding: EdgeInsets.only(right: 6, top: 15),
@@ -544,7 +552,7 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
 
                 //Reschedule
                 Visibility(
-                  visible: visibility(),
+                  visible: false,
                   child: Container(
                     padding: EdgeInsets.only(right: 5.0, top: 15, left: 5.0),
                     child: ElevatedButton.icon(
