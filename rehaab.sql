@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 21, 2024 at 06:26 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Jan 26, 2024 at 02:42 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -69,7 +69,9 @@ CREATE TABLE `reservation` (
   `drivingType` varchar(20) NOT NULL,
   `driverGender` varchar(20) DEFAULT NULL,
   `Status` varchar(20) NOT NULL,
-  `visitorId` int(20) NOT NULL,
+  `userId` int(20) NOT NULL,
+  `visitorName` varchar(200) NOT NULL,
+  `VphoneNumber` varchar(10) DEFAULT NULL,
   `slotId` int(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -178,7 +180,7 @@ ALTER TABLE `parameters`
 --
 ALTER TABLE `reservation`
   ADD PRIMARY KEY (`reservationId`),
-  ADD KEY `visitorId` (`visitorId`),
+  ADD KEY `visitorId` (`userId`),
   ADD KEY `slotId` (`slotId`);
 
 --
@@ -227,13 +229,13 @@ ALTER TABLE `parameters`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=205;
+  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `support`
 --
 ALTER TABLE `support`
-  MODIFY `supportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `supportID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `tawaf`
@@ -245,7 +247,7 @@ ALTER TABLE `tawaf`
 -- AUTO_INCREMENT for table `timeslots`
 --
 ALTER TABLE `timeslots`
-  MODIFY `slotId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `slotId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -261,7 +263,7 @@ ALTER TABLE `users`
 -- Constraints for table `reservation`
 --
 ALTER TABLE `reservation`
-  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`visitorId`) REFERENCES `users` (`userID`),
+  ADD CONSTRAINT `reservation_ibfk_2` FOREIGN KEY (`userId`) REFERENCES `users` (`userID`),
   ADD CONSTRAINT `reservation_ibfk_3` FOREIGN KEY (`slotId`) REFERENCES `timeslots` (`slotId`);
 
 --
