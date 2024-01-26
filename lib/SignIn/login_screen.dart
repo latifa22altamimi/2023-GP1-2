@@ -6,6 +6,7 @@ import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/components/page_title_bar.dart';
 import 'package:rehaab/components/upside.dart';
 import 'package:rehaab/SignUp/signup_screen.dart';
+import 'package:rehaab/main/ManagerHome.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:rehaab/widgets/rounded_button.dart';
 import 'package:http/http.dart' as http;
@@ -42,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (context) {
             Future.delayed(Duration(seconds: 2), () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: ((context) => home())));
+                  context, MaterialPageRoute(builder: ((context) => ManagerHome())));
             });
             return Dialog(
               backgroundColor: Color.fromARGB(255, 247, 247, 247),
