@@ -292,7 +292,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                         Padding(
                           padding: const EdgeInsets.only(top: 6.0, right: 43.0),
                           child: list.isNotEmpty &&
-                                  list[ind]["VehicleType"] == "Self-driving"
+                                 list[ind]["drivingType"] != "Self-driving"
                               ? ticketDetailsWidget(
                                   'Time',
                                   '${list[ind]["time"]}',
