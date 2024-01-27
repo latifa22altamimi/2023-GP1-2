@@ -52,7 +52,7 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
   _WalkIn_ReservationDetailsState({this.Rid, this.Status, this.date, this.time});
 
   Future GetData() async {
-    var url = "http://10.0.2.2/phpfiles/details.php";
+    var url = "http://10.0.2.2/phpfiles/walkInDetails.php";
     var res = await http.get(Uri.parse(url));
 
     if (res.statusCode == 200) {
@@ -110,9 +110,9 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
   }
 
   bool visibility() {
-    datetime = date! + " " + time!.substring(0, 5) + ":00";
+   // datetime = date! + " " + time!.substring(0, 5) + ":00";
     if (Status == 'Cancelled' ||
-        DateTime.now().isAfter(DateTime.parse(datetime!)) ||
+
         Status == "Active" ||
         Status == "Completed") {
       return false;
@@ -120,7 +120,8 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
       return true;
     }
   }
-
+      
+// DateTime.now().isAfter(DateTime.parse(datetime!)) ||
   bool visible() {
     if (Status == 'Active') {
       return true;
@@ -254,7 +255,7 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
                                 ? Text("")
                                 : QrImageView(
                                     data:
-                                        "Date:${list[ind]["date"]}\nTime:${list[ind]["time"]}\nVehicle Type: ${list[ind]["VehicleType"]}\nDriving Type: ${list[ind]["drivingType"]}\n ${list[ind]["VehicleType"] == "Double" ? "Driver gender:${list[ind]["driverGender"]}" : ""}\n Status: ${Status}",
+                                        "Date:${list[ind]["date"]}\nTime:\nVehicle Type: ${list[ind]["VehicleType"]}\nDriving Type: ${list[ind]["drivingType"]}\n ${list[ind]["VehicleType"] == "Double" ? "Driver gender:${list[ind]["driverGender"]}" : ""}\n Status: ${Status}",
                                     size: 150,
                                   )),
                         Container(
@@ -303,12 +304,12 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
                                   list[ind]["drivingType"] != "Self-driving"
                               ? ticketDetailsWidget(
                                   'Time',
-                                  '${list[ind]["time"]}',
+                                  '',
                                   'Driver gender',
                                   '${list[ind]["driverGender"]}')
                               : list.isNotEmpty
                                   ? ticketDetailsWidget(
-                                      'Time', '${list[ind]["time"]}   ', '', '')
+                                      'Time', '   ', '', '')
                                   : ticketDetailsWidget('', '', '', ''),
                         ),
                       ],
