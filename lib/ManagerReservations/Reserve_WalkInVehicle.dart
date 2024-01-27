@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/main/ManagerHome.dart';
+import 'package:rehaab/widgets/text_field_container.dart';
 import '../customization/clip.dart';
 import 'package:rehaab/reservations/date.dart';
 import 'package:rehaab/widgets/rounded_button.dart';
@@ -21,6 +22,8 @@ String getDate = "";
 String getTime = "";
 String label = "";
 Color labelColor = Colors.white;
+String name ="";
+String number="";
 
 class Reserve_WalkInVehicle extends StatefulWidget {
   const Reserve_WalkInVehicle({super.key});
@@ -30,15 +33,19 @@ class Reserve_WalkInVehicle extends StatefulWidget {
 }
 
 class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
+  TextEditingController visitorName = TextEditingController();
+  TextEditingController VphoneNumber = TextEditingController();
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
 
   Future insert() async {
-    var url = "http://10.0.2.2/phpfiles/reservation.php";
+    var url = "http://10.0.2.2/phpfiles/walkInReservation.php";
     final res = await http.post(Uri.parse(url), body: {
       "id": GlobalValues.id,
-      "date": getDate,
-      "time": getTime,
+      "visitorName": visitorName.text,
+      "Vnumber": VphoneNumber.text,
+      "date": DateFormat('yyyy-MM-dd').format(DateTime.now()),
+      "time": "",
       "VehicleType": _vehicleType,
       "DrivingType": _drivingType,
       "DriverGender": _driverGender
@@ -101,7 +108,72 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
           child: Container(
             child: Column(
               children: [
-                //Type of vehicle
+              
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Name',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+
+                TextFieldContainer(
+                               child: TextField( 
+                                onTapOutside: (PointerDownEvent) {
+                            setState(() {
+                              name= visitorName.text;
+                            });
+                          },
+                                controller: visitorName,
+                                cursorColor: kPrimaryColor,
+                                decoration: InputDecoration(
+                                    icon: Icon(
+                                      Icons.email,
+                                      color: kPrimaryColor,
+                                    ),
+                                    hintText: "Visitor name",
+                                    hintStyle:
+                                        const TextStyle(fontFamily: 'OpenSans'),
+                                    border: InputBorder.none),
+                 ) ),
+                              Align(
+                  alignment: Alignment.topLeft,
+                  child: Text(
+                    'Phone Number',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18),
+                    textAlign: TextAlign.left,
+                  ),
+                ),
+
+                              TextFieldContainer(
+                                child: TextField(
+                                    onTapOutside: (PointerDownEvent) {
+                            setState(() {
+                               number= VphoneNumber.text;
+                            });
+                          },
+                                  controller: VphoneNumber,
+                                
+                                  cursorColor: kPrimaryColor,
+                                  decoration: InputDecoration(
+                                      icon: Icon(
+                                        Icons.phone,
+                                        color: kPrimaryColor,
+                                      ),
+                                      hintText: "Visitor Number",
+                                      hintStyle:
+                                          TextStyle(fontFamily: 'OpenSans'),
+                                    
+                                      border: InputBorder.none),
+                                ),
+                              ),
 
                 Align(
                   alignment: Alignment.topLeft,
@@ -117,12 +189,12 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
 
                 // radio buttons
                 Container(
-                  child: Column(
+                  child: Row(
                     children: [
                       // groupvalue unique among all radiobuttons
                       Container(
-                        padding: const EdgeInsets.only(right: 10.0),
-                        margin: EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.only(right: 6.0),
+                        margin: EdgeInsets.all(6.0),
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 255, 255, 255),
                           borderRadius: BorderRadius.circular(20),
@@ -160,21 +232,19 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                               style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 17),
                             ),
-                            SizedBox(
-                              width: 96.0,
-                            ),
+                           
                             Image.asset(
                               'assets/images/single.png',
-                              height: 70,
-                              width: 120,
+                              height: 60,
+                              width: 80,
                             ),
                           ],
                         ),
                       ),
 
                       Container(
-                        padding: const EdgeInsets.only(right: 10.0),
-                        margin: EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.only(right: 6.0),
+                        margin: EdgeInsets.all(6.0),
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 255, 255, 255),
                           borderRadius: BorderRadius.circular(20),
@@ -212,13 +282,11 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                               style: TextStyle(
                                   fontWeight: FontWeight.w400, fontSize: 17),
                             ),
-                            SizedBox(
-                              width: 87.0,
-                            ),
+                            
                             Image.asset(
                               'assets/images/double.png',
-                              height: 70,
-                              width: 120,
+                              height: 60,
+                              width: 80,
                             ),
                           ],
                         ),
@@ -228,7 +296,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                 ),
 
                 SizedBox(
-                  height: 30.0,
+                  height: 15.0,
                 ),
 
                 //Driving type
@@ -338,7 +406,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                 ),
 
                 SizedBox(
-                  height: 30.0,
+                  height: 15.0,
                 ),
 
                 //Driver gender
@@ -462,7 +530,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                 ),
 
                 SizedBox(
-                  height: 30.0,
+                  height: 5.0,
                 ),
 
                 // Date/Time
@@ -470,7 +538,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Text(
-                    'Date/Time',
+                    'Time',
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w600,
@@ -589,7 +657,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
 
                 // reserve button
                 Container(
-                  padding: EdgeInsets.only(right: 5.0, top: 80.0, left: 5.0),
+                  padding: EdgeInsets.only(right: 5.0, top: 50.0, left: 5.0),
                   child: ConstrainedBox(
                     constraints:
                         BoxConstraints.tightFor(height: 50, width: 500),
@@ -647,7 +715,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                       ),
                                       Container(
                                         width: 350,
-                                        height: 150,
+                                        height: 200,
                                         margin: const EdgeInsets.all(12),
                                         padding: const EdgeInsets.all(10),
                                         decoration: BoxDecoration(
@@ -665,6 +733,52 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                         ),
                                         child: Column(
                                           children: [
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'Visitor Name: ',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  '$name',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'Visitor Number: ',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                Text(
+                                                  '$number',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(
+                                              height: 5.0,
+                                            ),
                                             Row(
                                               children: [
                                                 Text(
@@ -1652,7 +1766,7 @@ class _BookingPageState extends State<BookingPage> {
   }
   
   Future GetData() async {
-    var url = "http://10.0.2.2/phpfiles/times.php";
+    var url = "http://192.168.8.111/phpfiles/times.php";
     var res = await http.get(Uri.parse(url));
 
     if (res.statusCode == 200) {
