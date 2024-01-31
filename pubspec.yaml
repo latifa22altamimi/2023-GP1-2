@@ -53,6 +53,7 @@ dependencies:
   location: ^5.0.2
   geolocator: ^10.1.0
   progress_border: ^0.1.5
+  qr_code_scanner: ^1.0.1
 
  
 
