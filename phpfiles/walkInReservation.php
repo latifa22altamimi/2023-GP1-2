@@ -13,3 +13,4 @@ $Vnumber=$_POST['Vnumber'];
 $s ="INSERT INTO reservation (date,VehicleType,drivingType,driverGender,Status,userId,visitorName,VphoneNumber) VALUES ('".$date."','".$VehicleType."','".$DrivingType."','".$DriverGender."','Active','".$id."','".$visitorName."','".$Vnumber."')";
 
 $result2 = mysqli_query($conn, $s);
+

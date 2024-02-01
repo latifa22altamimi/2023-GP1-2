@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
+import 'package:rehaab/ManagerReservations/Reserve_WalkInVehicle.dart';
 import 'package:rehaab/ManagerReservations/WalkIn_ReservationDetails.dart';
 import 'package:rehaab/reservations/reservationdetails.dart';
 import 'package:http/http.dart' as http;
@@ -31,10 +32,12 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
   Color curTxt = Colors.black;
   bool prevpressed = false;
   bool curpressed = true;
+  bool waitVisible = false;
   List currentList = [];
   List previousList = [];
   bool currentEmpty = false;
   bool listVisible = true;
+  List waitingList = [];
   Future GetData() async {
     historyList.clear();
     print(GlobalValues.id);
@@ -75,6 +78,22 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     }
   }
 
+  Future GetWaitingList() async {
+    // historyList.clear();
+    print(GlobalValues.id);
+    var url = "http://10.0.2.2/phpfiles/waitingList.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "Userid": GlobalValues.id,
+    });
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      setState(() {
+        waitingList.addAll(red);
+      });
+    }
+  }
+
   Future refresh() async {
     historyList.clear();
     list.clear();
@@ -96,14 +115,6 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
             }
           }
         }
-        if (prevpressed) {
-          for (int i = 0; i < list.length; i++) {
-            if ((list[i]["Status"] == "Cancelled") ||
-                (list[i]["Status"] == "Completed")) {
-              historyList.add(list[i]);
-            }
-          }
-        }
 
         //inital current list
       });
@@ -114,6 +125,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     super.initState();
     curpressed = true;
     GetData();
+    GetWaitingList();
     curColor = Colors.black.withOpacity(0.5);
     prevColor = Color.fromARGB(255, 255, 255, 255);
     curBG = kPrimaryColor;
@@ -141,9 +153,10 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                   onPressed: () {
                     setState(() {
                       currentEmpty = false;
-                      listVisible = true;
-                      print('previous');
-
+                      listVisible = false;
+                      waitVisible = true;
+                      print('waiting');
+                      print(waitingList);
                       prevpressed = true;
                       curpressed = false;
                       curColor = Colors.black.withOpacity(0.5);
@@ -154,14 +167,6 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                       prevTxt = Colors.white;
                       //previous reservations
                       history = 1;
-                      historyList.clear();
-
-                      for (int i = 0; i < list.length; i++) {
-                        if ((list[i]["Status"] == "Cancelled") ||
-                            (list[i]["Status"] == "Completed")) {
-                          historyList.add(list[i]);
-                        }
-                      }
                     });
                   },
                   style: ElevatedButton.styleFrom(
@@ -180,7 +185,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                     alignment: Alignment.center,
                     children: [
                       Text(
-                        'Previous',
+                        'Waiting',
                         style: TextStyle(color: prevTxt),
                       ),
                     ],
@@ -200,11 +205,13 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                     setState(() {
                       if (currentList.isEmpty) {
                         currentEmpty = true;
-                        listVisible = false;
+                        listVisible = true;
                         print('current');
                       }
+                      listVisible = true;
                       curpressed = true;
                       prevpressed = false;
+                      waitVisible = false;
                       prevColor = Colors.black.withOpacity(0.5);
                       curColor = Color.fromARGB(255, 255, 255, 255);
                       curBG = kPrimaryColor;
@@ -243,6 +250,38 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
             ],
           ),
         ),
+        //waiting list
+        Visibility(
+          visible: waitVisible, //////edit
+          child: Expanded(
+            child: SizedBox(
+              height: double.infinity,
+              child: RefreshIndicator(
+                onRefresh: refresh,
+                child: ListView.separated(
+                  itemCount: waitingList.length,
+                  separatorBuilder: (context, index) {
+                    return const SizedBox(
+                      height: 9,
+                    );
+                  },
+                  itemBuilder: (BuildContext context, int index) {
+                    if (waitingList[0] != null) {
+                      return WaitingCard(
+                        Id: waitingList[index]["Id"],
+                        Name: waitingList[index]["Name"],
+                        PhoneNumber: waitingList[index]["PhoneNumber"],
+                      );
+                    } else {
+                      print("empty list");
+                    }
+                  },
+                ),
+              ),
+            ),
+          ),
+        ),
+//Active walk in list
         Visibility(
           visible: listVisible,
           child: Expanded(
@@ -355,9 +394,10 @@ class _ReserveCardState extends State<ReserveCard> {
   int ExpectedFinishTime = 5;
   void initState() {
     super.initState();
-    _startTimer();
+   // _startTimer();
   }
-void didUpdateWidget(covariant ReserveCard oldWidget) {
+
+  void didUpdateWidget(covariant ReserveCard oldWidget) {
     if (widget.Rid != oldWidget.Rid) {
       // Perform some action when the 'data' property changes
 
@@ -365,6 +405,7 @@ void didUpdateWidget(covariant ReserveCard oldWidget) {
     }
     super.didUpdateWidget(oldWidget);
   }
+
   void _startTimer() {
     Timer.periodic(Duration(seconds: 1), (timer) {
       if (ExpectedFinishTime > 0) {
@@ -439,12 +480,12 @@ void didUpdateWidget(covariant ReserveCard oldWidget) {
               SizedBox(
                 width: 30.0,
               ),
-              Text(ExpectedFinishTime.toString()),
+             // Text(ExpectedFinishTime.toString()),
             ],
           ),
 
           SizedBox(
-            height: 5.0,
+            height: 6.0,
           ),
 
           Row(
@@ -460,14 +501,38 @@ void didUpdateWidget(covariant ReserveCard oldWidget) {
                 ),
               ),
               Text(
-                '${widget.timee}',
+                '12:00 PM',//widget.timee
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
+              ),
+              
+            
+            ],
+          ),
+SizedBox(height: 1.0,),
+            Row(
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 20.0),
+                child: Text(
+                  'Expected finish time: ',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500),
+                ),
+              ),
+              Text(
+                '01:00 PM',//widget.timee
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.w400),
               ),
               SizedBox(
-                width: 170.0,
+                width: 50.0,
               ),
               Container(
                 margin: EdgeInsets.only(right: 10.0),
@@ -493,6 +558,354 @@ void didUpdateWidget(covariant ReserveCard oldWidget) {
                   ),
                   child: const Icon(CupertinoIcons.chevron_right,
                       color: Colors.white),
+                ),
+              ),
+            ],
+          )
+        ],
+      ),
+      width: 180,
+      height: 153,
+      margin: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: Color.fromARGB(255, 255, 255, 255),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 1.0,
+            spreadRadius: .05,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class WaitingCard extends StatefulWidget {
+  String? Id;
+  String? Name;
+  String? PhoneNumber;
+
+  WaitingCard({
+    this.Id,
+    this.Name,
+    this.PhoneNumber,
+  });
+
+  @override
+  State<WaitingCard> createState() => _WaitingCardState();
+}
+
+class _WaitingCardState extends State<WaitingCard> {
+  void initState() {
+    super.initState();
+  }
+
+  removeWaiting() async {
+    var url = "http://10.0.2.2/phpfiles/RemoveWaiting.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "waitingId": widget.Id,
+    });
+    var respo = json.decode(res.body);
+    print(respo);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 20.0, top: 10.0),
+            child: Row(
+              children: [
+                Text(
+                  'WaitingId#${widget.Id}', // reservation id
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  width: 140.0,
+                ),
+                Text(
+                  'Waiting',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 37, 149, 190),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500),
+                ),
+                SizedBox(
+                  width: 5.0,
+                ),
+                Image.asset(
+                  'assets/images/waiting.png',
+                  width: 20,
+                  height: 22,
+                ),
+              ],
+            ),
+          ),
+
+          SizedBox(
+            height: 20.0,
+          ),
+          //display time and date
+
+          Row(
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 20.0),
+                child: Text(
+                  'Name: ',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500),
+                ),
+              ),
+              Text(
+                '${widget.Name}',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
+              ),
+              SizedBox(
+                width: 30.0,
+              ),
+            ],
+          ),
+
+          SizedBox(
+            height: 5.0,
+          ),
+
+          Row(
+            children: [
+              Container(
+                margin: EdgeInsets.only(left: 20.0),
+                child: Text(
+                  'Phone: ',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500),
+                ),
+              ),
+              Text(
+                '${widget.PhoneNumber}',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
+              ),
+              SizedBox(
+                width: 120.0,
+              ),
+              Container(
+                alignment: Alignment.centerRight,
+                margin: EdgeInsets.only(right: 10.0),
+                child: ElevatedButton(
+                  onPressed: () async {
+                    showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                              backgroundColor:
+                                  Color.fromARGB(255, 247, 247, 247),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Container(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Lottie.asset('assets/images/warn.json',
+                                        width: 100, height: 100),
+                                    Text(
+                                      'Accept visitor',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w600),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    SizedBox(
+                                      height: 10.0,
+                                    ),
+                                    SizedBox(
+                                      height: 15.0,
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ConstrainedBox(
+                                          constraints: BoxConstraints.tightFor(
+                                              height: 38, width: 100),
+                                          child: ElevatedButton(
+                                            onPressed: () =>
+                                                Navigator.of(context).pop(),
+                                            child: Text(
+                                              'Cancel',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color.fromARGB(
+                                                  255, 255, 255, 255),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(50),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        SizedBox(
+                                          width: 30.0,
+                                        ),
+                                        //when press on confirm
+
+                                        ConstrainedBox(
+                                          constraints: BoxConstraints.tightFor(
+                                              height: 38, width: 100),
+                                          child: ElevatedButton(
+                                            onPressed: () {
+                                              //execute remove from waiting list
+                                              removeWaiting();
+                                              Navigator.of(context).pop();
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  Future.delayed(
+                                                      Duration(seconds: 2), () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              Reserve_WalkInVehicle()),
+                                                    );
+                                                  });
+                                                  return Dialog(
+                                                    backgroundColor:
+                                                        Color.fromARGB(
+                                                            255, 247, 247, 247),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              20.0),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        mainAxisSize:
+                                                            MainAxisSize.min,
+                                                        children: [
+                                                          Lottie.asset(
+                                                              'assets/images/success.json',
+                                                              width: 100,
+                                                              height: 100),
+                                                          Text(
+                                                            'Success',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10.0,
+                                                          ),
+                                                          Text(
+                                                            'Visitor has been accepted',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 10.0,
+                                                          ),
+                                                          Row(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .center,
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              ConstrainedBox(
+                                                                constraints: BoxConstraints
+                                                                    .tightFor(
+                                                                        height:
+                                                                            38,
+                                                                        width:
+                                                                            100),
+                                                              ),
+                                                            ],
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                            child: Text(
+                                              'Accept',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Color.fromARGB(
+                                                  255, 60, 100, 73),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(50),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ));
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: kPrimaryColor,
+                    //Color.fromARGB(131, 60, 100, 73)
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(500),
+                      ),
+                    ),
+                  ),
+                  child: Text('Accept'),
                 ),
               ),
             ],

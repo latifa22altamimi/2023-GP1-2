@@ -234,19 +234,20 @@ class BodyHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
+
         Padding(
           padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-          child: Row(
-            children: [
+          child:
               Text(
                 'Services',
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 24,
                     fontWeight: FontWeight.w500),
               )
-            ],
-          ),
+            
+          
         ),
 
         // cards
@@ -254,7 +255,7 @@ class BodyHome extends StatelessWidget {
         Container(
           child: Wrap(
             alignment: WrapAlignment.spaceBetween,
-            direction: Axis.horizontal,
+            direction: Axis.vertical,
             spacing: 1,
             runSpacing: 2,
             children: <Widget>[
@@ -262,7 +263,7 @@ class BodyHome extends StatelessWidget {
                 onTap: () => Navigator.push(context,
                     MaterialPageRoute(builder: (context) => Reserve_WalkInVehicle())),
                 child: Container(
-                  width: 180,
+                  width: 300,
                   height: 180,
                   margin: const EdgeInsets.all(12),
                   padding: const EdgeInsets.all(5),
@@ -310,7 +311,7 @@ class BodyHome extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => const OnboardingScreen())),
                 child: Container(
-                  width: 180,
+                  width: 300,
                   height: 180,
                   margin: const EdgeInsets.all(12),
                   padding: const EdgeInsets.all(10),
