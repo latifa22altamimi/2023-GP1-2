@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2024 at 07:56 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: Feb 01, 2024 at 08:52 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -56,6 +56,13 @@ CREATE TABLE `parameters` (
   `CancelDur` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `parameters`
+--
+
+INSERT INTO `parameters` (`ParametersId`, `ReservationDur`, `NumOfWalkInVehicles`, `NumOfBackUpVehicles`, `CancelDur`) VALUES
+(1, '20', 7, 10, '30');
+
 -- --------------------------------------------------------
 
 --
@@ -70,17 +77,23 @@ CREATE TABLE `reservation` (
   `driverGender` varchar(20) DEFAULT NULL,
   `Status` varchar(20) NOT NULL,
   `userId` int(20) NOT NULL,
-  `visitorName` varchar(200) NOT NULL,
+  `visitorName` varchar(200) DEFAULT NULL,
   `VphoneNumber` varchar(10) DEFAULT NULL,
-  `slotId` int(20) DEFAULT NULL
+  `slotId` int(20) DEFAULT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `reservation`
 --
 
-INSERT INTO `reservation` (`reservationId`, `date`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `userId`, `visitorName`, `VphoneNumber`, `slotId`) VALUES
-(2, '2024-01-26', 'Double', 'Self-driving', NULL, 'Confirmed', 44, 'MANAL', '0533513537', NULL);
+INSERT INTO `reservation` (`reservationId`, `date`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `userId`, `visitorName`, `VphoneNumber`, `slotId`, `timestamp`) VALUES
+(16, '2024-01-28', 'Double', 'With-driver', 'Female', 'Active', 44, 'shahad', '0503788190', NULL, '2024-01-29 05:38:54'),
+(17, '2024-01-28', 'Single', 'Self-driving', '', 'Active', 44, 's', '0504625413', NULL, '2024-01-29 05:38:54'),
+(18, '2024-01-28', 'Single', 'Self-driving', '', 'Active', 44, 'gg', '0508836252', NULL, '2024-01-29 05:40:19'),
+(21, '2024-01-28', 'Double', 'With-driver', 'Female', 'Active', 44, 'hhh', '797977878', NULL, '2024-01-30 00:18:15'),
+(22, '2024-02-01', 'Single', 'Self-driving', '', 'Active', 44, 'shahad', '3736267283', NULL, '2024-01-31 23:38:52'),
+(23, '2024-02-01', 'Single', 'Self-driving', '', 'Active', 44, 's', '222', NULL, '2024-02-01 00:45:11');
 
 -- --------------------------------------------------------
 
@@ -166,6 +179,27 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`userID`, `FullName`, `Email`, `Password`, `Type`, `VerificationStatus`) VALUES
 (44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$7xFLClUeua9sUgzuXqFy.OntRYLpxloW5yc9bX7/e9smMFIMmKD9y', 'Vehicle manager', 1);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `waitinglist`
+--
+
+CREATE TABLE `waitinglist` (
+  `Id` int(20) NOT NULL,
+  `Name` varchar(200) NOT NULL,
+  `PhoneNumber` varchar(20) NOT NULL,
+  `userId` int(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `waitinglist`
+--
+
+INSERT INTO `waitinglist` (`Id`, `Name`, `PhoneNumber`, `userId`) VALUES
+(3, 'shahad', '0503788190', 44),
+(4, 'sara', '23243434', 44);
+
 --
 -- Indexes for dumped tables
 --
@@ -217,6 +251,13 @@ ALTER TABLE `users`
   ADD PRIMARY KEY (`userID`);
 
 --
+-- Indexes for table `waitinglist`
+--
+ALTER TABLE `waitinglist`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `userId` (`userId`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -230,13 +271,13 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `parameters`
 --
 ALTER TABLE `parameters`
-  MODIFY `ParametersId` int(15) NOT NULL AUTO_INCREMENT;
+  MODIFY `ParametersId` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `support`
@@ -263,6 +304,12 @@ ALTER TABLE `users`
   MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
+-- AUTO_INCREMENT for table `waitinglist`
+--
+ALTER TABLE `waitinglist`
+  MODIFY `Id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -284,6 +331,12 @@ ALTER TABLE `support`
 --
 ALTER TABLE `tawaf`
   ADD CONSTRAINT `tawaf_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `users` (`userID`);
+
+--
+-- Constraints for table `waitinglist`
+--
+ALTER TABLE `waitinglist`
+  ADD CONSTRAINT `waitinglist_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `users` (`userID`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
