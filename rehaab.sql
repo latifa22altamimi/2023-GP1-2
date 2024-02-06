@@ -72,6 +72,7 @@ INSERT INTO `parameters` (`ParametersId`, `ReservationDur`, `NumOfWalkInVehicles
 CREATE TABLE `reservation` (
   `reservationId` int(20) NOT NULL,
   `date` varchar(10) NOT NULL,
+  `startTime` varchar(10) DEFAULT NULL,
   `VehicleType` varchar(6) NOT NULL,
   `drivingType` varchar(20) NOT NULL,
   `driverGender` varchar(20) DEFAULT NULL,
@@ -87,13 +88,9 @@ CREATE TABLE `reservation` (
 -- Dumping data for table `reservation`
 --
 
-INSERT INTO `reservation` (`reservationId`, `date`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `userId`, `visitorName`, `VphoneNumber`, `slotId`, `timestamp`) VALUES
-(16, '2024-01-28', 'Double', 'With-driver', 'Female', 'Active', 44, 'shahad', '0503788190', NULL, '2024-01-29 05:38:54'),
-(17, '2024-01-28', 'Single', 'Self-driving', '', 'Active', 44, 's', '0504625413', NULL, '2024-01-29 05:38:54'),
-(18, '2024-01-28', 'Single', 'Self-driving', '', 'Active', 44, 'gg', '0508836252', NULL, '2024-01-29 05:40:19'),
-(21, '2024-01-28', 'Double', 'With-driver', 'Female', 'Active', 44, 'hhh', '797977878', NULL, '2024-01-30 00:18:15'),
-(22, '2024-02-01', 'Single', 'Self-driving', '', 'Active', 44, 'shahad', '3736267283', NULL, '2024-01-31 23:38:52'),
-(23, '2024-02-01', 'Single', 'Self-driving', '', 'Active', 44, 's', '222', NULL, '2024-02-01 00:45:11');
+INSERT INTO `reservation` (`reservationId`, `date`, `startTime`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `userId`, `visitorName`, `VphoneNumber`, `slotId`, `timestamp`) VALUES
+(47, '2024-02-06', '21:11 PM', 'Single', 'Self-driving', '', 'Active', 44, 'Manal', '', NULL, '2024-02-06 18:11:58');
+
 
 -- --------------------------------------------------------
 
@@ -221,8 +218,8 @@ ALTER TABLE `parameters`
 --
 ALTER TABLE `reservation`
   ADD PRIMARY KEY (`reservationId`),
-  ADD KEY `visitorId` (`userId`),
-  ADD KEY `slotId` (`slotId`);
+  ADD KEY `slotId` (`slotId`),
+  ADD KEY `userId` (`userId`) USING BTREE;
 
 --
 -- Indexes for table `support`
@@ -277,7 +274,7 @@ ALTER TABLE `parameters`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `support`
