@@ -281,7 +281,8 @@ class _CheckInState extends State<CheckIn> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         barcode = scanData;
-      });
+
+StartTawaf();      });
     });
   }
 
