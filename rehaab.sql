@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 01, 2024 at 08:52 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Feb 08, 2024 at 02:21 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -51,8 +51,12 @@ INSERT INTO `markers` (`MarkerId`, `Latitude`, `Longitude`) VALUES
 CREATE TABLE `parameters` (
   `ParametersId` int(15) NOT NULL,
   `ReservationDur` varchar(30) NOT NULL,
-  `NumOfWalkInVehicles` int(15) NOT NULL,
-  `NumOfBackUpVehicles` int(15) NOT NULL,
+  `NumOfSWalkInVehicles` int(15) NOT NULL,
+  `NumOfDWalkInVehicles` int(15) NOT NULL,
+  `NumOfSBackUpVehicles` int(15) NOT NULL,
+  `NumOfDBackUpVehicles` int(15) NOT NULL,
+  `NumOfSVisitorVehicles` int(15) NOT NULL,
+  `NumOfDVisitorVehicles` int(15) NOT NULL,
   `CancelDur` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -60,8 +64,8 @@ CREATE TABLE `parameters` (
 -- Dumping data for table `parameters`
 --
 
-INSERT INTO `parameters` (`ParametersId`, `ReservationDur`, `NumOfWalkInVehicles`, `NumOfBackUpVehicles`, `CancelDur`) VALUES
-(1, '20', 7, 10, '30');
+INSERT INTO `parameters` (`ParametersId`, `ReservationDur`, `NumOfSWalkInVehicles`, `NumOfDWalkInVehicles`, `NumOfSBackUpVehicles`, `NumOfDBackUpVehicles`, `NumOfSVisitorVehicles`, `NumOfDVisitorVehicles`, `CancelDur`) VALUES
+(1, '1h30m', 16, 15, 20, 15, 30, 35, '15m');
 
 -- --------------------------------------------------------
 
@@ -83,14 +87,6 @@ CREATE TABLE `reservation` (
   `slotId` int(20) DEFAULT NULL,
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `reservation`
---
-
-INSERT INTO `reservation` (`reservationId`, `date`, `startTime`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `userId`, `visitorName`, `VphoneNumber`, `slotId`, `timestamp`) VALUES
-(47, '2024-02-06', '21:11 PM', 'Single', 'Self-driving', '', 'Active', 44, 'Manal', '', NULL, '2024-02-06 18:11:58');
-
 
 -- --------------------------------------------------------
 
@@ -194,7 +190,6 @@ CREATE TABLE `waitinglist` (
 --
 
 INSERT INTO `waitinglist` (`Id`, `Name`, `PhoneNumber`, `userId`) VALUES
-(3, 'shahad', '0503788190', 44),
 (4, 'sara', '23243434', 44);
 
 --
@@ -274,7 +269,7 @@ ALTER TABLE `parameters`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
 -- AUTO_INCREMENT for table `support`
@@ -304,7 +299,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `waitinglist`
 --
 ALTER TABLE `waitinglist`
-  MODIFY `Id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
