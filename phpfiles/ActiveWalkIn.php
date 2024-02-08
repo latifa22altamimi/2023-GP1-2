@@ -4,12 +4,20 @@
 include 'connect.php';
 
 
-$sql = "SELECT NumOfWalkInVehicles FROM parameters WHERE ParametersId=1";
+$sql = "SELECT NumOfSWalkInVehicles FROM parameters WHERE ParametersId=1";
 $result = $conn->query($sql);
 
-$NumOfWalkInVehicles=array(); 
+$NumOfSWalkInVehicles=array(); 
  while($row = mysqli_fetch_assoc($result)){
-     $NumOfWalkInVehicles[]=$row;
+     $NumOfSWalkInVehicles[]=$row;
+ }
+
+ $sql4 = "SELECT NumOfDWalkInVehicles FROM parameters WHERE ParametersId=1";
+$result4 = $conn->query($sql4);
+
+$NumOfDWalkInVehicles=array(); 
+ while($row = mysqli_fetch_assoc($result4)){
+     $NumOfDWalkInVehicles[]=$row;
  }
 
  $sql2 = "SELECT * FROM reservation WHERE Status='Active' AND slotId IS NULL";
@@ -19,7 +27,7 @@ $NumOfWalkInVehicles=array();
     $ActiveWalkInReservations[]=$row;
   }
   $numOfActive=count($ActiveWalkInReservations);
-if($numOfActive==$NumOfWalkInVehicles[0]['NumOfWalkInVehicles']){
+if($numOfActive==($NumOfSWalkInVehicles[0]['NumOfSWalkInVehicles']+$NumOfDWalkInVehicles[0]['NumOfDWalkInVehicles'])){
     echo json_encode([0 => "Unavailable"]);
 }else{
   echo json_encode([0 => "Available"]);
