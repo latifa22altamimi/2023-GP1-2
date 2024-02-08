@@ -12,7 +12,7 @@ import 'package:rehaab/main/ManagerHome.dart';
 import 'package:rehaab/reservations/reservationdetails.dart';
 import 'package:http/http.dart' as http;
 import 'package:rehaab/widgets/constants.dart';
-
+import 'package:intl/intl.dart';
 import '../widgets/text_field_container.dart';
 
 bool isVisibleWaiting = false;
@@ -1087,7 +1087,8 @@ class WaitingCard extends StatefulWidget {
   String? Id;
   String? Name;
   String? PhoneNumber;
-
+  String getTimee= '${DateFormat('HH:mm').format(DateTime.now())} ${DateTime.now().hour >12? 'PM' : 'AM'}';
+      
   WaitingCard({
     this.Id,
     this.Name,
@@ -1111,11 +1112,13 @@ class _WaitingCardState extends State<WaitingCard> {
     var respo = json.decode(res.body);
     print(respo);
   }
-
+  
+                                                
   acceptVisitor() async {
     var url = "http://10.0.2.2/phpfiles/AcceptVisitor.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": widget.Id,
+      "startTime":widget.getTimee,
     });
     var respo = json.decode(res.body);
     print(respo);
