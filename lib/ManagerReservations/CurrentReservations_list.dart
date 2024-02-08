@@ -13,6 +13,8 @@ import 'package:rehaab/reservations/reservationdetails.dart';
 import 'package:http/http.dart' as http;
 import 'package:rehaab/widgets/constants.dart';
 import 'package:intl/intl.dart';
+import '../widgets/constants.dart';
+import '../widgets/constants.dart';
 import '../widgets/text_field_container.dart';
 
 bool isVisibleWaiting = false;
@@ -292,6 +294,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                                 Id: historyList[index]["reservationId"],
                                 Name: historyList[index]["visitorName"],
                                 PhoneNumber: historyList[index]["VphoneNumber"],
+                                VehicleType: historyList[index]["VehicleType"],
                               );
                             } else {
                               return Container(); // Handle other cases if needed
@@ -487,11 +490,13 @@ class _ReserveCardState extends State<ReserveCard> {
   TextEditingController waitPhoneNumber = TextEditingController();
   String waitingName = "";
   String waitingNumber = "";
-
+  bool nameReq = false;
+  bool phoneReq = false;
   void initState() {
     super.initState();
     // _startTimer();
     DisplayWaiting();
+    setState(() {});
   }
 
   void didUpdateWidget(covariant ReserveCard oldWidget) {
@@ -522,7 +527,6 @@ class _ReserveCardState extends State<ReserveCard> {
       "Name": waitName.text,
       "PhoneNumber": waitPhoneNumber.text,
       "VehicleType": widget.VehicleType
-
     });
     var resp = json.decode(res.body);
     print(resp);
@@ -611,13 +615,31 @@ class _ReserveCardState extends State<ReserveCard> {
                 ),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(
-                    'Name',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18),
-                    textAlign: TextAlign.left,
+                  child: Row(
+                    children: [
+                      Text(
+                        'Name',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18),
+                        textAlign: TextAlign.left,
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Visibility(
+                        visible: nameReq,
+                        child: Text(
+                          'required*',
+                          style: TextStyle(
+                              color: ErrorColor,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 TextFieldContainer(
@@ -643,13 +665,31 @@ class _ReserveCardState extends State<ReserveCard> {
                 ),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text(
-                    'Phone Number',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18),
-                    textAlign: TextAlign.left,
+                  child: Row(
+                    children: [
+                      Text(
+                        'Phone Number',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 18),
+                        textAlign: TextAlign.left,
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Visibility(
+                        visible: phoneReq,
+                        child: Text(
+                          'required*',
+                          style: TextStyle(
+                              color: ErrorColor,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16),
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 TextFieldContainer(
@@ -674,7 +714,6 @@ class _ReserveCardState extends State<ReserveCard> {
                 SizedBox(
                   height: 15.0,
                 ),
-                
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
@@ -712,76 +751,92 @@ class _ReserveCardState extends State<ReserveCard> {
                     SizedBox(
                       width: 30.0,
                     ),
-
+                    //press on add
                     ConstrainedBox(
                       constraints:
                           BoxConstraints.tightFor(height: 38, width: 100),
                       child: ElevatedButton(
                         onPressed: () {
-                          setWaiting();
-                          insertWaitingList();
-                          Navigator.of(context).pop();
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              Future.delayed(Duration(seconds: 2), () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ManagerHome()),
-                                );
-                              });
-                              return Dialog(
-                                backgroundColor:
-                                    Color.fromARGB(255, 247, 247, 247),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: Container(
-                                  padding: const EdgeInsets.all(20.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Lottie.asset('assets/images/success.json',
-                                          width: 100, height: 100),
-                                      Text(
-                                        'Success',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      Text(
-                                        'Visitor has been added to the waiting list',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      SizedBox(
-                                        height: 10.0,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          ConstrainedBox(
-                                            constraints:
-                                                BoxConstraints.tightFor(
-                                                    height: 38, width: 100),
-                                          ),
-                                        ],
-                                      )
-                                    ],
+                          if (waitingName == "") {
+                            setState(() {
+                              nameReq = true;
+                              print(nameReq);
+                            });
+                          }
+                          if (waitingNumber == "") {
+                            setState(() {
+                              phoneReq = true;
+                              print(phoneReq);
+                            });
+                          } else {
+                            setWaiting();
+                            insertWaitingList();
+                            Navigator.of(context).pop();
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                Future.delayed(Duration(seconds: 2), () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ManagerHome()),
+                                  );
+                                });
+                                return Dialog(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 247, 247, 247),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Lottie.asset(
+                                            'assets/images/success.json',
+                                            width: 100,
+                                            height: 100),
+                                        Text(
+                                          'Success',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Text(
+                                          'Visitor has been added to the waiting list',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ConstrainedBox(
+                                              constraints:
+                                                  BoxConstraints.tightFor(
+                                                      height: 38, width: 100),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          );
+                                );
+                              },
+                            );
+                          }
                         },
                         child: Text(
                           'Add',
@@ -962,7 +1017,7 @@ class _ReserveCardState extends State<ReserveCard> {
                   Container(
                     margin: EdgeInsets.only(left: 20.0),
                     child: Text(
-                      'Time: ',
+                      'Start time: ',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 15,
@@ -1087,12 +1142,15 @@ class WaitingCard extends StatefulWidget {
   String? Id;
   String? Name;
   String? PhoneNumber;
-  String getTimee= '${DateFormat('HH:mm').format(DateTime.now())} ${DateTime.now().hour >12? 'PM' : 'AM'}';
-      
+  String? VehicleType;
+  String getTimee =
+      '${DateFormat('HH:mm').format(DateTime.now())} ${DateTime.now().hour > 12 ? 'PM' : 'AM'}';
+
   WaitingCard({
     this.Id,
     this.Name,
     this.PhoneNumber,
+    this.VehicleType
   });
 
   @override
@@ -1112,13 +1170,12 @@ class _WaitingCardState extends State<WaitingCard> {
     var respo = json.decode(res.body);
     print(respo);
   }
-  
-                                                
+
   acceptVisitor() async {
     var url = "http://10.0.2.2/phpfiles/AcceptVisitor.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": widget.Id,
-      "startTime":widget.getTimee,
+      "startTime": widget.getTimee,
     });
     var respo = json.decode(res.body);
     print(respo);
@@ -1163,9 +1220,9 @@ class _WaitingCardState extends State<WaitingCard> {
           ),
 
           SizedBox(
-            height: 20.0,
+            height: 10.0,
           ),
-          //display time and date
+         
 
           Row(
             children: [
@@ -1193,13 +1250,38 @@ class _WaitingCardState extends State<WaitingCard> {
           ),
 
           SizedBox(
-            height: 5.0,
+            height: 8.0,
           ),
-
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
+                margin: EdgeInsets.only(left: 20.0),
+                child: Text(
+                  'Vehicle type: ',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500),
+                ),
+              ),
+              Text(
+                '${widget.VehicleType}',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w400),
+              ),
+              SizedBox(
+                width: 30.0,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 8.0,
+          ),
+          Row(
+            children: [
+               Container(
                 margin: EdgeInsets.only(left: 20.0),
                 child: Row(
                   children: [
@@ -1220,6 +1302,34 @@ class _WaitingCardState extends State<WaitingCard> {
                   ],
                 ),
               ),
+            ],
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+               Container(
+                margin: EdgeInsets.only(left: 20.0),
+                child: Row(
+                  children: [
+                    Text(
+                      'Expected use time: ',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500),
+                    ),
+                    Text(
+                      '01:00 PM',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400),
+                    ),
+                  ],
+                ),
+              ),
+             
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -1542,7 +1652,6 @@ class _WaitingCardState extends State<WaitingCard> {
                                                         height: 38, width: 100),
                                                 child: ElevatedButton(
                                                   onPressed: () {
-                                                    
                                                     acceptVisitor();
                                                     Navigator.of(context).pop();
                                                     showDialog(
@@ -1772,7 +1881,7 @@ class _WaitingCardState extends State<WaitingCard> {
         ],
       ),
       width: 180,
-      height: 140,
+      height: 170,
       margin: const EdgeInsets.all(12),
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
