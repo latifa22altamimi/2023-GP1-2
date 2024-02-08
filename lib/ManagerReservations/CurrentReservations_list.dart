@@ -102,7 +102,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
   }
 
   Future convertToCompleted() async {
-    var url = "http://192.168.1.33/phpfiles/DeleteRecord.php";
+    var url = "http://10.0.2.2/phpfiles/DeleteRecord.php";
     final res = await http.post(Uri.parse(url), body: {});
 
     if (res.statusCode == 200) {
@@ -343,7 +343,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                               return ReserveCard(
                                 Rid: historyList[index]["reservationId"],
                                 datee: historyList[index]["date"],
-                                timee: historyList[index]["time"],
+                                timee: historyList[index]["startTime"],
                                 status: historyList[index]["Status"],
                                 VehicleType: historyList[index]["VehicleType"],
                                 colorr: Color.fromRGBO(255, 196, 4, 1),
@@ -357,7 +357,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                               return ReserveCard(
                                 Rid: historyList[index]["reservationId"],
                                 datee: historyList[index]["date"],
-                                timee: historyList[index]["time"],
+                                timee: historyList[index]["startTime"],
                                 status: historyList[index]["Status"],
                                 VehicleType: historyList[index]["VehicleType"],
                                 colorr: Color.fromRGBO(255, 196, 4, 1),
@@ -970,7 +970,7 @@ class _ReserveCardState extends State<ReserveCard> {
                     ),
                   ),
                   Text(
-                    '12:00 PM', //widget.timee
+                    '${widget.timee}', //widget.timee
                     style: TextStyle(
                         color: Colors.black,
                         fontSize: 15,
