@@ -21,4 +21,6 @@ $NumOfWalkInVehicles=array();
   $numOfActive=count($ActiveWalkInReservations);
 if($numOfActive==$NumOfWalkInVehicles[0]['NumOfWalkInVehicles']){
     echo json_encode([0 => "Unavailable"]);
+}else{
+  echo json_encode([0 => "Available"]);
 }

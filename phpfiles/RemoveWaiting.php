@@ -1,7 +1,7 @@
 <?php
 include 'connect.php';
-$waitingId=$_POST['waitingId'];
-$deleteSql = "DELETE FROM waitinglist WHERE Id=$waitingId";
+$Rid=$_POST['Rid'];
+$deleteSql = "DELETE FROM reservation WHERE reservationId=$Rid";
 $result= mysqli_query($conn, $deleteSql);
 if($result){
     echo 'succccc';

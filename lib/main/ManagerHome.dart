@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/TrackTawafStatus/TrackTawaf.dart';
 import 'package:rehaab/checkIn/checkin.dart';
@@ -10,9 +13,12 @@ import 'package:rehaab/reservations/myreservations.dart';
 import 'package:rehaab/Map_page/map.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:rehaab/callSupport/support.dart';
-
+import 'package:http/http.dart' as http;
 import '../ManagerReservations/Reservations.dart';
 import '../ManagerReservations/Reserve_WalkInVehicle.dart';
+
+bool unavailableVehicles = false;
+
 class ManagerHome extends StatefulWidget {
   ManagerHome({Key? key}) : super(key: key);
   @override
@@ -34,6 +40,34 @@ class _ManagerHomeState extends State<ManagerHome> {
     ),
     Profile(), //settings or log out
   ];
+  void initState() {
+    super.initState();
+    DisplayWaiting();
+  }
+
+  Future DisplayWaiting() async {
+    print(GlobalValues.id);
+    var url = "http://10.0.2.2/phpfiles/ActiveWalkIn.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "Userid": GlobalValues.id,
+    });
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      if (red[0] == "Unavailable") {
+        setState(() {
+          unavailableVehicles = true; //if there are no available vehicles
+        });
+
+        print(red[0]);
+      } else {
+        setState(() {
+          unavailableVehicles = false; //There are available vehicles
+        });
+        print(red[0]);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +90,6 @@ class _ManagerHomeState extends State<ManagerHome> {
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(40.0),
               topRight: Radius.circular(40.0),
-              
             ),
             child: NavigationBarTheme(
               data: NavigationBarThemeData(
@@ -109,8 +142,7 @@ class AppBarr extends StatelessWidget {
             bottomLeft: Radius.circular(10),
             bottomRight: Radius.circular(20),
           ),
-          color: kPrimaryColor
-        ),
+          color: kPrimaryColor),
       child: Column(
         children: [
           Row(
@@ -122,34 +154,39 @@ class AppBarr extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 23,
-                    fontWeight: FontWeight.w500),)
-                    , 
-                    Visibility(
-                    visible: GlobalValues.Status=="Active"? true: false,
-                      child: TextButton( 
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kPrimaryColor)), 
-                      onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => callSupport())),
-                 
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                        SizedBox(height: 10, width: 10,),
-                   Row(children: [ 
-                   
-                    
-                     //  Container (child: Icon(Icons.support_agent, size:35, color:Colors.white ,), 
-                        
-                        Container (child: Image.asset('assets/images/support_icon.png' , width :50 , height: 50),
-                        ),],)
-                       
-                     
-               
-                    ],
-                  ),
-                 )
+                    fontWeight: FontWeight.w500),
               ),
-             /*   Visibility(
+              Visibility(
+                  visible: GlobalValues.Status == "Active" ? true : false,
+                  child: TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(kPrimaryColor)),
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => callSupport())),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            //  Container (child: Icon(Icons.support_agent, size:35, color:Colors.white ,),
+
+                            Container(
+                              child: Image.asset(
+                                  'assets/images/support_icon.png',
+                                  width: 50,
+                                  height: 50),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  )),
+              /*   Visibility(
                     visible: false,
                       child: FloatingActionButton( 
                         backgroundColor: Colors.white,
@@ -197,7 +234,7 @@ class AppBarr extends StatelessWidget {
                   
                  )
               ),*/
-            /*  Visibility(
+              /*  Visibility(
            //   visible: GlobalValues.Status=="Active"? true: false,
            visible: true,
               child:    Container ( padding: EdgeInsets.only(left:40, right: 10, top:5),    child:  ElevatedButton.icon(
@@ -235,21 +272,16 @@ class BodyHome extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-
         Padding(
-          padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-          child:
-              Text(
-                'Services',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500),
-              )
-            
-          
-        ),
+            padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+            child: Text(
+              'Services',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500),
+            )),
 
         // cards
 
@@ -261,8 +293,82 @@ class BodyHome extends StatelessWidget {
             runSpacing: 2,
             children: <Widget>[
               InkWell(
-                onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Reserve_WalkInVehicle())),
+                onTap: () {
+                  print(unavailableVehicles);
+                  if (unavailableVehicles) {
+                    showDialog(
+                      context: context,
+                      builder: (context) => Dialog(
+                        backgroundColor: Color.fromARGB(255, 247, 247, 247),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Container(
+                          padding: const EdgeInsets.only(
+                              right: 5.0, left: 5.0, top: 10.0, bottom: 30.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Lottie.asset('assets/images/warn.json',
+                                  width: 100, height: 100),
+                              Text(
+                                'No available vehicles',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600),
+                                textAlign: TextAlign.center,
+                              ),
+                            
+                              
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  //add to waiting list button
+                                  ConstrainedBox(
+                                    constraints: BoxConstraints.tightFor(
+                                        height: 38, width: 100),
+                                    child: ElevatedButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text(
+                                        'Cancel',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 255, 255, 255),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(50),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Reserve_WalkInVehicle()));
+                  }
+                },
+                //() => Navigator.push(context,
+                //  MaterialPageRoute(builder: (context) => Reserve_WalkInVehicle())),
                 child: Container(
                   width: 300,
                   height: 180,
@@ -304,13 +410,9 @@ class BodyHome extends StatelessWidget {
                   ),
                 ),
               ),
-             
-             
               InkWell(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>  CheckIn())),
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CheckIn())),
                 child: Container(
                   width: 300,
                   height: 180,
