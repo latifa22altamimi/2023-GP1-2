@@ -9,7 +9,7 @@ $DriverGender = $_POST['DriverGender'];
 $visitorName = $_POST['visitorName'];
 $Vnumber = $_POST['Vnumber'];
 
-$sql = "SELECT NumOfSWalkInVehicles, NumOfDWalkInVehicles FROM rehaabweb_parameters WHERE ParametersId=1";
+$sql = "SELECT NumOfSWalkInVehicles, NumOfDWalkInVehicles FROM parameters WHERE ParametersId=1";
 $result1 = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result1);
 
