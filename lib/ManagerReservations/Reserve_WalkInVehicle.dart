@@ -25,7 +25,8 @@ String label = "";
 Color labelColor = Colors.white;
 String name = "";
 String number = "";
-List resp=[];
+String type="";
+var respo;
 
 class Reserve_WalkInVehicle extends StatefulWidget {
   const Reserve_WalkInVehicle({super.key});
@@ -40,6 +41,8 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
   var currentTime=DateTime.now();
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
+  bool unAvailableDouble=false;
+  bool unAvailableSingle=false;
   Future insert() async {
     var url = "http://10.0.2.2/phpfiles/walkInReservation.php";
     final res = await http.post(Uri.parse(url), body: {
@@ -54,9 +57,42 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
     });
     
     if (res.statusCode == 200) {
-      var respo = json.decode(res.body);
-      resp.addAll(respo);
+      var respno = json.decode(res.body);
 
+      }
+    }
+     Future Check() async {
+    var url = "http://10.0.2.2/phpfiles/checkVehicles.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "VehicleType": _vehicleType,
+    });
+    
+    if (res.statusCode == 200) {
+
+        respo = json.decode(res.body);
+      print(respo[0]);
+      if(respo[0]=="UnavailableSingle"){
+        setState(() {
+
+          unAvailableSingle=true;
+
+      });
+      }
+      else if(respo[0]=="UnavailableDouble"){
+        
+        setState(() {
+
+          unAvailableDouble=true;
+          
+      });
+      }
+      else{
+        unAvailableSingle=false;
+        unAvailableDouble=false;
+       
+      }
+      
+      
       }
     }
 
@@ -78,6 +114,7 @@ bool isVisibleNumber(){
       _vehicleType = "";
       _drivingType = "";
       getTime = "";
+      respo=[];
     });
     super.initState();
   }
@@ -693,7 +730,7 @@ bool isVisibleNumber(){
                         constraints:
                             BoxConstraints.tightFor(height: 50, width: 500),
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: ()  async {
                             if (_formKey.currentState!.validate()) {
                               //form is valid
 
@@ -705,6 +742,193 @@ bool isVisibleNumber(){
                                         print(_vehicleType);
                                 // complete with choose time and date
                                 //confirm msg
+                               await Check();
+
+                                                             
+                                if(unAvailableSingle){ 
+
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+  
+                                                          return Dialog(
+              backgroundColor: Color.fromARGB(255, 247, 247, 247),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                padding: const EdgeInsets.only(
+                    right: 30.0, left: 30.0, top: 10.0, bottom: 50.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset('assets/images/warn.json',
+                        width: 100, height: 100),
+                        Image.asset(
+                                  'assets/images/single.png',
+                                  height: 50,
+                                  width: 60,
+                                ),
+                    Text(
+                      'No available single vehicles',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Text(
+                      'Choose another vehicle type',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 48, 48, 48),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        //add to waiting list button
+
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tightFor(height: 45, width: 120),
+                          child: ElevatedButton(
+                            onPressed: () {
+                          Navigator.of(context).pop();
+                             print(unAvailableSingle);
+                             print(unAvailableDouble);
+
+                            },
+                            child: Text(
+                              'Done',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 60, 100, 73),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+                                                        }  );
+
+                                                      }
+                           else if(unAvailableDouble){
+                                                        
+                              
+                                                       
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+  
+                                                          return Dialog(
+              backgroundColor: Color.fromARGB(255, 247, 247, 247),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                padding: const EdgeInsets.only(
+                    right: 30.0, left: 30.0, top: 10.0, bottom: 50.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset('assets/images/warn.json',
+                        width: 100, height: 100),
+                        Image.asset(
+                                  'assets/images/double.png',
+                                  height: 50,
+                                  width: 60,
+                                ),
+                    Text(
+                      'No available double vehicles',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Text(
+                      'Choose another vehicle type',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 48, 48, 48),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        //add to waiting list button
+
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tightFor(height: 45, width: 120),
+                          child: ElevatedButton(
+                            onPressed: () {
+                             Navigator.of(context).pop();
+                             print(unAvailableSingle);
+                             print(unAvailableDouble);
+
+                                                  
+                            },
+                            child: Text(
+                              'Done',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 60, 100, 73),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+                                                        }  );}
+                                else if(!(unAvailableDouble|| unAvailableSingle)){ 
                                 showDialog(
                                   context: context,
                                   builder: (context) => Dialog(
@@ -995,196 +1219,10 @@ bool isVisibleNumber(){
                                                     _vehicleType = "";
                                                     getTime = "";
 
-                                                      if(resp.isNotEmpty && resp[0]=="unavailableSingle"){
-                                                     Navigator.of(context).pop();
-                                                      setState(() {
-                            print(resp);
-                            resp=[];
-                            _vehicleType="";
-                          });
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (context) {
-  
-                                                          return Dialog(
-              backgroundColor: Color.fromARGB(255, 247, 247, 247),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              child: Container(
-                padding: const EdgeInsets.only(
-                    right: 30.0, left: 30.0, top: 10.0, bottom: 50.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Lottie.asset('assets/images/warn.json',
-                        width: 100, height: 100),
-                        Image.asset(
-                                  'assets/images/single.png',
-                                  height: 50,
-                                  width: 60,
-                                ),
-                    Text(
-                      'No available single vehicles',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      'Choose another vehicle type',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 48, 48, 48),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        //add to waiting list button
-
-                        ConstrainedBox(
-                          constraints:
-                              BoxConstraints.tightFor(height: 45, width: 120),
-                          child: ElevatedButton(
-                            onPressed: () {
-                          Navigator.of(context).pop();
-                         
-                              
-                            },
-                            child: Text(
-                              'Done',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 60, 100, 73),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            );
-                                                        }  );
-
-                                                      }
-                                                      else if(resp.isNotEmpty && resp[0]=="unavailableDouble"){
-                                                       Navigator.of(context).pop();
-                                                       setState(() {
-                            print(resp);
-                            resp=[];
-                            _vehicleType="";
-                          });
-                                                    showDialog(
-                                                        context: context,
-                                                        builder: (context) {
-  
-                                                          return Dialog(
-              backgroundColor: Color.fromARGB(255, 247, 247, 247),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              child: Container(
-                padding: const EdgeInsets.only(
-                    right: 30.0, left: 30.0, top: 10.0, bottom: 50.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Lottie.asset('assets/images/warn.json',
-                        width: 100, height: 100),
-                        Image.asset(
-                                  'assets/images/double.png',
-                                  height: 50,
-                                  width: 60,
-                                ),
-                    Text(
-                      'No available double vehicles',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      'Choose another vehicle type',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 48, 48, 48),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        //add to waiting list button
-
-                        ConstrainedBox(
-                          constraints:
-                              BoxConstraints.tightFor(height: 45, width: 120),
-                          child: ElevatedButton(
-                            onPressed: () {
-                             Navigator.of(context).pop();
-                                                  
-                            },
-                            child: Text(
-                              'Done',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 60, 100, 73),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            );
-                                                        }  );}
+                                                      
   
                                                     
-                                                    else{  
+                                                    
                                                      Navigator.of(context).pop();
                                                     showDialog(
                                                         context: context,
@@ -1282,7 +1320,7 @@ bool isVisibleNumber(){
                                                             ),
                                                           );
                                                         });
-                                                    }},
+                                                    },
                                                   child: Text(
                                                     'Confirm',
                                                     style: TextStyle(
@@ -1312,7 +1350,7 @@ bool isVisibleNumber(){
                                       ),
                                     ),
                                   ),
-                                );
+                                );}
                               } else {
                                 //Error msg
                                 String errorMsg = "";
