@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 08, 2024 at 02:21 AM
+-- Generation Time: Feb 12, 2024 at 11:17 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -85,8 +85,30 @@ CREATE TABLE `reservation` (
   `visitorName` varchar(200) DEFAULT NULL,
   `VphoneNumber` varchar(10) DEFAULT NULL,
   `slotId` int(20) DEFAULT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `Waiting` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reservation`
+--
+
+INSERT INTO `reservation` (`reservationId`, `date`, `startTime`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `userId`, `visitorName`, `VphoneNumber`, `slotId`, `timestamp`, `Waiting`) VALUES
+(133, '2024-02-08', '05:22 AM', 'Single', 'Self-driving', '', 'Active', 44, ',', '', NULL, '2024-02-08 02:22:25', 0),
+(134, '2024-02-08', '', 'Single', 'Self-driving', '', 'Active', 44, 'و', '', NULL, '2024-02-08 02:40:02', 0),
+(135, '2024-02-08', '06:41 AM', 'Double', 'Self-driving', '', 'Active', 44, 'm', '', NULL, '2024-02-08 03:41:57', 0),
+(136, '2024-02-08', '06:58 AM', 'Double', 'Self-driving', '', 'Active', 44, ',', '', NULL, '2024-02-08 03:58:56', 0),
+(137, '2024-02-08', '07:16 AM', 'Double', 'Self-driving', '', 'Active', 44, 'm', '', NULL, '2024-02-08 04:16:54', 0),
+(138, '2024-02-08', '07:22 AM', 'Double', 'Self-driving', '', 'Active', 44, 'ة', '', NULL, '2024-02-08 04:22:46', 0),
+(139, '2024-02-08', '07:23 AM', 'Double', 'Self-driving', '', 'Active', 44, 'ة', '', NULL, '2024-02-08 04:23:00', 0),
+(140, '2024-02-08', '07:23 AM', 'Double', 'Self-driving', '', 'Active', 44, 'ةة', '', NULL, '2024-02-08 04:23:32', 0),
+(141, '2024-02-08', '07:41 AM', 'Double', 'Self-driving', '', 'Active', 44, 'n', '', NULL, '2024-02-08 04:41:35', 0),
+(142, '2024-02-08', '07:41 AM', 'Double', 'Self-driving', '', 'Active', 44, 'n', '', NULL, '2024-02-08 04:41:54', 0),
+(143, '2024-02-08', '07:57 AM', 'Double', 'Self-driving', '', 'Active', 44, 'n', '', NULL, '2024-02-08 04:57:33', 0),
+(144, '2024-02-08', '07:57 AM', 'Double', 'Self-driving', '', 'Active', 44, 'n', '', NULL, '2024-02-08 04:57:58', 0),
+(145, '2024-02-08', '08:01 AM', 'Double', 'Self-driving', '', 'Active', 44, 'm', '', NULL, '2024-02-08 05:01:26', 0),
+(146, '2024-02-08', '08:47 AM', 'Double', 'With-driver', 'Male', 'Active', 44, 'Manal', '0552995713', NULL, '2024-02-08 19:41:46', 0),
+(147, '2024-02-13', '01:15 AM', 'Double', 'Self-driving', '', 'Active', 44, ',', '', NULL, '2024-02-12 22:15:25', 0);
 
 -- --------------------------------------------------------
 
@@ -269,7 +291,7 @@ ALTER TABLE `parameters`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
+  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=148;
 
 --
 -- AUTO_INCREMENT for table `support`
