@@ -928,7 +928,7 @@ bool isVisibleNumber(){
               ),
             );
                                                         }  );}
-                                else if(!(unAvailableDouble|| unAvailableSingle)){ 
+                                else { 
                                 showDialog(
                                   context: context,
                                   builder: (context) => Dialog(
