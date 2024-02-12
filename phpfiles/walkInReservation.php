@@ -41,11 +41,7 @@ if (($VehicleType == "Single" && $numSingle > 0) || ($VehicleType == "Double" &&
     } elseif ($VehicleType == "Double") {
         $numDouble--;
     }
-} else {
-    $response = ($VehicleType == "Single") ? json_encode([0 => "unavailableSingle"]): json_encode([0 => "unavailableDouble"]);
-    echo $response;
-
-}
+} 
 
 
     
