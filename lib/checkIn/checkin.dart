@@ -19,6 +19,7 @@ class CheckIn extends StatefulWidget {
 
 class _CheckInState extends State<CheckIn> {
   bool isVisibleSuccess=false;
+  bool isVisibleErr=false;
   StartTawaf() async {
     final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
   final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
@@ -39,7 +40,7 @@ class _CheckInState extends State<CheckIn> {
     }
     else{
       setState(() {
-         isVisibleSuccess=false;
+         isVisibleErr=true;
       });
     }
   }
@@ -250,7 +251,7 @@ class _CheckInState extends State<CheckIn> {
                                                         ),
                                                       )
           ), Visibility(
-            visible: isVisibleSuccess,
+            visible: isVisibleErr,
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Container(
@@ -287,7 +288,7 @@ class _CheckInState extends State<CheckIn> {
           /////////////////////////////////////////////////////
           //Waiting list
           Visibility(
-            visible: isVisibleSuccess,
+            visible: isVisibleErr,
             
             child: Dialog(
                                                         backgroundColor:
