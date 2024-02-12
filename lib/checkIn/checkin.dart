@@ -32,7 +32,15 @@ class _CheckInState extends State<CheckIn> {
     var respo = json.decode(res.body);
     print(respo);
     if(respo=="started successfully"){
-      isVisibleSuccess=true;
+      setState(() {
+        isVisibleSuccess=true;
+      });
+    
+    }
+    else{
+      setState(() {
+         isVisibleSuccess=false;
+      });
     }
   }
   
@@ -173,7 +181,7 @@ class _CheckInState extends State<CheckIn> {
                                                                 height: 10.0,
                                                               ),
                                                               Text(
-                                                                'ٌChecked in successfully',
+                                                                'Checked in successfully',
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .black,
@@ -241,6 +249,151 @@ class _CheckInState extends State<CheckIn> {
                                                           ),
                                                         ),
                                                       )
+          ), Visibility(
+            visible: isVisibleSuccess,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Container(
+                alignment: Alignment.center,
+                width: 500,
+                height: double.infinity,
+                color: Colors.transparent,
+                child: Stack(
+                  children: [
+                    BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                      child: Container(
+                        padding: EdgeInsets.all(50.0),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          border:
+                              Border.all(color: Colors.white.withOpacity(0.13)),
+                          gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.white.withOpacity(0.15),
+                                Colors.white.withOpacity(0.05),
+                              ])),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          /////////////////////////////////////////////////////
+          //Waiting list
+          Visibility(
+            visible: isVisibleSuccess,
+            
+            child: Dialog(
+                                                        backgroundColor:
+                                                            Color.fromARGB(255, 196, 25, 25),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(20.0),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Lottie.asset(
+                                                                  'assets/images/erorrr.json',
+                                                                  width: 100,
+                                                                  height: 100),
+                                                              Text(
+                                                                ' Error!',
+                                                                style: TextStyle(
+                                                                    color: const Color.fromARGB(255, 228, 223, 223),
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Text(
+                                                    'Check in failed',
+                                                                style: TextStyle(
+                                                                    color: Color.fromARGB(255, 226, 219, 219),
+                                                                    fontSize:
+                                                                        17,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  ConstrainedBox(
+                                                                    constraints: BoxConstraints.tightFor(
+                                                                        height:
+                                                                            38,
+                                                                        width:
+                                                                            100),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        //add to waiting list button
+
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tightFor(height: 45, width: 120),
+                          child: ElevatedButton(
+                            onPressed: () {
+                          Navigator.of(context).pop();
+                         
+                              
+                            },
+                            child: Text(
+                              'Done',
+                              style: TextStyle(
+                                  color: const Color.fromARGB(255, 10, 7, 7),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 237, 241, 238),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
           )
         ],)
     ));
@@ -274,15 +427,15 @@ class _CheckInState extends State<CheckIn> {
     );
   }
 
-  void _onQRViewCreated(QRViewController controller) {
+  Future<void> _onQRViewCreated(QRViewController controller)  async {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
+      controller.scannedDataStream.listen((scanData) {
+      setState(() async {
         barcode = scanData;
 
-StartTawaf();      });
+await StartTawaf();      });
     });
   }
 
