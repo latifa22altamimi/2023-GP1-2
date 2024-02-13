@@ -94,7 +94,7 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`reservationId`, `date`, `startTime`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `userId`, `visitorName`, `VphoneNumber`, `slotId`, `timestamp`, `Waiting`) VALUES
-(1, '2024-02-08', '08:47 AM', 'Double', 'With0-driver', 'Male', 'Active', 44, 'Manal', '0552995713', NULL, '2024-02-08 19:41:46', 0);
+(1, '2024-02-08', '08:47 AM', 'Double', 'With-driver', 'Male', 'Active', 44, 'Manal', '0552995713', NULL, '2024-02-08 19:41:46', 0);
 
 -- --------------------------------------------------------
 
