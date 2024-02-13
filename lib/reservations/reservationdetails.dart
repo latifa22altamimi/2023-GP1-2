@@ -15,7 +15,7 @@ import 'date.dart';
 import 'package:intl/intl.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:progress_border/progress_border.dart';
-import '../CheckOut/CheckOut.dart';
+import 'package:encrypt/encrypt.dart' as enc;
 
 String getUpdatedTime = "";
 String getUpdatedDate = "";
@@ -52,6 +52,14 @@ class _ReservationDetailsState extends State<ReservationDetails>
   );
 
   _ReservationDetailsState({this.Rid, this.Status, this.date, this.time});
+  String encryptIt(String text) {
+    final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
+  final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
+
+  final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
+  final encrypted = encrypter.encrypt(text, iv: iv);
+  return encrypted.base64;
+}
 
   Future GetData() async {
     var url = "http://10.0.2.2/phpfiles/details.php";
@@ -249,14 +257,11 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                   : null,
                             ),
 
-                            //margin: EdgeInsets.only(bottom: 20.0),
-
-                            //padding: EdgeInsets.only(top: 50),
                             child: list.isEmpty
                                 ? Text("")
                                 : QrImageView(
                                     data:
-                                        "Date:${list[ind]["date"]}\nTime:${list[ind]["time"]}\nVehicle Type: ${list[ind]["VehicleType"]}\nDriving Type: ${list[ind]["drivingType"]}\n ${list[ind]["VehicleType"] == "Double" ? "Driver gender:${list[ind]["driverGender"]}" : ""}\n Status: ${Status}",
+                                        encryptIt(list[ind]["reservationId"]),
                                     size: 150,
                                   )),
                         Container(
@@ -1618,6 +1623,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
         ],
       ),
     );
+
   }
 
   //table calendar

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 01, 2024 at 08:52 AM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Feb 12, 2024 at 11:17 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -51,8 +51,12 @@ INSERT INTO `markers` (`MarkerId`, `Latitude`, `Longitude`) VALUES
 CREATE TABLE `parameters` (
   `ParametersId` int(15) NOT NULL,
   `ReservationDur` varchar(30) NOT NULL,
-  `NumOfWalkInVehicles` int(15) NOT NULL,
-  `NumOfBackUpVehicles` int(15) NOT NULL,
+  `NumOfSWalkInVehicles` int(15) NOT NULL,
+  `NumOfDWalkInVehicles` int(15) NOT NULL,
+  `NumOfSBackUpVehicles` int(15) NOT NULL,
+  `NumOfDBackUpVehicles` int(15) NOT NULL,
+  `NumOfSVisitorVehicles` int(15) NOT NULL,
+  `NumOfDVisitorVehicles` int(15) NOT NULL,
   `CancelDur` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -60,8 +64,8 @@ CREATE TABLE `parameters` (
 -- Dumping data for table `parameters`
 --
 
-INSERT INTO `parameters` (`ParametersId`, `ReservationDur`, `NumOfWalkInVehicles`, `NumOfBackUpVehicles`, `CancelDur`) VALUES
-(1, '20', 7, 10, '30');
+INSERT INTO `parameters` (`ParametersId`, `ReservationDur`, `NumOfSWalkInVehicles`, `NumOfDWalkInVehicles`, `NumOfSBackUpVehicles`, `NumOfDBackUpVehicles`, `NumOfSVisitorVehicles`, `NumOfDVisitorVehicles`, `CancelDur`) VALUES
+(1, '1h30m', 16, 15, 20, 15, 30, 35, '15m');
 
 -- --------------------------------------------------------
 
@@ -72,6 +76,7 @@ INSERT INTO `parameters` (`ParametersId`, `ReservationDur`, `NumOfWalkInVehicles
 CREATE TABLE `reservation` (
   `reservationId` int(20) NOT NULL,
   `date` varchar(10) NOT NULL,
+  `startTime` varchar(10) DEFAULT NULL,
   `VehicleType` varchar(6) NOT NULL,
   `drivingType` varchar(20) NOT NULL,
   `driverGender` varchar(20) DEFAULT NULL,
@@ -80,20 +85,16 @@ CREATE TABLE `reservation` (
   `visitorName` varchar(200) DEFAULT NULL,
   `VphoneNumber` varchar(10) DEFAULT NULL,
   `slotId` int(20) DEFAULT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `Waiting` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `reservation`
 --
 
-INSERT INTO `reservation` (`reservationId`, `date`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `userId`, `visitorName`, `VphoneNumber`, `slotId`, `timestamp`) VALUES
-(16, '2024-01-28', 'Double', 'With-driver', 'Female', 'Active', 44, 'shahad', '0503788190', NULL, '2024-01-29 05:38:54'),
-(17, '2024-01-28', 'Single', 'Self-driving', '', 'Active', 44, 's', '0504625413', NULL, '2024-01-29 05:38:54'),
-(18, '2024-01-28', 'Single', 'Self-driving', '', 'Active', 44, 'gg', '0508836252', NULL, '2024-01-29 05:40:19'),
-(21, '2024-01-28', 'Double', 'With-driver', 'Female', 'Active', 44, 'hhh', '797977878', NULL, '2024-01-30 00:18:15'),
-(22, '2024-02-01', 'Single', 'Self-driving', '', 'Active', 44, 'shahad', '3736267283', NULL, '2024-01-31 23:38:52'),
-(23, '2024-02-01', 'Single', 'Self-driving', '', 'Active', 44, 's', '222', NULL, '2024-02-01 00:45:11');
+INSERT INTO `reservation` (`reservationId`, `date`, `startTime`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `userId`, `visitorName`, `VphoneNumber`, `slotId`, `timestamp`, `Waiting`) VALUES
+(1, '2024-02-08', '08:47 AM', 'Double', 'With-driver', 'Male', 'Active', 44, 'Manal', '0552995713', NULL, '2024-02-08 19:41:46', 0);
 
 -- --------------------------------------------------------
 
@@ -197,7 +198,6 @@ CREATE TABLE `waitinglist` (
 --
 
 INSERT INTO `waitinglist` (`Id`, `Name`, `PhoneNumber`, `userId`) VALUES
-(3, 'shahad', '0503788190', 44),
 (4, 'sara', '23243434', 44);
 
 --
@@ -221,8 +221,8 @@ ALTER TABLE `parameters`
 --
 ALTER TABLE `reservation`
   ADD PRIMARY KEY (`reservationId`),
-  ADD KEY `visitorId` (`userId`),
-  ADD KEY `slotId` (`slotId`);
+  ADD KEY `slotId` (`slotId`),
+  ADD KEY `userId` (`userId`) USING BTREE;
 
 --
 -- Indexes for table `support`
@@ -277,7 +277,7 @@ ALTER TABLE `parameters`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `support`
@@ -307,7 +307,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `waitinglist`
 --
 ALTER TABLE `waitinglist`
-  MODIFY `Id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `Id` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables

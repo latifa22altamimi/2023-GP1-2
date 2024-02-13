@@ -25,8 +25,8 @@ String label = "";
 Color labelColor = Colors.white;
 String name = "";
 String number = "";
-String waitingName = "";
-String waitingNumber = "";
+String type="";
+var respo;
 
 class Reserve_WalkInVehicle extends StatefulWidget {
   const Reserve_WalkInVehicle({super.key});
@@ -38,12 +38,11 @@ class Reserve_WalkInVehicle extends StatefulWidget {
 class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
   TextEditingController visitorName = TextEditingController();
   TextEditingController VphoneNumber = TextEditingController();
-  TextEditingController waitName = TextEditingController();
-  TextEditingController waitPhoneNumber = TextEditingController();
   var currentTime=DateTime.now();
   bool isVisibleGender = false;
   bool isVisibleDriving = false;
-  bool isVisibleWaiting = false;
+  bool unAvailableDouble=false;
+  bool unAvailableSingle=false;
   Future insert() async {
     var url = "http://10.0.2.2/phpfiles/walkInReservation.php";
     final res = await http.post(Uri.parse(url), body: {
@@ -51,52 +50,71 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
       "visitorName": visitorName.text,
       "Vnumber": VphoneNumber.text,
       "date": DateFormat('yyyy-MM-dd').format(DateTime.now()),
-      "time": "",
+      "time": getTime,
       "VehicleType": _vehicleType,
       "DrivingType": _drivingType,
       "DriverGender": _driverGender
     });
-    var resp = json.decode(res.body);
-    print(resp);
-  }
-
-  Future insertWaitingList() async {
-    var url = "http://10.0.2.2/phpfiles/insertWaiting.php";
-    final res = await http.post(Uri.parse(url), body: {
-      "id": GlobalValues.id,
-      "Name": waitName.text,
-      "PhoneNumber": waitPhoneNumber.text,
-    });
-    var resp = json.decode(res.body);
-    print(resp);
-  }
-
-  Future DisplayWaiting() async {
-    print(GlobalValues.id);
-    var url = "http://10.0.2.2/phpfiles/ActiveWalkIn.php";
-    final res = await http.post(Uri.parse(url), body: {
-      "Userid": GlobalValues.id,
-    });
-
+    
     if (res.statusCode == 200) {
-      var red = json.decode(res.body);
-      if (red[0] == "Unavailable") {
-        setState(() {
-          isVisibleWaiting = true;
-        });
+      var respno = json.decode(res.body);
 
-        print(red[0]);
       }
     }
+     Future Check() async {
+    var url = "http://10.0.2.2/phpfiles/checkVehicles.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "VehicleType": _vehicleType,
+    });
+    
+    if (res.statusCode == 200) {
+
+        respo = json.decode(res.body);
+      print(respo[0]);
+      if(respo[0]=="UnavailableSingle"){
+        setState(() {
+
+          unAvailableSingle=true;
+
+      });
+      }
+      else if(respo[0]=="UnavailableDouble"){
+        
+        setState(() {
+
+          unAvailableDouble=true;
+          
+      });
+      }
+      else{
+        unAvailableSingle=false;
+        unAvailableDouble=false;
+       
+      }
+      
+      
+      }
+    }
+
+  
+
+bool isVisibleNumber(){
+  if (VphoneNumber.text.length>0){
+    return true;
+  
   }
+  else
+  return false;
+}
+ 
+
 
   void initState() {
-    DisplayWaiting();
     setState(() {
       _vehicleType = "";
       _drivingType = "";
       getTime = "";
-      _BookingPageState._timeSelected = false;
+      respo=[];
     });
     super.initState();
   }
@@ -179,14 +197,21 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                     )),
                     Align(
                       alignment: Alignment.topLeft,
-                      child: Text(
+                      child: Row(children: [Text(
                         'Phone Number',
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.w600,
                             fontSize: 18),
                         textAlign: TextAlign.left,
-                      ),
+                      ), Text(
+                        '(Optional)',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14),
+                        textAlign: TextAlign.left,
+                      ),],)
                     ),
 
                     TextFieldContainer(
@@ -705,18 +730,205 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                         constraints:
                             BoxConstraints.tightFor(height: 50, width: 500),
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: ()  async {
                             if (_formKey.currentState!.validate()) {
                               //form is valid
 
                               if ((_vehicleType != "" &&
-                                      _drivingType == "Self-driving") ||
+                                      _drivingType == "Self-driving"&& visitorName.text.length!=0 ) ||
                                   (_vehicleType != "" &&
                                       _drivingType == "With-driver" &&
-                                      _driverGender != "")) {
+                                      _driverGender != ""&& visitorName.text.length!=0)) {
+                                        print(_vehicleType);
                                 // complete with choose time and date
-
                                 //confirm msg
+                               await Check();
+
+                                                             
+                                if(unAvailableSingle){ 
+
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+  
+                                                          return Dialog(
+              backgroundColor: Color.fromARGB(255, 247, 247, 247),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                padding: const EdgeInsets.only(
+                    right: 30.0, left: 30.0, top: 10.0, bottom: 50.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset('assets/images/warn.json',
+                        width: 100, height: 100),
+                        Image.asset(
+                                  'assets/images/single.png',
+                                  height: 50,
+                                  width: 60,
+                                ),
+                    Text(
+                      'No available single vehicles',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Text(
+                      'Choose another vehicle type',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 48, 48, 48),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        //add to waiting list button
+
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tightFor(height: 45, width: 120),
+                          child: ElevatedButton(
+                            onPressed: () {
+                          Navigator.of(context).pop();
+                             print(unAvailableSingle);
+                             print(unAvailableDouble);
+
+                            },
+                            child: Text(
+                              'Done',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 60, 100, 73),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+                                                        }  );
+
+                                                      }
+                           else if(unAvailableDouble){
+                                                        
+                              
+                                                       
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (context) {
+  
+                                                          return Dialog(
+              backgroundColor: Color.fromARGB(255, 247, 247, 247),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20)),
+              child: Container(
+                padding: const EdgeInsets.only(
+                    right: 30.0, left: 30.0, top: 10.0, bottom: 50.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Lottie.asset('assets/images/warn.json',
+                        width: 100, height: 100),
+                        Image.asset(
+                                  'assets/images/double.png',
+                                  height: 50,
+                                  width: 60,
+                                ),
+                    Text(
+                      'No available double vehicles',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Text(
+                      'Choose another vehicle type',
+                      style: TextStyle(
+                          color: Color.fromARGB(255, 48, 48, 48),
+                          fontSize: 17,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        //add to waiting list button
+
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tightFor(height: 45, width: 120),
+                          child: ElevatedButton(
+                            onPressed: () {
+                             Navigator.of(context).pop();
+                             print(unAvailableSingle);
+                             print(unAvailableDouble);
+
+                                                  
+                            },
+                            child: Text(
+                              'Done',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 60, 100, 73),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
+                                                        }  );}
+                                else { 
                                 showDialog(
                                   context: context,
                                   builder: (context) => Dialog(
@@ -760,7 +972,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                           ),
                                           Container(
                                             width: 350,
-                                            height: 200,
+                                            height: 250,
                                             margin: const EdgeInsets.all(12),
                                             padding: const EdgeInsets.all(10),
                                             decoration: BoxDecoration(
@@ -802,7 +1014,9 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                 SizedBox(
                                                   height: 5.0,
                                                 ),
-                                                Row(
+                                                Visibility(
+                                                  visible: isVisibleNumber(),
+                                                  child: Row( 
                                                   children: [
                                                     Text(
                                                       'Visitor Number: ',
@@ -821,7 +1035,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                               FontWeight.w400),
                                                     ),
                                                   ],
-                                                ),
+                                                )),
                                                 SizedBox(
                                                   height: 5.0,
                                                 ),
@@ -909,7 +1123,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                           fontWeight:
                                                               FontWeight.w500),
                                                     ),
-                                                    Text(currentTime.day.toString()+'/'+currentTime.month.toString()+'/'+currentTime.year.toString()
+                                                    Text('${DateFormat('yyyy-MM-dd').format(DateTime.now())}'
                                                       ,//current date
                                                       style: TextStyle(
                                                           color: Colors.black,
@@ -933,7 +1147,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                               FontWeight.w500),
                                                     ),
                                                     Text(
-                                                      currentTime.hour.toString()+':'+currentTime.minute.toString(),// current time convert
+                                                      '${DateFormat('HH:mm').format(DateTime.now())} ${currentTime.hour>12? 'PM' : 'AM'}' ,// current time convert
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 16,
@@ -996,6 +1210,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                         height: 38, width: 100),
                                                 child: ElevatedButton(
                                                   onPressed: () async {
+                                                    getTime= '${DateFormat('HH:mm').format(DateTime.now())} ${currentTime.hour >12? 'PM' : 'AM'}';
                                                     insert();
                                                     //success msg here , insert in db --------------------------------------------
 
@@ -1003,9 +1218,12 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                     _driverGender = "";
                                                     _vehicleType = "";
                                                     getTime = "";
-                                                    getDate = '';
 
-                                                    Navigator.of(context).pop();
+                                                      
+  
+                                                    
+                                                    
+                                                     Navigator.of(context).pop();
                                                     showDialog(
                                                         context: context,
                                                         builder: (context) {
@@ -1102,7 +1320,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                             ),
                                                           );
                                                         });
-                                                  },
+                                                    },
                                                   child: Text(
                                                     'Confirm',
                                                     style: TextStyle(
@@ -1132,7 +1350,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                       ),
                                     ),
                                   ),
-                                );
+                                );}
                               } else {
                                 //Error msg
                                 String errorMsg = "";
@@ -1147,8 +1365,12 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                     _drivingType == "") {
                                   errorMsg = "Choose driving type";
                                 }
-                                if (_vehicleType == "" && _drivingType == "") {
+                                if ((_vehicleType == "" && _drivingType == "")) {
                                   errorMsg = "Empty fields";
+                                }
+                                if(visitorName.text.length==0){
+                                errorMsg = "Enter visitor name";
+
                                 }
                                 if (_drivingType == "With-driver" &&
                                     _driverGender == "") {
@@ -1253,249 +1475,13 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
             ),
           ),
           ///////////////////////////////////////
-          Visibility(
-            visible: isVisibleWaiting,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: Container(
-                alignment: Alignment.center,
-                width: 500,
-                height: double.infinity,
-                color: Colors.transparent,
-                child: Stack(
-                  children: [
-                    BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
-                      child: Container(
-                        padding: EdgeInsets.all(50.0),
-                      ),
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          border:
-                              Border.all(color: Colors.white.withOpacity(0.13)),
-                          gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Colors.white.withOpacity(0.15),
-                                Colors.white.withOpacity(0.05),
-                              ])),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
-          /////////////////////////////////////////////////////
-          //Waiting list
-          Visibility(
-            visible: isVisibleWaiting,
-            child: Dialog(
-              backgroundColor: Color.fromARGB(255, 247, 247, 247),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)),
-              child: Container(
-                padding: const EdgeInsets.only(
-                    right: 30.0, left: 30.0, top: 10.0, bottom: 50.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Lottie.asset('assets/images/warn.json',
-                        width: 100, height: 100),
-                    Text(
-                      'No available vehicles',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      'Add visitors to waiting list',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 48, 48, 48),
-                          fontSize: 17,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'Name',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    TextFieldContainer(
-                        child: TextField(
-                      onTapOutside: (PointerDownEvent) {
-                        setState(() {
-                          waitingName = waitName.text;
-                        });
-                      },
-                      controller: waitName,
-                      cursorColor: kPrimaryColor,
-                      decoration: InputDecoration(
-                          icon: Icon(
-                            Icons.person,
-                            color: kPrimaryColor,
-                          ),
-                          hintText: "Visitor name",
-                          hintStyle: const TextStyle(fontFamily: 'OpenSans'),
-                          border: InputBorder.none),
-                    )),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'Phone Number',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18),
-                        textAlign: TextAlign.left,
-                      ),
-                    ),
-                    TextFieldContainer(
-                      child: TextField(
-                        onTapOutside: (PointerDownEvent) {
-                          setState(() {
-                            waitingNumber = waitPhoneNumber.text;
-                          });
-                        },
-                        controller: waitPhoneNumber,
-                        cursorColor: kPrimaryColor,
-                        decoration: InputDecoration(
-                            icon: Icon(
-                              Icons.phone,
-                              color: kPrimaryColor,
-                            ),
-                            hintText: "Visitor Number",
-                            hintStyle: TextStyle(fontFamily: 'OpenSans'),
-                            border: InputBorder.none),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        //add to waiting list button
-
-                        ConstrainedBox(
-                          constraints:
-                              BoxConstraints.tightFor(height: 45, width: 120),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              insertWaitingList();
-                              Navigator.of(context).pop();
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  Future.delayed(Duration(seconds: 2), () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ManagerHome()),
-                                    );
-                                  });
-                                  return Dialog(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 247, 247, 247),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: Container(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Lottie.asset(
-                                              'assets/images/success.json',
-                                              width: 100,
-                                              height: 100),
-                                          Text(
-                                            'Success',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          SizedBox(
-                                            height: 10.0,
-                                          ),
-                                          Text(
-                                            'Visitor has been added to the waiting list',
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.w400),
-                                          ),
-                                          SizedBox(
-                                            height: 10.0,
-                                          ),
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              ConstrainedBox(
-                                                constraints:
-                                                    BoxConstraints.tightFor(
-                                                        height: 38, width: 100),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            child: Text(
-                              'Add',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromARGB(255, 60, 100, 73),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(50),
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-            ),
-          )
+       
+     
+       ///////////////////////////////////////////////////
+         
         ],
       ),
+
     );
   }
 }
@@ -1519,7 +1505,7 @@ class _BookingPageState extends State<BookingPage> {
   List list = [];
   List tlist = [];
   Future GetData() async {
-    var url = "http://10.0.2.2/phpfiles/times.php";
+    var url = "http://10.6.202.90/phpfiles/times.php";
     final res = await http.post(Uri.parse(url), body: {
       "date": DateConverted.getDate(_currentDay),
     });
