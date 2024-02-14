@@ -21,11 +21,10 @@ class _CheckInState extends State<CheckIn> {
   bool isVisibleSuccess=false;
   bool isVisibleErr=false;
   StartTawaf() async {
-    final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
+  final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
   final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
-
   final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
-  final decrypted = encrypter.decrypt(barcode!.code as enc.Encrypted, iv: iv);
+  final decrypted = encrypter.decrypt64(barcode!.code!, iv: iv);
     var url = "http://10.0.2.2/phpfiles/startTawaf.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": decrypted,
@@ -36,7 +35,6 @@ class _CheckInState extends State<CheckIn> {
       setState(() {
         isVisibleSuccess=true;
       });
-    
     }
     else{
       setState(() {
@@ -100,7 +98,7 @@ class _CheckInState extends State<CheckIn> {
       body: Stack(
         alignment:AlignmentDirectional.topCenter ,
         children: <Widget>[
-          buildQrView(context), 
+          buildQrView(context),
           Visibility(
             visible: isVisibleSuccess,
             child: ClipRRect(
