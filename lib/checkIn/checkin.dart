@@ -40,7 +40,7 @@ class _CheckInState extends State<CheckIn> {
     }
     else{
       setState(() {
-         isVisibleErr=true;
+        isVisibleErr=true;
       });
     }
   }
@@ -419,11 +419,11 @@ class _CheckInState extends State<CheckIn> {
       key: qrKey,
       onQRViewCreated: _onQRViewCreated,
       overlay: QrScannerOverlayShape(
-          borderColor: Colors.red,
+          borderColor: kPrimaryColor,
           borderRadius: 10,
           borderLength: 30,
           borderWidth: 10,
-          cutOutSize: scanArea),
+          cutOutSize: (MediaQuery.of(context).size.width)*0.8),
       onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
     );
   }
