@@ -32,7 +32,7 @@ class _CheckInState extends State<CheckIn> {
     });
     var respo = json.decode(res.body);
     print(respo);
-    if(respo=="started successfully"){
+    if(respo=="Tawaf started successfully"){
       setState(() {
         isVisibleSuccess=true;
       });
@@ -71,7 +71,6 @@ class _CheckInState extends State<CheckIn> {
   Widget build(BuildContext context) => SafeArea(
     child: Scaffold(
      backgroundColor: kPrimaryLightColor,
-
       appBar: AppBar(
         leading: Container(
           padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
@@ -88,7 +87,7 @@ class _CheckInState extends State<CheckIn> {
             color: kPrimaryColor,
             child: Center(
               child: Text(
-                'Chenk In',
+                'Check In',
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 23,
