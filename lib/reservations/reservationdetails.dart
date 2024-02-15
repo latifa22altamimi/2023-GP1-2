@@ -37,6 +37,7 @@ class ReservationDetails extends StatefulWidget {
 int ind = 0;
 List list = [];
 String CancelDur="";
+int CancelDurInt=0;
 
 var datetime;
 
@@ -88,8 +89,10 @@ class _ReservationDetailsState extends State<ReservationDetails>
     animationController.addListener(() {
       setState(() {});
     });
-    
+    if(list.isNotEmpty){
       GlobalValues.Status=list[ind]["Status"];
+
+    }
     
 
     restart();
@@ -152,8 +155,13 @@ class _ReservationDetailsState extends State<ReservationDetails>
       CancelDur = json.decode(res.body);
 
       setState(() {
-        CancelDur=CancelDur.toString().substring(0,2);
+        var index=CancelDur.indexOf("h");
+        CancelDur=CancelDur.substring(0,index);
         print(CancelDur);
+        CancelDurInt=int.parse(CancelDur);
+          CancelDurInt=CancelDurInt*60; // convert to minutes
+        
+
       });
     }
    }
@@ -162,7 +170,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
     datetime = date! + " " + time!.substring(0, 5) + ":00";
      final duration= DateTime.parse(datetime).difference(DateTime.now());
     if (Status == 'Cancelled' ||
-         duration.inMinutes<=int.parse(CancelDur) ||
+         duration.inMinutes<=CancelDurInt ||
         Status == "Active" ||
         Status == "Completed") {
       return false;
