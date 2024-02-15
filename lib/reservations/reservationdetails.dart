@@ -88,6 +88,9 @@ class _ReservationDetailsState extends State<ReservationDetails>
     animationController.addListener(() {
       setState(() {});
     });
+    
+      GlobalValues.Status=list[ind]["Status"];
+    
 
     restart();
   }
@@ -291,8 +294,8 @@ class _ReservationDetailsState extends State<ReservationDetails>
                             child: list.isEmpty
                                 ? Text("")
                                 : QrImageView(
-                                    data:
-                                        encryptIt(list[ind]["reservationId"]),
+                                    data: "${list[ind]["reservationId"]}",
+                                        //encryptIt(list[ind]["reservationId"]),
                                     size: 150,
                                   )),
                         Container(
