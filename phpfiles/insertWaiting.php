@@ -5,7 +5,8 @@ $Rid=$_POST['Rid'];
 $waitingName= $_POST['Name'];
 $waitingNumber=$_POST['PhoneNumber'];
 $VehicleType=$_POST['VehicleType'];
-echo json_encode($id);
-$s ="INSERT INTO reservation (Status,VphoneNumber,visitorName,VehicleType,userId) VALUES ('Waiting','".$waitingNumber."','".$waitingName."','".$VehicleType."','".$id."')";
+$ExpectUseTime=$_POST['ExpectUseTime'];
+echo json_encode($ExpectUseTime);
+$s ="INSERT INTO reservation (Status,VphoneNumber,ExpectUseTime,visitorName,VehicleType,userId) VALUES ('Waiting','".$waitingNumber."','".$ExpectUseTime."','".$waitingName."','".$VehicleType."','".$id."')";
 
 $result2 = mysqli_query($conn, $s);

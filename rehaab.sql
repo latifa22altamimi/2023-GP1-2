@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 12, 2024 at 11:17 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: Feb 15, 2024 at 01:11 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -65,7 +65,7 @@ CREATE TABLE `parameters` (
 --
 
 INSERT INTO `parameters` (`ParametersId`, `ReservationDur`, `NumOfSWalkInVehicles`, `NumOfDWalkInVehicles`, `NumOfSBackUpVehicles`, `NumOfDBackUpVehicles`, `NumOfSVisitorVehicles`, `NumOfDVisitorVehicles`, `CancelDur`) VALUES
-(1, '1h30m', 16, 15, 20, 15, 30, 35, '15m');
+(1, '01:15', 3, 3, 20, 15, 30, 35, '15m');
 
 -- --------------------------------------------------------
 
@@ -77,6 +77,8 @@ CREATE TABLE `reservation` (
   `reservationId` int(20) NOT NULL,
   `date` varchar(10) NOT NULL,
   `startTime` varchar(10) DEFAULT NULL,
+  `ExpectFinishTime` varchar(20) DEFAULT NULL,
+  `ExpectUseTime` varchar(20) DEFAULT NULL,
   `VehicleType` varchar(6) NOT NULL,
   `drivingType` varchar(20) NOT NULL,
   `driverGender` varchar(20) DEFAULT NULL,
@@ -93,8 +95,8 @@ CREATE TABLE `reservation` (
 -- Dumping data for table `reservation`
 --
 
-INSERT INTO `reservation` (`reservationId`, `date`, `startTime`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `userId`, `visitorName`, `VphoneNumber`, `slotId`, `timestamp`, `Waiting`) VALUES
-(1, '2024-02-08', '08:47 AM', 'Double', 'With-driver', 'Male', 'Active', 44, 'Manal', '0552995713', NULL, '2024-02-08 19:41:46', 0);
+INSERT INTO `reservation` (`reservationId`, `date`, `startTime`, `ExpectFinishTime`, `ExpectUseTime`, `VehicleType`, `drivingType`, `driverGender`, `Status`, `userId`, `visitorName`, `VphoneNumber`, `slotId`, `timestamp`, `Waiting`) VALUES
+(21, '2024-02-15', '03:10 AM', '04:25 AM', NULL, 'Single', 'Self-driving', '', 'Active', 44, 'shahad', '', NULL, '2024-02-15 00:10:09', 0);
 
 -- --------------------------------------------------------
 
@@ -121,6 +123,16 @@ CREATE TABLE `tawaf` (
   `UserId` int(11) NOT NULL,
   `TDuration` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `tawaf`
+--
+
+INSERT INTO `tawaf` (`TDurationId`, `UserId`, `TDuration`) VALUES
+(80, 44, '1:20'),
+(81, 44, '1:30'),
+(82, 44, '1:10'),
+(84, 44, '1:00');
 
 -- --------------------------------------------------------
 
@@ -277,7 +289,7 @@ ALTER TABLE `parameters`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `support`
@@ -289,7 +301,7 @@ ALTER TABLE `support`
 -- AUTO_INCREMENT for table `tawaf`
 --
 ALTER TABLE `tawaf`
-  MODIFY `TDurationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+  MODIFY `TDurationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `timeslots`

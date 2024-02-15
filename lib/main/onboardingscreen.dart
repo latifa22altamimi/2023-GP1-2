@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/SignIn/login_screen.dart';
 import 'package:rehaab/Signup/signup_screen.dart';
+import 'package:rehaab/checkIn/checkin.dart';
 import 'package:rehaab/profile/profile.dart';
 
 import 'home.dart';

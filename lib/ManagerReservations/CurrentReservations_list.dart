@@ -295,6 +295,8 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                                 Name: historyList[index]["visitorName"],
                                 PhoneNumber: historyList[index]["VphoneNumber"],
                                 VehicleType: historyList[index]["VehicleType"],
+                                ExpectUseTime: historyList[index]
+                                    ["ExpectUseTime"],
                               );
                             } else {
                               return Container(); // Handle other cases if needed
@@ -349,6 +351,8 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                                 timee: historyList[index]["startTime"],
                                 status: historyList[index]["Status"],
                                 VehicleType: historyList[index]["VehicleType"],
+                                ExpectFinishTime: historyList[index]
+                                    ["ExpectFinishTime"],
                                 colorr: Color.fromRGBO(255, 196, 4, 1),
                                 widthAdjust: 125.0,
                                 buttonColor: Color.fromARGB(255, 37, 149, 190),
@@ -363,6 +367,8 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                                 timee: historyList[index]["startTime"],
                                 status: historyList[index]["Status"],
                                 VehicleType: historyList[index]["VehicleType"],
+                                ExpectFinishTime: historyList[index]
+                                    ["ExpectFinishTime"],
                                 colorr: Color.fromRGBO(255, 196, 4, 1),
                                 widthAdjust: 125.0,
                                 buttonColor: Colors.grey,
@@ -468,7 +474,7 @@ class ReserveCard extends StatefulWidget {
   Color? buttonColor;
   bool? isButtonEnabled;
   String? VehicleType;
-
+  String? ExpectFinishTime;
   ReserveCard(
       {this.Rid,
       this.datee,
@@ -476,6 +482,7 @@ class ReserveCard extends StatefulWidget {
       this.status,
       this.colorr,
       this.VehicleType,
+      this.ExpectFinishTime,
       this.widthAdjust,
       this.buttonColor,
       this.isButtonEnabled});
@@ -521,12 +528,13 @@ class _ReserveCardState extends State<ReserveCard> {
   }
 
   Future insertWaitingList() async {
-    var url = "http://10.0.2.2/phpfiles/insertWaiting.php";
+    var url = "http://192.168.1.33/phpfiles/insertWaiting.php";
     final res = await http.post(Uri.parse(url), body: {
       "id": GlobalValues.id,
       "Name": waitName.text,
       "PhoneNumber": waitPhoneNumber.text,
-      "VehicleType": widget.VehicleType
+      "VehicleType": widget.VehicleType,
+      "ExpectUseTime": widget.ExpectFinishTime
     });
     var resp = json.decode(res.body);
     print(resp);
@@ -1051,7 +1059,7 @@ class _ReserveCardState extends State<ReserveCard> {
                               fontWeight: FontWeight.w500),
                         ),
                         Text(
-                          '01:00 PM', //widget.timee
+                          '${widget.ExpectFinishTime}', //widget.timee
                           style: TextStyle(
                               color: Colors.black,
                               fontSize: 15,
@@ -1143,15 +1151,16 @@ class WaitingCard extends StatefulWidget {
   String? Name;
   String? PhoneNumber;
   String? VehicleType;
+  String? ExpectUseTime;
   String getTimee =
       '${DateFormat('HH:mm').format(DateTime.now())} ${DateTime.now().hour > 12 ? 'PM' : 'AM'}';
 
-  WaitingCard({
-    this.Id,
-    this.Name,
-    this.PhoneNumber,
-    this.VehicleType
-  });
+  WaitingCard(
+      {this.Id,
+      this.Name,
+      this.PhoneNumber,
+      this.VehicleType,
+      this.ExpectUseTime});
 
   @override
   State<WaitingCard> createState() => _WaitingCardState();
@@ -1218,12 +1227,9 @@ class _WaitingCardState extends State<WaitingCard> {
               ],
             ),
           ),
-
           SizedBox(
             height: 10.0,
           ),
-         
-
           Row(
             children: [
               Container(
@@ -1248,7 +1254,6 @@ class _WaitingCardState extends State<WaitingCard> {
               ),
             ],
           ),
-
           SizedBox(
             height: 8.0,
           ),
@@ -1281,7 +1286,7 @@ class _WaitingCardState extends State<WaitingCard> {
           ),
           Row(
             children: [
-               Container(
+              Container(
                 margin: EdgeInsets.only(left: 20.0),
                 child: Row(
                   children: [
@@ -1304,11 +1309,10 @@ class _WaitingCardState extends State<WaitingCard> {
               ),
             ],
           ),
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-               Container(
+              Container(
                 margin: EdgeInsets.only(left: 20.0),
                 child: Row(
                   children: [
@@ -1320,7 +1324,7 @@ class _WaitingCardState extends State<WaitingCard> {
                           fontWeight: FontWeight.w500),
                     ),
                     Text(
-                      '01:00 PM',
+                      '${widget.ExpectUseTime}',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 15,
@@ -1329,7 +1333,6 @@ class _WaitingCardState extends State<WaitingCard> {
                   ],
                 ),
               ),
-             
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

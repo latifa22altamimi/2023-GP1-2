@@ -1,0 +1,38 @@
+<?php
+
+include 'connect.php';
+
+$sql= "SELECT TDuration FROM tawaf";
+$result = $conn->query($sql);
+$tawafDurations = [];
+$allTimes = []; // Array of time strings
+while ($ro2 = $result->fetch_assoc()) {
+    $tawafDurations[] = $ro2;
+}
+
+foreach ($tawafDurations as $time) {
+   $allTimes[]= $time['TDuration'];
+    
+}
+// Function to convert time string to seconds
+function timeToSeconds($time) {
+    $parts = explode(':', $time);
+    return $parts[0] * 3600 + $parts[1] * 60;
+}
+// Convert each time string to seconds and calculate total sum
+$totalSeconds = 0;
+foreach ($allTimes as $time) {
+    $totalSeconds += timeToSeconds($time);
+}
+
+// Calculate the average in seconds
+$averageSeconds = $totalSeconds / count($allTimes);
+
+// Convert average back to time format (hours:minutes)
+$hours = floor($averageSeconds / 3600);
+$minutes = floor(($averageSeconds % 3600) / 60);
+$averageTime = sprintf('%02d:%02d', $hours, $minutes);
+
+$updateDur = "UPDATE parameters SET ReservationDur = '$averageTime' WHERE ParametersId='1'";
+$result = $conn->query($updateDur);
+echo json_encode($result);

@@ -43,6 +43,13 @@ class _ManagerHomeState extends State<ManagerHome> {
   void initState() {
     super.initState();
     DisplayWaiting();
+    AvgDuration();
+  }
+
+  Future AvgDuration() async {
+    print(GlobalValues.id);
+    var url = "http://10.0.2.2/phpfiles/AvgDuration.php";
+    final res = await http.post(Uri.parse(url), body: {});
   }
 
   Future DisplayWaiting() async {
@@ -319,8 +326,6 @@ class BodyHome extends StatelessWidget {
                                     fontWeight: FontWeight.w600),
                                 textAlign: TextAlign.center,
                               ),
-                            
-                              
                               SizedBox(
                                 height: 10.0,
                               ),
