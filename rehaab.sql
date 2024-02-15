@@ -65,7 +65,7 @@ CREATE TABLE `parameters` (
 --
 
 INSERT INTO `parameters` (`ParametersId`, `ReservationDur`, `NumOfSWalkInVehicles`, `NumOfDWalkInVehicles`, `NumOfSBackUpVehicles`, `NumOfDBackUpVehicles`, `NumOfSVisitorVehicles`, `NumOfDVisitorVehicles`, `CancelDur`) VALUES
-(1, '01:15', 3, 3, 20, 15, 30, 35, '15m');
+(1, '01:15', 3, 3, 20, 15, 30, 35, '24h');
 
 -- --------------------------------------------------------
 
