@@ -6,6 +6,476 @@ import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart' as qr;
+import '../customization/clip.dart';
+import '../widgets/constants.dart';
+import 'package:encrypt/encrypt.dart' as enc;
+import 'package:http/http.dart' as http;
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:qr_scanner_overlay/qr_scanner_overlay.dart';
+
+class CheckIn extends StatefulWidget {
+  @override
+  State<CheckIn> createState() => _CheckInState();
+}
+
+class _CheckInState extends State<CheckIn> {
+  bool isVisibleSuccess=false;
+  bool isVisibleErr=false;
+  bool isScanCompleted=false;
+  String Rid="";
+  List<Barcode> barcodes=[];
+  StartTawaf() async {
+  /*final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
+  final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
+  final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
+  final decrypted = encrypter.decrypt64(barcode!.code!, iv: iv);*/
+    var url = "http://192.168.8.105/phpfiles/startTawaf.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "Rid": Rid,
+     // "Rid": decrypted,
+    });
+    var respo = json.decode(res.body);
+    print(respo);
+    if(respo=="Tawaf started successfully"){
+      setState(() {
+        isVisibleSuccess=true;
+      });
+    }
+    else{
+      setState(() {
+        isVisibleErr=true;
+      });
+    }
+  }
+  
+  qr.Barcode? barcode;
+  qr.QRViewController? controller;
+  final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+
+  // In order to get hot reload to work we need to pause the camera if the platform
+  // is android, or resume the camera if the platform is iOS.
+  @override
+  void reassemble() async{
+    super.reassemble();
+    if (Platform.isAndroid) {
+      await controller!.pauseCamera();
+    }
+    controller!.resumeCamera();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    
+  }
+
+ 
+
+  Widget build(BuildContext context) => SafeArea(
+    child: Scaffold(
+     backgroundColor: kPrimaryLightColor,
+      appBar: AppBar(
+        leading: Container(
+          padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
+          child: BackButton(),
+
+        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        toolbarHeight: 100,
+        flexibleSpace: ClipPath(
+          clipper: AppbarClip(),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 180,
+            color: kPrimaryColor,
+            child: Center(
+              child: Text(
+                'Check In',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 23,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+        ),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+
+        children: <Widget>[
+          Expanded(child: Container(
+            child: Column(mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              
+          
+              Text("Place the QR code in the area", 
+            style: TextStyle(
+              color: Colors.black87,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1
+
+            )), Text("Scanning will be started automatically", 
+            style: TextStyle(
+              color: Colors.black54,
+              fontSize: 16,
+
+            )), 
+            ],)
+            
+            
+          ),),
+          Expanded(
+            flex: 5,
+            child: Stack(
+              children: [ MobileScanner(
+              
+              onDetect: (barcode){
+               if(!isScanCompleted){
+                 barcodes= barcode.barcodes;
+                 Rid= barcodes[0].rawValue!;
+                 isScanCompleted=true;
+               }
+
+              },
+
+              
+          ), QRScannerOverlay( 
+            borderColor: kPrimaryColor,
+          borderRadius: 10,
+          overlayColor: kPrimaryLightColor,
+          
+          scanAreaWidth: (MediaQuery.of(context).size.width)*0.6, 
+          scanAreaHeight: MediaQuery.of(context).size.height*0.3,),
+           
+          ])),
+            
+          
+         // Expanded(child: Container(child: buildQrView(context),), flex: 4,),
+          Expanded(child: Container(
+            alignment: Alignment.center,
+            color: kPrimaryLightColor, child:  buildResult(),)),
+          
+          Visibility(
+            visible: isVisibleSuccess,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Container(
+                alignment: Alignment.center,
+                width: 500,
+                height: double.infinity,
+                color: const Color.fromARGB(0, 80, 59, 59),
+                child: Stack(
+                  children: [
+                    BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                      child: Container(
+                        padding: EdgeInsets.all(50.0),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          border:
+                              Border.all(color: Colors.white.withOpacity(0.13)),
+                          gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.white.withOpacity(0.15),
+                                Colors.white.withOpacity(0.05),
+                              ])),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          /////////////////////////////////////////////////////
+          //Waiting list
+          Visibility(
+            visible: isVisibleSuccess,
+            
+            child: Dialog(
+                                                        backgroundColor:
+                                                            Color.fromARGB(255,
+                                                                247, 247, 247),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(20.0),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Lottie.asset(
+                                                                  'assets/images/success.json',
+                                                                  width: 100,
+                                                                  height: 100),
+                                                              Text(
+                                                                'Success',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Text(
+                                                                'Checked in successfully',
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        17,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  ConstrainedBox(
+                                                                    constraints: BoxConstraints.tightFor(
+                                                                        height:
+                                                                            38,
+                                                                        width:
+                                                                            100),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        //add to waiting list button
+
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tightFor(height: 45, width: 120),
+                          child: ElevatedButton(
+                            onPressed: () {
+                          Navigator.of(context).pop();
+                         
+                              
+                            },
+                            child: Text(
+                              'Done',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 60, 100, 73),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
+          ), Visibility(
+            visible: isVisibleErr,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(30),
+              child: Container(
+                alignment: Alignment.center,
+                width: 500,
+                height: double.infinity,
+                color: Colors.transparent,
+                child: Stack(
+                  children: [
+                    BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 2.0, sigmaY: 2.0),
+                      child: Container(
+                        padding: EdgeInsets.all(50.0),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          border:
+                              Border.all(color: Colors.white.withOpacity(0.13)),
+                          gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                Colors.white.withOpacity(0.15),
+                                Colors.white.withOpacity(0.05),
+                              ])),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          /////////////////////////////////////////////////////
+          //Waiting list
+          Visibility(
+            visible: isVisibleErr,
+            
+            child: Dialog(
+                                                        backgroundColor:
+                                                            Color.fromARGB(255, 196, 25, 25),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                        child: Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(20.0),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Lottie.asset(
+                                                                  'assets/images/erorrr.json',
+                                                                  width: 100,
+                                                                  height: 100),
+                                                              Text(
+                                                                ' Error!',
+                                                                style: TextStyle(
+                                                                    color: const Color.fromARGB(255, 228, 223, 223),
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Text(
+                                                    'Check in failed',
+                                                                style: TextStyle(
+                                                                    color: Color.fromARGB(255, 226, 219, 219),
+                                                                    fontSize:
+                                                                        17,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
+                                                              ),
+                                                              SizedBox(
+                                                                height: 10.0,
+                                                              ),
+                                                              Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  ConstrainedBox(
+                                                                    constraints: BoxConstraints.tightFor(
+                                                                        height:
+                                                                            38,
+                                                                        width:
+                                                                            100),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        //add to waiting list button
+
+                        ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tightFor(height: 45, width: 120),
+                          child: ElevatedButton(
+                            onPressed: () {
+                          Navigator.of(context).pop();
+                         
+                              
+                            },
+                            child: Text(
+                              'Done',
+                              style: TextStyle(
+                                  color: const Color.fromARGB(255, 10, 7, 7),
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Color.fromARGB(255, 237, 241, 238),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(50),
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      )
+          )
+        ],)
+    ));
+  
+  Widget buildResult()=> Container(
+    padding: EdgeInsets.all(20),
+    child: Text( 
+    barcode!= null? 'Result: ${barcodes[0].rawValue}': 'Scan a code' ,
+    maxLines: 10,
+    style: TextStyle(
+      fontSize: 15,
+      fontWeight: FontWeight.bold
+    ),
+    )
+  );
+/*
+   import 'dart:convert';
+import 'dart:io';
+import 'dart:developer';
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import '../customization/clip.dart';
 import '../widgets/constants.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -118,7 +588,7 @@ class _CheckInState extends State<CheckIn> {
                 alignment: Alignment.center,
                 width: 500,
                 height: double.infinity,
-                color: Colors.transparent
+                color: const Color.fromARGB(0, 80, 59, 59),
                 child: Stack(
                   children: [
                     BackdropFilter(
@@ -463,4 +933,6 @@ await StartTawaf();      });
     super.dispose();
   }
 
+}
+*/
 }
