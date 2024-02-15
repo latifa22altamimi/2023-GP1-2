@@ -23,6 +23,9 @@ class _CheckInState extends State<CheckIn> {
   bool isVisibleSuccess=false;
   bool isVisibleErr=false;
   bool isScanCompleted=false;
+  bool isFlashOn=false;
+  bool isFrontCamera=false;
+  MobileScannerController controller= MobileScannerController();
   String Rid="";
   List<Barcode> barcodes=[];
   StartTawaf() async {
@@ -30,7 +33,7 @@ class _CheckInState extends State<CheckIn> {
   final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
   final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
   final decrypted = encrypter.decrypt64(barcode!.code!, iv: iv);*/
-    var url = "http://192.168.8.105/phpfiles/startTawaf.php";
+    var url = "http://10.0.2.2/phpfiles/startTawaf.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": Rid,
      // "Rid": decrypted,
@@ -50,7 +53,7 @@ class _CheckInState extends State<CheckIn> {
   }
   
   qr.Barcode? barcode;
-  qr.QRViewController? controller;
+  qr.QRViewController? controllerQ;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
 
   // In order to get hot reload to work we need to pause the camera if the platform
@@ -59,9 +62,9 @@ class _CheckInState extends State<CheckIn> {
   void reassemble() async{
     super.reassemble();
     if (Platform.isAndroid) {
-      await controller!.pauseCamera();
+      await controllerQ!.pauseCamera();
     }
-    controller!.resumeCamera();
+    controllerQ!.resumeCamera();
   }
 
   @override
@@ -74,8 +77,11 @@ class _CheckInState extends State<CheckIn> {
 
   Widget build(BuildContext context) => SafeArea(
     child: Scaffold(
+      drawer: const Drawer(),
      backgroundColor: kPrimaryLightColor,
       appBar: AppBar(
+        actions: [],
+        iconTheme: IconThemeData(color: Colors.black87),
         leading: Container(
           padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
           child: BackButton(),
@@ -123,7 +129,8 @@ class _CheckInState extends State<CheckIn> {
               color: Colors.black54,
               fontSize: 16,
 
-            )), 
+            )),
+            
             ],)
             
             
@@ -131,7 +138,9 @@ class _CheckInState extends State<CheckIn> {
           Expanded(
             flex: 5,
             child: Stack(
-              children: [ MobileScanner(
+              children: [
+               
+                 MobileScanner(
               
               onDetect: (barcode){
                if(!isScanCompleted){
@@ -145,7 +154,6 @@ class _CheckInState extends State<CheckIn> {
               
           ), QRScannerOverlay( 
             borderColor: kPrimaryColor,
-          borderRadius: 10,
           overlayColor: kPrimaryLightColor,
           
           scanAreaWidth: (MediaQuery.of(context).size.width)*0.6, 
@@ -157,7 +165,20 @@ class _CheckInState extends State<CheckIn> {
          // Expanded(child: Container(child: buildQrView(context),), flex: 4,),
           Expanded(child: Container(
             alignment: Alignment.center,
-            color: kPrimaryLightColor, child:  buildResult(),)),
+            color: kPrimaryLightColor, child: Column(
+              children: [
+              Row(mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(onPressed: (){
+                  setState(() {
+                     isFlashOn=!isFlashOn;
+                  });
+                  controller.toggleTorch();
+                }, icon: Icon(Icons.flash_on, color: isFlashOn? kPrimaryColor  : Colors.grey,)),
+        IconButton(onPressed: (){setState(() {
+                     isFrontCamera=!isFrontCamera;
+                  });
+                  controller.switchCamera();}, icon: Icon(Icons.cameraswitch_sharp, color:isFrontCamera? kPrimaryColor  : Colors.grey,)),]) , buildResult()],),)),
           
           Visibility(
             visible: isVisibleSuccess,
@@ -457,10 +478,10 @@ class _CheckInState extends State<CheckIn> {
     ));
   
   Widget buildResult()=> Container(
-    padding: EdgeInsets.all(20),
+    padding: EdgeInsets.all(10),
     child: Text( 
     barcode!= null? 'Result: ${barcodes[0].rawValue}': 'Scan a code' ,
-    maxLines: 10,
+    maxLines: 1,
     style: TextStyle(
       fontSize: 15,
       fontWeight: FontWeight.bold
@@ -936,3 +957,4 @@ await StartTawaf();      });
 }
 */
 }
+
