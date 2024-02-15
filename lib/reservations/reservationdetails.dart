@@ -4,7 +4,6 @@ import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:rehaab/CheckOut/CheckOut.dart';
-import 'package:rehaab/CheckOut/CheckOut.dart';
 import 'package:rehaab/customization/clip.dart';
 import 'package:http/http.dart' as http;
 import 'package:rehaab/widgets/constants.dart';
@@ -17,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:progress_border/progress_border.dart';
 import 'package:encrypt/encrypt.dart' as enc;
+import 'dart:async';
 
 String getUpdatedTime = "";
 String getUpdatedDate = "";
@@ -84,6 +84,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
     super.initState();
     GetData();
     GetCancelDur();
+   _startCallFunction(); ////////////function that calls _checkout every 1 s till the page disposed
     animationController.addListener(() {
       setState(() {});
     });
@@ -91,9 +92,28 @@ class _ReservationDetailsState extends State<ReservationDetails>
     restart();
   }
 
+
+ Timer? _timer;
+ void _startCallFunction() {
+    _Checkout();
+
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      _Checkout();
+    });
+  }
+
+  void _Checkout() {
+  if(GlobalValues.Status=="Active"){
+  CheckOutState().Checkoutt();
+  }
+  }
+
   @override
   void dispose() {
     animationController.dispose();
+      if (_timer != null) {
+      _timer!.cancel();
+    }
     super.dispose();
   }
 
