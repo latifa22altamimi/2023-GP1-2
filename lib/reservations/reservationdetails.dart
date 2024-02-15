@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +36,7 @@ class ReservationDetails extends StatefulWidget {
 
 int ind = 0;
 List list = [];
+String CancelDur="";
 
 var datetime;
 
@@ -50,12 +52,10 @@ class _ReservationDetailsState extends State<ReservationDetails>
     // this isthe duration of the progress
     duration: const Duration(seconds: 7),
   );
-
   _ReservationDetailsState({this.Rid, this.Status, this.date, this.time});
   String encryptIt(String text) {
     final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
   final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
-
   final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
   final encrypted = encrypter.encrypt(text, iv: iv);
   return encrypted.base64;
@@ -83,6 +83,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
   void initState() {
     super.initState();
     GetData();
+    GetCancelDur();
     animationController.addListener(() {
       setState(() {});
     });
@@ -119,10 +120,26 @@ class _ReservationDetailsState extends State<ReservationDetails>
     print(respo);
   }
 
-  bool visibility() {
+   Future GetCancelDur() async{
+ 
+    var url = "http://10.0.2.2/phpfiles/CancelDur.php";
+    var res = await http.get(Uri.parse(url));
+
+    if (res.statusCode == 200) {
+      CancelDur = json.decode(res.body);
+
+      setState(() {
+        CancelDur=CancelDur.toString().substring(0,2);
+        print(CancelDur);
+      });
+    }
+   }
+   bool visibility(){ 
+    
     datetime = date! + " " + time!.substring(0, 5) + ":00";
+     final duration= DateTime.parse(datetime).difference(DateTime.now());
     if (Status == 'Cancelled' ||
-        DateTime.now().isAfter(DateTime.parse(datetime!)) ||
+         duration.inMinutes<=int.parse(CancelDur) ||
         Status == "Active" ||
         Status == "Completed") {
       return false;
@@ -131,13 +148,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
     }
   }
 
-  bool visible() {
-    if (Status == 'Active') {
-      return true;
-    } else {
-      return false;
-    }
-  }
+ 
 
   bool start() {
     datetime = date! + " " + time!.substring(0, 5) + ":00";
@@ -321,7 +332,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Visibility(
+               /* Visibility(
                   visible: start(),
                   child: Container(
                     //padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
@@ -545,7 +556,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                       ),
                     ),
                   ),
-                ),
+                ),*/
 
                 //Reschedule
                 Visibility(
