@@ -21,13 +21,14 @@ class _CheckInState extends State<CheckIn> {
   bool isVisibleSuccess=false;
   bool isVisibleErr=false;
   StartTawaf() async {
-  final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
+  /*final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
   final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
   final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
-  final decrypted = encrypter.decrypt64(barcode!.code!, iv: iv);
+  final decrypted = encrypter.decrypt64(barcode!.code!, iv: iv);*/
     var url = "http://10.0.2.2/phpfiles/startTawaf.php";
     final res = await http.post(Uri.parse(url), body: {
-      "Rid": decrypted,
+      "Rid": barcode!.code!
+     // "Rid": decrypted,
     });
     var respo = json.decode(res.body);
     print(respo);
@@ -98,7 +99,17 @@ class _CheckInState extends State<CheckIn> {
       body: Stack(
         alignment:AlignmentDirectional.topCenter ,
         children: <Widget>[
+          /*Expanded(child: Container(child: 
+            Text("Place the QR code in the area", 
+            style: TextStyle(
+              color: Colors.black87,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+
+            ))
+          ),),*/
           buildQrView(context),
+          Positioned(child: buildResult(), bottom: 10,),
           Visibility(
             visible: isVisibleSuccess,
             child: ClipRRect(
@@ -107,7 +118,7 @@ class _CheckInState extends State<CheckIn> {
                 alignment: Alignment.center,
                 width: 500,
                 height: double.infinity,
-                color: Colors.transparent,
+                color: const Color.fromARGB(0, 80, 59, 59),
                 child: Stack(
                   children: [
                     BackdropFilter(
@@ -420,7 +431,7 @@ class _CheckInState extends State<CheckIn> {
           borderRadius: 10,
           borderLength: 30,
           borderWidth: 10,
-          cutOutSize: (MediaQuery.of(context).size.width)*0.8),
+          cutOutSize: (MediaQuery.of(context).size.width)*0.6),
       onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
     );
   }
