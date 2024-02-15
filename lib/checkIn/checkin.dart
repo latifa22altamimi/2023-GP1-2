@@ -118,7 +118,7 @@ class _CheckInState extends State<CheckIn> {
                 alignment: Alignment.center,
                 width: 500,
                 height: double.infinity,
-                color: const Color.fromARGB(0, 80, 59, 59),
+                color: Colors.transparent
                 child: Stack(
                   children: [
                     BackdropFilter(
