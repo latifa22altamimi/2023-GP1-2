@@ -1,8 +1,8 @@
 import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:rehaab/CheckOut/CheckOut.dart';
 import 'package:rehaab/CheckOut/CheckOut.dart';
 import 'package:rehaab/customization/clip.dart';
 import 'package:http/http.dart' as http;
@@ -16,6 +16,7 @@ import 'package:intl/intl.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:progress_border/progress_border.dart';
 import 'package:encrypt/encrypt.dart' as enc;
+import 'dart:async';
 
 String getUpdatedTime = "";
 String getUpdatedDate = "";
@@ -35,6 +36,8 @@ class ReservationDetails extends StatefulWidget {
 
 int ind = 0;
 List list = [];
+String CancelDur="";
+int CancelDurInt=0;
 
 var datetime;
 
@@ -50,12 +53,10 @@ class _ReservationDetailsState extends State<ReservationDetails>
     // this isthe duration of the progress
     duration: const Duration(seconds: 7),
   );
-
   _ReservationDetailsState({this.Rid, this.Status, this.date, this.time});
   String encryptIt(String text) {
     final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
   final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
-
   final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
   final encrypted = encrypter.encrypt(text, iv: iv);
   return encrypted.base64;
@@ -83,16 +84,42 @@ class _ReservationDetailsState extends State<ReservationDetails>
   void initState() {
     super.initState();
     GetData();
+    GetCancelDur();
+   _startCallFunction(); ////////////function that calls _checkout every 1 s till the page disposed
     animationController.addListener(() {
       setState(() {});
     });
+    if(list.isNotEmpty){
+      GlobalValues.Status=list[ind]["Status"];
+
+    }
+    
 
     restart();
+  }
+
+
+ Timer? _timer;
+ void _startCallFunction() {
+    _Checkout();
+
+    _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
+      _Checkout();
+    });
+  }
+
+  void _Checkout() {
+  if(GlobalValues.Status=="Active"){
+  CheckOutState().Checkoutt();
+  }
   }
 
   @override
   void dispose() {
     animationController.dispose();
+      if (_timer != null) {
+      _timer!.cancel();
+    }
     super.dispose();
   }
 
@@ -119,10 +146,31 @@ class _ReservationDetailsState extends State<ReservationDetails>
     print(respo);
   }
 
-  bool visibility() {
+   Future GetCancelDur() async{
+ 
+    var url = "http://10.0.2.2/phpfiles/CancelDur.php";
+    var res = await http.get(Uri.parse(url));
+
+    if (res.statusCode == 200) {
+      CancelDur = json.decode(res.body);
+
+      setState(() {
+        var index=CancelDur.indexOf("h");
+        CancelDur=CancelDur.substring(0,index);
+        print(CancelDur);
+        CancelDurInt=int.parse(CancelDur);
+          CancelDurInt=CancelDurInt*60; // convert to minutes
+        
+
+      });
+    }
+   }
+   bool visibility(){ 
+    
     datetime = date! + " " + time!.substring(0, 5) + ":00";
+     final duration= DateTime.parse(datetime).difference(DateTime.now());
     if (Status == 'Cancelled' ||
-        DateTime.now().isAfter(DateTime.parse(datetime!)) ||
+         duration.inMinutes<=CancelDurInt ||
         Status == "Active" ||
         Status == "Completed") {
       return false;
@@ -131,13 +179,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
     }
   }
 
-  bool visible() {
-    if (Status == 'Active') {
-      return true;
-    } else {
-      return false;
-    }
-  }
+ 
 
   bool start() {
     datetime = date! + " " + time!.substring(0, 5) + ":00";
@@ -260,8 +302,8 @@ class _ReservationDetailsState extends State<ReservationDetails>
                             child: list.isEmpty
                                 ? Text("")
                                 : QrImageView(
-                                    data:
-                                        encryptIt(list[ind]["reservationId"]),
+                                    data: "${list[ind]["reservationId"]}",
+                                        //encryptIt(list[ind]["reservationId"]),
                                     size: 150,
                                   )),
                         Container(
@@ -321,7 +363,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Visibility(
+               /* Visibility(
                   visible: start(),
                   child: Container(
                     //padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
@@ -545,7 +587,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                       ),
                     ),
                   ),
-                ),
+                ),*/
 
                 //Reschedule
                 Visibility(
