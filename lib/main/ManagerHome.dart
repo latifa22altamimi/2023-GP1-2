@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:pie_chart/pie_chart.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/TrackTawafStatus/TrackTawaf.dart';
 import 'package:rehaab/checkIn/checkin.dart';
@@ -272,6 +274,12 @@ class AppBarr extends StatelessWidget {
   }
 }
 
+final dataMap = <String, double>{
+  //how many available vehicles
+  "Single vehicles": 5,
+  "Double vehicles": 3,
+};
+
 class BodyHome extends StatelessWidget {
   const BodyHome({super.key});
 
@@ -281,15 +289,252 @@ class BodyHome extends StatelessWidget {
       children: [
         Padding(
             padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-            child: Text(
-              'Services',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Vehicles details',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500),
+              ),
             )),
+        SizedBox(
+          height: 15.0,
+        ),
+        // dashboard
+/*
+        SizedBox(
+          width: 380,
+          height: 260,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 255, 255, 255),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 2.0,
+                  spreadRadius: .05,
+                ),
+              ],
+            ),
+            padding:
+                EdgeInsets.only(left: 5.0, right: 5.0, bottom: 10.0, top: 10.0),
+            child: Column(
+              children: [
+                Text(
+                          'Walk-in vehicles',
+                          style:
+                              TextStyle(fontSize: 17, fontWeight: FontWeight.w600),
+                        ),
+                Row(
+                  children: [
+                     
+                   
+                   
+                         
+                          CircularPercentIndicator(
+                            animation: true,
+                            animationDuration: 1000,
+                            radius: 75,
+                            lineWidth: 20,
+                            percent: 0.4,
+                            progressColor: kPrimaryColor,
+                            backgroundColor: Colors.grey.withOpacity(0.2),
+                            circularStrokeCap: CircularStrokeCap.round,
+                            center: Column(
+                              children: [
+                                SizedBox(height: 53.0,),
+                                const Text(
+                                  '40%',
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                SizedBox(height: 4,),
+                                const Text(
+                                  'Available vehicles',
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            ),
+                          ),
+/*
+                          SizedBox(width: 20.0,),
+                          
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                    
+                              SizedBox(
+                                width: 170,
+                                height: 40,
+                                child: Container(
+                                   decoration: BoxDecoration(
+                                            color: Color.fromARGB(255, 255, 255, 255),
+                                            borderRadius: BorderRadius.circular(10),
+                                            boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 2.0,
+                                  spreadRadius: .05,
+                                ),
+                                            ],
+                                          ),
+                                          child: Row(
+                                            children: [
+                                              Icon(
+                                                Icons.line_style
+                                              )
+                                            ],
+                                          ),
+                                ),
+                              ),
+                    
+                              SizedBox(height: 13.0,),
+                    
+                              SizedBox(
+                                width: 170,
+                                height: 40,
+                                child: Container(
+                                   decoration: BoxDecoration(
+                                            color: Color.fromARGB(255, 255, 255, 255),
+                                            borderRadius: BorderRadius.circular(10),
+                                            boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 2.0,
+                                  spreadRadius: .05,
+                                ),
+                                            ],
+                                          ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          */
+                        
+                    /*
+                  PieChart(
+                    ringStrokeWidth: 15.0,
+                    centerText: '8',
+                    centerTextStyle: TextStyle(
+                      fontSize: 26,
+                       fontWeight: FontWeight.w500,
+                       color: Colors.black
+                       ),
+                    legendOptions: LegendOptions(
+                      showLegends: true,
+                      legendPosition: LegendPosition.bottom,
+                      showLegendsInRow: true
+                      ),
+                    chartRadius: 110,
+                    dataMap: dataMap,
+                    chartType: ChartType.ring,
+                    baseChartColor: Colors.grey.withOpacity(0.24),
+                    colorList: [ Color.fromARGB(255, 37, 149, 190),ErrorColor],
+                    chartValuesOptions: ChartValuesOptions(
+                      showChartValueBackground: false,
+                      showChartValuesInPercentage: false,
+                      showChartValuesOutside: true,
+                      decimalPlaces: 0
+                    ),
+                    totalValue: 20,//number of all vehicles 
+                  
+                  ),*/
 
+                    
+                    SizedBox(
+                      height: 15.0,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 10.0,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //avg time
+            SizedBox(
+              height: 115,
+              width: 140,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 2.0,
+                      spreadRadius: .05,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Icon(
+                      Icons.timeline,
+                      color: ErrorColor,
+                      size: 30.0,
+                    ),
+                    SizedBox(
+                      height: 10.0,
+                    ),
+                    Text(
+                      '1:30',
+                      style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black),
+                    ),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Text(
+                      'Average time',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 100,
+              width: 200,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color.fromARGB(255, 255, 255, 255),
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 2.0,
+                      spreadRadius: .05,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+*/
         // cards
 
         Container(
