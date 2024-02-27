@@ -7,8 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-//import 'package:qr_code_scanner/qr_code_scanner.dart' as qr;
-//import 'package:rehaab/checkIn/Result.dart';
+
 import '../customization/clip.dart';
 import '../widgets/constants.dart';
 import 'package:encrypt/encrypt.dart' as enc;
@@ -24,14 +23,12 @@ class CheckIn extends StatefulWidget {
 class _CheckInState extends State<CheckIn> {
   bool isVisibleSuccess=false;
   bool isVisibleErr=false;
-  bool isScanCompleted=false;
 
   bool isFlashOn = false;
   bool isFrontCamera = false;
+      bool isDetecting=false;
+
   
-  void closeScreen() {
-    isScanCompleted = false;
-  }
   String code="";
 
   late MobileScannerController controller;
@@ -46,15 +43,19 @@ class _CheckInState extends State<CheckIn> {
       "Rid": decrypted,
     });
     var respo = json.decode(res.body);
+   await Future.delayed(Duration(seconds: 2));
     print(respo);
     if(respo=="Tawaf started successfully"){
       setState(() {
         isVisibleSuccess=true;
+        isDetecting= false;
       });
     }
     else{
       setState(() {
         isVisibleErr=true;
+       isDetecting= false;
+
       });
     }
   }
@@ -164,33 +165,45 @@ Widget build(BuildContext context) => SafeArea(
           child: Stack(
             children: [
             MobileScanner(
-  controller: controller,
-  fit: BoxFit.cover,
-  onDetect: (capture, args) async {
-    // Extract the scanned QR code from the capture object
-    String scannedQrCode = capture.rawValue ?? "";
-    
-    // Check if a QR code was scanned
-    if (scannedQrCode.isNotEmpty) {
-      // Process the scanned QR code (e.g., start Tawaf)
-      await StartTawaf(scannedQrCode);
-      // Update the 'code' variable to display the scanned code
-      setState(() {
-        code = scannedQrCode;
-      });
+                      controller: controller,
+                      fit: BoxFit.cover,
+                      onDetect: (capture, args) async {
+                        setState(() {
+                          isDetecting = true;
+                        });
+                        String scannedQrCode = capture.rawValue ?? "";
+                        if (scannedQrCode.isNotEmpty) {
+                          setState(() {
+                            code = scannedQrCode;
+                          });
+                          await StartTawaf(scannedQrCode);
+                          if (isVisibleSuccess) {
+                            showSuccessModal(context);
+                          } else if (isVisibleErr) {
+                            showErrorModal(context);
+                          }
+                        }
+                      },
+                    ),
+if(isDetecting)
+Center(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  CircularProgressIndicator(strokeWidth: 50, color: Colors.white), // Circular progress indicator
+                  Image.asset(
+                    'assets/images/logoapp-removebg-preview.png', // Image asset for the indicator
+                    width: 80,
+                    height: 80,
+                  ),
+                ],
+              ),
+            ),
 
-      // Show success or error modal based on the result
-      if (isVisibleSuccess) {
-        showSuccessModal(context);
-      } else if (isVisibleErr) {
-        showErrorModal(context);
-      }
-    }
-  },
-),
+
 
               QRScannerOverlay(
-                borderColor: kPrimaryColor,
+               borderColor: kPrimaryColor,
                 overlayColor: kPrimaryLightColor,
                 borderRadius: 12,
                 scanAreaWidth: (MediaQuery.of(context).size.width) * 0.6,
