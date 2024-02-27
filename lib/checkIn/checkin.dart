@@ -31,7 +31,8 @@ class _CheckInState extends State<CheckIn> {
   
   String code="";
 
-  late MobileScannerController controller;
+  MobileScannerController controller= MobileScannerController(formats: [BarcodeFormat.qrCode]);
+
   
   Future<void> StartTawaf(String code) async {
   try {
@@ -78,8 +79,6 @@ class _CheckInState extends State<CheckIn> {
  @override
 void initState() {
   super.initState();
-  controller = MobileScannerController(formats: [BarcodeFormat.qrCode]);
-
   _requestCameraPermission();
 }
 
@@ -87,7 +86,9 @@ Future<void> _requestCameraPermission() async {
     final status = await Permission.camera.request();
     if (status.isGranted) {
       // Camera permission granted, initialize the camera here
+
       initializeCamera();
+      print("Camera permission granted.");
     } else if (status.isDenied) {
       // Camera permission denied
       // Handle denied permission
@@ -103,6 +104,7 @@ Future<void> _requestCameraPermission() async {
 
 Future<void> initializeCamera() async {
     try {
+     
       await controller.start();
 
     } catch (e) {
