@@ -168,36 +168,7 @@ class AppBarr extends StatelessWidget {
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
               ),
-              Visibility(
-                  visible: GlobalValues.Status == "Active" ? true : false,
-                  child: TextButton(
-                    style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(kPrimaryColor)),
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => callSupport())),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SizedBox(
-                          height: 10,
-                          width: 10,
-                        ),
-                        Row(
-                          children: [
-                            //  Container (child: Icon(Icons.support_agent, size:35, color:Colors.white ,),
-
-                            Container(
-                              child: Image.asset(
-                                  'assets/images/support_icon.png',
-                                  width: 50,
-                                  height: 50),
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  )),
+             
               /*   Visibility(
                     visible: false,
                       child: FloatingActionButton( 
@@ -756,7 +727,7 @@ SizedBox(
                 ),
                 InkWell(
                   onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => OnboardingScreen())),
+                      MaterialPageRoute(builder: (context) => CheckIn())),
                   child: Container(
                    width: 170,
                     height: 150,
