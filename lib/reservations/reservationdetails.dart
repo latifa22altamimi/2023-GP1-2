@@ -302,8 +302,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                             child: list.isEmpty
                                 ? Text("")
                                 : QrImageView(
-                                    data: "${list[ind]["reservationId"]}",
-                                        //encryptIt(list[ind]["reservationId"]),
+                                    data: encryptIt(list[ind]["reservationId"]),
                                     size: 150,
                                   )),
                         Container(
