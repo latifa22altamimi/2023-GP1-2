@@ -35,7 +35,7 @@ class _CheckInState extends State<CheckIn> {
 
   late MobileScannerController controller;
   
-  StartTawaf() async {
+  StartTawaf(String code) async {
   final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
   final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
   final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
@@ -82,6 +82,7 @@ class _CheckInState extends State<CheckIn> {
 Future<void> initializeCamera() async {
     try {
       await controller.start();
+
     } catch (e) {
       print('Error initializing camera: $e');
     }
@@ -155,27 +156,32 @@ Widget build(BuildContext context) => SafeArea(
           flex: 5,
           child: Stack(
             children: [
-              MobileScanner(
-                controller: controller,
-                fit: BoxFit.cover,
-                onDetect: (capture,args) async {
-                 
-                  
-                    if (!isScanCompleted) {
-                       code = capture.rawValue!;
-                      isScanCompleted = true;
-                      if (code!="") {
-                        await StartTawaf();
-                        if (isVisibleSuccess) {
-                          showSuccessModal(context);
-                        } else if (isVisibleErr) {
-                          showErrorModal(context);
-                        }
-                      }
-                    }
-                  
-                },
-              ),
+            MobileScanner(
+  controller: controller,
+  fit: BoxFit.cover,
+  onDetect: (capture, args) async {
+    // Extract the scanned QR code from the capture object
+    String scannedQrCode = capture.rawValue ?? "";
+    
+    // Check if a QR code was scanned
+    if (scannedQrCode.isNotEmpty) {
+      // Process the scanned QR code (e.g., start Tawaf)
+      await StartTawaf(scannedQrCode);
+      // Update the 'code' variable to display the scanned code
+      setState(() {
+        code = scannedQrCode;
+      });
+
+      // Show success or error modal based on the result
+      if (isVisibleSuccess) {
+        showSuccessModal(context);
+      } else if (isVisibleErr) {
+        showErrorModal(context);
+      }
+    }
+  },
+),
+
               QRScannerOverlay(
                 borderColor: kPrimaryColor,
                 overlayColor: kPrimaryLightColor,
