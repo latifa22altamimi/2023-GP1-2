@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
 import 'dart:ui';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -60,24 +61,30 @@ class _CheckInState extends State<CheckIn> {
   
   
 
-  // In order to get hot reload to work we need to pause the camera if the platform
-  // is android, or resume the camera if the platform is iOS.
-  @override
-  /*void reassemble() async{
-    super.reassemble();
-    if (Platform.isAndroid) {
-      await controllerQ!.pauseCamera();
-    }
-    controllerQ!.resumeCamera();
-  }*/
-
-  @override
-  void initState() {
-    super.initState();
-    controller = MobileScannerController(formats: [BarcodeFormat.qrCode]);
-    initializeCamera();
  
+
+ @override
+void initState() {
+  super.initState();
+  controller = MobileScannerController(formats: [BarcodeFormat.qrCode]);
+
+  _requestCameraPermission();
+}
+
+Future<void> _requestCameraPermission() async {
+  final status = await Permission.camera.request();
+  if (status.isGranted) {
+    // Camera permission granted, initialize the camera here
+    initializeCamera();
+  } else if (status.isDenied) {
+    // Camera permission denied
+    // Handle denied permission
+  } else if (status.isPermanentlyDenied) {
+    // Camera permission permanently denied, show a dialog or guide the user to app settings
+    // Handle permanently denied permission
   }
+}
+
 
 Future<void> initializeCamera() async {
     try {
