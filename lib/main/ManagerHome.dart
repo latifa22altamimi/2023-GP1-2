@@ -756,7 +756,7 @@ SizedBox(
                 ),
                 InkWell(
                   onTap: () => Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => OnboardingScreen())),
+                      MaterialPageRoute(builder: (context) => CheckIn())),
                   child: Container(
                    width: 170,
                     height: 150,
