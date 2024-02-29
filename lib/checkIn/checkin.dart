@@ -32,6 +32,8 @@ class _CheckInState extends State<CheckIn> {
   String code="";
 
   MobileScannerController controller= MobileScannerController(formats: [BarcodeFormat.qrCode]);
+  
+  bool isVisibleInvalid=false;
 
   
   Future<void> StartTawaf(String code) async {
@@ -53,8 +55,12 @@ class _CheckInState extends State<CheckIn> {
     if (respo == "Tawaf started successfully") {
       setState(() {
         isVisibleSuccess = true;
-      });
-    } else {
+      });}
+    else if(respo =="Reservation status is not Confirmed"){
+        isVisibleInvalid=true;
+    }
+     else {
+
       setState(() {
         isVisibleErr = true;
       });
@@ -198,6 +204,10 @@ Widget build(BuildContext context) => SafeArea(
                           } else if (isVisibleErr) {
                             showErrorModal(context);
                           }
+                          else if(isVisibleInvalid){
+                            showInvalidModal(context);
+
+                          }
                         }
                       },
                     ),
@@ -324,7 +334,31 @@ void showErrorModal(BuildContext context) {
     },
   );
 }
-
+void showInvalidModal(BuildContext context) {
+  showModalBottomSheet(
+    isScrollControlled: true,
+    context: context,
+    builder: (BuildContext context) {
+      Future.delayed(
+        Duration(seconds: 5),
+        () {
+          Navigator.of(context).pop();
+          setState(() {
+            isVisibleInvalid = !isVisibleInvalid;
+          });
+        },
+      );
+      return buildModalContent(
+        context,
+        'assets/images/erorrr.json',
+        'Error!',
+        'Invalid QR code',
+        const Color.fromARGB(255, 228, 223, 223),
+        Color.fromARGB(255, 196, 25, 25),
+      );
+    },
+  );
+}
 Widget buildModalContent(BuildContext context, String animationAsset, String title, String subtitle, Color titleColor, Color backgroundColor) {
   return Container(
     height: 350,
@@ -440,7 +474,7 @@ Widget buildModalContent(BuildContext context, String animationAsset, String tit
   Widget buildResult()=> Container(
     padding: EdgeInsets.all(10),
     child: Text( 
-    code!= ""? 'Result: ${code}': 'Scan a code' ,
+    code!= ""? '': 'Scan a code' ,
     maxLines: 1,
     style: TextStyle(
       fontSize: 15,
