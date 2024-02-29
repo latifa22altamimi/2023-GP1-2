@@ -528,7 +528,7 @@ class _ReserveCardState extends State<ReserveCard> {
   }
 
   Future insertWaitingList() async {
-    var url = "http://192.168.1.33/phpfiles/insertWaiting.php";
+    var url = "http://10.0.2.2/phpfiles/insertWaiting.php";
     final res = await http.post(Uri.parse(url), body: {
       "id": GlobalValues.id,
       "Name": waitName.text,
