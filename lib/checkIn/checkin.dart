@@ -27,51 +27,59 @@ class _CheckInState extends State<CheckIn> {
   bool isFlashOn = false;
   bool isFrontCamera = false;
   bool isDetecting=false;
+  bool isModalVisible = false;
+
 
   
   String code="";
 
   MobileScannerController controller= MobileScannerController(formats: [BarcodeFormat.qrCode]);
+  
+  bool isVisibleInvalid=false;
 
   
   Future<void> StartTawaf(String code) async {
-  try {
-    // Decrypt the QR code
-    final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
-    final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
-    final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
-    final decrypted = encrypter.decrypt64(code, iv: iv);
+    try {
+      // Decrypt the QR code
+      final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
+      final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
+      final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
+      final decrypted = encrypter.decrypt64(code, iv: iv);
 
-    // Send HTTP POST request to start Tawaf
-    var url = "http://10.0.2.2/phpfiles/startTawaf.php";
-    final res = await http.post(Uri.parse(url), body: {"Rid": decrypted});
+      // Send HTTP POST request to start Tawaf
+      var url = "http://10.0.2.2/phpfiles/startTawaf.php";
+      final res = await http.post(Uri.parse(url), body: {"Rid": decrypted});
 
-    // Parse response
-    var respo = json.decode(res.body);
+      // Parse response
+      var respo = json.decode(res.body);
 
-    // Check response for success or failure
-    if (respo == "Tawaf started successfully") {
-      setState(() {
-        isVisibleSuccess = true;
-      });
-    } else {
+      // Check response for success or failure
+      if (respo == "Tawaf started successfully") {
+        setState(() {
+          isVisibleSuccess = true;
+        });
+      } else if (respo == "Reservation status is not Confirmed") {
+        isVisibleInvalid = true;
+      } else {
+        setState(() {
+          isVisibleErr = true;
+        });
+      }
+    } catch (e) {
+      // Handle any errors that occur during the process
+      print("Error starting Tawaf: $e");
       setState(() {
         isVisibleErr = true;
       });
+    } finally {
+      // Stop the indicator regardless of the result received
+      setState(() {
+        isDetecting = false;
+        code = ''; // Reset code to display "Scan a code" text again
+      });
     }
-  } catch (e) {
-    // Handle any errors that occur during the process
-    print("Error starting Tawaf: $e");
-    setState(() {
-      isVisibleErr = true;
-    });
-  } finally {
-    // Stop the indicator regardless of the result received
-    setState(() {
-      isDetecting = false;
-    });
   }
-}
+
   
 
  
@@ -198,6 +206,10 @@ Widget build(BuildContext context) => SafeArea(
                           } else if (isVisibleErr) {
                             showErrorModal(context);
                           }
+                          else if(isVisibleInvalid){
+                            showInvalidModal(context);
+
+                          }
                         }
                       },
                     ),
@@ -274,6 +286,9 @@ Center(
 );
 
 void showSuccessModal(BuildContext context) {
+  setState(() {
+    isModalVisible = true;
+  });
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -283,7 +298,8 @@ void showSuccessModal(BuildContext context) {
         () {
           Navigator.of(context).pop();
           setState(() {
-            isVisibleSuccess = !isVisibleSuccess;
+            isVisibleSuccess = false;
+            isModalVisible=false;
           });
         },
       );
@@ -300,6 +316,9 @@ void showSuccessModal(BuildContext context) {
 }
 
 void showErrorModal(BuildContext context) {
+  setState(() {
+    isModalVisible = true;
+  });
   showModalBottomSheet(
     isScrollControlled: true,
     context: context,
@@ -309,7 +328,8 @@ void showErrorModal(BuildContext context) {
         () {
           Navigator.of(context).pop();
           setState(() {
-            isVisibleErr = !isVisibleErr;
+            isVisibleErr = false;
+            isModalVisible=false;
           });
         },
       );
@@ -324,7 +344,35 @@ void showErrorModal(BuildContext context) {
     },
   );
 }
-
+void showInvalidModal(BuildContext context) {
+  setState(() {
+    isModalVisible = true;
+  });
+  showModalBottomSheet(
+    isScrollControlled: true,
+    context: context,
+    builder: (BuildContext context) {
+      Future.delayed(
+        Duration(seconds: 5),
+        () {
+          Navigator.of(context).pop();
+          setState(() {
+            isVisibleInvalid = false;
+            isModalVisible=false;
+          });
+        },
+      );
+      return buildModalContent(
+        context,
+        'assets/images/erorrr.json',
+        'Error!',
+        'Invalid QR code',
+        const Color.fromARGB(255, 228, 223, 223),
+        Color.fromARGB(255, 196, 25, 25),
+      );
+    },
+  );
+}
 Widget buildModalContent(BuildContext context, String animationAsset, String title, String subtitle, Color titleColor, Color backgroundColor) {
   return Container(
     height: 350,
@@ -437,14 +485,21 @@ Widget buildModalContent(BuildContext context, String animationAsset, String tit
     controller.dispose();
     super.dispose();
   }
-  Widget buildResult()=> Container(
-    padding: EdgeInsets.all(10),
-    child: Text( 
-    code!= ""? 'Result: ${code}': 'Scan a code' ,
-    maxLines: 1,
-    style: TextStyle(
-      fontSize: 15,
-      fontWeight: FontWeight.bold
-    ),
-    )
-  );}
+  Widget buildResult() {
+    if (code.isEmpty && !isModalVisible) {
+      return Container(
+        padding: EdgeInsets.all(10),
+        child: Text(
+          'Scan a code',
+          maxLines: 1,
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+  }

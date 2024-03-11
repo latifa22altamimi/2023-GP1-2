@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
@@ -103,11 +104,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             alignment: Alignment.bottomLeft,
             child: TextButton(
               onPressed: () {
-                _pageController.animateToPage(
-                  2,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.linear,
-                );
+               Timer(
+        const Duration(microseconds: 300),
+                 ()=> Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const LoginScreen())));
+                
               },
               child: const Text(
                 'Skip',
