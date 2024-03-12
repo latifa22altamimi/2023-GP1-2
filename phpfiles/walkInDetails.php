@@ -1,16 +1,26 @@
 <?php
 
-/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHP.php to edit this template
- */
-
 include 'connect.php';
-$sql ="SELECT * FROM reservation";
+
+$sql = "SELECT r.*, v.* 
+        FROM reservation r 
+        INNER JOIN vehicle v ON r.VehicleId = v.vehicleId";
+
 $result = $conn->query($sql);
- while($ro2 = mysqli_fetch_assoc($result)){
-     $data[]=$ro2;
- }
-      
-  
-  echo json_encode($data);
+
+$data = array();
+
+if ($result->num_rows > 0) {
+    // Fetch rows one by one
+    while($row = $result->fetch_assoc()) {
+        $data[] = $row;
+    }
+} else {
+    // No rows found
+    echo "No records found";
+}
+
+// Encode the data array to JSON format and output it
+echo json_encode($data);
+
+?>
