@@ -11,14 +11,8 @@ $result = $conn->query($sql);
 
 $data = array();
 
-if ($result->num_rows > 0) {
-    // Fetch rows one by one
-    while($row = $result->fetch_assoc()) {
-        $data[] = $row;
-    }
-} else {
-    // No rows found
-    echo "No records found";
+while($row = $result->fetch_assoc()) {
+    $data[] = $row;
 }
 
 // Encode the data array to JSON format and output it
