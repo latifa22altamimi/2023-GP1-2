@@ -1,81 +1,130 @@
 <?php
 include 'connect.php';
+
 $id = $_POST['id'];
 $date = $_POST['date'];
-$startTime =$_POST['time'];
+$startTime = $_POST['time'];
 $VehicleType = $_POST['VehicleType'];
 $DrivingType = $_POST['DrivingType'];
 $DriverGender = $_POST['DriverGender'];
 $visitorName = $_POST['visitorName'];
 $Vnumber = $_POST['Vnumber'];
 
-$sqlDur = "SELECT ReservationDur FROM parameters WHERE ParametersId=1";
-$resultDur = mysqli_query($conn, $sqlDur);
-$rowDur = mysqli_fetch_assoc($resultDur);
+// Fetch ReservationDur from parameters
+$sql= "SELECT TDuration FROM tawaf";
+$result = $conn->query($sql);
+$tawafDurations = [];
+$allTimes = []; // Array of time strings
+while ($ro2 = $result->fetch_assoc()) {
+    $tawafDurations[] = $ro2;
+}
 
-$AvgTime = $rowDur['ReservationDur']; //get the average from tawaf duration
+foreach ($tawafDurations as $time) {
+   $allTimes[]= $time['TDuration'];
+    
+}
+// Function to convert time string to seconds
+function timeToSeconds($time) {
+    $parts = explode(':', $time);
+    return $parts[0] * 3600 + $parts[1] * 60;
+}
+// Convert each time string to seconds and calculate total sum
+$totalSeconds = 0;
+foreach ($allTimes as $time) {
+    $totalSeconds += timeToSeconds($time);
+}
 
+// Calculate the average in seconds
+$averageSeconds = $totalSeconds / count($allTimes);
 
-// Parse the start time
+// Convert average back to time format (hours:minutes)
+$hours = floor($averageSeconds / 3600);
+$minutes = floor(($averageSeconds % 3600) / 60);
+$AvgTime = sprintf('%02d:%02d', $hours, $minutes); // Average from tawaf duration
+
+// Calculate expected finish time
 list($startHour, $startMinute, $startPeriod) = explode(':', $startTime);
 $startHour = intval($startHour);
 $startMinute = intval($startMinute);
 $startPeriod = strtoupper(trim($startPeriod));
-
-// Parse the average time
 list($avgHour, $avgMinute) = explode(':', $AvgTime);
 $avgHour = intval($avgHour);
 $avgMinute = intval($avgMinute);
-
-// Calculate the expected finish time
 $totalMinutes = $startHour * 60 + $startMinute + $avgHour * 60 + $avgMinute;
 $hours = floor($totalMinutes / 60) % 12;
 $minutes = $totalMinutes % 60;
 $period = ($startPeriod == 'AM' && $hours >= 12) || ($startPeriod == 'PM' && $hours < 12) ? 'PM' : 'AM';
-
-// Adjust hours for PM period
 if ($period == 'PM') {
     $hours += 12;
 }
-
-// Format the expected finish time
 $ExpectFinishTime = sprintf("%02d:%02d %s", $hours, $minutes, $period);
 
-echo json_encode($ExpectFinishTime);
+// Fetch available vehicles count
+$sqlSingle = "SELECT TotalNumberofVehicles FROM parameters WHERE VehicleType='Single' AND VehicleDedicatedTo='walkIn'";
+$resultSingle = mysqli_query($conn, $sqlSingle);
+$rowSingle = mysqli_fetch_assoc($resultSingle);
+$numSingle = $rowSingle['TotalNumberofVehicles'];
 
-$sql = "SELECT NumOfSWalkInVehicles, NumOfDWalkInVehicles FROM parameters WHERE ParametersId=1";
-$result1 = mysqli_query($conn, $sql);
-$row = mysqli_fetch_assoc($result1);
+$sqlDouble = "SELECT TotalNumberofVehicles FROM parameters WHERE VehicleType='Double' AND VehicleDedicatedTo='walkIn'";
+$resultDouble = mysqli_query($conn, $sqlDouble);
+$rowDouble = mysqli_fetch_assoc($resultDouble);
+$numDouble = $rowDouble['TotalNumberofVehicles'];
 
-$numDouble = $row['NumOfDWalkInVehicles'];
-$numSingle = $row['NumOfSWalkInVehicles'];
+// Fetch vehicle ID based on provided VehicleType
+$sqlVehicle = "SELECT vehicleId FROM vehicle WHERE VehicleType='$VehicleType'";
+$resultVehicle = mysqli_query($conn, $sqlVehicle);
+$rowVehicle = mysqli_fetch_assoc($resultVehicle);
+$vehicleId = $rowVehicle['vehicleId'];
 
-$sql2= "SELECT * FROM reservation WHERE date='$date' AND slotId IS NULL AND Status='Active'";
-$result4 = $conn->query($sql2);
-$ReservationInSameDay = [];
-while ($ro2 = $result4->fetch_assoc()) {
-    $ReservationInSameDay[] = $ro2;
+// Fetch reservations in the same day
+$sqlReservations = "SELECT r.*, v.VehicleType
+                    FROM reservation r
+                    INNER JOIN vehicle v ON r.VehicleId = v.vehicleId
+                    WHERE r.date='$date' AND r.Status='Active'";
+$resultReservations = mysqli_query($conn, $sqlReservations);
+$reservationsInSameDay = [];
+while ($rowReservation = mysqli_fetch_assoc($resultReservations)) {
+    $reservationsInSameDay[] = $rowReservation;
 }
 
-foreach ($ReservationInSameDay as $reservation) {
-    if ($reservation['VehicleType'] == "Single") {
+// Decrement available vehicle count based on reservations
+foreach ($reservationsInSameDay as $reservation) {
+    $vehicleType = $reservation['VehicleType'];
+    if ($vehicleType == "Single") {
         $numSingle--;
-    } elseif ($reservation['VehicleType'] == "Double") {
+    } elseif ($vehicleType == "Double") {
         $numDouble--;
     }
 }
-$response= array();
+
+$response = array();
 if (($VehicleType == "Single" && $numSingle > 0) || ($VehicleType == "Double" && $numDouble > 0)) {
-    $s ="INSERT INTO reservation (date,startTime,ExpectFinishTime,VehicleType,drivingType,driverGender,Status,userId,visitorName,VphoneNumber) VALUES ('".$date."','".$startTime."','".$ExpectFinishTime."','".$VehicleType."','".$DrivingType."','".$DriverGender."','Active','".$id."','".$visitorName."','".$Vnumber."')";
+    // Insert into reservation table
+    $sqlInsertReservation = "INSERT INTO reservation(date, time, VehicleId, drivingType, driverGender, Status, userId) 
+                             VALUES ('$date', '$startTime', '$vehicleId', '$DrivingType', '$DriverGender', 'Active', '$id')";
+    $resultInsertReservation = mysqli_query($conn, $sqlInsertReservation);
+    if ($resultInsertReservation) {
+        // Retrieve the last inserted reservation ID
+        $reservationId = mysqli_insert_id($conn);
 
-    $result2 = mysqli_query($conn, $s);
-
-    if ($VehicleType == "Single") {
-        $numSingle--;
-    } elseif ($VehicleType == "Double") {
-        $numDouble--;
+        // Insert into managerreservation table
+        $sqlInsertManagerReservation = "INSERT INTO managerreservation(reservationId, visitorName, VphoneNumber, ExpectedFinishTime) 
+                                        VALUES ('$reservationId', '$visitorName', '$Vnumber', '$ExpectFinishTime')";
+        $resultInsertManagerReservation = mysqli_query($conn, $sqlInsertManagerReservation);
+        if ($resultInsertManagerReservation) {
+            if ($VehicleType == "Single") {
+                $numSingle--;
+            } elseif ($VehicleType == "Double") {
+                $numDouble--;
+            }
+        } else {
+            // Handle error inserting into managerreservation table
+            $response['error'] = "Error inserting into managerreservation table: " . mysqli_error($conn);
+        }
+    } else {
+        // Handle error inserting into reservation table
+        $response['error'] = "Error inserting into reservation table: " . mysqli_error($conn);
     }
-} 
-
-
-    
+} else {
+    // Handle case when no available vehicles
+}
