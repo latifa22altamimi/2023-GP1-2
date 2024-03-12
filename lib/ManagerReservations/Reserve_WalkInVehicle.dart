@@ -1210,7 +1210,7 @@ bool isVisibleNumber(){
                                                         height: 38, width: 100),
                                                 child: ElevatedButton(
                                                   onPressed: () async {
-                                                    getTime= '${DateFormat('HH:mm').format(DateTime.now())} ${currentTime.hour >12? 'PM' : 'AM'}';
+                                                    getTime= '${DateFormat('hh:mm').format(DateTime.now())} ${currentTime.hour >12? 'PM' : 'AM'}';
                                                     insert();
                                                     //success msg here , insert in db --------------------------------------------
 
