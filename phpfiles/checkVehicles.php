@@ -1,35 +1,45 @@
 <?php
-
-
 include 'connect.php';
-$VehicleType= $_POST['VehicleType'];
 
-$sql = "SELECT NumOfSWalkInVehicles FROM parameters WHERE ParametersId=1";
-$result = $conn->query($sql);
+// Get the vehicle type from the POST data
+$VehicleType = $_POST['VehicleType'];
 
-$row2 = mysqli_fetch_assoc($result);
-
-$NumOfSWalkInVehicles=$row2['NumOfSWalkInVehicles'];
-
- $sql4 = "SELECT NumOfDWalkInVehicles FROM parameters WHERE ParametersId=1";
-$result4 = $conn->query($sql4);
-$row = mysqli_fetch_assoc($result4);
-
-$NumOfDWalkInVehicles=$row['NumOfDWalkInVehicles'];
- 
- $sql2 = "SELECT * FROM reservation WHERE Status='Active' AND slotId IS NULL AND VehicleType='$VehicleType'";
- $result2 = $conn->query($sql2);
-   $ActiveWalkInReservations= array();
- while($row = mysqli_fetch_assoc($result2)) {
-    $ActiveWalkInReservations[]=$row;
-  }
-  $numOfActive=count($ActiveWalkInReservations);
-if($VehicleType=="Single"&&  $numOfActive==$NumOfSWalkInVehicles){
-    $response= json_encode([0 => "UnavailableSingle"]);
-}else if($VehicleType=="Double"&&  $numOfActive==$NumOfDWalkInVehicles) {
-  $response= json_encode([0 => "UnavailableDouble"]);
+// Fetch the total number of available vehicles for Single or Double type
+$sqlSingleOrDouble = "SELECT TotalNumberofVehicles 
+                      FROM parameters 
+                      WHERE VehicleType='$VehicleType' AND VehicleDedicatedTo='walkIn'";
+$resultSingleOrDouble = mysqli_query($conn, $sqlSingleOrDouble);
+if (!$resultSingleOrDouble) {
+    echo "Error: " . mysqli_error($conn);
+} else {
+    // Continue processing the result
 }
-else{
-  $response= json_encode([0 => "Ava"]);
+
+$rowSingleOrDouble = mysqli_fetch_assoc($resultSingleOrDouble);
+
+$numVehicles = $rowSingleOrDouble['TotalNumberofVehicles'];
+
+// Fetch active walk-in reservations for the provided vehicle type
+$sqlReservations = "SELECT r.*, v.VehicleType 
+                    FROM reservation r 
+                    INNER JOIN vehicle v ON r.VehicleId = v.vehicleId 
+                    WHERE r.Status='Active' AND v.VehicleType='$VehicleType'";
+$resultReservations = mysqli_query($conn, $sqlReservations);
+$ActiveWalkInReservations = [];
+while ($rowReservation = mysqli_fetch_assoc($resultReservations)) {
+    $ActiveWalkInReservations[] = $rowReservation;
 }
+
+// Count the number of active reservations for the provided vehicle type
+$numOfActive = count($ActiveWalkInReservations);
+
+// Check availability and construct response
+if ($numOfActive == $numVehicles) {
+    $response = json_encode(["Unavailable" . $VehicleType]);
+} else {
+    $response = json_encode(["Available"]);
+}
+
+// Output the response
 echo $response;
+?>
