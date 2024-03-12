@@ -1,58 +1,75 @@
 <?php
-
-
 include 'connect.php';
-$date=$_POST['date'];
 
-$sql = "SELECT * FROM timeslots";
-$result = $conn->query($sql);
-$OriginalTimeSlots=array(); //time slots from database
- while($row = mysqli_fetch_assoc($result)){
-     $OriginalTimeSlots[]=$row;
- }
+$date = $_POST['date'];
+$OriginalTimeSlots = [];
+$timeSlotsString = $_POST['times'];
+$OriginalTimeSlots = explode(',', $timeSlotsString);
 
 
-      $CurrentTimeSlots=array();
-  $sql2= "SELECT * from reservation WHERE date='$date' AND Status='Confirmed'";
-  $result2= $conn->query($sql2);
 
-  while($row2 = mysqli_fetch_assoc($result2)){
-    $CurrentTimeSlots[]=$row2;
-}
+$sqlSingle = "SELECT TotalNumberofVehicles FROM parameters WHERE VehicleType='Single' AND VehicleDedicatedTo='visitor'";
+$resultSingle = mysqli_query($conn, $sqlSingle);
+$rowSingle = mysqli_fetch_assoc($resultSingle);
+$numSingle = $rowSingle['TotalNumberofVehicles'];
 
-for ($i=0; $i<count($CurrentTimeSlots); $i++){
-    $time= $CurrentTimeSlots[$i]['slotId'];
-    $vehicleType= $CurrentTimeSlots[$i]['VehicleType'];
-    
-    for($j=0;$j<count($OriginalTimeSlots);$j++){
+$sqlDouble = "SELECT TotalNumberofVehicles FROM parameters WHERE VehicleType='Double' AND VehicleDedicatedTo='visitor'";
+$resultDouble = mysqli_query($conn, $sqlDouble);
+$rowDouble = mysqli_fetch_assoc($resultDouble);
+$numDouble = $rowDouble['TotalNumberofVehicles'];
 
-        if($OriginalTimeSlots[$j]['slotId']==$time){
-               
-            if($vehicleType=='Single'){
-                $numSingle= $OriginalTimeSlots[$j]['numberOfSingleV'];
-                $OriginalTimeSlots[$j]['numberOfSingleV']= $numSingle-1;
-            }else 
-            if($vehicleType=='Double'){
-                $numDouble= $OriginalTimeSlots[$j]['numberOfDoubleV'];
-               $OriginalTimeSlots[$j]['numberOfDoubleV']= $numDouble-1;
-             
-            }
 
-            if($OriginalTimeSlots[$j]['numberOfSingleV']==0 && $OriginalTimeSlots[$j]['numberOfDoubleV']!=0){
-                $OriginalTimeSlots[$j]['slotStatus']='OnlyDouble';
-            }
+$ModifiedTimes = [];
 
-            if($OriginalTimeSlots[$j]['numberOfDoubleV']==0 && $OriginalTimeSlots[$j]['numberOfSingleV']!=0){
-                $OriginalTimeSlots[$j]['slotStatus']='OnlySingle';
-            }
+foreach ($OriginalTimeSlots as $timeSlot) {
+    // Trim any whitespace from the time slot
 
-            if($OriginalTimeSlots[$j]['numberOfSingleV']==0 && $OriginalTimeSlots[$j]['numberOfDoubleV']==0){
-                $OriginalTimeSlots[$j]['slotStatus']='Occupied';
-            }
-
-        }
-
+    if (!empty($timeSlot)) {
+        // Only process non-empty time slots
+        $ModifiedTimes[] = [ 
+            'time' => $timeSlot, // Assign the original time slot
+            'numberOfSingleV' => $numSingle,
+            'numberOfDoubleV' => $numDouble,
+            'slotStatus' => 'Both' // Default slotStatus
+        ];
     }
 }
 
-echo json_encode($OriginalTimeSlots);
+
+
+$CurrentTimeSlots = array();
+$sql2 = "SELECT r.*, v.VehicleType
+         FROM reservation r
+         JOIN vehicle v ON r.VehicleId = v.vehicleId
+         WHERE r.date='$date' AND r.Status='Confirmed'";
+$result2 = $conn->query($sql2);
+
+while ($row2 = mysqli_fetch_assoc($result2)) {
+    $time = $row2['time']; // Access time value
+    $vehicleType = $row2['VehicleType'];
+
+    foreach ($ModifiedTimes as &$modifiedTime) {
+
+        if ($modifiedTime['time'] == $time) {
+
+            if ($vehicleType == 'Single') {
+                $numS=$modifiedTime['numberOfSingleV'];
+                $modifiedTime['numberOfSingleV']= $numS-1;
+            } elseif ($vehicleType == 'Double') {
+                $numD =$modifiedTime['numberOfDoubleV'];
+                $modifiedTime['numberOfDoubleV']=$numD-1;
+            }
+
+            if ($modifiedTime['numberOfSingleV'] == 0 && $modifiedTime['numberOfDoubleV'] != 0) {
+                $modifiedTime['slotStatus'] = 'OnlyDouble';
+            } elseif ($modifiedTime['numberOfDoubleV'] == 0 && $modifiedTime['numberOfSingleV'] != 0) {
+                $modifiedTime['slotStatus'] = 'OnlySingle';
+            } elseif ($modifiedTime['numberOfSingleV'] == 0 && $modifiedTime['numberOfDoubleV'] == 0) {
+                $modifiedTime['slotStatus'] = 'Occupied';
+            }
+        }
+    }
+}
+
+echo json_encode($ModifiedTimes);
+?>
