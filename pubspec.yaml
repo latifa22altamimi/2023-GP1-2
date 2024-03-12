@@ -58,8 +58,10 @@ dependencies:
   pretty_qr_code: ^3.2.1
   pie_chart: ^5.4.0
   percent_indicator: ^4.2.3
-  mobile_scanner: ^4.0.0
+  mobile_scanner: ^1.0.0
   qr_scanner_overlay: ^0.0.2
+  permission_handler: ^11.3.0
+
 
  
 
@@ -130,6 +132,8 @@ flutter:
     - assets/images/Completed.png
     - assets/images/waiting.png
     - assets/images/barcode.png
+    - assets/images/logoapp-removebg-preview.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -300,12 +300,12 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
                           child: list.isNotEmpty  && list[ind]["drivingType"]!="Self-driving"
                               ? ticketDetailsWidget(
                                   'Time',
-                                  '${list[ind]["startTime"]}',
+                                  '${list[ind]["time"]}',
                                   'Driver gender',
                                   '${list[ind]["driverGender"]}')
                               : list.isNotEmpty
                                   ? ticketDetailsWidget(
-                                      'Time', '${list[ind]["startTime"]}   ', '', '')
+                                      'Time', '${list[ind]["time"]}   ', '', '')
                                   : ticketDetailsWidget('', '', '', ''),
                         ), ],)
                         )  

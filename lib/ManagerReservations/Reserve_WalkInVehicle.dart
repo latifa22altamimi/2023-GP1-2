@@ -44,7 +44,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
   bool unAvailableDouble=false;
   bool unAvailableSingle=false;
   Future insert() async {
-    var url = "http://192.168.1.33/phpfiles/walkInReservation.php";
+    var url = "http://10.0.2.2/phpfiles/walkInReservation.php";
     final res = await http.post(Uri.parse(url), body: {
       "id": GlobalValues.id,
       "visitorName": visitorName.text,
@@ -1210,7 +1210,7 @@ bool isVisibleNumber(){
                                                         height: 38, width: 100),
                                                 child: ElevatedButton(
                                                   onPressed: () async {
-                                                    getTime= '${DateFormat('HH:mm').format(DateTime.now())} ${currentTime.hour >12? 'PM' : 'AM'}';
+                                                    getTime= '${DateFormat('hh:mm').format(DateTime.now())} ${currentTime.hour >12? 'PM' : 'AM'}';
                                                     insert();
                                                     //success msg here , insert in db --------------------------------------------
 
