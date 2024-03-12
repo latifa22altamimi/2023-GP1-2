@@ -344,11 +344,12 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                           },
                           itemBuilder: (BuildContext context, int index) {
                             if ((historyList[index]["Status"] == "Active") &&
-                                (historyList[index]["Waiting"] == "0")) {
+                                (historyList[index]["ReservedForWaiting"] == "0")
+                                ) {
                               return ReserveCard(
                                 Rid: historyList[index]["reservationId"],
                                 datee: historyList[index]["date"],
-                                timee: historyList[index]["startTime"],
+                                timee: historyList[index]["time"],
                                 status: historyList[index]["Status"],
                                 VehicleType: historyList[index]["VehicleType"],
                                 ExpectFinishTime: historyList[index]
@@ -360,11 +361,11 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                               );
                             } else if ((historyList[index]["Status"] ==
                                     "Active") &&
-                                (historyList[index]["Waiting"] == "1")) {
+                                (historyList[index]["ReservedForWaiting"] == "1")) {
                               return ReserveCard(
                                 Rid: historyList[index]["reservationId"],
                                 datee: historyList[index]["date"],
-                                timee: historyList[index]["startTime"],
+                                timee: historyList[index]["time"],
                                 status: historyList[index]["Status"],
                                 VehicleType: historyList[index]["VehicleType"],
                                 ExpectFinishTime: historyList[index]
@@ -986,7 +987,7 @@ class _ReserveCardState extends State<ReserveCard> {
               ),
 
               SizedBox(
-                height: 20.0,
+                height: 10.0,
               ),
               //display time and date
 
