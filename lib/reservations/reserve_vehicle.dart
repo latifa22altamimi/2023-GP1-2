@@ -1126,6 +1126,7 @@ Future<void> GetDuration() async {
       times = slots(duration);
       timeSlotsString = times.join(',');
       GetData();
+
     }
   }
 }
@@ -1142,6 +1143,8 @@ Future<void> GetData() async {
       print(jsonResponse); // Print the jsonResponse to check its contents
 
     setState(() {
+      list.clear(); // Clear the previous data
+
       list.addAll(jsonResponse);
       tlist.clear();
 
@@ -1255,7 +1258,7 @@ List<String> slots(int duration) {
               ],
             ),
           ),
-          timeSlotsContainer(tlist),
+          timeSlotsContainer(),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
@@ -1380,18 +1383,20 @@ List<String> slots(int duration) {
           _focusDay = focusedDay;
           _dateSelected = true;
 
-          timeSlotsContainer(tlist);
+          timeSlotsContainer();
           GetData();
+
         });
       }),
     );
   }
 
-  Widget timeSlotsContainer(List timeSlots) {
+  Widget timeSlotsContainer() {
   return SliverGrid(
     delegate: SliverChildBuilderDelegate(
       (context, index) {
-      var slot = timeSlots[index];
+        
+      var slot = tlist[index];
 
         return InkWell(
           splashColor: Color.fromARGB(0, 255, 255, 255),
@@ -1452,7 +1457,7 @@ List<String> slots(int duration) {
           ),
         );
       },
-      childCount: timeSlots.length,
+      childCount: tlist.length,
     ),
     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 4,
