@@ -19,6 +19,8 @@ String _drivingType = "Double";
 String getDate = "";
 String getTime = "";
 String label = "";
+int duration=0;
+
 Color labelColor = Colors.white;
 
 class ReserveVehicle extends StatefulWidget {
@@ -1097,58 +1099,112 @@ class _BookingPageState extends State<BookingPage> {
   // ignore: unused_field
   static bool _dateSelected = false;
   static bool _timeSelected = false;
-  List list = [];
-  List tlist = [];
-  Future GetData() async {
-    var url = "http://10.0.2.2/phpfiles/times.php";
-    final res = await http.post(Uri.parse(url), body: {
-      "date": DateConverted.getDate(_currentDay),
-    });
+ 
 
-    if (res.statusCode == 200) {
-      var red = json.decode(res.body);
-      setState(() {
-        list.addAll(red);
-        tlist.clear();
+List<String> times=[];
+int duration = 0; // Initialize duration
+String timeSlotsString = ''; // Initialize timeSlotsString
+List list = []; // Initialize list for time slots
+List tlist = []; // Initialize filtered time slots list
 
-        String dateNow = DateFormat('yyyy-MM-dd').format(DateTime.now());
-        String timeNow = DateFormat('HH:mm:ss').format(DateTime.now());
-        String curr = DateConverted.getDate(_currentDay);
-        String dateTime =
-            DateFormat('yyyy-MM-dd ').format(DateTime.now()) + timeNow;
+@override
+void initState() {
+  super.initState();
+  // Fetch the average duration asynchronously
+  GetDuration();
+}
 
-        if (curr == dateNow) {
-          print(timeNow);
-          for (int i = 0; i < red.length; i++) {
-            print(list[i]['time']);
-            String dd = list[i]['time'];
-            String sub = dd.substring(0, 2);
-            String f = dd.substring(3, 5);
-            int k = int.parse(f);
-
-            String dj = timeNow.substring(0, 2);
-            String g = timeNow.substring(3, 5);
-            int j = int.parse(g);
-
-            int d = int.parse(sub);
-            int l = int.parse(dj);
-
-            if (l < d || (l == d && k > j)) {
-              tlist.add(list[i]);
-            }
-          }
-        } else {
-          tlist.addAll(red);
-        }
-        // tlist.addAll(red);
-      });
+Future<void> GetDuration() async {
+  var url = "http://10.0.2.2/phpfiles/AvgDuration.php";
+  final result = await http.get(Uri.parse(url));
+  if (result.statusCode == 200) {
+    String dur = json.decode(result.body);
+    var Durations = dur.split(':');
+    if (Durations[0] != "" && Durations[1] != "") {
+      duration = int.parse(Durations[0]) * 60 + int.parse(Durations[1]);
+      print(duration);
+      times = slots(duration);
+      timeSlotsString = times.join(',');
+      GetData();
     }
   }
+}
 
-  void initState() {
-    super.initState();
-    GetData();
+Future<void> GetData() async {
+  var url = "http://10.0.2.2/phpfiles/times.php";
+  final res = await http.post(Uri.parse(url), body: {
+    "date": DateFormat('yyyy-MM-dd').format(_currentDay),
+    "times": timeSlotsString, // Send the string representation of time slots
+  });
+
+  if (res.statusCode == 200) {
+    var jsonResponse = json.decode(res.body);
+      print(jsonResponse); // Print the jsonResponse to check its contents
+
+    setState(() {
+      list.addAll(jsonResponse);
+      tlist.clear();
+
+      String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+      String currentTime = DateFormat('HH:mm:ss').format(DateTime.now());
+      String selectedDate = DateFormat('yyyy-MM-dd').format(_currentDay);
+
+      // If the selected day (_currentDay) is today
+      if (selectedDate == currentDate) {
+        for (int i = 0; i < jsonResponse.length; i++) {
+          String slot = jsonResponse[i]['time'];
+          String hours = slot.substring(0, 2); // Extract hours from the time slot
+          String minutes = slot.substring(3, 5); // Extract minutes from the time slot
+          int slotMinutes = int.parse(minutes); // Convert minutes to integer
+
+          String currentHours = currentTime.substring(0, 2); // Current hour
+          String currentMinutes = currentTime.substring(3, 5); // Current minutes
+          int currentSlotMinutes = int.parse(currentMinutes); // Convert current minutes to integer
+
+          int slotHours = int.parse(hours); // Convert time slot hour to integer
+          int currentHoursInt = int.parse(currentHours); // Convert current hour to integer
+
+          // Compare current hour and minute with the time slot hour and minute
+          if (currentHoursInt < slotHours ||
+              (currentHoursInt == slotHours && currentSlotMinutes > slotMinutes)) {
+            tlist.add(list[i]);
+          }
+        }
+      } else {
+        // If the selected day is not today, add all time slots to tlist
+        tlist.addAll(list);
+      }
+    });
   }
+}
+
+List<String> slots(int duration) {
+  DateTime now = DateTime.now();
+  DateTime startTime = DateTime(now.year, now.month, now.day, 0, 0, 0);
+  DateTime endTime = DateTime(now.year, now.month, now.day, 23, 59, 0);
+
+  String time;
+  Duration step = Duration(minutes: duration);
+  int count = 0;
+  List<String> timeSlots = [];
+  DateTime timeIncrement = startTime;
+  time = "${DateFormat.Hm().format(timeIncrement)} ${timeIncrement.hour > 11 ? 'PM' : 'AM'}";
+  timeSlots.add(time);
+  while (startTime.isBefore(endTime)) {
+    timeIncrement = startTime.add(step);
+    if (count == 1440 ~/ duration) {
+      break;
+    } else {
+      time = "${DateFormat.Hm().format(timeIncrement)} ${timeIncrement.hour > 11 ? 'PM' : 'AM'}";
+      timeSlots.add(time);
+      count++;
+      startTime = timeIncrement;
+    }
+  }
+  return timeSlots;
+}
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -1199,7 +1255,7 @@ class _BookingPageState extends State<BookingPage> {
               ],
             ),
           ),
-          timeSlotsContainer(),
+          timeSlotsContainer(tlist),
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
@@ -1324,86 +1380,86 @@ class _BookingPageState extends State<BookingPage> {
           _focusDay = focusedDay;
           _dateSelected = true;
 
-          timeSlotsContainer();
+          timeSlotsContainer(tlist);
           GetData();
         });
       }),
     );
   }
 
-  Widget timeSlotsContainer() {
-    return SliverGrid(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          var timeSlots = tlist;
+  Widget timeSlotsContainer(List timeSlots) {
+  return SliverGrid(
+    delegate: SliverChildBuilderDelegate(
+      (context, index) {
+      var slot = timeSlots[index];
 
-          print(timeSlots);
-          return InkWell(
-            splashColor: Color.fromARGB(0, 255, 255, 255),
-            onTap: () {
-              setState(() {
-                if (timeSlots[index]["slotStatus"] == "Both") {
-                  _currentIndex = index;
-                  _timeSelected = true;
-                }
-                if (timeSlots[index]["slotStatus"] == "OnlySingle" &&
-                    _vehicleType == "Single") {
-                  _currentIndex = index;
-                  _timeSelected = true;
-                }
-                if (timeSlots[index]["slotStatus"] == "OnlyDouble" &&
-                    _vehicleType == "Double") {
-                  _currentIndex = index;
-                  _timeSelected = true;
-                }
-              });
-            },
-            child: Container(
-              margin: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: _currentIndex == index
-                      ? Color.fromARGB(255, 243, 239, 239)
-                      : Colors.white,
-                ),
-                borderRadius: BorderRadius.circular(15),
+        return InkWell(
+          splashColor: Color.fromARGB(0, 255, 255, 255),
+          onTap: () {
+            setState(() {
+              if (slot["slotStatus"] == "Both") {
+                _currentIndex = index;
+                _timeSelected = true;
+              }
+              if (slot["slotStatus"] == "OnlySingle" &&
+                  _vehicleType == "Single") {
+                _currentIndex = index;
+                _timeSelected = true;
+              }
+              if (slot["slotStatus"] == "OnlyDouble" &&
+                  _vehicleType == "Double") {
+                _currentIndex = index;
+                _timeSelected = true;
+              }
+            });
+          },
+          child: Container(
+            margin: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+              border: Border.all(
                 color: _currentIndex == index
-                    ? kPrimaryColor
-                    : timeSlots[index]["slotStatus"] == "Both"
-                        ? Colors.white
-                        : timeSlots[index]["slotStatus"] == "OnlySingle" &&
-                                _vehicleType == "Double"
-                            ? Color.fromARGB(255, 205, 204, 204)
-                            : timeSlots[index]["slotStatus"] == "OnlyDouble" &&
-                                    _vehicleType == "Single"
-                                ? Color.fromARGB(255, 205, 204, 204)
-                                : timeSlots[index]["slotStatus"] ==
-                                            "OnlyDouble" &&
-                                        _vehicleType == "Double"
-                                    ? Colors.white
-                                    : timeSlots[index]["slotStatus"] ==
-                                                "OnlySingle" &&
-                                            _vehicleType == "Single"
-                                        ? Colors.white
-                                        : Color.fromARGB(255, 205, 204, 204),
+                    ? Color.fromARGB(255, 243, 239, 239)
+                    : Colors.white,
               ),
-              alignment: Alignment.center,
-              child: Text(
-                '${timeSlots[index]["time"]}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: _currentIndex == index ? Colors.white : null,
-                ),
+              borderRadius: BorderRadius.circular(15),
+              color: _currentIndex == index
+                  ? kPrimaryColor
+                  : slot["slotStatus"] == "Both"
+                      ? Colors.white
+                      : slot["slotStatus"] == "OnlySingle" &&
+                              _vehicleType == "Double"
+                          ? Color.fromARGB(255, 205, 204, 204)
+                          : slot["slotStatus"] == "OnlyDouble" &&
+                                  _vehicleType == "Single"
+                              ? Color.fromARGB(255, 205, 204, 204)
+                              : slot["slotStatus"] == "OnlyDouble" &&
+                                      _vehicleType == "Double"
+                                  ? Colors.white
+                                  : slot["slotStatus"] ==
+                                              "OnlySingle" &&
+                                          _vehicleType == "Single"
+                                      ? Colors.white
+                                      : Color.fromARGB(255, 205, 204, 204),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              '${slot["time"]}', // Display the time
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: _currentIndex == index ? Colors.white : null,
               ),
             ),
-          );
-        },
-        childCount: tlist.length,
-      ),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4, childAspectRatio: 1.5),
-    );
-  }
+          ),
+        );
+      },
+      childCount: timeSlots.length,
+    ),
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 4,
+      childAspectRatio: 1.5,
+    ),
+  );
+}
 }
 
 /*class BookingCalendarDemoApp extends StatefulWidget {
