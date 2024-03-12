@@ -2,9 +2,10 @@
 
 include 'connect.php';
 
-$sql = "SELECT r.*, v.* 
+$sql = "SELECT r.*, v.*, m.*
         FROM reservation r 
-        INNER JOIN vehicle v ON r.VehicleId = v.vehicleId";
+        JOIN vehicle v ON r.VehicleId = v.vehicleId
+        JOIN managerreservation m ON r.reservationId = m.reservationId";
 
 $result = $conn->query($sql);
 
