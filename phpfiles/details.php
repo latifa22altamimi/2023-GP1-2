@@ -1,16 +1,21 @@
 <?php
 
-/* 
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHP.php to edit this template
- */
-
 include 'connect.php';
-$sql ="SELECT r.*, t.time FROM reservation r JOIN timeslots t ON r.slotId = t.slotId";
+
+$sql = "SELECT r.*, v.* 
+        FROM reservation r 
+        JOIN vehicle v ON r.VehicleId = v.vehicleId
+        WHERE r.reservationId NOT IN (SELECT reservationId FROM managerreservation)";
+
 $result = $conn->query($sql);
- while($ro2 = mysqli_fetch_assoc($result)){
-     $data[]=$ro2;
- }
-      
-  
-  echo json_encode($data);
+
+$data = array();
+
+while ($row = $result->fetch_assoc()) {
+    $data[] = $row;
+}
+
+// Encode the data array to JSON format and output it
+echo json_encode($data);
+
+?>
