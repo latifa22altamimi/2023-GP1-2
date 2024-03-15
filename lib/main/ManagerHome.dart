@@ -31,7 +31,7 @@ class ManagerHome extends StatefulWidget {
 }
 
 class _ManagerHomeState extends State<ManagerHome> {
-  int index = 0;
+  int index = 1;
   late final pages = [
     // pages in navigation bar
     Reservations(),
