@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 12, 2024 at 04:32 AM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.0.28
+-- Generation Time: Mar 16, 2024 at 12:52 AM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,7 @@ CREATE TABLE `managerreservation` (
   `reservationId` int(11) NOT NULL,
   `visitorName` varchar(200) NOT NULL,
   `VphoneNumber` varchar(10) NOT NULL,
-  `ExpectedFinishTime` varchar(10) NOT NULL,
+  `ExpectedFinishTime` varchar(10) DEFAULT NULL,
   `ReservedForWaiting` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -40,9 +40,11 @@ CREATE TABLE `managerreservation` (
 --
 
 INSERT INTO `managerreservation` (`reservationId`, `visitorName`, `VphoneNumber`, `ExpectedFinishTime`, `ReservedForWaiting`) VALUES
-(26, 'm', '', '07:39 AM', 0),
-(27, 'm', '', '07:40 AM', 0),
-(28, 'm', '', '07:40 AM', 0);
+(39, 'shahad', '05038293', '03:24 AM', 1),
+(40, 'hhhh', '333333', '03:26 AM', 1),
+(41, 'ggg', '', '03:32 AM', 0),
+(43, 'shahad', '05043033', NULL, 0),
+(44, 'ssss', '4848484', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -83,10 +85,8 @@ CREATE TABLE `parameters` (
 --
 
 INSERT INTO `parameters` (`ParametersId`, `VehicleType`, `VehicleDedicatedTo`, `TotalNumberofVehicles`) VALUES
-(1, 'Single', 'walkIn', 3),
-(2, 'Double', 'walkIn', 3),
-(3, 'Single', 'visitor', 3),
-(4, 'Double', 'visitor', 3);
+(1, 'Double', 'walkIn', 2),
+(2, 'Single', 'walkIn', 2);
 
 -- --------------------------------------------------------
 
@@ -99,7 +99,7 @@ CREATE TABLE `reservation` (
   `date` varchar(10) NOT NULL,
   `time` varchar(10) NOT NULL,
   `VehicleId` int(11) NOT NULL,
-  `drivingType` varchar(20) NOT NULL,
+  `drivingType` varchar(20) DEFAULT NULL,
   `driverGender` varchar(20) DEFAULT NULL,
   `Status` varchar(20) NOT NULL,
   `userId` int(20) NOT NULL,
@@ -111,9 +111,11 @@ CREATE TABLE `reservation` (
 --
 
 INSERT INTO `reservation` (`reservationId`, `date`, `time`, `VehicleId`, `drivingType`, `driverGender`, `Status`, `userId`, `timestamp`) VALUES
-(26, '2024-03-12', '06:24 AM', 2, 'Self-driving', '', 'Active', 44, '2024-03-12 03:24:27'),
-(27, '2024-03-12', '06:25 AM', 2, 'Self-driving', '', 'Active', 44, '2024-03-12 03:25:39'),
-(28, '2024-03-12', '06:25 AM', 2, 'Self-driving', '', 'Active', 44, '2024-03-12 03:25:48');
+(39, '2024-03-15', '02:09 AM', 2, 'Self-driving', '', 'Active', 44, '2024-03-14 23:09:09'),
+(40, '2024-03-15', '02:11 AM', 2, 'Self-driving', '', 'Active', 44, '2024-03-14 23:11:35'),
+(41, '2024-03-15', '02:17 AM', 1, 'Self-driving', '', 'Active', 44, '2024-03-14 23:17:35'),
+(43, '2024-03-16', '03:26 AM', 2, NULL, NULL, 'Waiting', 44, '2024-03-15 23:37:26'),
+(44, '2024-03-16', '03:24 AM', 2, NULL, NULL, 'Waiting', 44, '2024-03-15 23:40:21');
 
 -- --------------------------------------------------------
 
@@ -256,7 +258,8 @@ INSERT INTO `waitinglist` (`Id`, `Name`, `PhoneNumber`, `userId`) VALUES
 -- Indexes for table `managerreservation`
 --
 ALTER TABLE `managerreservation`
-  ADD PRIMARY KEY (`reservationId`);
+  ADD PRIMARY KEY (`reservationId`),
+  ADD KEY `reservationId` (`reservationId`);
 
 --
 -- Indexes for table `markers`
@@ -325,7 +328,7 @@ ALTER TABLE `waitinglist`
 -- AUTO_INCREMENT for table `managerreservation`
 --
 ALTER TABLE `managerreservation`
-  MODIFY `reservationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `reservationId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `markers`
@@ -337,13 +340,13 @@ ALTER TABLE `markers`
 -- AUTO_INCREMENT for table `parameters`
 --
 ALTER TABLE `parameters`
-  MODIFY `ParametersId` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ParametersId` int(15) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `support`
@@ -389,7 +392,7 @@ ALTER TABLE `waitinglist`
 -- Constraints for table `managerreservation`
 --
 ALTER TABLE `managerreservation`
-  ADD CONSTRAINT `managerreservation_ibfk_1` FOREIGN KEY (`reservationId`) REFERENCES `reservation` (`reservationId`);
+  ADD CONSTRAINT `managerreservation_ibfk_1` FOREIGN KEY (`reservationId`) REFERENCES `reservation` (`reservationId`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `reservation`

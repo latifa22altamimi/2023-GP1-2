@@ -19,6 +19,7 @@ import '../widgets/text_field_container.dart';
 
 bool isVisibleWaiting = false;
 
+  List TypesAvailable = [];
 class CurrentReservationsList extends StatefulWidget {
   CurrentReservationsList({Key? key}) : super(key: key);
 
@@ -46,7 +47,6 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
   bool currentEmpty = false;
   bool listVisible = true;
   List waitingList = [];
-
   Future GetData() async {
     historyList.clear();
     print(GlobalValues.id);
@@ -104,7 +104,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
   }
 
   Future convertToCompleted() async {
-    var url = "http://10.0.2.2/phpfiles/DeleteRecord.php";
+    var url = "http://10.0.2.2/phpfiles/ConvertToComplete.php";
     final res = await http.post(Uri.parse(url), body: {});
 
     if (res.statusCode == 200) {
@@ -114,7 +114,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
   }
 
   Future refresh() async {
-    // convertToCompleted();
+    //convertToCompleted();
     historyList.clear();
     list.clear();
     print(GlobalValues.id);
@@ -141,7 +141,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
   }
 
   void initState() {
-    //convertToCompleted();
+    //convertToCompleted(); //convert status to completed
     super.initState();
     curpressed = true;
     GetData();
@@ -151,6 +151,23 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     curBG = kPrimaryColor;
     curTxt = Colors.white;
     prevTxt = Colors.black;
+    checkAvailableType();
+  }
+
+  
+
+  Future<void> checkAvailableType() async {
+    var url = "http://10.0.2.2/phpfiles/checkAvailableType.php";
+    final response = await http.post(Uri.parse(url), body: {});
+    var responseBody = json.decode(response.body);
+
+    setState(() {
+      TypesAvailable.addAll(responseBody);
+    });
+    print(TypesAvailable);
+    if (TypesAvailable[0]["Single"].runtimeType == String) {
+      print("its string");
+    }
   }
 
   @override
@@ -289,15 +306,63 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                           },
                           itemBuilder: (BuildContext context, int index) {
                             if ((historyList[index]["Status"] == "Waiting")) {
-                              print(historyList[index]["Status"]);
-                              return WaitingCard(
-                                Id: historyList[index]["reservationId"],
-                                Name: historyList[index]["visitorName"],
-                                PhoneNumber: historyList[index]["VphoneNumber"],
-                                VehicleType: historyList[index]["VehicleType"],
-                                ExpectUseTime: historyList[index]
-                                    ["ExpectUseTime"],
-                              );
+                              if (historyList[index]["VehicleType"] ==
+                                  "Single") {
+                                //single
+                                if (TypesAvailable.isNotEmpty &&
+                                    (TypesAvailable[0]["Single"] ==
+                                        "AvailableType")) {
+                                  return WaitingCard(
+                                    Id: historyList[index]["reservationId"],
+                                    Name: historyList[index]["visitorName"],
+                                    PhoneNumber: historyList[index]
+                                        ["VphoneNumber"],
+                                    VehicleType: historyList[index]
+                                        ["VehicleType"],
+                                    ExpectUseTime: historyList[index]["time"],
+                                    availableType: "True",
+                                  );
+                                } else {
+                                  return WaitingCard(
+                                    Id: historyList[index]["reservationId"],
+                                    Name: historyList[index]["visitorName"],
+                                    PhoneNumber: historyList[index]
+                                        ["VphoneNumber"],
+                                    VehicleType: historyList[index]
+                                        ["VehicleType"],
+                                    ExpectUseTime: historyList[index]["time"],
+                                    availableType: "False",
+                                  );
+                                }
+                              } else if (historyList[index]["VehicleType"] ==
+                                  "Double") {
+                                //double
+                                if (TypesAvailable.isNotEmpty &&
+                                    TypesAvailable[1]["Double"] ==
+                                        "AvailableType") {
+                                  return WaitingCard(
+                                    Id: historyList[index]["reservationId"],
+                                    Name: historyList[index]["visitorName"],
+                                    PhoneNumber: historyList[index]
+                                        ["VphoneNumber"],
+                                    VehicleType: historyList[index]
+                                        ["VehicleType"],
+                                    ExpectUseTime: historyList[index]["time"],
+                                    availableType: "True",
+                                  );
+                                } else {
+                                  return WaitingCard(
+                                    Id: historyList[index]["reservationId"],
+                                    Name: historyList[index]["visitorName"],
+                                    PhoneNumber: historyList[index]
+                                        ["VphoneNumber"],
+                                    VehicleType: historyList[index]
+                                        ["VehicleType"],
+                                    ExpectUseTime: historyList[index]["time"],
+                                    availableType: "False",
+                                  );
+                                }
+                              }
                             } else {
                               return Container(); // Handle other cases if needed
                             }
@@ -344,8 +409,8 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                           },
                           itemBuilder: (BuildContext context, int index) {
                             if ((historyList[index]["Status"] == "Active") &&
-                                (historyList[index]["ReservedForWaiting"] == "0")
-                                ) {
+                                (historyList[index]["ReservedForWaiting"] ==
+                                    "0")) {
                               return ReserveCard(
                                 Rid: historyList[index]["reservationId"],
                                 datee: historyList[index]["date"],
@@ -353,15 +418,17 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                                 status: historyList[index]["Status"],
                                 VehicleType: historyList[index]["VehicleType"],
                                 ExpectFinishTime: historyList[index]
-                                    ["ExpectFinishTime"],
+                                    ["ExpectedFinishTime"],
                                 colorr: Color.fromRGBO(255, 196, 4, 1),
                                 widthAdjust: 125.0,
                                 buttonColor: Color.fromARGB(255, 37, 149, 190),
                                 isButtonEnabled: false,
+                                VehicleId: historyList[index]["VehicleId"],
                               );
                             } else if ((historyList[index]["Status"] ==
                                     "Active") &&
-                                (historyList[index]["ReservedForWaiting"] == "1")) {
+                                (historyList[index]["ReservedForWaiting"] ==
+                                    "1")) {
                               return ReserveCard(
                                 Rid: historyList[index]["reservationId"],
                                 datee: historyList[index]["date"],
@@ -369,11 +436,12 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                                 status: historyList[index]["Status"],
                                 VehicleType: historyList[index]["VehicleType"],
                                 ExpectFinishTime: historyList[index]
-                                    ["ExpectFinishTime"],
+                                    ["ExpectedFinishTime"],
                                 colorr: Color.fromRGBO(255, 196, 4, 1),
                                 widthAdjust: 125.0,
                                 buttonColor: Colors.grey,
                                 isButtonEnabled: true,
+                                VehicleId: historyList[index]["VehicleId"],
                               );
                             } else {
                               return Container(); // Handle other cases if needed
@@ -476,6 +544,7 @@ class ReserveCard extends StatefulWidget {
   bool? isButtonEnabled;
   String? VehicleType;
   String? ExpectFinishTime;
+  String? VehicleId;
   ReserveCard(
       {this.Rid,
       this.datee,
@@ -486,7 +555,8 @@ class ReserveCard extends StatefulWidget {
       this.ExpectFinishTime,
       this.widthAdjust,
       this.buttonColor,
-      this.isButtonEnabled});
+      this.isButtonEnabled,
+      this.VehicleId});
 
   @override
   State<ReserveCard> createState() => _ReserveCardState();
@@ -534,13 +604,14 @@ class _ReserveCardState extends State<ReserveCard> {
       "id": GlobalValues.id,
       "Name": waitName.text,
       "PhoneNumber": waitPhoneNumber.text,
-      "VehicleType": widget.VehicleType,
+      "VehicleId": widget.VehicleId,
       "ExpectUseTime": widget.ExpectFinishTime
     });
     var resp = json.decode(res.body);
     print(resp);
   }
 
+  
   Future DisplayWaiting() async {
     print(GlobalValues.id);
     var url = "http://10.0.2.2/phpfiles/ActiveWalkIn.php";
@@ -558,6 +629,7 @@ class _ReserveCardState extends State<ReserveCard> {
         print(red[0]);
       } else {
         setState(() {
+          
           unavailableVehicles = false; //There are available vehicles
         });
         print(red[0]);
@@ -583,7 +655,9 @@ class _ReserveCardState extends State<ReserveCard> {
       isVisibleWaiting = true;
     });
     print(isVisibleWaiting);
-    if (unavailableVehicles) {
+    if (TypesAvailable.isNotEmpty &&
+                                    (TypesAvailable[0]["${widget.VehicleType}"] ==
+                                        "UnavailableType")) {
       showDialog(
         context: context,
         builder: (context) => Dialog(
@@ -653,9 +727,9 @@ class _ReserveCardState extends State<ReserveCard> {
                 ),
                 TextFieldContainer(
                     child: TextField(
-                  onTapOutside: (PointerDownEvent) {
+                  onChanged: (value) {
                     setState(() {
-                      waitingName = waitName.text;
+                      waitingName = value;
                     });
                   },
                   controller: waitName,
@@ -703,9 +777,9 @@ class _ReserveCardState extends State<ReserveCard> {
                 ),
                 TextFieldContainer(
                   child: TextField(
-                    onTapOutside: (PointerDownEvent) {
+                    onChanged: (value) {
                       setState(() {
-                        waitingNumber = waitPhoneNumber.text;
+                        waitingNumber = value;
                       });
                     },
                     controller: waitPhoneNumber,
@@ -766,19 +840,25 @@ class _ReserveCardState extends State<ReserveCard> {
                           BoxConstraints.tightFor(height: 38, width: 100),
                       child: ElevatedButton(
                         onPressed: () {
-                          if (waitingName == "") {
+                          print(waitingName);
+                          if (waitingName.isEmpty) {
                             setState(() {
+                              print(waitName);
                               nameReq = true;
-                              print(nameReq);
+                              print("waiting name is empty");
                             });
                           }
-                          if (waitingNumber == "") {
+                          if (waitingNumber.isEmpty) {
                             setState(() {
                               phoneReq = true;
-                              print(phoneReq);
+                              print("waiting number is empty");
                             });
-                          } else {
-                            setWaiting();
+                          }
+                          if (waitingName.isNotEmpty &&
+                              waitingNumber.isNotEmpty) {
+                            nameReq = false;
+                            phoneReq = false;
+                            setWaiting(); //reserved for waiting set to true
                             insertWaitingList();
                             Navigator.of(context).pop();
                             showDialog(
@@ -872,7 +952,7 @@ class _ReserveCardState extends State<ReserveCard> {
         ),
       );
     } else {
-      //there is already available vehicles
+      //there are already available vehicles
       showDialog(
         context: context,
         builder: (context) => Dialog(
@@ -1155,19 +1235,23 @@ class WaitingCard extends StatefulWidget {
   String? ExpectUseTime;
   String getTimee =
       '${DateFormat('HH:mm').format(DateTime.now())} ${DateTime.now().hour > 12 ? 'PM' : 'AM'}';
+  String? availableType;
 
   WaitingCard(
       {this.Id,
       this.Name,
       this.PhoneNumber,
       this.VehicleType,
-      this.ExpectUseTime});
+      this.ExpectUseTime,
+      this.availableType});
 
   @override
   State<WaitingCard> createState() => _WaitingCardState();
 }
 
 class _WaitingCardState extends State<WaitingCard> {
+  bool availableType = false;
+
   void initState() {
     super.initState();
   }
@@ -1185,7 +1269,6 @@ class _WaitingCardState extends State<WaitingCard> {
     var url = "http://10.0.2.2/phpfiles/AcceptVisitor.php";
     final res = await http.post(Uri.parse(url), body: {
       "Rid": widget.Id,
-      "startTime": widget.getTimee,
     });
     var respo = json.decode(res.body);
     print(respo);
@@ -1229,7 +1312,7 @@ class _WaitingCardState extends State<WaitingCard> {
             ),
           ),
           SizedBox(
-            height: 10.0,
+            height: 5.0,
           ),
           Row(
             children: [
@@ -1256,7 +1339,7 @@ class _WaitingCardState extends State<WaitingCard> {
             ],
           ),
           SizedBox(
-            height: 8.0,
+            height: 4.0,
           ),
           Row(
             children: [
@@ -1283,7 +1366,7 @@ class _WaitingCardState extends State<WaitingCard> {
             ],
           ),
           SizedBox(
-            height: 8.0,
+            height: 4.0,
           ),
           Row(
             children: [
@@ -1318,7 +1401,7 @@ class _WaitingCardState extends State<WaitingCard> {
                 child: Row(
                   children: [
                     Text(
-                      'Expected use time: ',
+                      'Expect use time: ',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 15,
@@ -1574,7 +1657,7 @@ class _WaitingCardState extends State<WaitingCard> {
                     margin: EdgeInsets.only(right: 10.0),
                     child: ElevatedButton(
                       onPressed: () async {
-                        if (!unavailableVehicles) {
+                        if (widget.availableType == "True") {
                           showDialog(
                               context: context,
                               builder: (context) => Dialog(

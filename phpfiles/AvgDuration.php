@@ -33,6 +33,5 @@ $hours = floor($averageSeconds / 3600);
 $minutes = floor(($averageSeconds % 3600) / 60);
 $averageTime = sprintf('%02d:%02d', $hours, $minutes);
 
-$updateDur = "UPDATE parameters SET ReservationDur = '$averageTime' WHERE ParametersId='1'";
-$result = $conn->query($updateDur);
-echo json_encode($result);
+
+echo json_encode($averageTime);
