@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:rehaab/GlobalValues.dart';
+
 import '../customization/clip.dart';
 import '../widgets/constants.dart';
 import 'package:encrypt/encrypt.dart' as enc;

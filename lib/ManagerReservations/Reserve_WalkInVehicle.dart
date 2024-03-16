@@ -179,9 +179,9 @@ bool isVisibleNumber(){
 
                     TextFieldContainer(
                         child: TextField(
-                      onTapOutside: (PointerDownEvent) {
+                      onChanged: (Value) {
                         setState(() {
-                          name = visitorName.text;
+                          name = Value;
                         });
                       },
                       controller: visitorName,
@@ -205,9 +205,9 @@ bool isVisibleNumber(){
                             fontSize: 18),
                         textAlign: TextAlign.left,
                       ), Text(
-                        '(Optional)',
+                        ' (Optional)',
                         style: TextStyle(
-                            color: Colors.black,
+                            color: Colors.black26,
                             fontWeight: FontWeight.w600,
                             fontSize: 14),
                         textAlign: TextAlign.left,
@@ -216,9 +216,9 @@ bool isVisibleNumber(){
 
                     TextFieldContainer(
                       child: TextField(
-                        onTapOutside: (PointerDownEvent) {
+                        onChanged: (value) {
                           setState(() {
-                            number = VphoneNumber.text;
+                            number = value;
                           });
                         },
                         controller: VphoneNumber,
@@ -1147,7 +1147,7 @@ bool isVisibleNumber(){
                                                               FontWeight.w500),
                                                     ),
                                                     Text(
-                                                      '${DateFormat('HH:mm').format(DateTime.now())} ${currentTime.hour>12? 'PM' : 'AM'}' ,// current time convert
+                                                      '${DateFormat('hh:mm a').format(DateTime.now())}' ,// current time convert
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 16,
@@ -1210,8 +1210,8 @@ bool isVisibleNumber(){
                                                         height: 38, width: 100),
                                                 child: ElevatedButton(
                                                   onPressed: () async {
-                                                    getTime= '${DateFormat('hh:mm').format(DateTime.now())} ${currentTime.hour >12? 'PM' : 'AM'}';
-                                                    insert();
+                                                    getTime= '${DateFormat('hh:mm a').format(DateTime.now())}';
+                                                    await insert();
                                                     //success msg here , insert in db --------------------------------------------
 
                                                     _drivingType = "";
