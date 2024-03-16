@@ -1211,7 +1211,7 @@ bool isVisibleNumber(){
                                                 child: ElevatedButton(
                                                   onPressed: () async {
                                                     getTime= '${DateFormat('hh:mm a').format(DateTime.now())}';
-                                                    await insert();
+                                                    insert();
                                                     //success msg here , insert in db --------------------------------------------
 
                                                     _drivingType = "";
