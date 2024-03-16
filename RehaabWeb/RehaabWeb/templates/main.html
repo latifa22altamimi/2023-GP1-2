@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    {% load i18n %}
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'RehaabWeb/style.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script>
+        setTimeout(function(){
+          if ($('#msg').length>0){
+            $('#msg').remove();
+          }
+        }, 3000)
+                </script>
+    <style>
+        #map {
+            width: 550px;
+            height: 305px;
+        }
+
+        .alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    border-radius: 4px;
+    padding: 15px;
+    margin: 8px;
+    position: fixed;
+    z-index: 9999;
+    width: 100%;
+}
+
+.justify-space{
+  justify-content: space-around;
+  align-items: center;
+}
+.mb-1.group.active{
+    background-color: #2f5706;
+}
+
+
+
+
+
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="stylesheet" href="{% static 'RehaabWeb/style2.css' %}">
+    <title>Dashboard</title>
+</head>
+<body >
+    <div class="wrapper d-flex align-items-stretch" style="min-height: 53rem;">
+
+    
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+		{% comment %} {% include 'dashboard/elements/nav-header.html' %} {% endcomment %}
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+		
+		<!--**********************************
+            Chat box start
+        ***********************************-->
+		<!--**********************************
+            Chat box End
+        ***********************************-->
+		
+		<!--**********************************
+            Header start
+        ***********************************-->
+        
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+        
+        <!--**********************************
+            Sidebar start
+            ***********************************-->
+            {% include 'sidebar.html' %}
+            {% include 'header.html' %}
+
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+		
+            <br>
+        {% block content %}
+        {% endblock %} 
+		
+		
+		
+        <!--**********************************
+            Footer start
+        ***********************************-->
+		{% comment %} {% include 'dashboard/elements/footer.html' %} {% endcomment %}
+
+        <!--**********************************
+            Footer end
+        ***********************************-->
+
+
+	</div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+
+
+
+
+
+
+
+    
+    {% block additional_js %}
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'RehaabWeb/script.js' %}"></script>
+    <script src="{% static 'RehaabWeb/popper.js' %}"></script>
+    <script src="{% static 'RehaabWeb/bootstrap.min.js' %}"></script>
+    <script src="{% static 'RehaabWeb/main.js' %}"></script>
+    <script src="{% static 'RehaabWeb/script.js' %}"></script>
+    {% endblock %}
+</body>
+</html>

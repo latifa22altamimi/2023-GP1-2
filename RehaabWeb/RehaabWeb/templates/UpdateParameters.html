@@ -1,0 +1,451 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load i18n %}
+    
+{% block content %}
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+        <!-- Add the necessary CSS and JavaScript files -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
+     
+        <style>
+            #map{
+            position: block;
+            margin-top: 30%;
+            height: 60%;
+               
+            }
+            * {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+body {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0%;
+  min-height: 100vh;
+  background-color: #f2f2f2;
+}
+h2 {
+  text-align: center;
+  height: fit-content;
+  color: #2f5706;
+  padding: 1% 0% 1% 0%;
+  font-size: 1.8em;
+  letter-spacing: 5px;
+}
+h2 span {
+  text-align: center;
+  margin-left: 70%;
+  letter-spacing: 5px;
+  color: #2f5706;
+  margin-left: 89%;
+}
+#logOutDiv {
+  position: absolute;
+  top: -3%;
+  left: 80%;
+  margin-top: 3.8%;
+  width: 300px;
+}
+#logOutDiv input {
+  width: 130px;
+  font-size: 15px;
+  background-color: #3d6449;
+  margin: -2% 0% 0% 0%;
+  padding: 14px 25px 10px 25px;
+}
+#logOutDiv p {
+  display: inline-block;
+  text-align: right;
+  border-right: 3px solid #3d6449;
+  padding-top: 2%;
+  padding-right: 2%;
+  padding-bottom: 3%;
+  margin-right: 2%;
+  height: 20px;
+  color: #0f5b36;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+input[type="submit"],
+input[type="button"] {
+  box-shadow: 0px 4px 5px #3e3e3e6d;
+  border-radius: 50px;
+  border-style: none;
+  width: 42%;
+  height: 40%;
+  padding: 12px 25px;
+  /* margin-top: 21%;
+  margin-left: -8%; */
+  font-size: 17.5px;
+  color: #ffffff;
+  background-color: #f0f1f463;
+  border-style: hidden;
+  transition: 0.3s, transform 0.3s, box-shadow 0.3s;
+  will-change: transform;
+}
+#logOutDiv {
+  z-index: 999;
+}
+input[type="submit"]:hover,
+input[type="button"]:hover {
+  background-color: #3d6449;
+  transform: translate3d(0, -2px, 0);
+}
+.box {
+  position: absolute;
+  top: 0;
+  left: 0px;
+  background-color: #3d6449;
+  width: 400px;
+  height: 500px;
+  clip-path: polygon(100% 0, 0 0, 0 100%);
+  & img {
+    width: 35%;
+    position: absolute;
+    left: 20%;
+    transform: translateX(-40%);
+    top: 5%;
+  }
+}
+.container {
+  display: grid;
+  /* grid-gap: 20px; */
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr) auto;
+  max-width: 1000px;
+  padding: 10px;
+  background-color: #fff;
+  box-shadow: 5px 5px 40px #146b9422;
+  border-radius: 20px;
+  margin-left: 100px;
+  height: 700px;
+}
+.left {
+  display: grid;
+  grid-template-rows: 1fr;
+  height: 100%;
+  position: relative;
+  padding:0 4px;
+
+}
+form{
+    position: relative;
+    padding:0 4px;
+
+
+}
+.right {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(4, auto);
+  grid-gap: 10px;
+  
+}
+.c {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  row-gap: 0;
+  & h4 {
+    grid-column-start: span 2;
+
+    color: white;
+    font-size: 25px;
+    background-color: #3d6449;
+    width: 50%;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+}
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #3d6449;
+  font-size: 0.9em;
+  margin: 5% 0% 5% 5%;
+}
+.field {
+  width: 100%;
+  border-radius: 4px;
+  border: 2px solid rgba(0, 0, 0, 0);
+  outline: none;
+  background-color: rgba(230, 230, 230, 0.6);
+  padding: 0.5rem 1rem;
+  margin-bottom: 22px;
+  transition: 0.3s;
+}
+.field:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+@media (max-width: 600px) {
+  .right {
+    grid-template-columns: 1fr;
+  }
+}
+.up {
+  height: fit-content;
+  width: 100%;
+  text-align: center;
+  grid-column-start: span 2;
+  margin-top: 5%;
+}
+.up input {
+  width: 130px;
+  font-size: 15px;
+  background-color: #3d6449;
+  cursor: pointer;
+  transition: 0.3s;
+
+}
+.titlee{
+  position: absolute;
+  margin-top: 20%;
+  margin-left: 1%;
+
+    color: white;
+  
+    background-color: #3d6449;
+    width: 50%;
+    
+    border-radius: 10px;
+   
+    
+
+}
+
+
+
+
+.swal2-title {
+  font-size: 20px; 
+}
+ .sys-title{
+    margin-left: 99%;
+ }
+
+        </style>
+    
+        <main class="">
+
+        
+ <br>
+
+        <div class="container">
+    
+            <form method="POST" action="{% url 'UpdateParameters' %}" onsubmit="showConfirmationModal(); return false;">
+                {% csrf_token %}
+                <h2 >
+                    <div class="sys-title">
+                    SYSTEM
+                    <br>
+                </div>
+                    <span>
+                        INFORMATION
+                    </span>
+                </h2>
+              
+    <br>
+              
+                <div class="right">
+                 
+                    <div class="c">
+                        <h4>BackUp Vehicles</h4>
+                        <div>
+                            <label>Single</label>
+                            <input
+                                type="number"
+                                id="input1 "
+                                class="field"
+                                name="num_of_Sbackup_vehicles"
+                                value="{{num_of_Sbackup_vehicles}}"
+                            >
+                        </div>
+                        <div>
+                            <label>Double </label>
+                            <input
+                                type="number"
+                                id="input2 "
+                                class="field"
+                                name="num_of_Dbackup_vehicles"
+                                value="{{num_of_Dbackup_vehicles}}"
+                            >
+                        </div>
+                    </div>
+                    <div class="c">
+                        <h4>WalkIn Vehicles</h4>
+                        <div>
+                            <label for="num">Single </label>
+                            <input
+                                type="number"
+                                id="input3 "
+                                class="field"
+                                name="num_of_SWalkin_vehicles"
+                                value="{{num_of_SWalkin_vehicles}}"
+                            >
+                        </div>
+                        <div>
+                            <label for="num">Double</label>
+                            <input
+                                type="number"
+                                id="input4 "
+                                class="field"
+                                name="num_of_DWalkin_vehicles"
+                                value="{{num_of_DWalkin_vehicles}}"
+                            >
+                        </div>
+                    </div>
+                    <div class="c">
+                        <h4> Visitor Vehicles</h4>
+                        <div>
+                            <label for="num">Single</label>
+                            <input
+                                type="number"
+                                id="input5 "
+                                class="field"
+                                name="SingleV"
+                                value="{{SingleV}}"
+                            >
+                        </div>
+                        <div>
+                            <label for="num">Double </label>
+                            <input
+                                type="number"
+                                id="input6 "
+                                class="field"
+                                name="DoubleV"
+                                value="{{DoubleV}}"
+                            >
+                        </div>
+                    </div>
+                    
+                
+                </div>
+                <div id="under" style="display: none;">
+                    <label for="num">Longtuide</label>
+                    <input type="text" id="longitude" class="field" name="Longitude" value="{{Longitude}}">
+                </div>
+                <div style="display: none;">
+                    <label for="num">Latitude</label>
+                    <input type="text" id="latitude" class="field" name="Latitude" value="{{Latitude}}">
+                </div>
+                <div class="up">
+                    <input
+                        type="button"
+                        value="UPDATE"
+                      
+                        
+                        class="submit-button"
+                        onclick="showConfirmationMessage()"
+                  
+                    >
+                    <input
+                        type="submit"
+                        value="UPDATE"
+                      
+                        id="Update"
+                        class="submit-button"
+                        style="display: none;"
+                  
+                    >
+                    
+                  
+                </div>         
+                     
+            
+                
+            </form>
+
+       
+            <div class="left">
+            
+             
+                <div id="map" data-latitude="{{Latitude}}" data-longitude="{{Longitude}}"></div>
+               
+                <div class="titlee">
+                  <h4 style="color: white;     font-size: 18px;    grid-column-start: span 2;
+                  padding: 4px 10px; height: 25px;">vehicle location</h4>
+                  <div>
+          
+                <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+                <script>
+                var mapElement = document.getElementById('map');
+                var latitude = parseFloat(mapElement.getAttribute('data-latitude'));
+                var longitude = parseFloat(mapElement.getAttribute('data-longitude'));
+                let mapOptions = {
+                    center: [latitude, longitude],
+                    zoom: 17
+                }
+                let map = new L.map('map', mapOptions);
+                let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+                map.addLayer(layer);
+                let marker = L.marker(mapOptions.center, {
+                    icon: L.icon({
+                        iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        shadowSize: [41, 41]
+                    })
+                }).addTo(map);
+                map.on('click', (event) => {
+                    if (marker !== null) {
+                        map.removeLayer(marker);
+                    }
+                    marker = L.marker([event.latlng.lat, event.latlng.lng]).addTo(map);
+                    document.getElementById('latitude').value = event.latlng.lat;
+                    document.getElementById('longitude').value = event.latlng.lng;
+                });
+                </script>
+            </div>
+         
+        </div>
+        <script src="https://unpkg.com/@popperjs/core@2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="{% static 'RehaabWeb/script.js' %}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>   
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+        <script>
+            // Define a function to show the Swal.fire() message
+            function showConfirmationMessage() {
+                Swal.fire({
+            title: 'Are you sure ? ',
+            icon: 'warning',        
+            confirmButtonColor: '#3d6449' ,
+            cancelButtonColor:  '#d33',
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No',
+            showCloseButton: true,
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                alert_message(msg="success")
+                setTimeout(function () {
+                    $("#Update").click();
+                },800);
+            }
+            else{
+                
+            }
+        })
+    }
+    function alert_message(msg="",icon="success",timer=6000){
+            Swal.fire({
+                position:'center',
+                showConfirmButton:false,
+                icon:icon,
+                title:msg,
+                timer: timer,
+            })
+        }
+          
+          </script>
+
+    </body>
+    {% endblock %}

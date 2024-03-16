@@ -1,0 +1,84 @@
+
+body{
+    margin:0%;
+    font-family: Sans-Serif;
+    background-color: #F6F5F5;
+    background-image: url(backgroundMain.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+img#logo{
+    margin-top: 0.1%;
+    margin-left: 2%;
+    width:8%;
+}
+
+#signDiv{
+    width:22%;
+    margin:1% 0% 0% 11%;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 5px 5px 40px #147e5722;
+}
+
+h2{
+    color: #2f5706;
+    padding: 7% 0% 3% 27%;
+    font-size: 1.5em;
+    letter-spacing: 4px;
+}
+
+span{
+    padding-left: 37px;
+    letter-spacing: 5px;
+}
+
+label{
+    color: #3b6c0a;
+    font-size: 0.9em;
+    margin: 3% 0% 1.1% 13%;
+  
+}
+
+input[type=email],input[type=password]{
+    width:70%;
+    margin: 1% 0% 1.1% 12%;
+    padding:1% 1% 0.5% 1%;
+    border-radius: 4px;
+    background-color: #f0f1f42c;
+    border-style:hidden;
+    border-bottom: solid 2px #3b6c0a;
+}
+
+select{
+    width:50%;
+    margin-top: 2%;
+    padding:1.8% 1% 1% 1%;
+    margin: 1% 0% 1.1% 12%;
+    border-radius: 4px;
+    background-color: #f0f1f42c;
+    border-style:hidden;
+    border-bottom: solid 2px #3b6c0a;
+}
+
+input[type=submit]{
+    width:45%;
+    height: 28%;
+    background-color:#3d6449;
+    box-shadow:0px 4px 5px #3e3e3e90 ;
+    font-size: 18px;
+    color: #FFFFFF;
+    border: none;
+    padding:11px 20px;
+    margin: 3% 0% 1.1% 27%;
+    display: block;
+    border-radius: 50px;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    will-change: transform;
+}
+
+input[type=submit]:hover{
+    background-color:#3b6c0a;
+    transform: translate3d(0, -2px, 0);
+}
