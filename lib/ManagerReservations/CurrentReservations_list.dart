@@ -653,8 +653,7 @@ class _ReserveCardState extends State<ReserveCard> {
       isVisibleWaiting = true;
     });
     print(isVisibleWaiting);
-    if (TypesAvailable.isNotEmpty &&
-        (TypesAvailable[0]["${widget.VehicleType}"] == "UnavailableType")) {
+    if (TypesAvailable.isNotEmpty &&( (TypesAvailable[0]["${widget.VehicleType}"] == "UnavailableType")|| (TypesAvailable[1]["${widget.VehicleType}"] == "UnavailableType") )) {
       showDialog(
         context: context,
         builder: (context) => Dialog(
@@ -1216,7 +1215,13 @@ class _ReserveCardState extends State<ReserveCard> {
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(18.0))),
             ),
-            child: const Icon(CupertinoIcons.add, color: Colors.white),
+            child:  Text(
+                          'Add to waiting',
+                          style: TextStyle(
+                              color: const Color.fromARGB(255, 255, 255, 255),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500),
+                        ),
           ),
         ),
       ],
