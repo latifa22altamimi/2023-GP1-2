@@ -19,7 +19,8 @@ import '../widgets/text_field_container.dart';
 
 bool isVisibleWaiting = false;
 
-  List TypesAvailable = [];
+List TypesAvailable = [];
+
 class CurrentReservationsList extends StatefulWidget {
   CurrentReservationsList({Key? key}) : super(key: key);
 
@@ -59,6 +60,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
       var red = json.decode(res.body);
       setState(() {
         list.addAll(red);
+       
         for (int i = 0; i < list.length; i++) {
           if ((list[i]["Status"] == "Waiting" ||
               list[i]["Status"] == "Active")) {
@@ -74,8 +76,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
         }
 
         for (int i = 0; i < list.length; i++) {
-          if ((list[i]["Status"] == "Confirmed" ||
-              list[i]["Status"] == "Waiting")) {
+          if ((list[i]["Status"] == "Waiting")) {
             previousList.add(list[i]);
           }
         }
@@ -153,8 +154,6 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     prevTxt = Colors.black;
     checkAvailableType();
   }
-
-  
 
   Future<void> checkAvailableType() async {
     var url = "http://10.0.2.2/phpfiles/checkAvailableType.php";
@@ -258,6 +257,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                         prevTxt = Colors.black;
                         //current reservations
                         history = 0;
+
                         historyList.clear();
                         for (int i = 0; i < list.length; i++) {
                           if ((list[i]["Status"] == "Waiting" ||
@@ -611,7 +611,6 @@ class _ReserveCardState extends State<ReserveCard> {
     print(resp);
   }
 
-  
   Future DisplayWaiting() async {
     print(GlobalValues.id);
     var url = "http://10.0.2.2/phpfiles/ActiveWalkIn.php";
@@ -629,7 +628,6 @@ class _ReserveCardState extends State<ReserveCard> {
         print(red[0]);
       } else {
         setState(() {
-          
           unavailableVehicles = false; //There are available vehicles
         });
         print(red[0]);
@@ -656,8 +654,7 @@ class _ReserveCardState extends State<ReserveCard> {
     });
     print(isVisibleWaiting);
     if (TypesAvailable.isNotEmpty &&
-                                    (TypesAvailable[0]["${widget.VehicleType}"] ==
-                                        "UnavailableType")) {
+        !(TypesAvailable[0]["${widget.VehicleType}"] == "UnavailableType")) {
       showDialog(
         context: context,
         builder: (context) => Dialog(
