@@ -57,6 +57,8 @@ class _CheckInState extends State<CheckIn> {
       if (respo == "Tawaf started successfully") {
         setState(() {
           isVisibleSuccess = true;
+          GlobalValues.Status="Active";
+
         });
       } else if (respo == "Reservation status is not Confirmed") {
         isVisibleInvalid = true;
