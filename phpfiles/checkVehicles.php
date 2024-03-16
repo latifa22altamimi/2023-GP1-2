@@ -20,8 +20,8 @@ $rowSingleOrDouble = mysqli_fetch_assoc($resultSingleOrDouble);
 $numVehicles = $rowSingleOrDouble['TotalNumberofVehicles'];
 
 // Fetch active walk-in reservations for the provided vehicle type
-$sqlReservations = "SELECT r.*, v.VehicleType 
-                    FROM reservation r 
+$sqlReservations = "SELECT r.*, v.VehicleType , m.*
+                    FROM reservation r INNER JOIN managerreservation m ON r.reservationId = m.reservationId
                     INNER JOIN vehicle v ON r.VehicleId = v.vehicleId 
                     WHERE r.Status='Active' AND v.VehicleType='$VehicleType'";
 $resultReservations = mysqli_query($conn, $sqlReservations);
