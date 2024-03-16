@@ -17,7 +17,9 @@ foreach ($tawafDurations as $time) {
 // Function to convert time string to seconds
 function timeToSeconds($time) {
     $parts = explode(':', $time);
-    return $parts[0] * 3600 + $parts[1] * 60;
+    $hours = intval($parts[0]);
+    $minutes = intval($parts[1]);
+    return $hours * 3600 + $minutes * 60;
 }
 // Convert each time string to seconds and calculate total sum
 $totalSeconds = 0;
