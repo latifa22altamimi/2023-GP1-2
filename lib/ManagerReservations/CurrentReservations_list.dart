@@ -60,7 +60,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
       var red = json.decode(res.body);
       setState(() {
         list.addAll(red);
-       
+
         for (int i = 0; i < list.length; i++) {
           if ((list[i]["Status"] == "Waiting" ||
               list[i]["Status"] == "Active")) {
@@ -654,7 +654,7 @@ class _ReserveCardState extends State<ReserveCard> {
     });
     print(isVisibleWaiting);
     if (TypesAvailable.isNotEmpty &&
-        !(TypesAvailable[0]["${widget.VehicleType}"] == "UnavailableType")) {
+        (TypesAvailable[0]["${widget.VehicleType}"] == "UnavailableType")) {
       showDialog(
         context: context,
         builder: (context) => Dialog(
