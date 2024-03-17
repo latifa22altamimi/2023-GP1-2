@@ -574,7 +574,10 @@ class _ReserveCardState extends State<ReserveCard> {
     super.initState();
     // _startTimer();
     DisplayWaiting();
-    setState(() {});
+    setState(() {
+      nameReq = false;
+      phoneReq = false;
+    });
   }
 
   void didUpdateWidget(covariant ReserveCard oldWidget) {
@@ -648,304 +651,340 @@ class _ReserveCardState extends State<ReserveCard> {
     }
   }
 
-  void handleButtonPress() {
+  void handleButtonPress(BuildContext context) {
     setState(() {
       isVisibleWaiting = true;
+      nameReq = false;
     });
     print(isVisibleWaiting);
-    if (TypesAvailable.isNotEmpty &&( (TypesAvailable[0]["${widget.VehicleType}"] == "UnavailableType")|| (TypesAvailable[1]["${widget.VehicleType}"] == "UnavailableType") )) {
+    if (TypesAvailable.isNotEmpty &&
+        ((TypesAvailable[0]["${widget.VehicleType}"] == "UnavailableType") ||
+            (TypesAvailable[1]["${widget.VehicleType}"] ==
+                "UnavailableType"))) {
       showDialog(
         context: context,
-        builder: (context) => Dialog(
-          backgroundColor: Color.fromARGB(255, 247, 247, 247),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Container(
-            padding: const EdgeInsets.only(
-                right: 30.0, left: 30.0, top: 10.0, bottom: 50.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Lottie.asset('assets/images/warn.json',
-                    width: 100, height: 100),
-                Text(
-                  'Add to waiting list',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600),
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: 5.0,
-                ),
-                Text(
-                  'The visitor will be added to the waiting list and will be able to use the current reservation' +
-                      "'" +
-                      's vehicle as soon as it becomes available',
-                  style: TextStyle(
-                      color: Color.fromARGB(255, 48, 48, 48),
-                      fontSize: 17,
-                      fontWeight: FontWeight.w400),
-                ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Row(
+        builder: (BuildContext context) {
+          return Dialog(
+            backgroundColor: Color.fromARGB(255, 247, 247, 247),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Container(
+                  padding: const EdgeInsets.only(
+                      right: 30.0, left: 30.0, top: 10.0, bottom: 50.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
                     children: [
+                      Lottie.asset('assets/images/warn.json',
+                          width: 100, height: 100),
                       Text(
-                        'Name',
+                        'Add to waiting list',
                         style: TextStyle(
                             color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18),
-                        textAlign: TextAlign.left,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600),
+                        textAlign: TextAlign.center,
                       ),
                       SizedBox(
-                        width: 10.0,
+                        height: 5.0,
                       ),
-                      Visibility(
-                        visible: nameReq,
-                        child: Text(
-                          'required*',
-                          style: TextStyle(
-                              color: ErrorColor,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
-                          textAlign: TextAlign.left,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                TextFieldContainer(
-                    child: TextField(
-                  onChanged: (value) {
-                    setState(() {
-                      waitingName = value;
-                    });
-                  },
-                  controller: waitName,
-                  cursorColor: kPrimaryColor,
-                  decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.person,
-                        color: kPrimaryColor,
-                      ),
-                      hintText: "Visitor name",
-                      hintStyle: const TextStyle(fontFamily: 'OpenSans'),
-                      border: InputBorder.none),
-                )),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Row(
-                    children: [
                       Text(
-                        'Phone Number',
+                        'The visitor will be added to the waiting list and will be able to use the current reservation' +
+                            "'" +
+                            's vehicle as soon as it becomes available',
                         style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18),
-                        textAlign: TextAlign.left,
+                            color: Color.fromARGB(255, 48, 48, 48),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w400),
                       ),
                       SizedBox(
-                        width: 10.0,
+                        height: 10.0,
                       ),
-                      Visibility(
-                        visible: phoneReq,
-                        child: Text(
-                          'required*',
-                          style: TextStyle(
-                              color: ErrorColor,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16),
-                          textAlign: TextAlign.left,
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Row(
+                          children: [
+                            Text(
+                              'Name',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18),
+                              textAlign: TextAlign.left,
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Visibility(
+                              visible: nameReq,
+                              child: Text(
+                                'required*',
+                                style: TextStyle(
+                                    color: ErrorColor,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                TextFieldContainer(
-                  child: TextField(
-                    onChanged: (value) {
-                      setState(() {
-                        waitingNumber = value;
-                      });
-                    },
-                    controller: waitPhoneNumber,
-                    cursorColor: kPrimaryColor,
-                    decoration: InputDecoration(
-                        icon: Icon(
-                          Icons.phone,
-                          color: kPrimaryColor,
-                        ),
-                        hintText: "Visitor Number",
-                        hintStyle: TextStyle(fontFamily: 'OpenSans'),
-                        border: InputBorder.none),
-                  ),
-                ),
-                SizedBox(
-                  height: 15.0,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    //add to waiting list button
-                    ConstrainedBox(
-                      constraints:
-                          BoxConstraints.tightFor(height: 38, width: 100),
-                      child: ElevatedButton(
-                        onPressed: () {
+                      TextFieldContainer(
+                          child: TextField(
+                        onChanged: (value) {
                           setState(() {
-                            isVisibleWaiting = false;
-                          });
-                          print(isVisibleWaiting);
+                            waitingName = value;
 
-                          Navigator.of(context).pop();
+                            print('nameReq: $nameReq');
+                          });
                         },
-                        child: Text(
-                          'Cancel',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 255, 255, 255),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(50),
+                        controller: waitName,
+                        cursorColor: kPrimaryColor,
+                        decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.person,
+                              color: kPrimaryColor,
                             ),
-                          ),
+                            hintText: "Visitor name",
+                            hintStyle: const TextStyle(fontFamily: 'OpenSans'),
+                            border: InputBorder.none),
+                      )),
+                      SizedBox(
+                        height: 10.0,
+                      ),
+                      Align(
+                        alignment: Alignment.topLeft,
+                        child: Row(
+                          children: [
+                            Text(
+                              'Phone Number',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 18),
+                              textAlign: TextAlign.left,
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Visibility(
+                              visible: phoneReq,
+                              child: Text(
+                                'required*',
+                                style: TextStyle(
+                                    color: ErrorColor,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16),
+                                textAlign: TextAlign.left,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 30.0,
-                    ),
-                    //press on add
-                    ConstrainedBox(
-                      constraints:
-                          BoxConstraints.tightFor(height: 38, width: 100),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          print(waitingName);
-                          if (waitingName.isEmpty) {
+                      TextFieldContainer(
+                        child: TextField(
+                          onChanged: (value) {
                             setState(() {
-                              print(waitName);
-                              nameReq = true;
-                              print("waiting name is empty");
+                              waitingNumber = value;
                             });
-                          }
-                          if (waitingNumber.isEmpty) {
-                            setState(() {
-                              phoneReq = true;
-                              print("waiting number is empty");
-                            });
-                          }
-                          if (waitingName.isNotEmpty &&
-                              waitingNumber.isNotEmpty) {
-                            nameReq = false;
-                            phoneReq = false;
-                            setWaiting(); //reserved for waiting set to true
-                            insertWaitingList();
-                            Navigator.of(context).pop();
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                Future.delayed(Duration(seconds: 2), () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ManagerHome()),
-                                  );
+                          },
+                          controller: waitPhoneNumber,
+                          cursorColor: kPrimaryColor,
+                          decoration: InputDecoration(
+                              icon: Icon(
+                                Icons.phone,
+                                color: kPrimaryColor,
+                              ),
+                              hintText: "Visitor Number",
+                              hintStyle: TextStyle(fontFamily: 'OpenSans'),
+                              border: InputBorder.none),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15.0,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          //add to waiting list button
+                          ConstrainedBox(
+                            constraints:
+                                BoxConstraints.tightFor(height: 38, width: 100),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  isVisibleWaiting = false;
+                                  nameReq = false;
+                                    phoneReq = false;
                                 });
-                                return Dialog(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 247, 247, 247),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Container(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Lottie.asset(
-                                            'assets/images/success.json',
-                                            width: 100,
-                                            height: 100),
-                                        Text(
-                                          'Success',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Text(
-                                          'Visitor has been added to the waiting list',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            ConstrainedBox(
-                                              constraints:
-                                                  BoxConstraints.tightFor(
-                                                      height: 38, width: 100),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
+                                print(isVisibleWaiting);
+
+                                Navigator.of(context).pop();
                               },
-                            );
-                          }
-                        },
-                        child: Text(
-                          'Add',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 60, 100, 73),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(50),
+                              child: Text(
+                                'Cancel',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 255, 255, 255),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(50),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                    )
-                  ],
-                )
-              ],
+                          SizedBox(
+                            width: 30.0,
+                          ),
+                          //press on add
+                          ConstrainedBox(
+                            constraints:
+                                BoxConstraints.tightFor(height: 38, width: 100),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                print(waitingName);
+                                if (waitingName.isEmpty &&
+                                    waitingNumber.isEmpty) {
+                                  setState(() {
+                                    print(waitName);
+                                    nameReq = true;
+                                    phoneReq = true;
+                                    print("waiting number is empty");
+                                    print("waiting name is empty");
+                                  });
+                                }
+
+                                if (waitingNumber.isEmpty &&
+                                    waitingName.isNotEmpty) {
+                                  setState(() {
+                                    phoneReq = true;
+                                    nameReq = false;
+                                  });
+                                }
+                                if (waitingNumber.isNotEmpty &&
+                                    waitingName.isEmpty) {
+                                  setState(() {
+                                    phoneReq = false;
+                                    nameReq = true;
+                                  });
+                                }
+                                if (waitingName.isNotEmpty &&
+                                    waitingNumber.isNotEmpty) {
+                                  setState(() {
+                                    nameReq = false;
+                                    phoneReq = false;
+                                  });
+
+                                  setWaiting(); //reserved for waiting set to true
+                                  insertWaitingList();
+                                  Navigator.of(context).pop();
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      Future.delayed(Duration(seconds: 2), () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ManagerHome()),
+                                        );
+                                      });
+                                      return Dialog(
+                                        backgroundColor:
+                                            Color.fromARGB(255, 247, 247, 247),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Lottie.asset(
+                                                  'assets/images/success.json',
+                                                  width: 100,
+                                                  height: 100),
+                                              Text(
+                                                'Success',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              Text(
+                                                'Visitor has been added to the waiting list',
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 17,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                              SizedBox(
+                                                height: 10.0,
+                                              ),
+                                              Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  ConstrainedBox(
+                                                    constraints:
+                                                        BoxConstraints.tightFor(
+                                                            height: 38,
+                                                            width: 100),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
+                              },
+                              child: Text(
+                                'Add',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Color.fromARGB(255, 60, 100, 73),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(50),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                );
+              },
             ),
-          ),
-        ),
+          );
+        },
       );
     } else {
       //there are already available vehicles
@@ -1204,7 +1243,7 @@ class _ReserveCardState extends State<ReserveCard> {
           ),
           child: ElevatedButton(
             onPressed: (isButtonEnabled != null && isButtonEnabled == false)
-                ? () => handleButtonPress()
+                ? () => handleButtonPress(context)
                 : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: widget.buttonColor,
@@ -1215,13 +1254,13 @@ class _ReserveCardState extends State<ReserveCard> {
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(18.0))),
             ),
-            child:  Text(
-                          'Add to waiting',
-                          style: TextStyle(
-                              color: const Color.fromARGB(255, 255, 255, 255),
-                              fontSize: 13,
-                              fontWeight: FontWeight.w500),
-                        ),
+            child: Text(
+              'Add to waiting',
+              style: TextStyle(
+                  color: const Color.fromARGB(255, 255, 255, 255),
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500),
+            ),
           ),
         ),
       ],
