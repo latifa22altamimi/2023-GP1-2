@@ -12,9 +12,9 @@ from AdminWeb.models import Marker
 from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.contrib import messages
-import time
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+import re
 
 
 
@@ -160,12 +160,10 @@ def AssignVM(request):
             email = request.POST.get('email')
             password = request.POST.get('password')
             task = request.POST.get('task')
-
-            # Check if email exists in the database with "vehicle manager" type
             if User.objects.filter(Email=email, Type="Vehicle manager").exists():
                 messages.error(request, 'Email already exists for a vehicle manager.')
             else:
-                # Validate password criteria
+                
             
                     hashed_password = make_password(password)
                     New_VM = User(FullName=full_name, Email=email, Password=hashed_password, Type=task, VerificationStatus="1")
@@ -179,17 +177,22 @@ def AssignVM(request):
                 messages.error(request, 'You are not authorized to access this page, Sorry!')
                 return redirect('sign-in')
 
+
 def create_user(request):
     if request.method == 'POST':
         email = request.POST.get('email')
+        name = request.POST.get('name')
         password = request.POST.get('password')
-
+        if User.objects.filter(Email=email).exists():
+            messages.error =(request,'Email already exists. Please choose a different email.') 
+            return redirect('CreateAdmin')
+        
         hashed_password = make_password(password)
 
-        user = User(Email=email, Password=hashed_password,Type="Admin",VerificationStatus="1")
+        user = User(Email=email, Password=hashed_password, Type="Admin", VerificationStatus="1", FullName=name)
 
         user.save()
-        return redirect('sign-in') 
+        return redirect('sign-in')
 
     return render(request, 'CreateAdmin.html')
 

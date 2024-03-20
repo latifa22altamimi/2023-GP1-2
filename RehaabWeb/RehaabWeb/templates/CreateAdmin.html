@@ -2,16 +2,47 @@
 <html>
 <head>
     <title>Create Admin</title>
-</head>
+    <style>
+            
+        .alert-error {
+          color: #a94442;
+          background-color: #f2dede;
+          border: 1px solid #ebccd1;
+          border-radius: 4px;
+          padding: 15px;
+          margin-bottom: 8px;
+          margin-left: 8px;
+          margin-right: 8px;
+        }
+              </style>
+            </head>
+
 <body>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert-error" id="msg" role="alert"> 
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
     <h1>Create Admin</h1>
     <form method="POST" action="{% url 'CreateAdmin' %}">
         {% csrf_token %}
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" required><br><br>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br><br>
         <input type="submit" value="Create User">
     </form>
+    <script>
+      setTimeout(function(){
+        if ($('#msg').length>0){
+          $('#msg').remove();
+        }
+      }, 3000)
+              </script>
 </body>
+
 </html>
