@@ -14,6 +14,7 @@ import 'package:rehaab/widgets/text_field_container.dart';
 import 'package:rehaab/Signin/forgotPass_Screen.dart';
 import 'dart:async';
 import 'package:rehaab/main/home.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -33,8 +34,14 @@ class _LoginScreenState extends State<LoginScreen> {
     var data = json.decode(response.body);
     print(data);
     GlobalValues.id = data[1];
+
     GlobalValues.Fullname = data[2];
     GlobalValues.type=data[3];
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('id', data[1]);
+    prefs.setString('type', data[3]);
+    prefs.setString('name', data[2]);
+
 
     if (data[0] == "Success") {
       if(GlobalValues.type=="Vehicle manager"){
