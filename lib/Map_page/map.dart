@@ -75,8 +75,8 @@ class _HomeState extends State<Home> {
       body: GoogleMap(
         mapType: MapType.hybrid,
         initialCameraPosition: const CameraPosition(
-          target: LatLng(21.422444, 39.822861),
-          zoom: 19,
+          target: LatLng(21.422520070642364, 39.82617437839509),
+          zoom: 18,
         ),
         onMapCreated: (GoogleMapController googleMapController) {
           setState(() {
