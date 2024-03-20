@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/widgets/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../SignIn/login_screen.dart';
+
 
 class Profile extends StatelessWidget {
   @override
@@ -242,6 +244,12 @@ class Profile extends StatelessWidget {
                                                       height: 38, width: 100),
                                               child: ElevatedButton(
                                                 onPressed: () async {
+                                                
+                                                final SharedPreferences prefe = await SharedPreferences.getInstance();
+                                                prefe.remove('id');
+                                                prefe.remove('name');
+                                                prefe.remove('type');
+
                                                   Navigator.of(context).pop();
                                                   showDialog(
                                                       context: context,
