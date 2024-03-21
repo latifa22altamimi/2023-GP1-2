@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/ManagerReservations/Reserve_WalkInVehicle.dart';
@@ -767,10 +768,21 @@ class _ReserveCardState extends State<ReserveCard> {
                               textAlign: TextAlign.left,
                             ),
                             SizedBox(
+                              width: 5.0,
+                            ),
+                            Text(
+                              '(Optional)',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16),
+                              textAlign: TextAlign.left,
+                            ),
+                            SizedBox(
                               width: 10.0,
                             ),
                             Visibility(
-                              visible: phoneReq,
+                              visible: false,
                               child: Text(
                                 'required*',
                                 style: TextStyle(
@@ -818,7 +830,7 @@ class _ReserveCardState extends State<ReserveCard> {
                                 setState(() {
                                   isVisibleWaiting = false;
                                   nameReq = false;
-                                    phoneReq = false;
+                                  phoneReq = false;
                                 });
                                 print(isVisibleWaiting);
 
@@ -852,7 +864,7 @@ class _ReserveCardState extends State<ReserveCard> {
                             child: ElevatedButton(
                               onPressed: () {
                                 print(waitingName);
-                                if (waitingName.isEmpty &&
+                                /*  if (waitingName.isEmpty &&
                                     waitingNumber.isEmpty) {
                                   setState(() {
                                     print(waitName);
@@ -870,15 +882,19 @@ class _ReserveCardState extends State<ReserveCard> {
                                     nameReq = false;
                                   });
                                 }
-                                if (waitingNumber.isNotEmpty &&
-                                    waitingName.isEmpty) {
+                                */
+                                if (waitingNumber.isEmpty) {
+                                  setState(() {
+                                    waitPhoneNumber.text = "";
+                                  });
+                                }
+                                if (waitingName.isEmpty) {
                                   setState(() {
                                     phoneReq = false;
                                     nameReq = true;
                                   });
                                 }
-                                if (waitingName.isNotEmpty &&
-                                    waitingNumber.isNotEmpty) {
+                                if (waitingName.isNotEmpty) {
                                   setState(() {
                                     nameReq = false;
                                     phoneReq = false;
@@ -1292,9 +1308,16 @@ class WaitingCard extends StatefulWidget {
 
 class _WaitingCardState extends State<WaitingCard> {
   bool availableType = false;
-
+  bool phoneVisible = true;
+  double wHeight = 0.0;
   void initState() {
     super.initState();
+    if (widget.PhoneNumber == "") {
+      phoneVisible = false;
+      wHeight = 150;
+    } else {
+      wHeight = 170;
+    }
   }
 
   removeWaiting() async {
@@ -1409,30 +1432,33 @@ class _WaitingCardState extends State<WaitingCard> {
           SizedBox(
             height: 4.0,
           ),
-          Row(
-            children: [
-              Container(
-                margin: EdgeInsets.only(left: 20.0),
-                child: Row(
-                  children: [
-                    Text(
-                      'Phone: ',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    Text(
-                      '${widget.PhoneNumber}',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  ],
+          Visibility(
+            visible: phoneVisible,
+            child: Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.only(left: 20.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Phone: ',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        '${widget.PhoneNumber}',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -2009,7 +2035,7 @@ class _WaitingCardState extends State<WaitingCard> {
         ],
       ),
       width: 180,
-      height: 170,
+      height: wHeight,
       margin: const EdgeInsets.all(12),
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
