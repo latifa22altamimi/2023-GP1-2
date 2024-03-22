@@ -5,7 +5,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Scripting/EmptyPHP.php to edit this template
  */
 
-$conn = new mysqli('localhost', 'u271614468_reehab_team', 'AAa123123_', 'u271614468_Rehaab');
+$conn = new mysqli('193.203.184.47', 'u271614468_rehaab_team', 'AAa123123_', 'u271614468_rehaab');
 
 // Check connection
 if ($conn->connect_error) {
