@@ -15,7 +15,7 @@ import 'date.dart';
 import 'package:intl/intl.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:progress_border/progress_border.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as enc;
 import 'dart:async';
 
@@ -111,9 +111,9 @@ class _ReservationDetailsState extends State<ReservationDetails>
   }
 
   void _Checkout() async{
-  final SharedPreferences preferences= await SharedPreferences.getInstance();
+  //final SharedPreferences preferences= await SharedPreferences.getInstance();
   
-   GlobalValues.Status=preferences.getString('Status')!;
+  // GlobalValues.Status=preferences.getString('Status')!;
   if(GlobalValues.Status.isNotEmpty &&  GlobalValues.Status=="Active"){
   CheckOutState().Checkoutt();
   }
