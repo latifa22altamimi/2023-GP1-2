@@ -15,6 +15,7 @@ import 'date.dart';
 import 'package:intl/intl.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:progress_border/progress_border.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as enc;
 import 'dart:async';
 
@@ -81,7 +82,8 @@ class _ReservationDetailsState extends State<ReservationDetails>
   }
 
   @override
-  void initState() {
+  void initState() async{
+
     super.initState();
     GetData();
     //GetCancelDur();
@@ -90,7 +92,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
       setState(() {});
     });
     if(list.isNotEmpty){
-      GlobalValues.Status=list[ind]["Status"];
+
 
     }
     
@@ -108,8 +110,11 @@ class _ReservationDetailsState extends State<ReservationDetails>
     });
   }
 
-  void _Checkout() {
-  if(GlobalValues.Status=="Active"){
+  void _Checkout() async{
+  final SharedPreferences preferences= await SharedPreferences.getInstance();
+  
+   GlobalValues.Status=preferences.getString('Status')!;
+  if(GlobalValues.Status.isNotEmpty &&  GlobalValues.Status=="Active"){
   CheckOutState().Checkoutt();
   }
   }
