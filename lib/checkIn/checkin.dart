@@ -57,6 +57,7 @@ class _CheckInState extends State<CheckIn> {
         setState(() {
           isVisibleSuccess = true;
           GlobalValues.Status="Active";
+          GlobalValues.Rid=decrypted;
 
         });
       } else if (respo == "Reservation status is not Confirmed") {
