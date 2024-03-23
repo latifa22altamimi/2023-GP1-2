@@ -12,9 +12,13 @@ $result = $conn->query($query);
 // Check if a reservation was found
 if ($result && $result->num_rows > 0) {
     // Active reservation found
-    echo "User has an active reservation.";
+    $response = array(
+        'message' => 'User has an active reservation.',
+        'userId' => $userId
+      );
+      echo json_encode($response);
 } else {
     // No active reservation found
-    echo "User does not have an active reservation.";
+    echo json_encode("User does not have an active reservation.$userId");
 }
 ?>

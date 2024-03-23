@@ -12,47 +12,45 @@ import 'package:rehaab/Map_page/map.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:rehaab/callSupport/support.dart';
 import 'package:http/http.dart' as http;
-  bool appearsupport=false;
 
+bool appearsupport = false;
 
 class home extends StatefulWidget {
-  
   home({Key? key}) : super(key: key);
   @override
   State<home> createState() => _homeState();
 }
 
 class _homeState extends State<home> {
-
   @override
- void initState() {
+  void initState() {
     super.initState();
     fetchData();
   }
+
   Future<void> fetchData() async {
-      var url = "http://10.0.2.2/phpfiles/checkStatus.php";
+    var url = "http://10.0.2.2/phpfiles/checkStatus.php";
     final res = await http.post(Uri.parse(url), body: {
       "Userid": GlobalValues.id,
     });
 
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
-      if(red=='User has an active reservation.'){
+      print(red);
+      if (red['message'] == 'User has an active reservation.') {
         setState(() {
           appearsupport = true;
+          print("support here");
+          print(appearsupport);
           GlobalValues.Status = "Active";
         });
-       
-      }
-      else{
+      } else {
         setState(() {
           appearsupport = false;
-        
         });
       }
-
     }
- }
+  }
 
   int index = 1;
   late final pages = [
@@ -90,7 +88,6 @@ class _homeState extends State<home> {
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(40.0),
               topRight: Radius.circular(40.0),
-              
             ),
             child: NavigationBarTheme(
               data: NavigationBarThemeData(
@@ -130,7 +127,6 @@ class _homeState extends State<home> {
 }
 
 class AppBarr extends StatelessWidget {
-
   const AppBarr({super.key});
 
   @override
@@ -144,8 +140,7 @@ class AppBarr extends StatelessWidget {
             bottomLeft: Radius.circular(10),
             bottomRight: Radius.circular(20),
           ),
-          color: kPrimaryColor
-        ),
+          color: kPrimaryColor),
       child: Column(
         children: [
           Row(
@@ -157,34 +152,39 @@ class AppBarr extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 23,
-                    fontWeight: FontWeight.w500),)
-                    , 
-                    Visibility(
-                    visible: appearsupport,
-                      child: TextButton( 
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kPrimaryColor)), 
-                      onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => callSupport())),
-                 
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                        SizedBox(height: 10, width: 10,),
-                   Row(children: [ 
-                   
-                    
-                     //  Container (child: Icon(Icons.support_agent, size:35, color:Colors.white ,), 
-                        
-                        Container (child: Image.asset('assets/images/support_icon.png' , width :50 , height: 50),
-                        ),],)
-                       
-                     
-               
-                    ],
-                  ),
-                 )
+                    fontWeight: FontWeight.w500),
               ),
-             /*   Visibility(
+              Visibility(
+                  visible: appearsupport,
+                  child: TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(kPrimaryColor)),
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => callSupport())),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            //  Container (child: Icon(Icons.support_agent, size:35, color:Colors.white ,),
+
+                            Container(
+                              child: Image.asset(
+                                  'assets/images/support_icon.png',
+                                  width: 50,
+                                  height: 50),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  )),
+              /*   Visibility(
                     visible: false,
                       child: FloatingActionButton( 
                         backgroundColor: Colors.white,
@@ -232,7 +232,7 @@ class AppBarr extends StatelessWidget {
                   
                  )
               ),*/
-            /*  Visibility(
+              /*  Visibility(
            //   visible: GlobalValues.Status=="Active"? true: false,
            visible: true,
               child:    Container ( padding: EdgeInsets.only(left:40, right: 10, top:5),    child:  ElevatedButton.icon(
@@ -339,10 +339,8 @@ class BodyHome extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TrackTawaf())),
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TrackTawaf())),
                 child: Container(
                   width: 180,
                   height: 180,
