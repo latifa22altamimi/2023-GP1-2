@@ -9,11 +9,11 @@ import 'package:rehaab/reservations/myreservations.dart';
 import 'package:rehaab/Map_page/map.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:rehaab/callSupport/support.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-    Future<void> fetchData() async {
+//import 'package:shared_preferences/shared_preferences.dart';
+   /* Future<void> fetchData() async {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       GlobalValues.Status = prefs.getString('Status')!;
-    }
+    }*/
 
 class home extends StatefulWidget {
   home({Key? key}) : super(key: key);
@@ -26,7 +26,7 @@ class _homeState extends State<home> {
 @override
   void initState() {
     super.initState();
-    fetchData();
+    //fetchData();
   }
 
 
