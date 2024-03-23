@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rehaab/GlobalValues.dart';
@@ -9,11 +11,7 @@ import 'package:rehaab/reservations/myreservations.dart';
 import 'package:rehaab/Map_page/map.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:rehaab/callSupport/support.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
-   /* Future<void> fetchData() async {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      GlobalValues.Status = prefs.getString('Status')!;
-    }*/
+import 'package:http/http.dart' as http;
 
 class home extends StatefulWidget {
   home({Key? key}) : super(key: key);
@@ -22,13 +20,37 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
-  
-@override
-  void initState() {
-    super.initState();
-    //fetchData();
-  }
+  bool appearsupport=false;
 
+  @override
+ void initState() {
+    super.initState();
+   // fetchData();
+  }
+  Future<void> fetchData() async {
+      var url = "http://10.0.2.2/phpfiles/checkStatus.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "Userid": GlobalValues.id,
+    });
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      if(red=='User has an active reservation.'){
+        setState(() {
+          appearsupport = true;
+          GlobalValues.Status = "Active";
+        });
+       
+      }
+      else{
+        setState(() {
+          appearsupport = false;
+        
+        });
+      }
+
+    }
+ }
 
   int index = 1;
   late final pages = [
@@ -44,7 +66,6 @@ class _homeState extends State<home> {
     ),
     Profile(), //settings or log out
   ];
-
 
   @override
   Widget build(BuildContext context) {
