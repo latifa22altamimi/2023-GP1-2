@@ -61,7 +61,9 @@ class _CheckInState extends State<CheckIn> {
 
         });
       } else if (respo == "Reservation status is not Confirmed") {
-        isVisibleInvalid = true;
+        setState(() {
+          isVisibleInvalid = true;
+        });
       } else {
         setState(() {
           isVisibleErr = true;
