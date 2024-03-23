@@ -4,7 +4,7 @@ include 'connect.php';
 // Assuming you have a database connection established
 $userId = $_POST['Userid'];
 // Query to check for an active reservation
-$query = "SELECT * FROM reservations WHERE userid=$userId AND status = 'Active'";
+$query = "SELECT * FROM reservation WHERE userId=$userId AND Status ='Active'";
 
 // Execute the query
 $result = $conn->query($query);
