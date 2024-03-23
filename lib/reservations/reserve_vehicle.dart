@@ -164,7 +164,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                   fontWeight: FontWeight.w400, fontSize: 17),
                             ),
                             SizedBox(
-                              width: 96.0,
+                              width: 92.0,
                             ),
                             Image.asset(
                               'assets/images/single.png',
@@ -296,8 +296,8 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                       Visibility(
                         visible: !isVisibleDriving,
                         child: Container(
-                          padding: const EdgeInsets.only(right: 23.0),
-                          margin: EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.only(right: 20.0),
+                          margin: EdgeInsets.all(5.0),
                           decoration: BoxDecoration(
                             color: Color.fromARGB(255, 255, 255, 255),
                             borderRadius: BorderRadius.circular(20),
@@ -1061,7 +1061,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                       },
                       child: Text(
                         'Reserve',
-                        style: TextStyle(fontSize: 23),
+                        style: TextStyle(fontSize: 23, color: Colors.white),
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 60, 100, 73),
