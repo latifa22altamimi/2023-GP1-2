@@ -12,20 +12,22 @@ import 'package:rehaab/Map_page/map.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:rehaab/callSupport/support.dart';
 import 'package:http/http.dart' as http;
+  bool appearsupport=false;
+
 
 class home extends StatefulWidget {
+  
   home({Key? key}) : super(key: key);
   @override
   State<home> createState() => _homeState();
 }
 
 class _homeState extends State<home> {
-  bool appearsupport=false;
 
   @override
  void initState() {
     super.initState();
-   // fetchData();
+    fetchData();
   }
   Future<void> fetchData() async {
       var url = "http://10.0.2.2/phpfiles/checkStatus.php";
@@ -128,6 +130,7 @@ class _homeState extends State<home> {
 }
 
 class AppBarr extends StatelessWidget {
+
   const AppBarr({super.key});
 
   @override
@@ -157,7 +160,7 @@ class AppBarr extends StatelessWidget {
                     fontWeight: FontWeight.w500),)
                     , 
                     Visibility(
-                    visible: GlobalValues.Status=="Active"? true: false,
+                    visible: appearsupport,
                       child: TextButton( 
                         style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kPrimaryColor)), 
                       onPressed: () => Navigator.push(context,
