@@ -82,7 +82,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
   }
 
   @override
-  void initState() async{
+  void initState(){
 
     super.initState();
     GetData();
