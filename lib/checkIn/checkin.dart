@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 import '../customization/clip.dart';
 import '../widgets/constants.dart';
 import 'package:encrypt/encrypt.dart' as enc;
@@ -40,7 +40,7 @@ class _CheckInState extends State<CheckIn> {
   Future<void> StartTawaf(String code) async {
     try {
       // Decrypt the QR code
-     final prefs = await SharedPreferences.getInstance();
+     //final prefs = await SharedPreferences.getInstance();
 
       final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
       final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
@@ -59,7 +59,7 @@ class _CheckInState extends State<CheckIn> {
         setState(() {
           isVisibleSuccess = true;
           GlobalValues.Status="Active";
-          prefs.setString('Status', GlobalValues.Status);
+          //prefs.setString('Status', GlobalValues.Status);
 
 
         });
