@@ -6,6 +6,7 @@ import 'package:location/location.dart';
 import 'package:flutter/material.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CheckOut extends StatefulWidget {
   @override
@@ -73,7 +74,7 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
       final position = await location.getLocation();
      stopwatch.start();
       locationSubscription =
-          location.onLocationChanged.listen((LocationData currentLocation) {
+          location.onLocationChanged.listen((LocationData currentLocation) async {
 
         print("p");
         print(position.latitude);
@@ -99,6 +100,8 @@ class CheckOutState extends State<CheckOut> with TickerProviderStateMixin {
           finalTime ='${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
           print(finalTime);
           GlobalValues.Status = "Completed";
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString('Status', GlobalValues.Status);
           locationSubscription?.cancel();
           TawafTime();
           checkout();
