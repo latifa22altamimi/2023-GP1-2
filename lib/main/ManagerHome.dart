@@ -308,514 +308,516 @@ class _BodyHomeState extends State<BodyHome> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-            padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                'Vehicles details',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500),
-              ),
-            )),
-        SizedBox(
-          height: 5.0,
-        ),
-        Container(
-          height: 1.0,
-          width: double.infinity,
-          color: Colors.grey.withOpacity(0.3),
-        ),
-        SizedBox(
-          height: 18.0,
-        ),
-        // dashboard
-
-        SizedBox(
-          width: 380,
-          height: 170,
-          child: Container(
-            decoration: BoxDecoration(
-              color: Color.fromARGB(255, 255, 255, 255),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 2.0,
-                  spreadRadius: .05,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+              padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Vehicles details',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500),
                 ),
-              ],
-            ),
-            padding:
-                EdgeInsets.only(left: 5.0, right: 5.0, bottom: 10.0, top: 10.0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Column(
-                      children: [
-                        Container(
-                          child: Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              'Walk-in vehicles',
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
+              )),
+          SizedBox(
+            height: 5.0,
+          ),
+          Container(
+            height: 1.0,
+            width: double.infinity,
+            color: Colors.grey.withOpacity(0.3),
+          ),
+          SizedBox(
+            height: 18.0,
+          ),
+          // dashboard
+      
+          SizedBox(
+            width: 380,
+            height: 170,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 255, 255, 255),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 2.0,
+                    spreadRadius: .05,
+                  ),
+                ],
+              ),
+              padding:
+                  EdgeInsets.only(left: 5.0, right: 5.0, bottom: 10.0, top: 10.0),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Walk-in vehicles',
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 20.0,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              '${singleV}',
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black),
-                            ),
-                            SizedBox(
-                              width: 3,
-                            ),
-                            Text(
-                              'Single vehicles',
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  color: kPrimaryColor),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        Row(
-                          children: [
-                            Text(
-                              '${doubleV}',
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black),
-                            ),
-                            SizedBox(
-                              width: 3,
-                            ),
-                            Text(
-                              'Double vehicles',
-                              style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500,
-                                  color: kPrimaryColor),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      width: 40.0,
-                    ),
-                    CircularPercentIndicator(
-                      addAutomaticKeepAlive: true,
-                      restartAnimation: false,
-                      animation: true,
-                      animationDuration: 1000,
-                      radius: 75,
-                      lineWidth: 20,
-                      percent: percent / 100.0,
-                      progressColor: kPrimaryColor,
-                      backgroundColor: Colors.grey.withOpacity(0.2),
-                      circularStrokeCap: CircularStrokeCap.round,
-                      center: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${percentage}%',
-                            style: TextStyle(
-                                fontSize: 25,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600),
+                          SizedBox(
+                            height: 20.0,
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                '${singleV}',
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 3,
+                              ),
+                              Text(
+                                'Single vehicles',
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    color: kPrimaryColor),
+                              ),
+                            ],
                           ),
                           SizedBox(
-                            height: 3,
+                            height: 10.0,
                           ),
-                          const Text(
-                            'Available vehicles',
-                            style: TextStyle(
-                                fontSize: 11,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w400),
+                          Row(
+                            children: [
+                              Text(
+                                '${doubleV}',
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black),
+                              ),
+                              SizedBox(
+                                width: 3,
+                              ),
+                              Text(
+                                'Double vehicles',
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    color: kPrimaryColor),
+                              ),
+                            ],
                           ),
                         ],
                       ),
-                    ),
-                    SizedBox(
-                      width: 20.0,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 10.0,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            //avg time
-            SizedBox(
-              height: 118,
-              width: 140,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 255, 255),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 2.0,
-                      spreadRadius: .05,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Icon(
-                      Icons.timeline,
-                      color: ErrorColor,
-                      size: 30.0,
-                    ),
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Text(
-                      '${avgTime}',
-                      style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black),
-                    ),
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    Text(
-                      'Average time',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
-                    )
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              width: 10.0,
-            ),
-            //num of people in Waiting list
-            SizedBox(
-              height: 118,
-              width: 230,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 255, 255, 255),
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 2.0,
-                      spreadRadius: .05,
-                    ),
-                  ],
-                ),
-                child: Container(
-                  margin: EdgeInsets.only(left: 7.0, top: 7.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 12.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      SizedBox(
+                        width: 40.0,
+                      ),
+                      CircularPercentIndicator(
+                        addAutomaticKeepAlive: true,
+                        restartAnimation: false,
+                        animation: true,
+                        animationDuration: 1000,
+                        radius: 75,
+                        lineWidth: 20,
+                        percent: percent / 100.0,
+                        progressColor: kPrimaryColor,
+                        backgroundColor: Colors.grey.withOpacity(0.2),
+                        circularStrokeCap: CircularStrokeCap.round,
+                        center: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            SizedBox(
-                              height: 35,
-                              width: 35,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 255, 255, 255),
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
-                                      blurRadius: 1.0,
-                                      spreadRadius: .05,
-                                    ),
-                                  ],
-                                ),
-                                child: Icon(
-                                  Icons.person,
-                                  color: Color.fromRGBO(68, 159, 220, 1),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 6.0,
-                            ),
                             Text(
-                              'People in waiting list',
+                              '${percentage}%',
                               style: TextStyle(
+                                  fontSize: 25,
                                   color: Colors.black,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w700),
+                                  fontWeight: FontWeight.w600),
                             ),
                             SizedBox(
-                              height: 4.0,
+                              height: 3,
                             ),
-                            Text(
-                              '${waitNum}',
+                            const Text(
+                              'Available vehicles',
                               style: TextStyle(
-                                  color: Colors.black.withOpacity(0.6),
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            SizedBox(
-                              height: 5.0,
+                                  fontSize: 11,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ],
                         ),
                       ),
-                      LinearPercentIndicator(
-                        restartAnimation: true,
-                        animation: false,
-                        animationDuration: 1000,
-                        lineHeight: 16,
-                        barRadius: Radius.circular(10),
-                        percent:
-                            waitPercent <= 100.0 ? waitPercent / 100.0 : 1.0,
-                        progressColor: Color.fromRGBO(68, 159, 220, 1),
-                        backgroundColor: Colors.grey.withOpacity(0.2),
-                      )
+                      SizedBox(
+                        width: 20.0,
+                      ),
                     ],
                   ),
-                ),
+                ],
               ),
             ),
-          ],
-        ),
-
-        Padding(
-            padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                'Services',
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500),
-              ),
-            )),
-        SizedBox(
-          height: 5.0,
-        ),
-        Container(
-          height: 1.0,
-          width: double.infinity,
-          color: Colors.grey.withOpacity(0.3),
-        ),
-        SizedBox(
-          height: 10.0,
-        ),
-        // cards
-
-        Container(
-          child: Wrap(
-            alignment: WrapAlignment.spaceBetween,
-            direction: Axis.horizontal,
-            spacing: 1,
-            runSpacing: 2,
-            children: <Widget>[
-              InkWell(
-                onTap: () {
-                  print(unavailableVehicles);
-                  if (unavailableVehicles) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                        backgroundColor: Color.fromARGB(255, 247, 247, 247),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        child: Container(
-                          padding: const EdgeInsets.only(
-                              right: 5.0, left: 5.0, top: 10.0, bottom: 30.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Lottie.asset('assets/images/warn.json',
-                                  width: 100, height: 100),
-                              Text(
-                                'No available vehicles',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w600),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  //add to waiting list button
-                                  ConstrainedBox(
-                                    constraints: BoxConstraints.tightFor(
-                                        height: 38, width: 100),
-                                    child: ElevatedButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(),
-                                      child: Text(
-                                        'Cancel',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 255, 255, 255),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(50),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  } else {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Reserve_WalkInVehicle()));
-                  }
-                },
-                //() => Navigator.push(context,
-                //  MaterialPageRoute(builder: (context) => Reserve_WalkInVehicle())),
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              //avg time
+              SizedBox(
+                height: 118,
+                width: 140,
                 child: Container(
-                  width: 170,
-                  height: 150,
-                  margin: const EdgeInsets.all(12),
-                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                     color: Color.fromARGB(255, 255, 255, 255),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 4.0,
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 2.0,
                         spreadRadius: .05,
                       ),
                     ],
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Image.asset(
-                          'assets/images/vehicle1.png',
-                          height: 100,
-                          width: 100,
-                        ),
+                      SizedBox(
+                        height: 15,
                       ),
-                      const SizedBox(
-                        height: 10,
+                      Icon(
+                        Icons.timeline,
+                        color: ErrorColor,
+                        size: 30.0,
+                      ),
+                      SizedBox(
+                        height: 10.0,
                       ),
                       Text(
-                        'Reserve vehicle',
+                        '${avgTime}',
+                        style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black),
+                      ),
+                      SizedBox(
+                        height: 5.0,
+                      ),
+                      Text(
+                        'Average time',
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
                       )
                     ],
                   ),
                 ),
               ),
-              InkWell(
-                onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => CheckIn())),
+              SizedBox(
+                width: 10.0,
+              ),
+              //num of people in Waiting list
+              SizedBox(
+                height: 118,
+                width: 230,
                 child: Container(
-                  width: 170,
-                  height: 150,
-                  margin: const EdgeInsets.all(12),
-                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: Color.fromARGB(255, 255, 255, 255),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 4.0,
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 2.0,
                         spreadRadius: .05,
                       ),
                     ],
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Image.asset(
-                          'assets/images/barcode.png',
-                          height: 99,
-                          width: 105,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 7.0, top: 7.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(left: 12.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 35,
+                                width: 35,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 255, 255, 255),
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 1.0,
+                                        spreadRadius: .05,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.person,
+                                    color: Color.fromRGBO(68, 159, 220, 1),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 6.0,
+                              ),
+                              Text(
+                                'People in waiting list',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              SizedBox(
+                                height: 4.0,
+                              ),
+                              Text(
+                                '${waitNum}',
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.6),
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 7,
-                      ),
-                      Text(
-                        'Check in',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500),
-                      )
-                    ],
+                        LinearPercentIndicator(
+                          restartAnimation: true,
+                          animation: false,
+                          animationDuration: 1000,
+                          lineHeight: 16,
+                          barRadius: Radius.circular(10),
+                          percent:
+                              waitPercent <= 100.0 ? waitPercent / 100.0 : 1.0,
+                          progressColor: Color.fromRGBO(68, 159, 220, 1),
+                          backgroundColor: Colors.grey.withOpacity(0.2),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
             ],
           ),
-        ),
-      ],
+      
+          Padding(
+              padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Services',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500),
+                ),
+              )),
+          SizedBox(
+            height: 5.0,
+          ),
+          Container(
+            height: 1.0,
+            width: double.infinity,
+            color: Colors.grey.withOpacity(0.3),
+          ),
+          SizedBox(
+            height: 10.0,
+          ),
+          // cards
+      
+          Container(
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              direction: Axis.horizontal,
+              spacing: 1,
+              runSpacing: 2,
+              children: <Widget>[
+                InkWell(
+                  onTap: () {
+                    print(unavailableVehicles);
+                    if (unavailableVehicles) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                          backgroundColor: Color.fromARGB(255, 247, 247, 247),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                                right: 5.0, left: 5.0, top: 10.0, bottom: 30.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Lottie.asset('assets/images/warn.json',
+                                    width: 100, height: 100),
+                                Text(
+                                  'No available vehicles',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    //add to waiting list button
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints.tightFor(
+                                          height: 38, width: 100),
+                                      child: ElevatedButton(
+                                        onPressed: () =>
+                                            Navigator.of(context).pop(),
+                                        child: Text(
+                                          'Cancel',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Color.fromARGB(255, 255, 255, 255),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                              Radius.circular(50),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Reserve_WalkInVehicle()));
+                    }
+                  },
+                  //() => Navigator.push(context,
+                  //  MaterialPageRoute(builder: (context) => Reserve_WalkInVehicle())),
+                  child: Container(
+                    width: 170,
+                    height: 150,
+                    margin: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 4.0,
+                          spreadRadius: .05,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Image.asset(
+                            'assets/images/vehicle1.png',
+                            height: 100,
+                            width: 100,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Reserve vehicle',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                InkWell(
+                  onTap: () => Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CheckIn())),
+                  child: Container(
+                    width: 170,
+                    height: 150,
+                    margin: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 4.0,
+                          spreadRadius: .05,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Image.asset(
+                            'assets/images/barcode.png',
+                            height: 99,
+                            width: 105,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 7,
+                        ),
+                        Text(
+                          'Check in',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
