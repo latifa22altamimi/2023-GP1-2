@@ -26,15 +26,39 @@ class _CallSupportState extends State<callSupport> {
   TextEditingController message = TextEditingController();
   bool problemSelected = false;
   bool problemTyped = false;
+  String Rid="";
 
   Color getColor(Set<MaterialState> states) {
     return Color.fromARGB(219, 69, 95, 77);
   }
 
-  Future insert() async {
+ Future<void> fetchData() async {
+  var url = "http://10.0.2.2/phpfiles/checkStatus.php";
+  final res = await http.post(Uri.parse(url), body: {
+    "Userid": GlobalValues.id,
+  });
+
+  if (res.statusCode == 200) {
+    var red = json.decode(res.body);
+    if (red is List && red.isNotEmpty) {
+      setState(() {
+        Rid = red[1];
+      });
+    } else {
+      // Handle unexpected response format
+      // For example, log an error or display a message
+      print("Unexpected or empty response format");
+    }
+  } else {
+    // Handle HTTP request errors
+    // For example, log an error or display a message
+    print("HTTP request failed with status code: ${res.statusCode}");
+  }
+}
+ Future insert() async {
     var url = "http://10.0.2.2/phpfiles/support.php";
     final res = await http.post(Uri.parse(url), body: {
-      "Rid": GlobalValues.Rid,
+      "Rid": Rid,
       "la": lat,
       "lo": long,
       "message": _currentIndex == 2 ? message.text : types[_currentIndex!],
@@ -45,7 +69,12 @@ class _CallSupportState extends State<callSupport> {
       print("fail");
     }
   }
+@override
+  void initState() {
+    super.initState();
+    fetchData();
 
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimaryLightColor,
