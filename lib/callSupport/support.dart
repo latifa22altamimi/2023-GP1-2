@@ -27,14 +27,39 @@ class _CallSupportState extends State<callSupport> {
   bool problemSelected = false;
   bool problemTyped = false;
 
+  String reservationId = '';
+
   Color getColor(Set<MaterialState> states) {
     return Color.fromARGB(219, 69, 95, 77);
   }
 
+  
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    var url = "http://10.0.2.2/phpfiles/checkStatus.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "Userid": widget.userId,
+    });
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      print(red);
+      if (red['message'] == 'User has an active reservation.') {
+        setState(() {
+          reservationId = red['reservationId'];
+        });
+      }
+    }
+  }
   Future insert() async {
     var url = "http://10.0.2.2/phpfiles/support.php";
     final res = await http.post(Uri.parse(url), body: {
-      "Rid": GlobalValues.Rid,
+      "Rid": reservationId,
       "la": lat,
       "lo": long,
       "message": _currentIndex == 2 ? message.text : types[_currentIndex!],
