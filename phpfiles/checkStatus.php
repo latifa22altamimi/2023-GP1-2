@@ -19,13 +19,17 @@ if ($result && $result->num_rows > 0) {
         'userId' => $userId,
         'reservationId' => $reservationId // Add reservationId to the response
       );
-      echo json_encode($response);
 } else {
     // No active reservation found
     $response = array(
         'message' => 'User does not have an active reservation.',
         'userId' => $userId
       );
-      echo json_encode($response);
 }
+
+// Encode the response into JSON format
+$response = json_encode($response);
+
+// Echo the JSON response
+echo $response;
 ?>
