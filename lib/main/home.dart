@@ -44,12 +44,8 @@ class _homeState extends State<home> {
           print(appearsupport);
           GlobalValues.Status = "Active";
         });
-      } else {
-        setState(() {
-          appearsupport = false;
-        });
-      }
-    }
+     
+    }}
   }
 
   int index = 1;
@@ -154,9 +150,9 @@ class AppBarr extends StatelessWidget {
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
               ),
-              Visibility(
-                  visible: appearsupport,
-                  child: TextButton(
+                 Container(
+
+                  child:appearsupport?  TextButton(
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all(kPrimaryColor)),
@@ -183,7 +179,9 @@ class AppBarr extends StatelessWidget {
                         )
                       ],
                     ),
-                  )),
+                  )
+                  :  Text('')
+                  )
               /*   Visibility(
                     visible: false,
                       child: FloatingActionButton( 
