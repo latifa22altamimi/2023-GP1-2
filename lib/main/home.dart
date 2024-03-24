@@ -37,16 +37,28 @@ class _homeState extends State<home> {
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
       print(red);
-      if (red['message'] == 'User has an active reservation.') {
+      String message= red['message'];
+      print(message);
+      if (message == 'User has an active reservation.') {
         setState(() {
           appearsupport = true;
           print("support here");
           print(appearsupport);
           GlobalValues.Status = "Active";
         });
+      } else if (message == 'User does not have an active reservation.') {
+        setState(() {
+          appearsupport = false;
+          print("support not here");
+          print(appearsupport);
+          //GlobalValues.Status = "Inactive";
+        });
+      } else {
+        print("error");
+      }
      
     }}
-  }
+  
 
   int index = 1;
   late final pages = [
