@@ -178,7 +178,7 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
           Container(
             alignment: Alignment.center, width: 350,height: 400,
 
-            decoration: BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(20)    ,color: Colors.white, border: Border.all(color: Colors.white)),
+            //decoration: BoxDecoration(shape: BoxShape.rectangle, borderRadius: BorderRadius.circular(20)    ,color: Colors.white, border: Border.all(color: Colors.white)),
             child: TicketWidget(
               width: 350,
               height: 380,
