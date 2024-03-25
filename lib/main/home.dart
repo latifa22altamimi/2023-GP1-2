@@ -45,9 +45,7 @@ class _homeState extends State<home> {
       print("Support status: $appearsupport");
       GlobalValues.Status = supportStatus ? "Active" : "Inactive";
     });
-  } else {
-    print("Failed to fetch data: ${res.statusCode}");
-  }
+  } 
 }
 
   
