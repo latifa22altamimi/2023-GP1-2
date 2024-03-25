@@ -4,6 +4,9 @@
     
 {% block content %}
 <title>Dashboard</title>
+<style>
+
+</style>
 <main class="">
     {% if messages %}
 			{% for message in messages %}
@@ -24,8 +27,12 @@
             <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
                 <div class="flex justify-between mb-4 items-start">
 
-                    <div class="font-medium">Congestion Heat-map</div>
-                    <img src="{% static 'HeatMap.jpg' %}" alt="My Image" id="HeatMap">
+                    <div class="font-medium">Congestion Heat-map
+                        <img src="{% static 'RehaabWeb/HeatMap.jpg' %}" alt="HeatMap" style="width:550px; height:305px;">
+                    </div>
+                    
+                
+                    
 
                 </div>
                 <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
