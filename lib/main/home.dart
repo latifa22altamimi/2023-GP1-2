@@ -29,24 +29,36 @@ class _homeState extends State<home> {
   }
 
   Future<void> fetchData() async {
-  var url = "http://10.0.2.2/phpfiles/checkStatus.php";
-  final res = await http.post(Uri.parse(url), body: {
-    "Userid": GlobalValues.id,
-  });
-
-  if (res.statusCode == 200) {
-    var red = json.decode(res.body);
-    print(red);
-    String message = red['message'];
-    print(message);
-    bool supportStatus = message == 'User has an active reservation.';
-    setState(() {
-      appearsupport = supportStatus;
-      print("Support status: $appearsupport");
-      GlobalValues.Status = supportStatus ? "Active" : "Inactive";
+  try {
+    var url = "http://10.0.2.2/phpfiles/checkStatus.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "Userid": GlobalValues.id,
     });
-  } 
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      print(red);
+      String message = red['message'];
+      print(message);
+      bool supportStatus = message == 'User has an active reservation.';
+      setState(() {
+        appearsupport = supportStatus;
+        print("Support status: $appearsupport");
+        GlobalValues.Status = supportStatus ? "Active" : "Inactive";
+      });
+    } else {
+      // Handle non-200 status code
+      print("Error: ${res.statusCode}");
+    }
+    
+    // Trigger UI update
+    setState(() {});
+  } catch (e) {
+    // Handle network or other errors
+    print("Error: $e");
+  }
 }
+
 
   
 
