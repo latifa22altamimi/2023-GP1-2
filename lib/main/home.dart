@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rehaab/GlobalValues.dart';
@@ -9,11 +11,9 @@ import 'package:rehaab/reservations/myreservations.dart';
 import 'package:rehaab/Map_page/map.dart';
 import 'package:rehaab/widgets/constants.dart';
 import 'package:rehaab/callSupport/support.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
-   /* Future<void> fetchData() async {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      GlobalValues.Status = prefs.getString('Status')!;
-    }*/
+import 'package:http/http.dart' as http;
+
+bool appearsupport = false;
 
 class home extends StatefulWidget {
   home({Key? key}) : super(key: key);
@@ -22,13 +22,45 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
-  
-@override
+  @override
   void initState() {
     super.initState();
-    //fetchData();
+    fetchData();
   }
 
+  Future<void> fetchData() async {
+  try {
+    var url = "http://10.0.2.2/phpfiles/checkStatus.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "Userid": GlobalValues.id,
+    });
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      print(red);
+      String message = red['message'];
+      print(message);
+      bool supportStatus = message == 'User has an active reservation.';
+      setState(() {
+        appearsupport = supportStatus;
+        print("Support status: $appearsupport");
+        GlobalValues.Status = supportStatus ? "Active" : "Inactive";
+      });
+    } else {
+      // Handle non-200 status code
+      print("Error: ${res.statusCode}");
+    }
+    
+    // Trigger UI update
+    setState(() {});
+  } catch (e) {
+    // Handle network or other errors
+    print("Error: $e");
+  }
+}
+
+
+  
 
   int index = 1;
   late final pages = [
@@ -44,7 +76,6 @@ class _homeState extends State<home> {
     ),
     Profile(), //settings or log out
   ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +98,6 @@ class _homeState extends State<home> {
             borderRadius: BorderRadius.only(
               topLeft: Radius.circular(40.0),
               topRight: Radius.circular(40.0),
-              
             ),
             child: NavigationBarTheme(
               data: NavigationBarThemeData(
@@ -120,8 +150,7 @@ class AppBarr extends StatelessWidget {
             bottomLeft: Radius.circular(10),
             bottomRight: Radius.circular(20),
           ),
-          color: kPrimaryColor
-        ),
+          color: kPrimaryColor),
       child: Column(
         children: [
           Row(
@@ -133,34 +162,41 @@ class AppBarr extends StatelessWidget {
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 23,
-                    fontWeight: FontWeight.w500),)
-                    , 
-                    Visibility(
-                    visible: GlobalValues.Status=="Active"? true: false,
-                      child: TextButton( 
-                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(kPrimaryColor)), 
-                      onPressed: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => callSupport())),
-                 
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                        SizedBox(height: 10, width: 10,),
-                   Row(children: [ 
-                   
-                    
-                     //  Container (child: Icon(Icons.support_agent, size:35, color:Colors.white ,), 
-                        
-                        Container (child: Image.asset('assets/images/support_icon.png' , width :50 , height: 50),
-                        ),],)
-                       
-                     
-               
-                    ],
-                  ),
-                 )
+                    fontWeight: FontWeight.w500),
               ),
-             /*   Visibility(
+                 Container(
+
+                  child:appearsupport?  TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(kPrimaryColor)),
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => callSupport())),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                          width: 10,
+                        ),
+                        Row(
+                          children: [
+                            //  Container (child: Icon(Icons.support_agent, size:35, color:Colors.white ,),
+
+                            Container(
+                              child: Image.asset(
+                                  'assets/images/support_icon.png',
+                                  width: 50,
+                                  height: 50),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  )
+                  :  Text('')
+                  )
+              /*   Visibility(
                     visible: false,
                       child: FloatingActionButton( 
                         backgroundColor: Colors.white,
@@ -208,7 +244,7 @@ class AppBarr extends StatelessWidget {
                   
                  )
               ),*/
-            /*  Visibility(
+              /*  Visibility(
            //   visible: GlobalValues.Status=="Active"? true: false,
            visible: true,
               child:    Container ( padding: EdgeInsets.only(left:40, right: 10, top:5),    child:  ElevatedButton.icon(
@@ -315,10 +351,8 @@ class BodyHome extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TrackTawaf())),
+                onTap: () => Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TrackTawaf())),
                 child: Container(
                   width: 180,
                   height: 180,

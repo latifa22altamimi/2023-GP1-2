@@ -423,7 +423,7 @@ bool isVisibleNumber(){
                             visible: !isVisibleDriving,
                             child: Container(
                               padding: const EdgeInsets.only(right: 23.0),
-                              margin: EdgeInsets.all(10.0),
+                              margin: EdgeInsets.all(5.0),
                               decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 255, 255, 255),
                                 borderRadius: BorderRadius.circular(20),
@@ -1456,7 +1456,8 @@ bool isVisibleNumber(){
                           },
                           child: Text(
                             'Reserve',
-                            style: TextStyle(fontSize: 23),
+                            style: TextStyle(fontSize: 23,color: Colors.white),
+                            
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color.fromARGB(255, 60, 100, 73),

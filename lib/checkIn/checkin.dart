@@ -7,13 +7,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
 import '../customization/clip.dart';
 import '../widgets/constants.dart';
 import 'package:encrypt/encrypt.dart' as enc;
 import 'package:http/http.dart' as http;
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_scanner_overlay/qr_scanner_overlay.dart';
+
 class CheckIn extends StatefulWidget {
   @override
   State<CheckIn> createState() => _CheckInState();
@@ -40,8 +40,6 @@ class _CheckInState extends State<CheckIn> {
   Future<void> StartTawaf(String code) async {
     try {
       // Decrypt the QR code
-     //final prefs = await SharedPreferences.getInstance();
-
       final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
       final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
       final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
@@ -59,12 +57,13 @@ class _CheckInState extends State<CheckIn> {
         setState(() {
           isVisibleSuccess = true;
           GlobalValues.Status="Active";
-          //prefs.setString('Status', GlobalValues.Status);
-
+          GlobalValues.Rid=decrypted;
 
         });
       } else if (respo == "Reservation status is not Confirmed") {
-        isVisibleInvalid = true;
+        setState(() {
+          isVisibleInvalid = true;
+        });
       } else {
         setState(() {
           isVisibleErr = true;

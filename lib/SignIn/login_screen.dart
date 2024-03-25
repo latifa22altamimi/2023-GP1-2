@@ -27,8 +27,13 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController Password = TextEditingController();
   bool _isSecurePassword = true;
+  bool isLoading = false;
+
   Future signin() async {
     var url = "http://10.0.2.2/phpfiles/signin.php";
+    setState(() {
+    isLoading = true;
+  });
     final response = await http.post(Uri.parse(url),
         body: {"Email": email.text, "Password": Password.text});
     var data = json.decode(response.body);
@@ -42,6 +47,10 @@ class _LoginScreenState extends State<LoginScreen> {
     prefs.setString('type', data[3]);
     prefs.setString('name', data[2]);
 
+setState(() {
+    isLoading =false;
+  });
+  
 
     if (data[0] == "Success") {
       if(GlobalValues.type=="Vehicle manager"){
@@ -460,10 +469,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(
                           height: 15,
                         ),
-                        Form(
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [ Form(
                           child: Column(
                             children: [
-                              TextFieldContainer(
+                                       TextFieldContainer(
                                   child: TextField(
                                 controller: email,
                                 cursorColor: kPrimaryColor,
@@ -494,7 +505,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                       border: InputBorder.none),
                                 ),
                               ),
+                                  
+                       
                               const SizedBox(
+
                                 height: 5,
                               ),
                               InkWell(
@@ -517,6 +531,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               const SizedBox(
                                 height: 13,
                               ),
+                              
                               RoundedButton(
                                   text: 'SIGN IN',
                                   press: () {
@@ -539,10 +554,28 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               const SizedBox(
                                 height: 20,
-                              )
+                              ),
+                          
+
+                                      
                             ],
                           ),
-                        )
+                        ),    if(isLoading)
+    Center(
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  CircularProgressIndicator(strokeWidth: 50, color: Colors.white), // Circular progress indicator
+                  Image.asset(
+                    'assets/images/logoapp-removebg-preview.png', // Image asset for the indicator
+                    width: 80,
+                    height: 80,
+                  ),
+                ],
+              )
+    ),
+                  ],)
+                       
                       ],
                     ),
                   ),

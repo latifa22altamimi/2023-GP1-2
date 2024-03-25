@@ -430,7 +430,7 @@ class ReserveCard extends StatelessWidget {
                 width: 170.0,
               ),
               Container(
-                margin: EdgeInsets.only(right: 10.0),
+                margin: EdgeInsets.only(right: 6.0),
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.push(
