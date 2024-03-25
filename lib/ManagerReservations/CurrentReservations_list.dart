@@ -1580,7 +1580,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                             ConstrainedBox(
                                               constraints:
                                                   BoxConstraints.tightFor(
-                                                      height: 38, width: 100),
+                                                      height: 38, width: 101),
                                               child: ElevatedButton(
                                                 onPressed: () {
                                                   //execute remove from waiting list
@@ -1681,7 +1681,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                   'Remove',
                                                   style: TextStyle(
                                                       color: Colors.white,
-                                                      fontSize: 15,
+                                                      fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.w500),
                                                 ),

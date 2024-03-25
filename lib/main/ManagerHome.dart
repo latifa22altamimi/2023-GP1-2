@@ -48,69 +48,6 @@ class _ManagerHomeState extends State<ManagerHome> {
   ];
   void initState() {
     super.initState();
-    DisplayWaiting();
-    AvgDuration();
-    WaitingNum();
-
-  }
-
-  Future AvgDuration() async {
-    print(GlobalValues.id);
-    var url = "http://10.0.2.2/phpfiles/AvgDuration.php";
-    final res = await http.post(Uri.parse(url), body: {});
-    var red = json.decode(res.body);
-    avgTime = red;
-  }
-
-  Future WaitingNum() async {
-    print(GlobalValues.id);
-    var url = "http://10.0.2.2/phpfiles/WaitingNum.php";
-    final res = await http.post(Uri.parse(url), body: {});
-    var red = json.decode(res.body);
-    waitNum = int.parse(red);
-    print(waitNum);
-    waitPercent = (waitNum * 100) / TotalVehicles;
-    waitPercent = double.parse(
-        waitPercent.toStringAsFixed(1)); // Format to one decimal place
-    print(waitPercent);
-    print(TotalVehicles);
-  }
-
-  Future DisplayWaiting() async {
-    print(GlobalValues.id);
-    var url = "http://10.0.2.2/phpfiles/ActiveWalkIn.php";
-    final res = await http.post(Uri.parse(url), body: {
-      "Userid": GlobalValues.id,
-    });
-
-    if (res.statusCode == 200) {
-      var red = json.decode(res.body);
-      if (red[0] == "Unavailable") {
-        setState(() {
-          unavailableVehicles = true; //if there are no available vehicles
-          doubleV = red[1];
-          singleV = red[2];
-          TotalVehicles = red[1] + red[2];
-          
-        });
-
-        print(red[0]);
-      } else {
-        setState(() {
-          numOfAvailable = red[1];
-          TotalVehicles = red[2] + red[3];
-          doubleV = red[2];
-          singleV = red[3];
-
-          percent = (numOfAvailable * 100) / TotalVehicles;
-
-          percentage = percent.toInt();
-
-          unavailableVehicles = false; //There are available vehicles
-        });
-        print(red[0]);
-      }
-    }
   }
 
   @override
@@ -283,10 +220,14 @@ class AppBarr extends StatelessWidget {
 int doubleV = 0;
 int singleV = 0;
 String avgTime = "";
-  int waitNum = 0;
-  double waitPercent = 0.0;
-  double percent = 0.0;
-  int percentage = 0;
+int waitNum = 0;
+double waitPercent = 0.0;
+double percent = 0.0;
+int percentage = 0;
+Color emptyColor = kPrimaryColor;
+int totalActive = 0;
+double totalActiveDouble = 0.0;
+
 class BodyHome extends StatefulWidget {
   const BodyHome({Key? key}) : super(key: key);
 
@@ -295,16 +236,91 @@ class BodyHome extends StatefulWidget {
 }
 
 class _BodyHomeState extends State<BodyHome> {
-  
   void initState() {
     super.initState();
-    
-    
+    AvgDuration();
+    DisplayWaiting();
+    WaitingNum();
   }
 
-  
+  Future AvgDuration() async {
+    print(GlobalValues.id);
+    var url = "http://10.0.2.2/phpfiles/AvgDuration.php";
+    final res = await http.post(Uri.parse(url), body: {});
+    var red = json.decode(res.body);
+    avgTime = red;
+  }
 
-  
+  Future WaitingNum() async {
+    print(GlobalValues.id);
+    var url = "http://10.0.2.2/phpfiles/WaitingNum.php";
+    final res = await http.post(Uri.parse(url), body: {});
+    var red = json.decode(res.body);
+    waitNum = int.parse(red);
+    print("$waitNum wait");
+    waitPercent = (waitNum * 100) / totalActive;
+    if (waitPercent.isNaN) {
+      waitPercent = 0.0;
+    }else{
+      waitPercent = double.parse(
+        waitPercent.toStringAsFixed(1)); // Format to one decimal place
+    }
+    
+    print("$waitPercent waitPercent");
+    print(TotalVehicles);
+  }
+
+  Future DisplayWaiting() async {
+    print(GlobalValues.id);
+    var url = "http://10.0.2.2/phpfiles/ActiveWalkIn.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "Userid": GlobalValues.id,
+    });
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      if (red[0] == "Unavailable") {
+        setState(() {
+          totalActive = red[5];
+          print("$totalActive active");
+          totalActiveDouble =
+              (totalActive.toDouble() / red.length).clamp(0.0, 1.0);
+          emptyColor = ErrorColor;
+          unavailableVehicles = true; //if there are no available vehicles
+          doubleV = red[3];
+          singleV = red[4];
+          numOfAvailable = red[3] + red[4];
+          TotalVehicles = red[1] + red[2];
+
+          percent = (numOfAvailable * 100) / TotalVehicles;
+
+          percentage = percent.toInt();
+        });
+
+        print(red[0]);
+      } else {
+        setState(() {
+          totalActive = red[6];
+          print("$totalActive active");
+          totalActiveDouble =
+              (totalActive.toDouble() / red.length).clamp(0.0, 1.0);
+
+          emptyColor = kPrimaryColor;
+          numOfAvailable = red[1];
+          TotalVehicles = red[2] + red[3];
+          doubleV = red[4];
+          singleV = red[5];
+
+          percent = (numOfAvailable * 100) / TotalVehicles;
+
+          percentage = percent.toInt();
+
+          unavailableVehicles = false; //There are available vehicles
+        });
+        print(red[0]);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -336,7 +352,7 @@ class _BodyHomeState extends State<BodyHome> {
             height: 18.0,
           ),
           // dashboard
-      
+
           SizedBox(
             width: 380,
             height: 170,
@@ -352,8 +368,8 @@ class _BodyHomeState extends State<BodyHome> {
                   ),
                 ],
               ),
-              padding:
-                  EdgeInsets.only(left: 5.0, right: 5.0, bottom: 10.0, top: 10.0),
+              padding: EdgeInsets.only(
+                  left: 5.0, right: 5.0, bottom: 10.0, top: 10.0),
               child: Column(
                 children: [
                   Row(
@@ -383,7 +399,7 @@ class _BodyHomeState extends State<BodyHome> {
                                 style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.black),
+                                    color: emptyColor),
                               ),
                               SizedBox(
                                 width: 3,
@@ -407,7 +423,7 @@ class _BodyHomeState extends State<BodyHome> {
                                 style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
-                                    color: Colors.black),
+                                    color: emptyColor),
                               ),
                               SizedBox(
                                 width: 3,
@@ -444,7 +460,7 @@ class _BodyHomeState extends State<BodyHome> {
                               '${percentage}%',
                               style: TextStyle(
                                   fontSize: 25,
-                                  color: Colors.black,
+                                  color: emptyColor,
                                   fontWeight: FontWeight.w600),
                             ),
                             SizedBox(
@@ -515,10 +531,10 @@ class _BodyHomeState extends State<BodyHome> {
                         height: 5.0,
                       ),
                       Text(
-                        'Average time',
+                        'Average Tawaf Time',
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 14,
+                            fontSize: 12.5,
                             fontWeight: FontWeight.w400),
                       )
                     ],
@@ -603,12 +619,15 @@ class _BodyHomeState extends State<BodyHome> {
                         ),
                         LinearPercentIndicator(
                           restartAnimation: true,
+                          addAutomaticKeepAlive: true,
                           animation: false,
+                          animateFromLastPercent: true,
                           animationDuration: 1000,
                           lineHeight: 16,
                           barRadius: Radius.circular(10),
-                          percent:
-                              waitPercent <= 100.0 ? waitPercent / 100.0 : 1.0,
+                          percent: waitPercent <= 100.0
+                              ? waitPercent / 100.0
+                              : totalActiveDouble, //var
                           progressColor: Color.fromRGBO(68, 159, 220, 1),
                           backgroundColor: Colors.grey.withOpacity(0.2),
                         )
@@ -619,7 +638,7 @@ class _BodyHomeState extends State<BodyHome> {
               ),
             ],
           ),
-      
+
           Padding(
               padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
               child: Align(
@@ -645,7 +664,7 @@ class _BodyHomeState extends State<BodyHome> {
             height: 10.0,
           ),
           // cards
-      
+
           Container(
             child: Wrap(
               alignment: WrapAlignment.spaceBetween,
@@ -702,8 +721,8 @@ class _BodyHomeState extends State<BodyHome> {
                                               fontWeight: FontWeight.w500),
                                         ),
                                         style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              Color.fromARGB(255, 255, 255, 255),
+                                          backgroundColor: Color.fromARGB(
+                                              255, 255, 255, 255),
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.all(
                                               Radius.circular(50),
