@@ -41,7 +41,7 @@
           Managers</a>
       </li>
       <li>
-        <a href="" onclick="showConfirmationMessage()"><span class="fa fa-sign-out mr-3"
+        <a href="#" onclick="showConfirmationMessage()"><span class="fa fa-sign-out mr-3"
             style="color: white;"></span> Log Out</a>
       </li>
 
@@ -87,7 +87,6 @@
         showCancelButton: true,
       }).then((result) => {
         if (result.isConfirmed) {
-          // Perform logout action
               alert_message(msg="success")
               setTimeout(function () {
                   window.location.href = "{% url 'sign-in' %}";
@@ -97,7 +96,5 @@
         }
       });
     }
-  </script>
-
   </script>
 </nav>
