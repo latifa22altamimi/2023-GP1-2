@@ -82,10 +82,10 @@ WSGI_APPLICATION = 'RehaabWeb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'u271614468_rehaab',
-        'USER': 'u271614468_rehaab_team',
-        'PASSWORD': 'AAa123123_',
-        'HOST': '193.203.184.47',
+        'NAME': 'rehaab',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
         'PORT': '3306',
     }
 }
