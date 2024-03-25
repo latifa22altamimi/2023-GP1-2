@@ -341,18 +341,19 @@ Widget ticketDetailsWidget(String firstTitle, String firstDesc,
           children: <Widget>[
             Text(
               firstTitle,
-              style: const TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey,fontSize: 16),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 4.0),
               child: Text(
                 firstDesc,
-                style: const TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black,fontSize: 16),
               ),
             )
           ],
         ),
       ),
+      SizedBox(width: 20,),
       Padding(
         padding: const EdgeInsets.only(right: 0.0, top: 6.0),
         child: Column(
@@ -360,13 +361,13 @@ Widget ticketDetailsWidget(String firstTitle, String firstDesc,
           children: [
             Text(
               secondTitle,
-              style: const TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey,fontSize: 16),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 4.0),
               child: Text(
                 secondDesc,
-                style: const TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black, fontSize: 16),
               ),
             )
           ],
