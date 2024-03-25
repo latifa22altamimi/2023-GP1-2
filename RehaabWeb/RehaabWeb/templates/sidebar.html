@@ -2,64 +2,102 @@
 {% load i18n %}
 <style>
   #sidebar .custom-menu .btn.btn-primary:after {
-          z-index: -1;
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          content: '';
-          -webkit-transform: rotate(45deg);
-          -ms-transform: rotate(45deg);
-          transform: rotate(45deg);
-          background-color: #3D6449!important ;
-          border-radius: 10px; }</style>
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    background-color: #3D6449 !important;
+    border-radius: 10px;
+  }
+</style>
 
 <nav id="sidebar" style="background:#3D6449;">
-    <div class="custom-menu" >
-      <button type="button" id="sidebarCollapse" class="btn btn-primary"  style="background:#3D6449">
-        <i class="fa fa-bars"></i>
-        <span class="sr-only" >Toggle Menu</span>
-      </button>
-    </div>
-    <div class="p-4">
-      <h1>
-        <a href="/index.html" class="logo"
-          >Rehaab <span style="color:white">Platform</span></a
-        >
-      </h1>
-      <ul class="list-unstyled components mb-5">
-        <li >
-          <a href="/index.html/"><span class="fa fa-home mr-3" style="color: white;"></span> Dashboard</a>
-        </li>
-        <li >
-          <a href="/UpdateParameters.html/"><span class="fa fa-cog mr-3" style="color: white;"></span> Configure and Update</a>
-        </li>
-        <li>
-          <a href="/AssignVM.html/"><span class="fa fa-user mr-3" style="color: white;"></span> Assign Vehicle Managers</a>
-        </li>
-        <li>
-          <a href="{% url 'sign-in' %}"><span class="fa fa-sign-out mr-3" style="color: white;"></span> Log Out</a>
-        </li>
-       
-      </ul>
+  <div class="custom-menu">
+    <button type="button" id="sidebarCollapse" class="btn btn-primary" style="background:#3D6449">
+      <i class="fa fa-bars"></i>
+      <span class="sr-only">Toggle Menu</span>
+    </button>
+  </div>
+  <div class="p-4">
+    <h1>
+      <a href="/index.html" class="logo">Rehaab <span style="color:white">Platform</span></a>
+    </h1>
+    <ul class="list-unstyled components mb-5">
+      <li>
+        <a href="/index.html/"><span class="fa fa-home mr-3" style="color: white;"></span> Dashboard</a>
+      </li>
+      <li>
+        <a href="/UpdateParameters.html/"><span class="fa fa-cog mr-3" style="color: white;"></span> Configure and
+          Update</a>
+      </li>
+      <li>
+        <a href="/AssignVM.html/"><span class="fa fa-user mr-3" style="color: white;"></span> Assign Vehicle
+          Managers</a>
+      </li>
+      <li>
+        <a href="" onclick="showConfirmationMessage()"><span class="fa fa-sign-out mr-3"
+            style="color: white;"></span> Log Out</a>
+      </li>
 
-    
+    </ul>
+
+
+
+  </div>
   
-    </div>
-    <script> 
-      var currentURL = window.location.href
-      var parts = currentURL.split("/");
-  
-      var listItems = document.querySelectorAll("li a");
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
 
+  <script>
+    var currentURL = window.location.href;
+    var parts = currentURL.split("/");
 
-  for (var i = 0; i < listItems.length; i++) {
-    if (listItems[i].getAttribute("href") === '/'+parts[3]+'/') {
-          listItems[i].parentNode.classList.add("active");
+    var listItems = document.querySelectorAll("li a");
+
+    for (var i = 0; i < listItems.length; i++) {
+      if (listItems[i].getAttribute("href") === '/' + parts[3] + '/') {
+        listItems[i].parentNode.classList.add("active");
       }
-  }
+    }
+    function alert_message(msg="",icon="success",timer=6000){
+            Swal.fire({
+                position:'center',
+                showConfirmButton:false,
+                icon:icon,
+                title:msg,
+                timer: timer,
+            })
+          }
+            
+    function showConfirmationMessage() {
+      Swal.fire({
+        title: 'Are you sure you want to log out?',
+        icon: 'warning',
+        confirmButtonColor: '#3d6449',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        cancelButtonText: 'No',
+        showCloseButton: true,
+        showCancelButton: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Perform logout action
+              alert_message(msg="success")
+              setTimeout(function () {
+                  window.location.href = "{% url 'sign-in' %}";
+              },1500);
+          
+          
+        }
+      });
+    }
+  </script>
 
-
-    </script>
-  </nav>
+  </script>
+</nav>
