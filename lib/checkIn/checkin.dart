@@ -66,7 +66,7 @@ class _CheckInState extends State<CheckIn> {
         });
       } else {
         setState(() {
-         // isVisibleErr = true;
+         isVisibleErr = true;
         });
       }
     } catch (e) {
