@@ -102,7 +102,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
   }
 
   Future refresh() async {
-     convertToCompleted();
+     //convertToCompleted();
     historyList.clear();
     list.clear();
     print(GlobalValues.id);
@@ -129,7 +129,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
   }
 
   void initState() {
-    convertToCompleted(); //convert status to completed
+    //convertToCompleted(); //convert status to completed
     super.initState();
     curpressed = true;
     GetData();
