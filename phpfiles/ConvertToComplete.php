@@ -1,7 +1,7 @@
 <?php
 include 'connect.php';
 date_default_timezone_set('Asia/Riyadh');
-$oneMinuteAgo = date('Y-m-d H:i:s', strtotime('-2 minutes'));
+$oneMinuteAgo = date('Y-m-d H:i:s', strtotime('-1 minutes'));
 $currentDateTime = date('Y-m-d H:i:s');
 
 // Update only reservations with status 'Active' to 'Completed' 

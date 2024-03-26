@@ -89,21 +89,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     }
   }
 
-  Future GetWaitingList() async {
-    // historyList.clear();
-    print(GlobalValues.id);
-    var url = "http://10.0.2.2/phpfiles/waitingList.php";
-    final res = await http.post(Uri.parse(url), body: {
-      "Userid": GlobalValues.id,
-    });
-
-    if (res.statusCode == 200) {
-      var red = json.decode(res.body);
-      setState(() {
-        waitingList.addAll(red);
-      });
-    }
-  }
+  
 
   Future convertToCompleted() async {
     var url = "http://10.0.2.2/phpfiles/ConvertToComplete.php";
@@ -116,7 +102,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
   }
 
   Future refresh() async {
-    //convertToCompleted();
+     convertToCompleted();
     historyList.clear();
     list.clear();
     print(GlobalValues.id);
@@ -143,11 +129,10 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
   }
 
   void initState() {
-    //convertToCompleted(); //convert status to completed
+    convertToCompleted(); //convert status to completed
     super.initState();
     curpressed = true;
     GetData();
-    GetWaitingList();
     curColor = Colors.black.withOpacity(0.5);
     prevColor = Color.fromARGB(255, 255, 255, 255);
     curBG = kPrimaryColor;

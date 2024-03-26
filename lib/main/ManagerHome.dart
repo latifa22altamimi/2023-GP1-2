@@ -113,6 +113,9 @@ class AppBarr extends StatelessWidget {
   const AppBarr({super.key});
 
   @override
+  
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
@@ -137,7 +140,8 @@ class AppBarr extends StatelessWidget {
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
               ),
-
+             
+             
               /*   Visibility(
                     visible: false,
                       child: FloatingActionButton( 
@@ -217,8 +221,7 @@ class AppBarr extends StatelessWidget {
   }
 }
 
-int doubleV = 0;
-int singleV = 0;
+List vehiclesAvailable = [0,0];
 String avgTime = "";
 int waitNum = 0;
 double waitPercent = 0.0;
@@ -249,6 +252,13 @@ class _BodyHomeState extends State<BodyHome> {
     final res = await http.post(Uri.parse(url), body: {});
     var red = json.decode(res.body);
     avgTime = red;
+    List<String> timeParts = avgTime.split(':');
+    int hours = int.parse(timeParts[0]);
+    int minutes = int.parse(timeParts[1]);
+
+    String formattedTime = '${hours}h ${minutes}min';
+
+    avgTime = formattedTime;
   }
 
   Future WaitingNum() async {
@@ -261,11 +271,11 @@ class _BodyHomeState extends State<BodyHome> {
     waitPercent = (waitNum * 100) / totalActive;
     if (waitPercent.isNaN) {
       waitPercent = 0.0;
-    }else{
+    } else {
       waitPercent = double.parse(
-        waitPercent.toStringAsFixed(1)); // Format to one decimal place
+          waitPercent.toStringAsFixed(1)); // Format to one decimal place
     }
-    
+
     print("$waitPercent waitPercent");
     print(TotalVehicles);
   }
@@ -276,7 +286,7 @@ class _BodyHomeState extends State<BodyHome> {
     final res = await http.post(Uri.parse(url), body: {
       "Userid": GlobalValues.id,
     });
-
+    vehiclesAvailable.clear();
     if (res.statusCode == 200) {
       var red = json.decode(res.body);
       if (red[0] == "Unavailable") {
@@ -287,8 +297,10 @@ class _BodyHomeState extends State<BodyHome> {
               (totalActive.toDouble() / red.length).clamp(0.0, 1.0);
           emptyColor = ErrorColor;
           unavailableVehicles = true; //if there are no available vehicles
-          doubleV = red[3];
-          singleV = red[4];
+
+          vehiclesAvailable.insert(0, red[3]);
+          vehiclesAvailable.insert(1, red[4]);
+
           numOfAvailable = red[3] + red[4];
           TotalVehicles = red[1] + red[2];
 
@@ -308,8 +320,9 @@ class _BodyHomeState extends State<BodyHome> {
           emptyColor = kPrimaryColor;
           numOfAvailable = red[1];
           TotalVehicles = red[2] + red[3];
-          doubleV = red[4];
-          singleV = red[5];
+
+          vehiclesAvailable.insert(0, red[4]);
+          vehiclesAvailable.insert(1, red[5]);
 
           percent = (numOfAvailable * 100) / TotalVehicles;
 
@@ -327,19 +340,46 @@ class _BodyHomeState extends State<BodyHome> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Padding(
-              padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Text(
-                  'Vehicles details',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500),
-                ),
-              )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                  padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      'Vehicles details',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  )),
+                 
+                  Container(
+                    margin: EdgeInsets.only(right:20.0,top:17.0),
+                    child: ElevatedButton(
+  style: ElevatedButton.styleFrom(
+    backgroundColor: Colors.white,
+    foregroundColor: Colors.white,
+    elevation: 2, // Adjust the elevation value as desired
+  ),
+                                    onPressed: () {
+                   
+                    vehiclesAvailable.clear();
+                     DisplayWaiting();
+                                    },
+                                    child: Text('Refresh',
+                                    style: TextStyle(
+                                      color: Colors.black
+                                    ),),
+                                  ),
+                  ),
+              
+            ],
+          ),
+               
           SizedBox(
             height: 5.0,
           ),
@@ -395,7 +435,7 @@ class _BodyHomeState extends State<BodyHome> {
                           Row(
                             children: [
                               Text(
-                                '${singleV}',
+                                '${vehiclesAvailable[1]}',
                                 style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
@@ -419,7 +459,7 @@ class _BodyHomeState extends State<BodyHome> {
                           Row(
                             children: [
                               Text(
-                                '${doubleV}',
+                                '${vehiclesAvailable[0]}',
                                 style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.w600,
