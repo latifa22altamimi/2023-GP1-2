@@ -153,22 +153,10 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     curBG = kPrimaryColor;
     curTxt = Colors.white;
     prevTxt = Colors.black;
-    checkAvailableType();
+    
   }
 
-  Future<void> checkAvailableType() async {
-    var url = "http://10.0.2.2/phpfiles/checkAvailableType.php";
-    final response = await http.post(Uri.parse(url), body: {});
-    var responseBody = json.decode(response.body);
-
-    setState(() {
-      TypesAvailable.addAll(responseBody);
-    });
-    print(TypesAvailable);
-    if (TypesAvailable[0]["Single"].runtimeType == String) {
-      print("its string");
-    }
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -574,13 +562,26 @@ class _ReserveCardState extends State<ReserveCard> {
   void initState() {
     super.initState();
     // _startTimer();
+    checkAvailableType();
     DisplayWaiting();
     setState(() {
       nameReq = false;
       phoneReq = false;
     });
   }
+ Future<void> checkAvailableType() async {
+    var url = "http://10.0.2.2/phpfiles/checkAvailableType.php";
+    final response = await http.post(Uri.parse(url), body: {});
+    var responseBody = json.decode(response.body);
 
+    setState(() {
+      TypesAvailable.addAll(responseBody);
+    });
+    print(TypesAvailable);
+    if (TypesAvailable[0]["Single"].runtimeType == String) {
+      print("its string");
+    }
+  }
   /*void didUpdateWidget(covariant ReserveCard oldWidget) {
     if (widget.Rid != oldWidget.Rid) {
       // Perform some action when the 'data' property changes
