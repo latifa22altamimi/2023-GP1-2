@@ -66,15 +66,12 @@ class _CheckInState extends State<CheckIn> {
         });
       } else {
         setState(() {
-          isVisibleErr = true;
+         // isVisibleErr = true;
         });
       }
     } catch (e) {
       // Handle any errors that occur during the process
       print("Error starting Tawaf: $e");
-      setState(() {
-        isVisibleErr = true;
-      });
     } finally {
       // Stop the indicator regardless of the result received
       setState(() {
