@@ -66,15 +66,12 @@ class _CheckInState extends State<CheckIn> {
         });
       } else {
         setState(() {
-          isVisibleErr = true;
+         isVisibleErr = true;
         });
       }
     } catch (e) {
       // Handle any errors that occur during the process
       print("Error starting Tawaf: $e");
-      setState(() {
-        isVisibleErr = true;
-      });
     } finally {
       // Stop the indicator regardless of the result received
       setState(() {
@@ -341,7 +338,7 @@ void showErrorModal(BuildContext context) {
         context,
         'assets/images/erorrr.json',
         'Error!',
-        'Check in failed',
+        'The QR code is invalid',
         const Color.fromARGB(255, 228, 223, 223),
         Color.fromARGB(255, 196, 25, 25),
       );
