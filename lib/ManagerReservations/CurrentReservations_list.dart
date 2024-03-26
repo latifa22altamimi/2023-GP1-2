@@ -89,8 +89,6 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     }
   }
 
-  
-
   Future convertToCompleted() async {
     var url = "http://10.0.2.2/phpfiles/ConvertToComplete.php";
     final res = await http.post(Uri.parse(url), body: {});
@@ -102,7 +100,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
   }
 
   Future refresh() async {
-     //convertToCompleted();
+    //convertToCompleted();
     historyList.clear();
     list.clear();
     print(GlobalValues.id);
@@ -117,7 +115,8 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
         list.addAll(red);
         if (curpressed) {
           for (int i = 0; i < list.length; i++) {
-            if ((list[i]["Status"] == "Active")) {
+            if ((list[i]["Status"] == "Active" ||
+                list[i]["Status"] == "Waiting")) {
               historyList.add(list[i]);
             }
           }
@@ -128,9 +127,25 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     }
   }
 
+  Future<void> checkAvailableType() async {
+    var url = "http://10.0.2.2/phpfiles/checkAvailableType.php";
+    final response = await http.post(Uri.parse(url), body: {});
+    var responseBody = json.decode(response.body);
+
+    setState(() {
+      TypesAvailable.clear();
+      TypesAvailable.addAll(responseBody);
+    });
+    print("ss $TypesAvailable");
+    if (TypesAvailable[0]["Single"].runtimeType == String) {
+      print("its string");
+    }
+  }
+
   void initState() {
     //convertToCompleted(); //convert status to completed
     super.initState();
+    checkAvailableType();
     curpressed = true;
     GetData();
     curColor = Colors.black.withOpacity(0.5);
@@ -138,10 +153,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     curBG = kPrimaryColor;
     curTxt = Colors.white;
     prevTxt = Colors.black;
-    
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -163,6 +175,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                     //previous button
                     onPressed: () {
                       setState(() {
+                        checkAvailableType();
                         currentEmpty = false;
                         listVisible = false;
                         waitVisible = true;
@@ -547,26 +560,14 @@ class _ReserveCardState extends State<ReserveCard> {
   void initState() {
     super.initState();
     // _startTimer();
-    checkAvailableType();
     DisplayWaiting();
+
     setState(() {
       nameReq = false;
       phoneReq = false;
     });
   }
- Future<void> checkAvailableType() async {
-    var url = "http://10.0.2.2/phpfiles/checkAvailableType.php";
-    final response = await http.post(Uri.parse(url), body: {});
-    var responseBody = json.decode(response.body);
 
-    setState(() {
-      TypesAvailable.addAll(responseBody);
-    });
-    print(TypesAvailable);
-    if (TypesAvailable[0]["Single"].runtimeType == String) {
-      print("its string");
-    }
-  }
   /*void didUpdateWidget(covariant ReserveCard oldWidget) {
     if (widget.Rid != oldWidget.Rid) {
       // Perform some action when the 'data' property changes
@@ -725,7 +726,7 @@ class _ReserveCardState extends State<ReserveCard> {
                           onChanged: (value) {
                             setState(() {
                               waitingName = value;
-              
+
                               print('nameReq: $nameReq');
                             });
                           },
@@ -737,7 +738,8 @@ class _ReserveCardState extends State<ReserveCard> {
                                 color: kPrimaryColor,
                               ),
                               hintText: "Visitor name",
-                              hintStyle: const TextStyle(fontFamily: 'OpenSans'),
+                              hintStyle:
+                                  const TextStyle(fontFamily: 'OpenSans'),
                               border: InputBorder.none),
                         )),
                         SizedBox(
@@ -811,8 +813,8 @@ class _ReserveCardState extends State<ReserveCard> {
                           children: [
                             //add to waiting list button
                             ConstrainedBox(
-                              constraints:
-                                  BoxConstraints.tightFor(height: 38, width: 100),
+                              constraints: BoxConstraints.tightFor(
+                                  height: 38, width: 100),
                               child: ElevatedButton(
                                 onPressed: () {
                                   setState(() {
@@ -821,7 +823,7 @@ class _ReserveCardState extends State<ReserveCard> {
                                     phoneReq = false;
                                   });
                                   print(isVisibleWaiting);
-              
+
                                   Navigator.of(context).pop();
                                 },
                                 child: Text(
@@ -847,8 +849,8 @@ class _ReserveCardState extends State<ReserveCard> {
                             ),
                             //press on add
                             ConstrainedBox(
-                              constraints:
-                                  BoxConstraints.tightFor(height: 38, width: 100),
+                              constraints: BoxConstraints.tightFor(
+                                  height: 38, width: 100),
                               child: ElevatedButton(
                                 onPressed: () {
                                   print(waitingName);
@@ -887,14 +889,15 @@ class _ReserveCardState extends State<ReserveCard> {
                                       nameReq = false;
                                       phoneReq = false;
                                     });
-              
+
                                     setWaiting(); //reserved for waiting set to true
                                     insertWaitingList();
                                     Navigator.of(context).pop();
                                     showDialog(
                                       context: context,
                                       builder: (context) {
-                                        Future.delayed(Duration(seconds: 2), () {
+                                        Future.delayed(Duration(seconds: 2),
+                                            () {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -903,8 +906,8 @@ class _ReserveCardState extends State<ReserveCard> {
                                           );
                                         });
                                         return Dialog(
-                                          backgroundColor:
-                                              Color.fromARGB(255, 247, 247, 247),
+                                          backgroundColor: Color.fromARGB(
+                                              255, 247, 247, 247),
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(20)),
@@ -944,13 +947,15 @@ class _ReserveCardState extends State<ReserveCard> {
                                                 Row(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
-                                                  mainAxisSize: MainAxisSize.min,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
                                                   children: [
                                                     ConstrainedBox(
                                                       constraints:
-                                                          BoxConstraints.tightFor(
-                                                              height: 38,
-                                                              width: 100),
+                                                          BoxConstraints
+                                                              .tightFor(
+                                                                  height: 38,
+                                                                  width: 100),
                                                     ),
                                                   ],
                                                 )
@@ -1070,7 +1075,6 @@ class _ReserveCardState extends State<ReserveCard> {
   bool? isButtonEnabled;
   @override
   Widget build(BuildContext context) {
-    
     isButtonEnabled = widget.isButtonEnabled;
     return Stack(
       children: [
@@ -1302,6 +1306,7 @@ class _WaitingCardState extends State<WaitingCard> {
   double wHeight = 0.0;
   void initState() {
     super.initState();
+    checkAvailableType();
     if (widget.PhoneNumber == "") {
       phoneVisible = false;
       wHeight = 150;
@@ -1317,6 +1322,21 @@ class _WaitingCardState extends State<WaitingCard> {
     });
     var respo = json.decode(res.body);
     print(respo);
+  }
+
+  Future<void> checkAvailableType() async {
+    var url = "http://10.0.2.2/phpfiles/checkAvailableType.php";
+    final response = await http.post(Uri.parse(url), body: {});
+    var responseBody = json.decode(response.body);
+
+    setState(() {
+      TypesAvailable.clear();
+      TypesAvailable.addAll(responseBody);
+    });
+    print("ss $TypesAvailable");
+    if (TypesAvailable[0]["Single"].runtimeType == String) {
+      print("its string");
+    }
   }
 
   acceptVisitor() async {
