@@ -341,7 +341,7 @@ void showErrorModal(BuildContext context) {
         context,
         'assets/images/erorrr.json',
         'Error!',
-        'Check in failed',
+        'The QR code is invalid',
         const Color.fromARGB(255, 228, 223, 223),
         Color.fromARGB(255, 196, 25, 25),
       );
