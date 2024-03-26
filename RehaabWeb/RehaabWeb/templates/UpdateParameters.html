@@ -29,7 +29,7 @@ body {
   min-height: 100vh;
   background-color: #f2f2f2;
 }
-h2 {
+.Title {
   text-align: center;
   height: fit-content;
   color: #2f5706;
@@ -37,7 +37,7 @@ h2 {
   font-size: 1.8em;
   letter-spacing: 5px;
 }
-h2 span {
+.Span {
   text-align: center;
   margin-left: 70%;
   letter-spacing: 5px;
@@ -240,12 +240,12 @@ label {
     
             <form method="POST" action="{% url 'UpdateParameters' %}" onsubmit="showConfirmationModal(); return false;">
                 {% csrf_token %}
-                <h2 >
+                <h2 class="Title">
                     <div class="sys-title">
                     SYSTEM
                     <br>
                 </div>
-                    <span>
+                    <span class="Span">
                         INFORMATION
                     </span>
                 </h2>
@@ -429,7 +429,7 @@ label {
             // Define a function to show the Swal.fire() message
             function showConfirmationMessage() {
                 Swal.fire({
-            title: 'Are you sure ? ',
+            title: 'Are you sure you want to update the system information? ',
             icon: 'warning',        
             confirmButtonColor: '#3d6449' ,
             cancelButtonColor:  '#d33',
