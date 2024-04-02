@@ -142,6 +142,12 @@ function updateAvailableData() {
     $.ajax({
         url: '{% url "get_Vehicles_Info" %}',
         success: function (data) {
+            map.eachLayer(function (layer) {
+        if (layer instanceof L.Marker) {
+          map.removeLayer(layer);
+        }
+      });
+
             var existingSupportRows = supportTableBody.find('tr');
             var newSupportRows = '';
 
