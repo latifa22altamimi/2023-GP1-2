@@ -212,34 +212,35 @@ def get_Vehicles_Info(request):
      num_of_Dbackup_vehicles  = num_of_Dbackup_vehicles .TotalNumberofVehicles
      num_of_backup_vehicles = (num_of_Sbackup_vehicles+num_of_Dbackup_vehicles)-support_count
 
-     AllSupport = Support.objects.filter(ReservationId__in=reservation_ids_today, AssignedTo__isnull=True).values()
+     AllSupport = Support.objects.filter(ReservationId__in=reservation_ids_today).values()
      AllSupportWithUser = []
 
      vehicle_managers = User.objects.filter(Type='Vehicle manager')
      assigned_user_ids = Support.objects.filter(AssignedTo__isnull=False).values_list('AssignedTo', flat=True)
 
-
      for support in AllSupport:
-            available_managers = vehicle_managers.exclude(userID__in=assigned_user_ids)
             reservation = Reservation.objects.get(reservationId=support['ReservationId'])
             user = User.objects.get(pk=reservation.userId)
             support['visitor_name'] = user.FullName
-            if available_managers.exists():
-                AssignedVM = random.choice(available_managers)
-                support['Assigned_to'] = AssignedVM.FullName
-                AllSupportWithUser.append(support)
-                support_obj = Support.objects.get(supportID=support['supportID'])
-                support_obj.AssignedTo = AssignedVM.userID
-                support_obj.save()
-                assigned_user_ids = Support.objects.filter(AssignedTo__isnull=False).values_list('AssignedTo', flat=True)
+            if support['AssignedTo'] is not None:
+                assigned_manager = User.objects.get(userID=support['AssignedTo'])
+                support['Assigned_to'] = assigned_manager.FullName
             else:
-                support['Assigned_to'] = None
-                AllSupportWithUser.append(support)
+                available_managers = vehicle_managers.exclude(userID__in=assigned_user_ids)
+                if available_managers.exists():
+                    AssignedVM = random.choice(available_managers)
+                    support['Assigned_to'] = AssignedVM.FullName
+                    support_obj = Support.objects.get(supportID=support['supportID'])
+                    support_obj.AssignedTo = AssignedVM.userID
+                    support_obj.save()
+                else:
+                    support['Assigned_to'] = None
+            AllSupportWithUser.append(support)
+
 
      latitude_values = [marker['Latitude'] for marker in AllSupportWithUser]
      longitude_values = [marker['Longitude'] for marker in AllSupportWithUser]
-
-     message = ', '.join(str(marker['supportID']) for marker in AllSupportWithUser)
+     message = ''.join(str(marker['supportID']) for marker in AllSupport)
 
 
      data = {'AllSupport':list(AllSupportWithUser),'Active': active_reservations,'support_count':support_count,'num_of_backup_vehicles':num_of_backup_vehicles,'latitude_values':latitude_values,'longitude_values':longitude_values,'message':message,'Sudden':sudden_stop_count,'Empty':empty_battery_count,'other':other_count,'Double':Double,'Single':Single}
