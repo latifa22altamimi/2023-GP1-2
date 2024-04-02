@@ -31,6 +31,8 @@ urlpatterns = [
     path('ajax/get_Vehicles_Info/', views.get_Vehicles_Info, name='get_Vehicles_Info'),
     path('ForgetPass.html/', views.ForgetPass, name='ForgetPass'),
     path('deleteVM/<int:id>/', views.deleteVM, name="deleteVM"),
+    path('delete_support/', views.delete_Support, name='delete_Support'),
+    
 
 ]
 

@@ -14,8 +14,7 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-import re
-
+import random
 
 
 
@@ -213,14 +212,37 @@ def get_Vehicles_Info(request):
      num_of_Dbackup_vehicles  = num_of_Dbackup_vehicles .TotalNumberofVehicles
      num_of_backup_vehicles = (num_of_Sbackup_vehicles+num_of_Dbackup_vehicles)-support_count
 
-     
-     markers = Support.objects.filter(ReservationId__in=reservation_ids_today)
-  
-     latitude_values = [marker.Latitude for marker in markers]
-     longitude_values = [marker.Longitude for marker in markers]
-     message=[marker.Message for marker in markers]
+     AllSupport = Support.objects.filter(ReservationId__in=reservation_ids_today, AssignedTo__isnull=True).values()
+     AllSupportWithUser = []
 
-     data = {'Active': active_reservations,'support_count':support_count,'num_of_backup_vehicles':num_of_backup_vehicles,'latitude_values':latitude_values,'longitude_values':longitude_values,'message':message,'Sudden':sudden_stop_count,'Empty':empty_battery_count,'other':other_count,'Double':Double,'Single':Single}
+     vehicle_managers = User.objects.filter(Type='Vehicle manager')
+     assigned_user_ids = Support.objects.filter(AssignedTo__isnull=False).values_list('AssignedTo', flat=True)
+
+
+     for support in AllSupport:
+            available_managers = vehicle_managers.exclude(userID__in=assigned_user_ids)
+            reservation = Reservation.objects.get(reservationId=support['ReservationId'])
+            user = User.objects.get(pk=reservation.userId)
+            support['visitor_name'] = user.FullName
+            if available_managers.exists():
+                AssignedVM = random.choice(available_managers)
+                support['Assigned_to'] = AssignedVM.FullName
+                AllSupportWithUser.append(support)
+                support_obj = Support.objects.get(supportID=support['supportID'])
+                support_obj.AssignedTo = AssignedVM.userID
+                support_obj.save()
+                assigned_user_ids = Support.objects.filter(AssignedTo__isnull=False).values_list('AssignedTo', flat=True)
+            else:
+                support['Assigned_to'] = None
+                AllSupportWithUser.append(support)
+
+     latitude_values = [marker['Latitude'] for marker in AllSupportWithUser]
+     longitude_values = [marker['Longitude'] for marker in AllSupportWithUser]
+
+     message = ', '.join(str(marker['supportID']) for marker in AllSupportWithUser)
+
+
+     data = {'AllSupport':list(AllSupportWithUser),'Active': active_reservations,'support_count':support_count,'num_of_backup_vehicles':num_of_backup_vehicles,'latitude_values':latitude_values,'longitude_values':longitude_values,'message':message,'Sudden':sudden_stop_count,'Empty':empty_battery_count,'other':other_count,'Double':Double,'Single':Single}
      return JsonResponse(data)
 
 
@@ -231,3 +253,14 @@ def deleteVM(request,id):
         Vm=User.objects.get(pk=id)
         Vm.delete()
     return HttpResponseRedirect((reverse('AssignVM')))
+
+def delete_Support(request):
+    if request.method == 'POST':
+        support_id = request.POST.get('supportId')
+        try:
+            Support.objects.filter(supportID=support_id).delete()
+            return JsonResponse({'success': True})
+        except Support.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Support not found'})
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request'})

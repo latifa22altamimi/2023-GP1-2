@@ -13,27 +13,6 @@ class Parameters(models.Model):
         app_label = 'RehaabWeb'  
   
 
-class Support(models.Model):
-    supportID= models.IntegerField(primary_key=True)
-    ReservationId = models.IntegerField()
-    Latitude = models.CharField(max_length=200)
-    Longitude = models.CharField(max_length=200)
-    Message = models.CharField(max_length=200)
-
-    class Meta:
-        db_table = 'support'
-        app_label = 'RehaabWeb'  
-
-
-class Timeslot(models.Model):
-    slotId = models.AutoField(primary_key=True)
-    time = models.CharField(max_length=20)
-    numberOfSingleV = models.IntegerField()
-    numberOfDoubleV = models.IntegerField()
-    slotStatus = models.CharField(max_length=15)
-    class Meta:
-        db_table = 'timeslots'
-        app_label = 'RehaabWeb' 
         
 class Marker(models.Model):
      MarkerId = models.AutoField(primary_key=True)
@@ -76,15 +55,6 @@ class Reservation(models.Model):
         app_label = 'RehaabWeb'    
     
 
-class Waitinglist(models.Model):
-    Id = models.AutoField(primary_key=True)
-    Name=models.CharField(max_length=200)
-    PhoneNumber=models.CharField(max_length=20)
-    userId=models.IntegerField(max_length=20)
-    
-    class Meta:
-        db_table = 'waitinglist'
-        app_label = 'RehaabWeb' 
 
 
 class ManagerReservation(models.Model):
@@ -104,4 +74,16 @@ class Vehicle(models.Model):
 
     class Meta:
         db_table = 'vehicle'
+        app_label = 'RehaabWeb'  
+
+class Support(models.Model):
+    supportID= models.IntegerField(primary_key=True)
+    ReservationId = models.IntegerField()
+    Latitude = models.CharField(max_length=200)
+    Longitude = models.CharField(max_length=200)
+    Message = models.CharField(max_length=200)
+    AssignedTo = models.IntegerField(max_length=11)
+
+    class Meta:
+        db_table = 'support'
         app_label = 'RehaabWeb'  
