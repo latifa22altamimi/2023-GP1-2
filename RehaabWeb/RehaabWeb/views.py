@@ -1,5 +1,5 @@
 
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from AdminWeb.models import Parameters
 from datetime import date
 from AdminWeb.models import Support
@@ -9,7 +9,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from AdminWeb.models import Marker
-from django.http import JsonResponse
+from django.http import JsonResponse, QueryDict
 from django.core.mail import send_mail
 from django.contrib import messages
 from django.http import HttpResponseRedirect
@@ -150,32 +150,79 @@ def UpdateParameters(request):
 
 
 
-def AssignVM(request):
-    is_authenticated = request.session.get('is_authenticated', False)
-
-    if is_authenticated:
-        if request.method == 'POST':
-            full_name = request.POST.get('fullName')
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-            task = request.POST.get('task')
-            if User.objects.filter(Email=email, Type="Vehicle manager").exists():
-                messages.error(request, 'Email already exists for a vehicle manager.')
-            else:
+def AssignVM(request): 
+    is_authenticated = request.session.get('is_authenticated', False) 
+ 
+    if is_authenticated: 
+     
+   
+        if request.method == 'POST': 
+            if request.POST.get('update'): 
+ 
+ 
+                full_name = request.POST.get('fullName') 
+                email = request.POST.get('email') 
+                password = request.POST.get('password') 
+                task = request.POST.get('task') 
+               
+ 
+                 
+                usr_obj=User.objects.filter(userID=int(request.POST.get("pk"))).last() 
+                usr_obj.FullName=full_name 
+                usr_obj.Email=email 
+                usr_obj.Password=make_password(password) 
+                usr_obj.Type=task 
+                usr_obj.VerificationStatus="1" 
+               
+                usr_obj.save() 
+                msg="Edited Successfully" 
+                return JsonResponse({'status':'1','msg':msg}) 
+ 
+            full_name = request.POST.get('fullName') 
+            email = request.POST.get('email') 
+            password = request.POST.get('password') 
+            task = request.POST.get('task') 
+            if User.objects.filter(Email=email, Type="Vehicle manager").exists(): 
+                msg="Email already exists for a vehicle manager." 
+                return JsonResponse({'status':'2','msg':msg}) 
                 
-            
-                    hashed_password = make_password(password)
-                    New_VM = User(FullName=full_name, Email=email, Password=hashed_password, Type=task, VerificationStatus="1")
-                    New_VM.save()
-                    messages.success(request, 'Vehicle manager has been added successfully!')
-            
-
-        employees = User.objects.filter(Type="Vehicle manager")
-        return render(request, 'AssignVM.html', {'employees': employees})
-    else:
-                messages.error(request, 'You are not authorized to access this page, Sorry!')
+            else: 
+                    hashed_password = make_password(password) 
+                    New_VM = User(FullName=full_name, Email=email, Password=hashed_password, Type=task, VerificationStatus="1") 
+                    New_VM.save() 
+                    msg="Vehicle manager has been added successfully!" 
+                    return JsonResponse({'status':'1','msg':msg})
+ 
+        elif request.method == 'DELETE': 
+            id = int(QueryDict(request.body).get('id')) 
+            obj = get_object_or_404(User,pk = id) 
+            obj.delete() 
+            msg="Vehicle manager has been deleted successfully!" 
+            return JsonResponse({'status':'success','msg':msg}) 
+ 
+ 
+        elif request.GET.get("id") and request.GET.get("edite") :  
+                from django.core import serializers 
+                try: 
+                    data = User.objects.filter(userID=int(request.GET.get("id"))) 
+                     
+                    print(serializers.serialize("json", data)) 
+                    return JsonResponse( 
+                        { 
+                            "status": 1,  
+                            "data": serializers.serialize("json", data), 
+                        } 
+                    ) 
+                except Exception as e: 
+                 
+                    return JsonResponse({"status": 0, "message":"Error in fetching the data"}) 
+ 
+ 
+        employees = User.objects.filter(Type="Vehicle manager") 
+        return render(request, 'AssignVM.html', {'employees': employees}) 
+    else: 
+                messages.error(request, 'You are not authorized to access this page, Sorry!') 
                 return redirect('sign-in')
-
 
 def create_user(request):
     if request.method == 'POST':
@@ -248,12 +295,6 @@ def get_Vehicles_Info(request):
 
 
 
-
-def deleteVM(request,id):
-    if request.method == 'POST':
-        Vm=User.objects.get(pk=id)
-        Vm.delete()
-    return HttpResponseRedirect((reverse('AssignVM')))
 
 def delete_Support(request):
     if request.method == 'POST':
