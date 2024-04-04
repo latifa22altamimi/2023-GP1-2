@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2024 at 11:04 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Apr 04, 2024 at 07:10 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -226,7 +226,8 @@ CREATE TABLE `django_session` (
 --
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
-('llrt98xtqtkuvieu9idnqlblnttlvswt', 'eyJpc19hdXRoZW50aWNhdGVkIjp0cnVlfQ:1rlbkH:fVJesjRKi05qXuCt8eeOd3CnClr4IIgXVihPQFOWRCQ', '2024-03-30 21:39:13.741126');
+('llrt98xtqtkuvieu9idnqlblnttlvswt', 'eyJpc19hdXRoZW50aWNhdGVkIjp0cnVlfQ:1rlbkH:fVJesjRKi05qXuCt8eeOd3CnClr4IIgXVihPQFOWRCQ', '2024-03-30 21:39:13.741126'),
+('pah6rb6dfy58587sgm8fj3154iaigrrs', 'eyJpc19hdXRoZW50aWNhdGVkIjp0cnVlfQ:1rsFL0:cMo64i6fT5Z3si2DmDxCha4cqEn9sqe3__fYCWEzBSw', '2024-04-18 05:08:34.018682');
 
 -- --------------------------------------------------------
 
@@ -317,7 +318,8 @@ CREATE TABLE `support` (
   `ReservationId` int(11) NOT NULL,
   `Latitude` varchar(200) NOT NULL,
   `Longitude` varchar(200) NOT NULL,
-  `Message` varchar(200) NOT NULL
+  `Message` varchar(200) NOT NULL,
+  `AssignedTo` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -398,8 +400,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `FullName`, `Email`, `Password`, `Type`, `VerificationStatus`) VALUES
-(44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$7xFLClUeua9sUgzuXqFy.OntRYLpxloW5yc9bX7/e9smMFIMmKD9y', 'Vehicle manager', 1),
-(54, '', 'ned-6@hotmail.com', 'pbkdf2_sha256$720000$XOJbUfYIbBpolUr7XFT75M$PLX5t5QKOiej/0o/BnB6V+oyrWQispv5/4FwmF3yZFY=', 'Admin', 1);
+(44, 'Fatimah alnaser', 'alnaserfatimah344@gmail.com', 'pbkdf2_sha256$720000$E43VsP0OWdI2YBQ8OSgSjl$LYgm34SZJfMCJdfubaH+qSudz2JUp3GP3lK+VwHI/p8=', 'Vehicle manager', 1),
+(55, 'Latifah', 'Latifah.maltamimi@gmail.com', 'pbkdf2_sha256$720000$3HyT1712lK6jxumHMvx6fr$egeOUW2tJygVWlm0zJUCrANckU0IkfUVNVH1fQbRino=', 'Admin', 1),
+(72, 'Fatimah', 'alnaserfatimah4@gmail.com', 'pbkdf2_sha256$720000$HbhuKxbqDhkOHFoIMuT5NW$BC45gImO8q4cZvznP8Lc4IaU8WVoRSEQRW3NErQNdwQ=', 'Vehicle manager', 1);
 
 -- --------------------------------------------------------
 
@@ -529,7 +532,8 @@ ALTER TABLE `reservation`
 --
 ALTER TABLE `support`
   ADD PRIMARY KEY (`supportID`),
-  ADD KEY `support_ibfk_1` (`ReservationId`);
+  ADD KEY `support_ibfk_1` (`ReservationId`),
+  ADD KEY `AssignedTo_id` (`AssignedTo`);
 
 --
 -- Indexes for table `tawaf`
@@ -660,7 +664,7 @@ ALTER TABLE `timeslots`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- AUTO_INCREMENT for table `vehicle`
@@ -723,7 +727,8 @@ ALTER TABLE `reservation`
 -- Constraints for table `support`
 --
 ALTER TABLE `support`
-  ADD CONSTRAINT `support_ibfk_1` FOREIGN KEY (`ReservationId`) REFERENCES `reservation` (`reservationId`);
+  ADD CONSTRAINT `support_ibfk_1` FOREIGN KEY (`ReservationId`) REFERENCES `reservation` (`reservationId`),
+  ADD CONSTRAINT `support_ibfk_2` FOREIGN KEY (`AssignedTo`) REFERENCES `users` (`userID`);
 
 --
 -- Constraints for table `tawaf`
