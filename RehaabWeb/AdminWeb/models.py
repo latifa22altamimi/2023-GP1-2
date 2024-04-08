@@ -62,7 +62,7 @@ class ManagerReservation(models.Model):
     visitorName=models.CharField(max_length=200)
     VphoneNumber=models.CharField(max_length=20)
     ExpectedFinishTime=models.CharField(max_length=20)	
-    ReservedForWaiting=models.IntegerField(max_length=1)
+    ReservedForWaiting=models.IntegerField(max_length=20)
     class Meta:
         db_table = 'managerreservation'
         app_label = 'RehaabWeb' 

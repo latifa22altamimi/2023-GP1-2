@@ -12,8 +12,6 @@ from AdminWeb.models import Marker
 from django.http import JsonResponse, QueryDict
 from django.core.mail import send_mail
 from django.contrib import messages
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 import random
 
 
@@ -173,7 +171,7 @@ def AssignVM(request):
                 usr_obj.VerificationStatus="1" 
                
                 usr_obj.save() 
-                msg="Edited Successfully" 
+                msg="Vehicle manager information has been updated successfully!" 
                 return JsonResponse({'status':'1','msg':msg}) 
  
             full_name = request.POST.get('fullName') 
@@ -186,6 +184,7 @@ def AssignVM(request):
                 
             else: 
                     hashed_password = make_password(password) 
+                    hashed_password = hashed_password[7:]
                     New_VM = User(FullName=full_name, Email=email, Password=hashed_password, Type=task, VerificationStatus="1") 
                     New_VM.save() 
                     msg="Vehicle manager has been added successfully!" 
