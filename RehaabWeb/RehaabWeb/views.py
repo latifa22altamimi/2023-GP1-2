@@ -162,7 +162,6 @@ def AssignVM(request):
  
                 full_name = request.POST.get('fullName') 
                 email = request.POST.get('email') 
-                password = request.POST.get('password') 
                 task = request.POST.get('task') 
                
  
@@ -170,7 +169,6 @@ def AssignVM(request):
                 usr_obj=User.objects.filter(userID=int(request.POST.get("pk"))).last() 
                 usr_obj.FullName=full_name 
                 usr_obj.Email=email 
-                usr_obj.Password=make_password(password) 
                 usr_obj.Type=task 
                 usr_obj.VerificationStatus="1" 
                
