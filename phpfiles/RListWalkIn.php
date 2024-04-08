@@ -1,6 +1,6 @@
 <?php
 include 'connect.php';
-$userId = 44;//$_POST['Userid'];
+$userId = $_POST['Userid'];
 $sql = "SELECT *
 FROM reservation
 INNER JOIN managerreservation ON reservation.reservationId = managerreservation.reservationId

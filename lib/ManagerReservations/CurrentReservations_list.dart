@@ -99,8 +99,19 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     }
   }
 
+  Future AutoCancel() async {
+    var url = "http://10.0.2.2/phpfiles/AutoCancel.php";
+    final res = await http.post(Uri.parse(url), body: {});
+
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
+      print(red);
+    }
+  }
+
   Future refresh() async {
     //convertToCompleted();
+    AutoCancel();
     historyList.clear();
     list.clear();
     print(GlobalValues.id);
@@ -146,6 +157,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     //convertToCompleted(); //convert status to completed
     super.initState();
     checkAvailableType();
+    AutoCancel();
     curpressed = true;
     GetData();
     curColor = Colors.black.withOpacity(0.5);
@@ -414,8 +426,8 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                               );
                             } else if ((historyList[index]["Status"] ==
                                     "Active") &&
-                                (historyList[index]["ReservedForWaiting"] ==
-                                    "1")) {
+                                (historyList[index]["ReservedForWaiting"] !=
+                                    "0")) {
                               return ReserveCard(
                                 Rid: historyList[index]["reservationId"],
                                 datee: historyList[index]["date"],
@@ -1231,7 +1243,7 @@ class _ReserveCardState extends State<ReserveCard> {
           width: 390,
           height: 153,
           margin:
-              const EdgeInsets.only(left: 12, right: 12, bottom: 12, top: 44),
+              const EdgeInsets.only(left: 12, right: 12, bottom: 12, top: 30),
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
             color: Color.fromARGB(255, 255, 255, 255),
@@ -1246,7 +1258,7 @@ class _ReserveCardState extends State<ReserveCard> {
           ),
         ),
         //add to waiting list button
-
+/*
         Container(
           margin: EdgeInsets.only(
             left: 27.0,
@@ -1273,6 +1285,7 @@ class _ReserveCardState extends State<ReserveCard> {
             ),
           ),
         ),
+        */
       ],
     );
   }
@@ -1358,14 +1371,14 @@ class _WaitingCardState extends State<WaitingCard> {
             child: Row(
               children: [
                 Text(
-                  'WaitingId#${widget.Id}', // reservation id
+                  'Waiting#${widget.Id}', // reservation id
                   style: TextStyle(
                       color: Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
-                  width: 140.0,
+                  width: 150.0,
                 ),
                 Text(
                   'Waiting',

@@ -715,75 +715,12 @@ class _BodyHomeState extends State<BodyHome> {
                 InkWell(
                   onTap: () {
                     print(unavailableVehicles);
-                    if (unavailableVehicles) {
-                      showDialog(
-                        context: context,
-                        builder: (context) => Dialog(
-                          backgroundColor: Color.fromARGB(255, 247, 247, 247),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Container(
-                            padding: const EdgeInsets.only(
-                                right: 5.0, left: 5.0, top: 10.0, bottom: 30.0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Lottie.asset('assets/images/warn.json',
-                                    width: 100, height: 100),
-                                Text(
-                                  'No available vehicles',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
-                                  textAlign: TextAlign.center,
-                                ),
-                                SizedBox(
-                                  height: 10.0,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    //add to waiting list button
-                                    ConstrainedBox(
-                                      constraints: BoxConstraints.tightFor(
-                                          height: 38, width: 100),
-                                      child: ElevatedButton(
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(),
-                                        child: Text(
-                                          'Cancel',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Color.fromARGB(
-                                              255, 255, 255, 255),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(50),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    } else {
+                   
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) => Reserve_WalkInVehicle()));
-                    }
+                    
                   },
                   //() => Navigator.push(context,
                   //  MaterialPageRoute(builder: (context) => Reserve_WalkInVehicle())),

@@ -9,6 +9,10 @@ $DrivingType = $_POST['DrivingType'];
 $DriverGender = $_POST['DriverGender'];
 $visitorName = $_POST['visitorName'];
 $Vnumber = $_POST['Vnumber'];
+$rId=$_POST['rId'];
+$Status=$_POST['Status'];
+
+
 
 // Fetch ReservationDur from parameters
 $sql= "SELECT TDuration FROM tawaf";
@@ -98,6 +102,7 @@ foreach ($reservationsInSameDay as $reservation) {
 }
 
 $response = array();
+if($Status=="Active"){
 if (($VehicleType == "Single" && $numSingle > 0) || ($VehicleType == "Double" && $numDouble > 0)) {
     // Insert into reservation table
     $sqlInsertReservation = "INSERT INTO reservation(date, time, VehicleId, drivingType, driverGender, Status, userId) 
@@ -125,6 +130,38 @@ if (($VehicleType == "Single" && $numSingle > 0) || ($VehicleType == "Double" &&
         // Handle error inserting into reservation table
         $response['error'] = "Error inserting into reservation table: " . mysqli_error($conn);
     }
-} else {
-    // Handle case when no available vehicles
+} else{
+     // Handle case when no available vehicles
+}
+}else if($Status=="Waiting"){
+    // Insert into reservation table 
+    $sqlInsertReservation = "INSERT INTO reservation(date, time, VehicleId, drivingType, driverGender, Status, userId) 
+                             VALUES ('$date', '$startTime', '$vehicleId', '$DrivingType', '$DriverGender', 'Waiting', '$id')";
+    $resultInsertReservation = mysqli_query($conn, $sqlInsertReservation);
+    if ($resultInsertReservation) {
+        // Retrieve the last inserted reservation ID
+        $reservationId = mysqli_insert_id($conn);
+
+        // Insert into managerreservation table
+        $sqlInsertManagerReservation = "INSERT INTO managerreservation(reservationId, visitorName, VphoneNumber, ExpectedFinishTime) 
+                                        VALUES ('$reservationId', '$visitorName', '$Vnumber', '$ExpectFinishTime')";
+        $resultInsertManagerReservation = mysqli_query($conn, $sqlInsertManagerReservation);
+        if ($resultInsertManagerReservation) {
+            //sucess
+            $query = "
+            UPDATE managerreservation
+            SET ReservedForWaiting = '$reservationId'
+            WHERE reservationId = '$rId'
+          ";
+          
+          $result = mysqli_query($conn, $query);
+                echo json_encode("changed reservedforwaiting to 1");
+        } else {
+            // Handle error inserting into managerreservation table
+            $response['error'] = "Error inserting into managerreservation table: " . mysqli_error($conn);
+        }
+    } else {
+        // Handle error inserting into reservation table
+        $response['error'] = "Error inserting into reservation table: " . mysqli_error($conn);
+    }
 }
