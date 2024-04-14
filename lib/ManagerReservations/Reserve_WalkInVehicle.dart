@@ -1279,7 +1279,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                         ),
                                       ),
                                     );
-                                  }
+                                  
                                 } else {
                                   //Error msg
                                   String errorMsg = "";
