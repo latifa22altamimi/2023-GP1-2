@@ -49,10 +49,8 @@ class _CheckInState extends State<CheckIn> {
       var url = "http://10.0.2.2/phpfiles/startTawaf.php";
       final res = await http.post(Uri.parse(url), body: {"Rid": decrypted});
 
-      // Parse response
       var respo = json.decode(res.body);
 
-      // Check response for success or failure
       if (respo == "Tawaf started successfully") {
         setState(() {
           isVisibleSuccess = true;
@@ -70,7 +68,6 @@ class _CheckInState extends State<CheckIn> {
         });
       }
     } catch (e) {
-      // Handle any errors that occur during the process
       print("Error starting Tawaf: $e");
     } finally {
       // Stop the indicator regardless of the result received

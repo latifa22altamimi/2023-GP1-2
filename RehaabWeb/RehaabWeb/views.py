@@ -49,7 +49,7 @@ def signin(request):
             else:
                 messages.error(request, 'Invalid email or password!')
         except User.DoesNotExist:
-            messages.error(request, 'Invalid email or password!')
+            messages.error(request, 'Email does not exist!')
         return redirect('sign-in')
     else:
         return render(request, 'sign-in.html')
