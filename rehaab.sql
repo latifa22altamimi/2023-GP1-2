@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 04, 2024 at 07:10 AM
+-- Generation Time: Apr 20, 2024 at 12:16 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -227,7 +227,7 @@ CREATE TABLE `django_session` (
 
 INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
 ('llrt98xtqtkuvieu9idnqlblnttlvswt', 'eyJpc19hdXRoZW50aWNhdGVkIjp0cnVlfQ:1rlbkH:fVJesjRKi05qXuCt8eeOd3CnClr4IIgXVihPQFOWRCQ', '2024-03-30 21:39:13.741126'),
-('pah6rb6dfy58587sgm8fj3154iaigrrs', 'eyJpc19hdXRoZW50aWNhdGVkIjp0cnVlfQ:1rsFL0:cMo64i6fT5Z3si2DmDxCha4cqEn9sqe3__fYCWEzBSw', '2024-04-18 05:08:34.018682');
+('pah6rb6dfy58587sgm8fj3154iaigrrs', 'eyJpc19hdXRoZW50aWNhdGVkIjp0cnVlfQ:1ry7mC:p4HZRI3jWnqAbg6kls6jBg-JyrnY2-oKK_NEhsUiNdI', '2024-05-04 10:16:56.166469');
 
 -- --------------------------------------------------------
 
@@ -240,7 +240,7 @@ CREATE TABLE `managerreservation` (
   `visitorName` varchar(200) NOT NULL,
   `VphoneNumber` varchar(10) NOT NULL,
   `ExpectedFinishTime` varchar(10) DEFAULT NULL,
-  `ReservedForWaiting` tinyint(1) NOT NULL DEFAULT 0
+  `ReservedForWaiting` int(20) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -307,6 +307,13 @@ CREATE TABLE `reservation` (
   `timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `reservation`
+--
+
+INSERT INTO `reservation` (`reservationId`, `date`, `time`, `VehicleId`, `drivingType`, `driverGender`, `Status`, `userId`, `timestamp`) VALUES
+(1, '2024-04-20', '11:30 PM', 1, 'Self-driving', NULL, 'Active', 83, '2024-04-20 07:09:27');
+
 -- --------------------------------------------------------
 
 --
@@ -319,8 +326,17 @@ CREATE TABLE `support` (
   `Latitude` varchar(200) NOT NULL,
   `Longitude` varchar(200) NOT NULL,
   `Message` varchar(200) NOT NULL,
-  `AssignedTo` int(11) DEFAULT NULL
+  `AssignedTo` int(11) DEFAULT NULL,
+  `Solved` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `support`
+--
+
+INSERT INTO `support` (`supportID`, `ReservationId`, `Latitude`, `Longitude`, `Message`, `AssignedTo`, `Solved`) VALUES
+(1, 1, '21.4225', '39.8262', 'Sudden stop', 44, 1),
+(2, 1, '21.4222', '39.8262', 'Sudden stop', 44, 1);
 
 -- --------------------------------------------------------
 
@@ -400,9 +416,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`userID`, `FullName`, `Email`, `Password`, `Type`, `VerificationStatus`) VALUES
-(44, 'Fatimah alnaser', 'alnaserfatimah344@gmail.com', 'pbkdf2_sha256$720000$E43VsP0OWdI2YBQ8OSgSjl$LYgm34SZJfMCJdfubaH+qSudz2JUp3GP3lK+VwHI/p8=', 'Vehicle manager', 1),
-(55, 'Latifah', 'Latifah.maltamimi@gmail.com', 'pbkdf2_sha256$720000$3HyT1712lK6jxumHMvx6fr$egeOUW2tJygVWlm0zJUCrANckU0IkfUVNVH1fQbRino=', 'Admin', 1),
-(72, 'Fatimah', 'alnaserfatimah4@gmail.com', 'pbkdf2_sha256$720000$HbhuKxbqDhkOHFoIMuT5NW$BC45gImO8q4cZvznP8Lc4IaU8WVoRSEQRW3NErQNdwQ=', 'Vehicle manager', 1);
+(44, 'Fatimah', 'alnaserfatimah344@gmail.com', '$2y$10$VdM/9UjYqDj3iqHzD.p5zux9GmTqbxHhTmNZMZGCQ3fHGsp9JXe4m', 'Vehicle manager', 1),
+(76, 'Latifah', 'Latifah.maltamimi@gmail.com', 'bcrypt$$2b$12$Bj5lbmi4x/49i0xgs6EseeAUs2y56ZkGUGSTZ2PSV6cT4TZIPkr8i', 'Admin', 1),
+(83, 'Shahad', 'shahadalothman@gmail.com', '$2y$10$w2yA/kINKrKhIM8oz7efLe63zH/kssonFU1.ozY0Pxbdx1e//ai6e', 'Al-Haram visitor', 1);
 
 -- --------------------------------------------------------
 
@@ -640,13 +656,13 @@ ALTER TABLE `parameters`
 -- AUTO_INCREMENT for table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `reservationId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT for table `support`
 --
 ALTER TABLE `support`
-  MODIFY `supportID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `supportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `tawaf`
@@ -664,7 +680,7 @@ ALTER TABLE `timeslots`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `userID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `vehicle`

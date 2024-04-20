@@ -171,7 +171,7 @@ def AssignVM(request):
                 usr_obj.VerificationStatus="1" 
                
                 usr_obj.save() 
-                msg="Vehicle manager information has been updated successfully!" 
+                msg="Vehicle manager's information has been updated successfully!" 
                 return JsonResponse({'status':'1','msg':msg}) 
  
             full_name = request.POST.get('fullName') 
@@ -246,21 +246,22 @@ def get_Vehicles_Info(request):
      Single = Reservation.objects.filter(date=today, Status='Active',VehicleId=2).count()
 
      reservation_ids_today = Reservation.objects.filter(date=today).values_list('reservationId', flat=True)
-     support_count = Support.objects.filter(ReservationId__in=reservation_ids_today).count()
-     sudden_stop_count = Support.objects.filter(Message='Sudden stop', ReservationId__in=reservation_ids_today).count()
-     empty_battery_count = Support.objects.filter(Message='Empty battery', ReservationId__in=reservation_ids_today).count()
-     other_count = Support.objects.exclude(Message__in=['Sudden stop', 'Empty battery'], ReservationId__in=reservation_ids_today).count()
+     support_count = Support.objects.filter(ReservationId__in=reservation_ids_today,Solved=0).count()
+     sudden_stop_count = Support.objects.filter(Message='Sudden stop', ReservationId__in=reservation_ids_today,Solved=0).count()
+     empty_battery_count = Support.objects.filter(Message='Empty battery', ReservationId__in=reservation_ids_today,Solved=0).count()
+     other_count = Support.objects.exclude(Message__in=['Sudden stop', 'Empty battery']).filter(ReservationId__in=reservation_ids_today, Solved=0).count()
      num_of_Sbackup_vehicles =Parameters.objects.filter(VehicleType='Single', VehicleDedicatedTo='backup').first()
      num_of_Sbackup_vehicles  = num_of_Sbackup_vehicles .TotalNumberofVehicles
      num_of_Dbackup_vehicles =Parameters.objects.filter(VehicleType='Double', VehicleDedicatedTo='backup').first()
      num_of_Dbackup_vehicles  = num_of_Dbackup_vehicles .TotalNumberofVehicles
-     num_of_backup_vehicles = (num_of_Sbackup_vehicles+num_of_Dbackup_vehicles)-support_count
+     us_support_count = Support.objects.filter(ReservationId__in=reservation_ids_today,Solved=1).count()
+     num_of_backup_vehicles = (num_of_Sbackup_vehicles+num_of_Dbackup_vehicles)-us_support_count
 
-     AllSupport = Support.objects.filter(ReservationId__in=reservation_ids_today).values()
+     AllSupport = Support.objects.filter(ReservationId__in=reservation_ids_today,Solved=0).values()
      AllSupportWithUser = []
 
      vehicle_managers = User.objects.filter(Type='Vehicle manager')
-     assigned_user_ids = Support.objects.filter(AssignedTo__isnull=False).values_list('AssignedTo', flat=True)
+     assigned_user_ids = Support.objects.filter(AssignedTo__isnull=False,Solved=0).values_list('AssignedTo', flat=True)
 
      for support in AllSupport:
             reservation = Reservation.objects.get(reservationId=support['ReservationId'])
@@ -293,11 +294,11 @@ def get_Vehicles_Info(request):
 
 
 
-def delete_Support(request):
+def Update_Support(request):
     if request.method == 'POST':
         support_id = request.POST.get('supportId')
         try:
-            Support.objects.filter(supportID=support_id).delete()
+            Support.objects.filter(supportID=support_id).update(Solved=1)
             return JsonResponse({'success': True})
         except Support.DoesNotExist:
             return JsonResponse({'success': False, 'error': 'Support not found'})

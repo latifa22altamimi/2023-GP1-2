@@ -153,7 +153,7 @@ function updateAvailableData() {
 
             $.each(data.AllSupport, function (index, support) {
                 var assignedToContent = support.Assigned_to ? support.Assigned_to : '<span class="text-[13px] font-medium text-gray-400">Not assigned</span>';
-                var solveButtonContent = support.Assigned_to ? '<button class="solveButton" data-support-id="' + support.supportID + '">Notify</button>' : '<span class="inline-block p-1 rounded bg-rose-500/10 text-rose-500 font-medium text-[12px] leading-none">Waiting</span>';
+                var solveButtonContent = support.Assigned_to ? '<button class="solveButton" data-support-id="' + support.supportID + '">Solve</button>' : '<span class="inline-block p-1 rounded bg-rose-500/10 text-rose-500 font-medium text-[12px] leading-none">Waiting</span>';
 
                 var row = '<tr id="supportRow_' + support.supportID + '">' +
                     '<td class="py-2 px-4 border-b border-b-gray-50">' +
@@ -236,7 +236,7 @@ function updateAvailableData() {
     var rowId = '#supportRow_' + supportId;
 
     $.ajax({
-        url: '{% url "delete_Support" %}',
+        url: '{% url "Update_Support" %}',
         type: 'POST',
         data: {
             supportId: supportId,
