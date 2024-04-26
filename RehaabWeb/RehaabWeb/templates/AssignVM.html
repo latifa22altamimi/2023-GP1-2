@@ -526,11 +526,11 @@
 								<label>Email</label>
 								<input type="email" class="form-control" name="email" id="id_Email" required>
 							</div>
-							<div class="form-group" id="idPpasseordDiv">
+							<!-- <div class="form-group" id="idPpasseordDiv">
 								<label>Password</label>
 								<input type="password" class="form-control" name="password" id="id_Password"  required>
 								<small id="passwordHelp" class="form-text text-muted"></small>
-							</div>
+							</div> -->
 							<div class="form-group">
 								<label>Task</label>
 								<input type="text" class="form-control" name="task" id="id_Type" required>
@@ -630,7 +630,7 @@
     </script>
 	
 
-	\
+	
 		<script>
 			
 	
@@ -718,8 +718,8 @@
 			  if ($('#msg').length>0){
 				$('#msg').remove();
 			  }
-			}, 3000)
-			function alert_message(msg="",icon="success",timer=600){
+			}, 4000)
+			function alert_message(msg="",icon="success",timer=6000){
 				Swal.fire({
 					position:'center',
 					showConfirmButton:false,
