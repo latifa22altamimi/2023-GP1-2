@@ -13,6 +13,15 @@
   --tw-text-opacity: 1;
   color: rgb(207 207 49 / var(--tw-text-opacity));
 }
+
+.bg-green-500\/10{
+ background-color: rgba(16, 185, 129, 0.1);
+}
+
+.text-green-500{
+  --tw-text-opacity: 1;
+  color: rgba(16, 185, 129, var(--tw-text-opacity));
+}
 .solveButton {
   display: inline-block;
   padding-left: 7px;
@@ -117,7 +126,7 @@
                                   let iconUr = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png';
                         let mapOptions = {
                             iconUrl: iconUr,
-                            center: [21.4225,39.8262],
+                            center: [37.4219983,-122.084],
                             zoom: 17
                         };
                         let customIcon = L.icon({
@@ -153,7 +162,8 @@ function updateAvailableData() {
 
             $.each(data.AllSupport, function (index, support) {
                 var assignedToContent = support.Assigned_to ? support.Assigned_to : '<span class="text-[13px] font-medium text-gray-400">Not assigned</span>';
-                var solveButtonContent = support.Assigned_to ? '<button class="solveButton" data-support-id="' + support.supportID + '">Solve</button>' : '<span class="inline-block p-1 rounded bg-rose-500/10 text-rose-500 font-medium text-[12px] leading-none">Waiting</span>';
+                var solveButtonContent = support.Assigned_to ? '<span class="inline-block p-1 rounded bg-yellow-500/10 text-yellow-500 font-medium text-[12px] leading-none">InProgress</span>' : '<span class="inline-block p-1 rounded bg-rose-500/10 text-rose-500 font-medium text-[12px] leading-none">Waiting</span>';
+var Solved = support.Solved === 1 ? '<span class="inline-block p-1 rounded bg-green-500/10 text-green-500 font-medium text-[12px] leading-none">Solved</span>' : solveButtonContent;
 
                 var row = '<tr id="supportRow_' + support.supportID + '">' +
                     '<td class="py-2 px-4 border-b border-b-gray-50">' +
@@ -171,7 +181,7 @@ function updateAvailableData() {
                     '<span class="text-[13px] font-medium text-gray-400">' + assignedToContent + ' </span>' +
                     '</td>' +
                     '<td class="py-2 px-4 border-b border-b-gray-50">' +
-                    solveButtonContent +
+                    Solved +
                     '</td>' +
                     '</tr>';
 
@@ -207,7 +217,7 @@ function updateAvailableData() {
                                  let marker = L.marker([latitude, longitude],{ icon: customIcon }).addTo(map);
 
                                   let infoWindowContent = infoWindowContents[i];
-
+                                
                             marker.bindPopup(infoWindowContent);
                         }
                                         
@@ -230,28 +240,7 @@ function updateAvailableData() {
         };
     }
                     </script>
-                    <script>
-                         $(document).on('click', '.solveButton', function () {
-    var supportId = $(this).data('support-id');
-    var rowId = '#supportRow_' + supportId;
-
-    $.ajax({
-        url: '{% url "Update_Support" %}',
-        type: 'POST',
-        data: {
-            supportId: supportId,
-            csrfmiddlewaretoken: '{{ csrf_token }}'
-        },
-        success: function () {
-            $(rowId).remove();
-        },
-        error: function (xhr, status, error) {
-            console.log(error);
-        }
-    });
-});
-
-                    </script>
+                   
 
                 </div>
 

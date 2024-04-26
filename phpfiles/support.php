@@ -6,7 +6,7 @@ $LAT = $_POST['la'];
 $lONG = $_POST['lo'];
 $mess = $_POST['message'];
 
-$stmt = $conn->prepare("INSERT INTO support (ReservationId, Latitude, Longitude, Message) VALUES (?, ?, ?, ?)");
+$stmt = $conn->prepare("INSERT INTO Support (ReservationId, Latitude, Longitude, Message) VALUES (?, ?, ?, ?)");
 $stmt->bind_param("ssss", $Rid, $LAT, $lONG, $mess);
 $stmt->execute();
 

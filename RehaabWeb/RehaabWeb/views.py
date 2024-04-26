@@ -13,7 +13,14 @@ from django.http import JsonResponse, QueryDict
 from django.core.mail import send_mail
 from django.contrib import messages
 import random
-
+from django.shortcuts import render, redirect
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
+from django.contrib.auth.forms import SetPasswordForm
+from django.contrib import messages
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 
 today = date.today()
@@ -54,30 +61,6 @@ def signin(request):
     else:
         return render(request, 'sign-in.html')
 
-
-def ForgetPass(request):
-    if request.method == 'POST':
-        email = request.POST.get('email') 
-        try:
-            user = User.objects.get(Email=email)
-            if user.Type == 'Admin':
-              send_mail(
-                    'Reset Password',
-                    'Please reset your password by following the instructions provided.',
-                    'settings.EMAIL_HOST_USER',
-                    [email],
-                    fail_silently=False,
-                )
-              return render(request, 'sign-in.html')
-            else:
-             messages.error(request, 'You are not an Admin!')
-            return redirect('ForgetPass')
-        
-        except User.DoesNotExist:
-         messages.error(request, 'Email Does not Exist!')
-        return redirect('ForgetPass') 
-    else:
-        return render(request, 'ForgetPass.html')
 
 def UpdateParameters(request):
       is_authenticated = request.session.get('is_authenticated', False)
@@ -257,7 +240,9 @@ def get_Vehicles_Info(request):
      us_support_count = Support.objects.filter(ReservationId__in=reservation_ids_today,Solved=1).count()
      num_of_backup_vehicles = (num_of_Sbackup_vehicles+num_of_Dbackup_vehicles)-us_support_count
 
-     AllSupport = Support.objects.filter(ReservationId__in=reservation_ids_today,Solved=0).values()
+     unsolved_supports = list(Support.objects.filter(ReservationId__in=reservation_ids_today, Solved=0).values())
+     solved_supports = list(Support.objects.filter(ReservationId__in=reservation_ids_today, Solved=1).values())
+     AllSupport =  unsolved_supports + solved_supports
      AllSupportWithUser = []
 
      vehicle_managers = User.objects.filter(Type='Vehicle manager')
@@ -283,9 +268,9 @@ def get_Vehicles_Info(request):
             AllSupportWithUser.append(support)
 
 
-     latitude_values = [marker['Latitude'] for marker in AllSupportWithUser]
-     longitude_values = [marker['Longitude'] for marker in AllSupportWithUser]
-     message = ''.join(str(marker['supportID']) for marker in AllSupport)
+     latitude_values = [marker['Latitude'] for marker in AllSupportWithUser if marker['Solved'] == 0] 
+     longitude_values = [marker['Longitude'] for marker in AllSupportWithUser if marker['Solved'] == 0]
+     message = ''.join(str(marker['supportID']) for marker in AllSupportWithUser if marker['Solved'] == 0)
 
 
      data = {'AllSupport':list(AllSupportWithUser),'Active': active_reservations,'support_count':support_count,'num_of_backup_vehicles':num_of_backup_vehicles,'latitude_values':latitude_values,'longitude_values':longitude_values,'message':message,'Sudden':sudden_stop_count,'Empty':empty_battery_count,'other':other_count,'Double':Double,'Single':Single}
@@ -293,14 +278,49 @@ def get_Vehicles_Info(request):
 
 
 
-
-def Update_Support(request):
+def reset_password(request):
     if request.method == 'POST':
-        support_id = request.POST.get('supportId')
+        email = request.POST['email']
         try:
-            Support.objects.filter(supportID=support_id).update(Solved=1)
-            return JsonResponse({'success': True})
-        except Support.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'Support not found'})
-    
-    return JsonResponse({'success': False, 'error': 'Invalid request'})
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            user = None
+
+        if user is not None:
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+
+            reset_url = request.build_absolute_uri(
+                f'/reset_password_confirm.html/{uid}/{token}/'
+            )
+
+        return redirect('reset_password_done')
+
+    return render(request, 'reset_password.html')
+
+def reset_password_done(request):
+    return render(request, 'reset_password_done.html')
+
+def reset_password_confirm(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        if request.method == 'POST':
+            form = SetPasswordForm(user, request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Your password has been successfully reset. You can now log in with your new password.')
+                return redirect('reset_password_complete')
+        else:
+            form = SetPasswordForm(user)
+
+        return render(request, 'reset_password_confirm.html', {'form': form})
+
+    return redirect('password_reset_invalid')
+
+def reset_password_complete(request):
+    return render(request, 'reset_password_complete.html')

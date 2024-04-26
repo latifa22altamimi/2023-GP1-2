@@ -19,7 +19,6 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-from django.urls import reverse
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,10 +28,10 @@ urlpatterns = [
     path('AssignVM.html/', views.AssignVM, name='AssignVM'),
     path('CreateAdmin.html/', views.create_user, name='CreateAdmin'),
     path('ajax/get_Vehicles_Info/', views.get_Vehicles_Info, name='get_Vehicles_Info'),
-    path('ForgetPass.html/', views.ForgetPass, name='ForgetPass'),
-    path('Update_support/', views.Update_Support, name='Update_Support'),
-    
-
+    path('reset_password.html/', views.reset_password, name='reset_password'),
+    path('reset_password_done.html/', views.reset_password_done, name='reset_password_done'),
+    path('reset_password_confirm.html/<uidb64>/<token>/', views.reset_password_confirm, name='reset_password_confirm'),
+    path('reset_password_complete.html/', views.reset_password_complete, name='reset_password_complete'),
 ]
 
 if settings.DEBUG:
