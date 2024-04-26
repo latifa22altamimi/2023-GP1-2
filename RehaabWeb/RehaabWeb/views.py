@@ -129,7 +129,44 @@ def UpdateParameters(request):
                 messages.error(request, 'You are not authorized to access this page, Sorry!')
                 return redirect('sign-in')
 
+import random
+import string
 
+def generate_random_password(length=8, include_uppercase=True, include_lowercase=True, include_digits=True, include_special_chars=True):
+    
+    characters = ''
+    if include_uppercase:
+        characters += string.ascii_uppercase
+    if include_lowercase:
+        characters += string.ascii_lowercase
+    if include_digits:
+        characters += string.digits
+    if include_special_chars:
+        characters += string.punctuation
+
+    # Remove any duplicate characters from the characters string
+    characters = list(set(characters))
+
+  
+
+    random.shuffle(characters)
+    password = ''.join(characters[:length])
+    return password
+
+def send_email(passw,emails):
+    from django.core.mail import EmailMessage
+
+    import smtplib
+
+    smtpserver = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    smtpserver.ehlo()
+    smtpserver.login('rehaabsystem@gmail.com', 'krmmzlnywthfqepa')
+    sent_from = 'rehaabsystem@gmail.com'
+    sent_to = emails  
+    email_text = f'Your account created with email {emails} and your password   " {passw} " \n Thank You'
+    smtpserver.sendmail(sent_from, sent_to, email_text)
+
+    
 
 def AssignVM(request): 
     is_authenticated = request.session.get('is_authenticated', False) 
@@ -166,8 +203,10 @@ def AssignVM(request):
                 return JsonResponse({'status':'2','msg':msg}) 
                 
             else: 
-                    hashed_password = make_password(password) 
+                    passw=generate_random_password()
+                    hashed_password = make_password(passw) 
                     hashed_password = hashed_password[7:]
+                    send_email(passw,email)
                     New_VM = User(FullName=full_name, Email=email, Password=hashed_password, Type=task, VerificationStatus="1") 
                     New_VM.save() 
                     msg="Vehicle manager has been added successfully!" 
