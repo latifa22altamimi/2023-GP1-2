@@ -162,7 +162,7 @@ def send_email(passw,emails):
     smtpserver.login('rehaabsystem@gmail.com', 'krmmzlnywthfqepa')
     sent_from = 'rehaabsystem@gmail.com'
     sent_to = emails  
-    email_text = f'Your account created with email {emails} and your password   " {passw} " \n Thank You'
+    email_text = f'Your account created with email {emails} and your password is "{passw}" \n Thank You'
     smtpserver.sendmail(sent_from, sent_to, email_text)
 
 
@@ -388,8 +388,13 @@ def reset_password_confirm(request, uidb64):
                 else:
                   messages.error(request, "Passwords do not match.")  
                 return redirect(f'/reset_password_confirm.html/{uidb64}/')
+          
+        else:
+            form = SetPasswordForm(user)
 
-    return redirect('sign-in')
+        return render(request, 'reset_password_confirm.html', {'form': form})
+
+    return redirect('password_reset_invalid')
 
 def reset_password_complete(request):
     return render(request, 'reset_password_complete.html')
