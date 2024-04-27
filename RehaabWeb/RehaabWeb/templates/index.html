@@ -147,23 +147,24 @@
                         $(document).ready(function () {
                             var supportTableBody = $('#supportTableBody');
 
-function updateAvailableData() {
+                            function updateAvailableData() {
     $.ajax({
         url: '{% url "get_Vehicles_Info" %}',
         success: function (data) {
             map.eachLayer(function (layer) {
-        if (layer instanceof L.Marker) {
-          map.removeLayer(layer);
-        }
-      });
-            
-            var existingSupportRows = supportTableBody.find('tr');
-            var newSupportRows = '';
+                if (layer instanceof L.Marker) {
+                    map.removeLayer(layer);
+                }
+            });
+
+            var supportTableBody = $('#supportTableBody');
+            var solvedRows = '';
+            var unsolvedRows = '';
 
             $.each(data.AllSupport, function (index, support) {
                 var assignedToContent = support.Assigned_to ? support.Assigned_to : '<span class="text-[13px] font-medium text-gray-400">Not assigned</span>';
                 var solveButtonContent = support.Assigned_to ? '<span class="inline-block p-1 rounded bg-yellow-500/10 text-yellow-500 font-medium text-[12px] leading-none">InProgress</span>' : '<span class="inline-block p-1 rounded bg-rose-500/10 text-rose-500 font-medium text-[12px] leading-none">Waiting</span>';
-var Solved = support.Solved === 1 ? '<span class="inline-block p-1 rounded bg-green-500/10 text-green-500 font-medium text-[12px] leading-none">Solved</span>' : solveButtonContent;
+                var Solved = support.Solved === 1 ? '<span class="inline-block p-1 rounded bg-green-500/10 text-green-500 font-medium text-[12px] leading-none">Solved</span>' : solveButtonContent;
 
                 var row = '<tr id="supportRow_' + support.supportID + '">' +
                     '<td class="py-2 px-4 border-b border-b-gray-50">' +
@@ -185,17 +186,14 @@ var Solved = support.Solved === 1 ? '<span class="inline-block p-1 rounded bg-gr
                     '</td>' +
                     '</tr>';
 
-                var existingRow = existingSupportRows.filter('#supportRow_' + support.supportID);
-                if (existingRow.length > 0) {
-                    existingRow.replaceWith(row);
+                if (support.Solved === 1) {
+                    solvedRows += row;
                 } else {
-                    newSupportRows += row;
+                    unsolvedRows += row;
                 }
             });
 
-            if (newSupportRows !== '') {
-                supportTableBody.append(newSupportRows);
-            }
+            supportTableBody.html(unsolvedRows + solvedRows);
                                         $('#Active').text(data.Active);
                                         $('#Backup').text(data.num_of_backup_vehicles);
                                         $('#Damaged').text(data.support_count)

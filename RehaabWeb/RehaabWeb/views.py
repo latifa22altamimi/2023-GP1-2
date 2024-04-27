@@ -15,13 +15,13 @@ from django.contrib import messages
 import random
 from django.shortcuts import render, redirect
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from django.contrib.auth.forms import SetPasswordForm
 from django.contrib import messages
 from django.utils.http import urlsafe_base64_decode
+from django.utils.crypto import get_random_string
 from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
-
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 
 today = date.today()
 
@@ -144,7 +144,6 @@ def generate_random_password(length=8, include_uppercase=True, include_lowercase
     if include_special_chars:
         characters += string.punctuation
 
-    # Remove any duplicate characters from the characters string
     characters = list(set(characters))
 
   
@@ -166,7 +165,6 @@ def send_email(passw,emails):
     email_text = f'Your account created with email {emails} and your password   " {passw} " \n Thank You'
     smtpserver.sendmail(sent_from, sent_to, email_text)
 
-    
 
 def AssignVM(request): 
     is_authenticated = request.session.get('is_authenticated', False) 
@@ -307,9 +305,9 @@ def get_Vehicles_Info(request):
             AllSupportWithUser.append(support)
 
 
-     latitude_values = [marker['Latitude'] for marker in AllSupportWithUser if marker['Solved'] == 0] 
-     longitude_values = [marker['Longitude'] for marker in AllSupportWithUser if marker['Solved'] == 0]
-     message = ''.join(str(marker['supportID']) for marker in AllSupportWithUser if marker['Solved'] == 0)
+     latitude_values = [marker['Latitude'] for marker in AllSupport if marker['Solved'] == 0] 
+     longitude_values = [marker['Longitude'] for marker in AllSupport if marker['Solved'] == 0]
+     message = ''.join(str(marker['supportID']) for marker in AllSupport if marker['Solved'] == 0)
 
 
      data = {'AllSupport':list(AllSupportWithUser),'Active': active_reservations,'support_count':support_count,'num_of_backup_vehicles':num_of_backup_vehicles,'latitude_values':latitude_values,'longitude_values':longitude_values,'message':message,'Sudden':sudden_stop_count,'Empty':empty_battery_count,'other':other_count,'Double':Double,'Single':Single}
@@ -318,20 +316,47 @@ def get_Vehicles_Info(request):
 
 
 def reset_password(request):
+
+    import smtplib
     if request.method == 'POST':
         email = request.POST['email']
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(Email=email)
         except User.DoesNotExist:
             user = None
 
         if user is not None:
-            uid = urlsafe_base64_encode(force_bytes(user.pk))
-            token = default_token_generator.make_token(user)
-
+            uid = user.userID
             reset_url = request.build_absolute_uri(
-                f'/reset_password_confirm.html/{uid}/{token}/'
+                f'/reset_password_confirm.html/{uid}/'
             )
+            sender_email = 'rehaabsystem@gmail.com'
+            receiver_email = email
+            subject = 'Reset Your Password'
+            link = reset_url
+            message =   f'<h2> Hello, </h2> <h3> <p> A request has been received to reset the password for your Rehaab account, please click this link to reset your password</p></h3>\n<p> <a href= "{link}"> Reset Password</a></p>\n  <h3> if you did not initate this request, just ignore this email.<h3><h3>Thank you,<br> Rehaab team. </h3>'
+
+            msg = MIMEMultipart()
+            msg['From'] = sender_email
+            msg['To'] = receiver_email
+            msg['Subject'] = subject
+
+            msg.attach(MIMEText(message, 'html'))
+            
+        
+            smtp_server = 'smtp.gmail.com'
+            smtp_port = 587
+            smtp_username = 'rehaabsystem@gmail.com'
+            smtp_password = 'krmmzlnywthfqepa'
+            server = smtplib.SMTP(smtp_server, smtp_port)
+            server.starttls()
+            server.login(smtp_username, smtp_password)
+
+            server.send_message(msg)
+
+            server.quit()
+
+
 
         return redirect('reset_password_done')
 
@@ -340,26 +365,31 @@ def reset_password(request):
 def reset_password_done(request):
     return render(request, 'reset_password_done.html')
 
-def reset_password_confirm(request, uidb64, token):
+def reset_password_confirm(request, uidb64):
     try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = User.objects.get(pk=uid)
+        user = User.objects.get(userID=uidb64)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    if user is not None and default_token_generator.check_token(user, token):
+    if user is not None:
         if request.method == 'POST':
-            form = SetPasswordForm(user, request.POST)
-            if form.is_valid():
-                form.save()
-                messages.success(request, 'Your password has been successfully reset. You can now log in with your new password.')
-                return redirect('reset_password_complete')
-        else:
-            form = SetPasswordForm(user)
+                NPass = request.POST['Npass']
+                CPass = request.POST['Cpass']
+                if NPass == CPass:
+                    hashed_password = make_password(NPass)
+                    try:
+                        user = User.objects.get(userID=uidb64)
+                        user.Password = hashed_password
+                        user.save()
+                    except User.DoesNotExist:
+                
+                     messages.success(request, 'Your password has been successfully reset. You can now log in with your new password.')
+                    return redirect('reset_password_complete')
+                else:
+                  messages.error(request, "Passwords do not match.")  
+                return redirect(f'/reset_password_confirm.html/{uidb64}/')
 
-        return render(request, 'reset_password_confirm.html', {'form': form})
-
-    return redirect('password_reset_invalid')
+    return redirect('sign-in')
 
 def reset_password_complete(request):
     return render(request, 'reset_password_complete.html')
