@@ -394,7 +394,7 @@ def reset_password_confirm(request, uidb64):
 
         return render(request, 'reset_password_confirm.html', {'form': form})
 
-    return redirect('password_reset_invalid')
+    return redirect('sign-in')
 
 def reset_password_complete(request):
     return render(request, 'reset_password_complete.html')
