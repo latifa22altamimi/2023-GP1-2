@@ -62,7 +62,7 @@ class ManagerReservation(models.Model):
     visitorName=models.CharField(max_length=200)
     VphoneNumber=models.CharField(max_length=20)
     ExpectedFinishTime=models.CharField(max_length=20)	
-    ReservedForWaiting=models.IntegerField(max_length=1)
+    ReservedForWaiting=models.IntegerField(max_length=20)
     class Meta:
         db_table = 'managerreservation'
         app_label = 'RehaabWeb' 
@@ -83,6 +83,7 @@ class Support(models.Model):
     Longitude = models.CharField(max_length=200)
     Message = models.CharField(max_length=200)
     AssignedTo = models.IntegerField(max_length=11)
+    Solved=models.ImageField(max_length=1)
 
     class Meta:
         db_table = 'support'

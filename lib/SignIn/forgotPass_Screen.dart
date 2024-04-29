@@ -27,7 +27,7 @@ class _ForgotPassScreenState extends State<ForgotPassScreen> {
   var changelink;
 
   Future ExistEmail() async {
-    var url = "http://10.0.2.2/phpfiles/exsitEmail.php";
+    var url = "http://192.168.100.208/phpfiles/exsitEmail.php";
     final response = await http.post(Uri.parse(url), body: {
       "Email": email.text,
     });

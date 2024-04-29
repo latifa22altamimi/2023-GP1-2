@@ -19,6 +19,7 @@ import 'package:rehaab/callSupport/support.dart';
 import 'package:http/http.dart' as http;
 import '../ManagerReservations/Reservations.dart';
 import '../ManagerReservations/Reserve_WalkInVehicle.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 bool unavailableVehicles = false;
 int numOfAvailable = 0;
@@ -111,9 +112,8 @@ class _ManagerHomeState extends State<ManagerHome> {
 
 class AppBarr extends StatelessWidget {
   const AppBarr({super.key});
-
-  @override
   
+
 
   @override
   Widget build(BuildContext context) {
@@ -140,9 +140,48 @@ class AppBarr extends StatelessWidget {
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
               ),
-             
-             
-              /*   Visibility(
+                 
+            /* 
+              Container(
+
+                  child:Support?  TextButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(kPrimaryColor)),
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => callSupport())),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          height: 10,
+                          width: 10,
+                        ),
+                       Row(
+  mainAxisSize: MainAxisSize.min,
+  children: [
+    Container(
+      child: Image.asset(
+        'assets/images/whitegooglemaps-removebg-preview.png',
+        width: 110,
+        height: 70,
+      ),
+    ),
+    Container(
+      child: Image.asset(
+        'assets/images/check-removebg-preview.png',
+        width: 80,
+        height: 40,
+      ),
+    ),
+  ],
+)
+                      ],
+                    ),
+                  )
+                  :  Text('')
+                  )
+                 Visibility(
                     visible: false,
                       child: FloatingActionButton( 
                         backgroundColor: Colors.white,
@@ -230,6 +269,10 @@ int percentage = 0;
 Color emptyColor = kPrimaryColor;
 int totalActive = 0;
 double totalActiveDouble = 0.0;
+bool Support=false;
+String long="";
+String lat="";
+String id='';
 
 class BodyHome extends StatefulWidget {
   const BodyHome({Key? key}) : super(key: key);
@@ -244,6 +287,7 @@ class _BodyHomeState extends State<BodyHome> {
     AvgDuration();
     DisplayWaiting();
     WaitingNum();
+    ViewSupport();
   }
 
   Future AvgDuration() async {
@@ -260,6 +304,43 @@ class _BodyHomeState extends State<BodyHome> {
 
     avgTime = formattedTime;
   }
+ 
+
+void openGoogleMaps() async {
+  double lat1 = double.parse(lat);
+  double long2 = double.parse(long);
+  String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=$lat1,$long2';
+  Uri uri = Uri.parse(googleMapsUrl);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
+  } else {
+    print("could not open map");
+  }
+}
+void Solved() async{
+  print(id);
+    var url = "http://10.0.2.2/phpfiles/UpdateSolved.php";
+
+    final res = await http.post(Uri.parse(url), body: {"id":id});
+}
+
+  Future ViewSupport() async {
+    print("hi");
+    var url = "http://10.0.2.2/phpfiles/ViewSupport.php";
+     final res = await http.post(Uri.parse(url), body: {
+      "Userid": GlobalValues.id,
+    });
+     var data = json.decode(res.body);
+    print(data);
+     Support=data[0];
+     long=data[1];
+     lat=data[2];
+     id=data[3];
+     print(Support);
+     print(long);
+     print(lat);
+     print(id);
+  }
 
   Future WaitingNum() async {
     print(GlobalValues.id);
@@ -273,7 +354,7 @@ class _BodyHomeState extends State<BodyHome> {
       waitPercent = 0.0;
     } else {
       waitPercent = double.parse(
-          waitPercent.toStringAsFixed(1)); // Format to one decimal place
+          waitPercent.toStringAsFixed(1)); 
     }
 
     print("$waitPercent waitPercent");
@@ -340,6 +421,142 @@ class _BodyHomeState extends State<BodyHome> {
     return SingleChildScrollView(
       child: Column(
         children: [
+            Visibility(
+  visible: Support, 
+  child: Column(
+    children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+            child: Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Notifications',
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(right: 20.0, top: 17.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.white,
+                elevation: 2, // Adjust the elevation value as desired
+              ),
+              onPressed: () {
+                vehiclesAvailable.clear();
+                DisplayWaiting();
+                ViewSupport();
+              },
+              child: Text(
+                'Refresh',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      SizedBox(
+        height: 5.0,
+      ),
+      Container(
+        height: 1.0,
+        width: double.infinity,
+        color: Colors.grey.withOpacity(0.3),
+      ),
+      SizedBox(
+        height: 18.0,
+      ),
+      SizedBox(
+        height: 90,
+        width: 370,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Color.fromARGB(255, 255, 255, 255),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 2.0,
+                spreadRadius: 0.05,
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              SizedBox(height: 10),
+              Text(
+                'You have 1 support notification!',
+                style: TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.red,
+                ),
+              ),
+              SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 120,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        openGoogleMaps();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: kPrimaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Text(
+                        'Google Maps',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Container(
+                    width: 80,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Solved();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: kPrimaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                      child: Text(
+                        'Solved',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    ],
+  ),
+),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -356,26 +573,32 @@ class _BodyHomeState extends State<BodyHome> {
                           fontWeight: FontWeight.w500),
                     ),
                   )),
-                 
-                  Container(
-                    margin: EdgeInsets.only(right:20.0,top:17.0),
-                    child: ElevatedButton(
-  style: ElevatedButton.styleFrom(
-    backgroundColor: Colors.white,
-    foregroundColor: Colors.white,
-    elevation: 2, // Adjust the elevation value as desired
+                   Visibility(
+  visible: !Support, 
+  child: Container(
+    margin: EdgeInsets.only(right: 20.0, top: 17.0),
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.white,
+        elevation: 2, // Adjust the elevation value as desired
+      ),
+      onPressed: () {
+        vehiclesAvailable.clear();
+        DisplayWaiting();
+        ViewSupport();
+      },
+      child: Text(
+        'Refresh',
+        style: TextStyle(
+          color: Colors.black,
+        ),
+      ),
+    ),
   ),
-                                    onPressed: () {
-                   
-                    vehiclesAvailable.clear();
-                     DisplayWaiting();
-                                    },
-                                    child: Text('Refresh',
-                                    style: TextStyle(
-                                      color: Colors.black
-                                    ),),
-                                  ),
-                  ),
+),
+                 
+                 
               
             ],
           ),
@@ -394,7 +617,7 @@ class _BodyHomeState extends State<BodyHome> {
           // dashboard
 
           SizedBox(
-            width: 380,
+            width: 370,
             height: 170,
             child: Container(
               decoration: BoxDecoration(
@@ -423,7 +646,7 @@ class _BodyHomeState extends State<BodyHome> {
                               child: Text(
                                 'Walk-in vehicles',
                                 style: TextStyle(
-                                  fontSize: 17,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -437,7 +660,7 @@ class _BodyHomeState extends State<BodyHome> {
                               Text(
                                 '${vehiclesAvailable[1]}',
                                 style: TextStyle(
-                                    fontSize: 13,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                     color: emptyColor),
                               ),
@@ -447,7 +670,7 @@ class _BodyHomeState extends State<BodyHome> {
                               Text(
                                 'Single vehicles',
                                 style: TextStyle(
-                                    fontSize: 13,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.w500,
                                     color: kPrimaryColor),
                               ),
@@ -461,7 +684,7 @@ class _BodyHomeState extends State<BodyHome> {
                               Text(
                                 '${vehiclesAvailable[0]}',
                                 style: TextStyle(
-                                    fontSize: 13,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.w600,
                                     color: emptyColor),
                               ),
@@ -471,17 +694,23 @@ class _BodyHomeState extends State<BodyHome> {
                               Text(
                                 'Double vehicles',
                                 style: TextStyle(
-                                    fontSize: 13,
+                                    fontSize: 15,
                                     fontWeight: FontWeight.w500,
                                     color: kPrimaryColor),
                               ),
+                               
                             ],
                           ),
-                        ],
+                               
+                
+                         ],
+                        
                       ),
-                      SizedBox(
-                        width: 40.0,
-                      ),
+                
+            
+                    SizedBox(width:40.0),
+              
+            
                       CircularPercentIndicator(
                         addAutomaticKeepAlive: true,
                         restartAnimation: false,
@@ -678,9 +907,9 @@ class _BodyHomeState extends State<BodyHome> {
               ),
             ],
           ),
-
+            
           Padding(
-              padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+              padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
