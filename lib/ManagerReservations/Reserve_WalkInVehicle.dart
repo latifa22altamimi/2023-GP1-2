@@ -828,6 +828,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                   print(_vehicleType);
                                   // complete with choose time and date
                                   //confirm msg
+                                  /*
                                   await Check();
 
                                   if (!unAvailableSingle) {
@@ -1068,7 +1069,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                             ),
                                           );
                                         });
-                                  } else {
+                                  } else {*/
                                     showDialog(
                                       context: context,
                                       builder: (context) => Dialog(
@@ -1518,7 +1519,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                         ),
                                       ),
                                     );
-                                  }
+                                  
                                 } else {
                                   //Error msg
                                   String errorMsg = "";
