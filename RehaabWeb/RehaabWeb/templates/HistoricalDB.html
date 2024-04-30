@@ -1,0 +1,151 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load i18n %}
+    
+{% block content %}
+<title>Historical Dashboard</title>
+
+
+<main class="">
+    {% if messages %}
+			{% for message in messages %}
+			<div class="alert-container" id="msg"  >
+				<div class="alert {{ message.tags }} m-2" role="alert"> 
+					{{message}}
+				</div>
+			</div>
+			{% endfor %}
+		{% endif %}
+   <br>
+   <h1 style="font-weight: bold; color:#2f5706; text-align: center; font-family: sans-serif; font-size: 1.8em; letter-spacing: 5px;"> HISTORICAL DASHBOARD</h1>
+ 
+   
+    <div class="p-6">
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
+                <div class="flex justify-between mb-4 items-start">
+
+                    <div class="font-medium">Reports' statistics
+    
+                    </div>
+                    
+                
+                    
+
+                </div>
+                <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
+                    <div class="flex justify-space"> 
+                            <div class="text-2xl font-semibold " id="Active">0</div>
+                            <div class="text-2xl font-semibold" id="Double">0</div>
+                            <div class="text-2xl font-semibold " id="Single">0</div>
+                            <div class="text-2xl font-semibold " id="Backup" >0</div>
+                        
+                    </div>
+                       
+                        <div class="flex justify-between">
+                            <div class="text-sm font-medium text-gray-400">Total vehicles in usage</div>
+                            <div class="text-sm font-medium text-gray-400">Double vehicles in usage </div>
+                            <div class="text-sm font-medium text-gray-400">Single vehicles in usage </div>
+                            <div class="text-sm font-medium text-gray-400">Backup vehicles</div>
+                        </div>
+                       
+                 
+               
+                </div>
+            </div>
+
+            <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
+                <div class="flex justify-between mb-4">
+                    <div id="container">
+                        <div class="font-medium">Reservations' statistics</div>
+                        
+                        <br>
+                        <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
+                            <div class="flex justify-space">
+                                <div class="text-2xl font-semibold " id="unsolved">0</div>
+                                <div class="text-2xl font-semibold" id="solved">0</div>
+                                <div class="text-2xl font-semibold " id="unsolved">0</div>
+                                <div class="text-2xl font-semibold" id="solved">0</div>
+                            </div>
+                            <div class="flex justify-space">
+                                <div class="text-sm font-medium text-gray-400">UnSolved reported vehicles</div>
+                                <div class="text-sm font-medium text-gray-400">Solved reported vehicles</div>
+                                <div class="text-sm font-medium text-gray-400">Solved reported vehicles</div>
+                                <div class="text-sm font-medium text-gray-400">Solved reported vehicles</div>
+                            
+                            </div>
+                           
+                        </div>
+                    </div>
+                    
+
+                  
+                </div>
+
+</div>
+
+
+            </div>
+
+            </div>
+            
+        </div>
+      
+    </div>
+    
+    </div>
+    
+</main>
+{% endblock %}
+
+    
+  
+    <!-- start: Sidebar -->
+    {% comment %} <div class="fixed left-0 top-0 w-64 h-full bg-green p-4 z-50 sidebar-menu transition-transform">
+        <a href="#" class="flex items-center pb-4 border-b border-b-gray-800">
+            {%block logo%}
+            <img src="{% static 'RehaabWeb/greenRehaabLogo.png' %}" alt="" class="w-8 h-8 rounded object-cover">
+            {% endblock %}
+
+            <span class="text-lg font-bold text-white ml-3">Rehaab</span>
+        </a>
+        <ul class="sidebar-menu">
+            <li class="mb-1 group ">
+                <a href="#"
+                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                    <i class="ri-home-2-line mr-3 text-lg"></i>
+                    <span class="text-sm">Dashboard</span>
+                </a>
+            </li>
+
+            <li class="mb-1 group">
+                <a href="{% url 'UpdateParameters' %}"
+                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                    <i class="ri-instance-line mr-3 text-lg"></i>
+                    <span class="text-sm">Configure and Update</span>
+                </a>
+            </li>
+            <li class="mb-1 group">
+                <a href="{% url 'AssignVM' %}"
+                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                    <i class="ri-settings-2-line mr-3 text-lg"></i>
+                    <span class="text-sm">Assign vehicle managers</span>
+                </a>
+            </li>
+
+            <li class="mb-1 group">
+                <a href="{% url 'sign-in' %}"
+                    class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                    <i class="ri-logout-box-line mr-3 text-lg"></i>
+                    <span class="text-sm">Log out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="fixed top-0 left-0 w-full h-full bg-black/50 z-40 md:hidden sidebar-overlay"></div>
+    <!-- end: Sidebar --> {% endcomment %}
+
+
+    
+    

@@ -32,6 +32,7 @@ urlpatterns = [
     path('reset_password_done.html/', views.reset_password_done, name='reset_password_done'),
     path('reset_password_confirm.html/<uidb64>/', views.reset_password_confirm, name='reset_password_confirm'),
     path('reset_password_complete.html/', views.reset_password_complete, name='reset_password_complete'),
+    path('HistoricalDB.html/', views.historicalDb, name='HistoricalDB.html'),
 ]
 
 if settings.DEBUG:

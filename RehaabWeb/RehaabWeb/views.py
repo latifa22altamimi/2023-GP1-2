@@ -399,3 +399,6 @@ def reset_password_confirm(request, uidb64):
 def reset_password_complete(request):
     return render(request, 'reset_password_complete.html')
 
+
+def historicalDb(request):
+     return render(request, 'HistoricalDB.html')
