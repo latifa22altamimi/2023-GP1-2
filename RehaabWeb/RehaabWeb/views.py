@@ -310,7 +310,7 @@ def get_Vehicles_Info(request):
      message = ''.join(str(marker['supportID']) for marker in AllSupport if marker['Solved'] == 0)
 
 
-     data = {'AllSupport':list(AllSupportWithUser),'Active': active_reservations,'support_count':support_count,'num_of_backup_vehicles':num_of_backup_vehicles,'latitude_values':latitude_values,'longitude_values':longitude_values,'message':message,'Sudden':sudden_stop_count,'Empty':empty_battery_count,'other':other_count,'Double':Double,'Single':Single}
+     data = {'AllSupport':list(AllSupportWithUser),'Active': active_reservations,'support_count':support_count,'s_support_count':us_support_count,'num_of_backup_vehicles':num_of_backup_vehicles,'latitude_values':latitude_values,'longitude_values':longitude_values,'message':message,'Sudden':sudden_stop_count,'Empty':empty_battery_count,'other':other_count,'Double':Double,'Single':Single}
      return JsonResponse(data)
 
 
@@ -398,3 +398,4 @@ def reset_password_confirm(request, uidb64):
 
 def reset_password_complete(request):
     return render(request, 'reset_password_complete.html')
+
