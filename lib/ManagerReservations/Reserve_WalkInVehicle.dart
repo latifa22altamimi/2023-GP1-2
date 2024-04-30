@@ -828,8 +828,248 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                   print(_vehicleType);
                                   // complete with choose time and date
                                   //confirm msg
-                           
-                           
+                                  /*
+                                  await Check();
+
+                                  if (!unAvailableSingle) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Dialog(
+                                            backgroundColor: Color.fromARGB(
+                                                255, 247, 247, 247),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Container(
+                                              padding: const EdgeInsets.only(
+                                                  right: 30.0,
+                                                  left: 30.0,
+                                                  top: 10.0,
+                                                  bottom: 50.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Lottie.asset(
+                                                      'assets/images/warn.json',
+                                                      width: 100,
+                                                      height: 100),
+                                                  Image.asset(
+                                                    'assets/images/single.png',
+                                                    height: 50,
+                                                    width: 60,
+                                                  ),
+                                                  Text(
+                                                    'No available single vehicles',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5.0,
+                                                  ),
+                                                  Text(
+                                                    'Choose another vehicle type',
+                                                    style: TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 48, 48, 48),
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 15.0,
+                                                  ),
+                                                  Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      //add to waiting list button
+
+                                                      ConstrainedBox(
+                                                        constraints:
+                                                            BoxConstraints
+                                                                .tightFor(
+                                                                    height: 45,
+                                                                    width: 120),
+                                                        child: ElevatedButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            print(
+                                                                unAvailableSingle);
+                                                            print(
+                                                                unAvailableDouble);
+                                                          },
+                                                          child: Text(
+                                                            'Done',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    60,
+                                                                    100,
+                                                                    73),
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    50),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  } else if (unAvailableDouble) {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Dialog(
+                                            backgroundColor: Color.fromARGB(
+                                                255, 247, 247, 247),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            child: Container(
+                                              padding: const EdgeInsets.only(
+                                                  right: 30.0,
+                                                  left: 30.0,
+                                                  top: 10.0,
+                                                  bottom: 50.0),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Lottie.asset(
+                                                      'assets/images/warn.json',
+                                                      width: 100,
+                                                      height: 100),
+                                                  Image.asset(
+                                                    'assets/images/double.png',
+                                                    height: 50,
+                                                    width: 60,
+                                                  ),
+                                                  Text(
+                                                    'No available double vehicles',
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5.0,
+                                                  ),
+                                                  Text(
+                                                    'Choose another vehicle type',
+                                                    style: TextStyle(
+                                                        color: Color.fromARGB(
+                                                            255, 48, 48, 48),
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w400),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10.0,
+                                                  ),
+                                                  SizedBox(
+                                                    height: 15.0,
+                                                  ),
+                                                  Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      //add to waiting list button
+
+                                                      ConstrainedBox(
+                                                        constraints:
+                                                            BoxConstraints
+                                                                .tightFor(
+                                                                    height: 45,
+                                                                    width: 120),
+                                                        child: ElevatedButton(
+                                                          onPressed: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                            print(
+                                                                unAvailableSingle);
+                                                            print(
+                                                                unAvailableDouble);
+                                                          },
+                                                          child: Text(
+                                                            'Done',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 17,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                          ),
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                            backgroundColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    60,
+                                                                    100,
+                                                                    73),
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(
+                                                                Radius.circular(
+                                                                    50),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  } else {*/
                                     showDialog(
                                       context: context,
                                       builder: (context) => Dialog(

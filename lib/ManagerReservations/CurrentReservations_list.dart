@@ -99,15 +99,15 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     }
   }
 
-  Future AutoCancel() async {
-    var url = "http://10.0.2.2/phpfiles/AutoCancel.php";
-    final res = await http.post(Uri.parse(url), body: {});
+ Future<void> AutoCancel() async {
+  var url = "http://10.0.2.2/phpfiles/AutoCancel.php";
+  final response = await http.post(Uri.parse(url), body: {});
 
-    if (res.statusCode == 200) {
-      var red = json.decode(res.body);
+  if (response.statusCode == 200) {
+      var red = json.decode(response.body);
       print(red);
     }
-  }
+}
 
   Future refresh() async {
     //convertToCompleted();
