@@ -3,7 +3,7 @@
 {% load i18n %}
     
 {% block content %}
-<title>Dashboard</title>
+<title>Live Dashboard</title>
 <style>
 .bg-yellow-500\/10{
   background-color: rgb(255 255 0/ 0.1);
@@ -58,7 +58,7 @@
 			{% endfor %}
 		{% endif %}
    <br>
-   <h1 style="font-weight: bold; color:#2f5706; text-align: center; font-family: sans-serif; font-size: 1.8em; letter-spacing: 5px;">DASHBOARD</h1>
+   <h1 style="font-weight: bold; color:#2f5706; text-align: center; font-family: sans-serif; font-size: 1.8em; letter-spacing: 5px;"> LIVE DASHBOARD</h1>
  
    
     <div class="p-6">
@@ -104,16 +104,13 @@
                         <br>
                         <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
                             <div class="flex justify-space">
-                                <div class="text-2xl font-semibold " id="Damaged">0</div>
-                                <div class="text-2xl font-semibold" id="Sudden">0</div>
-                                <div class="text-2xl font-semibold " id="Empty">0</div>
-                                <div class="text-2xl font-semibold " id="other">0</div>
+                                <div class="text-2xl font-semibold " id="unsolved">0</div>
+                                <div class="text-2xl font-semibold" id="solved">0</div>
                             </div>
-                            <div class="flex justify-between">
-                                <div class="text-sm font-medium text-gray-400">Reported vehicles</div>
-                                <div class="text-sm font-medium text-gray-400">Sudden stop</div>
-                                <div class="text-sm font-medium text-gray-400">Empty battery</div>
-                                <div class="text-sm font-medium text-gray-400">Other problems</div>
+                            <div class="flex justify-space">
+                                <div class="text-sm font-medium text-gray-400">UnSolved reported vehicles</div>
+                                <div class="text-sm font-medium text-gray-400">Solved reported vehicles</div>
+                            
                             </div>
                            
                         </div>
@@ -126,7 +123,7 @@
                                   let iconUr = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png';
                         let mapOptions = {
                             iconUrl: iconUr,
-                            center: [37.4219983,-122.084],
+                            center: [21.4225,39.8262],
                             zoom: 17
                         };
                         let customIcon = L.icon({
@@ -160,31 +157,51 @@
             var supportTableBody = $('#supportTableBody');
             var solvedRows = '';
             var unsolvedRows = '';
-
+           
             $.each(data.AllSupport, function (index, support) {
                 var assignedToContent = support.Assigned_to ? support.Assigned_to : '<span class="text-[13px] font-medium text-gray-400">Not assigned</span>';
                 var solveButtonContent = support.Assigned_to ? '<span class="inline-block p-1 rounded bg-yellow-500/10 text-yellow-500 font-medium text-[12px] leading-none">InProgress</span>' : '<span class="inline-block p-1 rounded bg-rose-500/10 text-rose-500 font-medium text-[12px] leading-none">Waiting</span>';
                 var Solved = support.Solved === 1 ? '<span class="inline-block p-1 rounded bg-green-500/10 text-green-500 font-medium text-[12px] leading-none">Solved</span>' : solveButtonContent;
+                var timestamp = support.ReportedAt;
+                console.log(timestamp);
+                var dateObject = new Date(timestamp);
+                var hours = dateObject.getUTCHours();
+                var minutes = dateObject.getUTCMinutes();
+
+                var ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+
+                var formattedTime = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ampm;
+
+                console.log(formattedTime);
+                var VMEmail = support.VMEmail.toString();
+                var VEmail = support.VEmail.toString();
+                var VMtitle = "Vehicle manager's Email: " + VMEmail;
+                var Vtitle = "Visitor's Email: " + VEmail;
 
                 var row = '<tr id="supportRow_' + support.supportID + '">' +
+            
                     '<td class="py-2 px-4 border-b border-b-gray-50">' +
-                    '<div class="flex items-center">' +
-                    '<span class="text-[13px] font-medium text-gray-400">' + support.supportID + '</span>' +
-                    '</div>' +
-                    '</td>' +
-                    '<td class="py-2 px-4 border-b border-b-gray-50">' +
-                    '<span class="text-[13px] font-medium text-gray-400">' + support.visitor_name + '</span>' +
+                    '<span class="text-[13px] font-medium text-gray-400" title="' + Vtitle + '">' + support.visitor_name + '</span>' +
                     '</td>' +
                     '<td class="py-2 px-4 border-b border-b-gray-50">' +
                     '<span class="text-[13px] font-medium text-gray-400">' + support.Message + '</span>' +
                     '</td>' +
                     '<td class="py-2 px-4 border-b border-b-gray-50">' +
-                    '<span class="text-[13px] font-medium text-gray-400">' + assignedToContent + ' </span>' +
+                    '<span class="text-[13px] font-medium text-gray-400" title="' + VMtitle + '" })>' + assignedToContent + ' </span>' +
+                    '</td>' +
+                    '<td class="py-2 px-4 border-b border-b-gray-50">' +
+                    '<span class="text-[13px] font-medium text-gray-400">' + formattedTime + ' </span>' +
                     '</td>' +
                     '<td class="py-2 px-4 border-b border-b-gray-50">' +
                     Solved +
                     '</td>' +
                     '</tr>';
+
+                    function setTooltip(element, content) {
+    element.setAttribute('title', content);
+}
 
                 if (support.Solved === 1) {
                     solvedRows += row;
@@ -196,10 +213,8 @@
             supportTableBody.html(unsolvedRows + solvedRows);
                                         $('#Active').text(data.Active);
                                         $('#Backup').text(data.num_of_backup_vehicles);
-                                        $('#Damaged').text(data.support_count)
-                                        $('#Sudden').text(data.Sudden)
-                                        $('#Empty').text(data.Empty)
-                                        $('#other').text(data.other)
+                                        $('#unsolved').text(data.support_count)
+                                        $('#solved').text(data.s_support_count)
                                         $('#Double').text(data.Double)
                                         $('#Single').text(data.Single)
 
@@ -237,6 +252,7 @@
             list[i].className = 'mb-1 group active';
         };
     }
+
                     </script>
                    
 
@@ -247,11 +263,11 @@
 <div id="SupportTable" style="display: none;">
   <table class="w-full min-w-[540px]">
     <tr>
-      <th class="text-[12px] tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tl-md rounded-bl-md">Id</th>
-      <th class="text-[12px] tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Visitor's name</th>
+      <th class="text-[12px] tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Visitor's Name</th>
       <th class="text-[12px] tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Problem</th>
-      <th class="text-[12px] tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Assigned to</th>
-      <th class="text-[12px] tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tr-md rounded-br-md">Action</th>
+      <th class="text-[12px] tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Assigned To</th>
+      <th class="text-[12px] tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tr-md rounded-br-md">Reported At</th>
+      <th class="text-[12px] tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left rounded-tr-md rounded-br-md">Status</th>
     </tr>
     <tbody id="supportTableBody">
       

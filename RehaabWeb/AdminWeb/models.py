@@ -84,6 +84,7 @@ class Support(models.Model):
     Message = models.CharField(max_length=200)
     AssignedTo = models.IntegerField(max_length=11)
     Solved=models.ImageField(max_length=1)
+    ReportedAt=models.DateTimeField()
 
     class Meta:
         db_table = 'support'

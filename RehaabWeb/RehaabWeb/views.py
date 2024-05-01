@@ -289,9 +289,11 @@ def get_Vehicles_Info(request):
             reservation = Reservation.objects.get(reservationId=support['ReservationId'])
             user = User.objects.get(pk=reservation.userId)
             support['visitor_name'] = user.FullName
+            support['VEmail']=user.Email
             if support['AssignedTo'] is not None:
                 assigned_manager = User.objects.get(userID=support['AssignedTo'])
                 support['Assigned_to'] = assigned_manager.FullName
+                support['VMEmail']=assigned_manager.Email
             else:
                 available_managers = vehicle_managers.exclude(userID__in=assigned_user_ids)
                 if available_managers.exists():
@@ -310,7 +312,7 @@ def get_Vehicles_Info(request):
      message = ''.join(str(marker['supportID']) for marker in AllSupport if marker['Solved'] == 0)
 
 
-     data = {'AllSupport':list(AllSupportWithUser),'Active': active_reservations,'support_count':support_count,'num_of_backup_vehicles':num_of_backup_vehicles,'latitude_values':latitude_values,'longitude_values':longitude_values,'message':message,'Sudden':sudden_stop_count,'Empty':empty_battery_count,'other':other_count,'Double':Double,'Single':Single}
+     data = {'AllSupport':list(AllSupportWithUser),'Active': active_reservations,'support_count':support_count,'s_support_count':us_support_count,'num_of_backup_vehicles':num_of_backup_vehicles,'latitude_values':latitude_values,'longitude_values':longitude_values,'message':message,'Sudden':sudden_stop_count,'Empty':empty_battery_count,'other':other_count,'Double':Double,'Single':Single}
      return JsonResponse(data)
 
 
@@ -398,3 +400,7 @@ def reset_password_confirm(request, uidb64):
 
 def reset_password_complete(request):
     return render(request, 'reset_password_complete.html')
+
+
+def historicalDb(request):
+     return render(request, 'HistoricalDB.html')
