@@ -175,17 +175,21 @@
                 var formattedTime = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ampm;
 
                 console.log(formattedTime);
+                var VMEmail = support.VMEmail.toString();
+                var VEmail = support.VEmail.toString();
+                var VMtitle = "Vehicle manager's Email: " + VMEmail;
+                var Vtitle = "Visitor's Email: " + VEmail;
 
                 var row = '<tr id="supportRow_' + support.supportID + '">' +
             
                     '<td class="py-2 px-4 border-b border-b-gray-50">' +
-                    '<span class="text-[13px] font-medium text-gray-400">' + support.visitor_name + '</span>' +
+                    '<span class="text-[13px] font-medium text-gray-400" title="' + Vtitle + '">' + support.visitor_name + '</span>' +
                     '</td>' +
                     '<td class="py-2 px-4 border-b border-b-gray-50">' +
                     '<span class="text-[13px] font-medium text-gray-400">' + support.Message + '</span>' +
                     '</td>' +
                     '<td class="py-2 px-4 border-b border-b-gray-50">' +
-                    '<span class="text-[13px] font-medium text-gray-400">' + assignedToContent + ' </span>' +
+                    '<span class="text-[13px] font-medium text-gray-400" title="' + VMtitle + '" })>' + assignedToContent + ' </span>' +
                     '</td>' +
                     '<td class="py-2 px-4 border-b border-b-gray-50">' +
                     '<span class="text-[13px] font-medium text-gray-400">' + formattedTime + ' </span>' +
@@ -194,7 +198,10 @@
                     Solved +
                     '</td>' +
                     '</tr>';
-   
+
+                    function setTooltip(element, content) {
+    element.setAttribute('title', content);
+}
 
                 if (support.Solved === 1) {
                     solvedRows += row;

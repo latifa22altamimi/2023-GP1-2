@@ -289,9 +289,11 @@ def get_Vehicles_Info(request):
             reservation = Reservation.objects.get(reservationId=support['ReservationId'])
             user = User.objects.get(pk=reservation.userId)
             support['visitor_name'] = user.FullName
+            support['VEmail']=user.Email
             if support['AssignedTo'] is not None:
                 assigned_manager = User.objects.get(userID=support['AssignedTo'])
                 support['Assigned_to'] = assigned_manager.FullName
+                support['VMEmail']=assigned_manager.Email
             else:
                 available_managers = vehicle_managers.exclude(userID__in=assigned_user_ids)
                 if available_managers.exists():
