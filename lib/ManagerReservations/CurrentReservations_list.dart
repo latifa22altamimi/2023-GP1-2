@@ -1547,7 +1547,8 @@ class _WaitingCardState extends State<WaitingCard> {
                                           height: 10.0,
                                         ),
                                         Text(
-                                          'Visitor will be removed from waiting list',
+                                          'Visitor will be removed \nfrom waiting list',
+                                          textAlign: TextAlign.center,
                                           style: TextStyle(
                                               color: Color.fromARGB(
                                                   255, 48, 48, 48),
@@ -1631,7 +1632,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                         child: Container(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .all(20.0),
+                                                                  .only(top:15.0,bottom:15.0,left:10.0,right: 10.0),
                                                           child: Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -1659,7 +1660,8 @@ class _WaitingCardState extends State<WaitingCard> {
                                                                 height: 10.0,
                                                               ),
                                                               Text(
-                                                                'Visitor has been removed successfully',
+                                                                textAlign: TextAlign.center,
+                                                                'Visitor has been \nremoved successfully',
                                                                 style: TextStyle(
                                                                     color: Colors
                                                                         .black,
@@ -1672,23 +1674,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                               SizedBox(
                                                                 height: 10.0,
                                                               ),
-                                                              Row(
-                                                                crossAxisAlignment:
-                                                                    CrossAxisAlignment
-                                                                        .center,
-                                                                mainAxisSize:
-                                                                    MainAxisSize
-                                                                        .min,
-                                                                children: [
-                                                                  ConstrainedBox(
-                                                                    constraints: BoxConstraints.tightFor(
-                                                                        height:
-                                                                            38,
-                                                                        width:
-                                                                            100),
-                                                                  ),
-                                                                ],
-                                                              )
+                                                             
                                                             ],
                                                           ),
                                                         ),

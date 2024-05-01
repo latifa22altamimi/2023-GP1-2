@@ -9,37 +9,34 @@ $DrivingType = $_POST['DrivingType'];
 $DriverGender = $_POST['DriverGender'];
 $visitorName = $_POST['visitorName'];
 $Vnumber = $_POST['Vnumber'];
-$rId=$_POST['rId'];
-$Status=$_POST['Status'];
-
-
+$rId = $_POST['rId'];
+$Status = $_POST['Status'];
 
 // Fetch ReservationDur from parameters
-$sql= "SELECT TDuration FROM tawaf";
+$sql = "SELECT TDuration FROM tawaf";
 $result = $conn->query($sql);
 $tawafDurations = [];
-$allTimes = []; // Array of time strings
 while ($ro2 = $result->fetch_assoc()) {
-    $tawafDurations[] = $ro2;
+    $tawafDurations[] = $ro2['TDuration'];
 }
 
-foreach ($tawafDurations as $time) {
-   $allTimes[]= $time['TDuration'];
-    
-}
 // Function to convert time string to seconds
 function timeToSeconds($time) {
     $parts = explode(':', $time);
-    return $parts[0] * 3600 + $parts[1] * 60;
+    $hours = intval($parts[0]);
+    $minutes = intval($parts[1]);
+    return $hours * 3600 + $minutes * 60;
 }
-// Convert each time string to seconds and calculate total sum
-$totalSeconds = 0;
-foreach ($allTimes as $time) {
-    $totalSeconds += timeToSeconds($time);
+
+// Convert each time string to seconds
+$tawafDurationsSeconds = [];
+foreach ($tawafDurations as $time) {
+    $tawafDurationsSeconds[] = timeToSeconds($time);
 }
 
 // Calculate the average in seconds
-$averageSeconds = $totalSeconds / count($allTimes);
+$totalSeconds = array_sum($tawafDurationsSeconds);
+$averageSeconds = $totalSeconds / count($tawafDurationsSeconds);
 
 // Convert average back to time format (hours:minutes)
 $hours = floor($averageSeconds / 3600);
@@ -47,21 +44,39 @@ $minutes = floor(($averageSeconds % 3600) / 60);
 $AvgTime = sprintf('%02d:%02d', $hours, $minutes); // Average from tawaf duration
 
 // Calculate expected finish time
-list($startHour, $startMinute, $startPeriod) = explode(':', $startTime);
+list($startHour, $startMinute, $startPeriod) = explode(' ', $startTime);
+list($startHour, $startMinute) = explode(':', $startHour);
 $startHour = intval($startHour);
 $startMinute = intval($startMinute);
 $startPeriod = strtoupper(trim($startPeriod));
+
+// Adjust start hour if it's PM
+if ($startPeriod === 'PM' && $startHour != 12) {
+    $startHour += 12;
+}
+
 list($avgHour, $avgMinute) = explode(':', $AvgTime);
 $avgHour = intval($avgHour);
 $avgMinute = intval($avgMinute);
+
+// Calculate total minutes and convert to total hours and minutes
 $totalMinutes = $startHour * 60 + $startMinute + $avgHour * 60 + $avgMinute;
-$hours = floor($totalMinutes / 60) % 12;
+$hours = floor($totalMinutes / 60);
 $minutes = $totalMinutes % 60;
-$period = ($startPeriod == 'AM' && $hours >= 12) || ($startPeriod == 'PM' && $hours < 12) ? 'PM' : 'AM';
-if ($period == 'PM') {
-    $hours += 12;
+
+// Adjust hours to wrap around every 24 hours and format AM/PM
+$finalHour = $hours % 24;
+$period = ($finalHour >= 12 && $finalHour < 24) ? 'AM' : 'PM';
+
+// Adjust the finalHour for 12-hour format
+if ($finalHour > 12) {
+    $finalHour -= 12;
+} elseif ($finalHour == 0) {
+    $finalHour = 12; // Adjust for midnight
 }
-$ExpectFinishTime = sprintf("%02d:%02d %s", $hours, $minutes, $period);
+
+$ExpectFinishTime = sprintf("%02d:%02d %s", $finalHour, $minutes, $period);
+
 
 // Fetch available vehicles count
 $sqlSingle = "SELECT TotalNumberofVehicles FROM parameters WHERE VehicleType='Single' AND VehicleDedicatedTo='walkIn'";

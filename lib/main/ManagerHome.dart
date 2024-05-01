@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
@@ -37,12 +38,14 @@ class _ManagerHomeState extends State<ManagerHome> {
     // pages in navigation bar
     Reservations(),
 
-    Column(
-      //home page
-      children: const [
-        AppBarr(),
-        BodyHome(),
-      ],
+    SingleChildScrollView(
+      child: Column(
+        //home page
+        children: const [
+          AppBarr(),
+           BodyHome(),
+        ],
+      ),
     ),
 
     Profile(), //settings or log out
@@ -514,7 +517,7 @@ void Solved() async{
                         openGoogleMaps();
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: kPrimaryColor,
+                        backgroundColor: kPrimaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -535,7 +538,7 @@ void Solved() async{
                         Solved();
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: kPrimaryColor,
+                        backgroundColor: kPrimaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),

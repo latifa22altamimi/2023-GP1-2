@@ -311,6 +311,8 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                         setState(() {
                                           if (unAvailableSingle) {
                                             visibleWaiting = true;
+                                          } else {
+                                            visibleWaiting = false;
                                           }
                                         });
                                       });
@@ -376,6 +378,8 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                         setState(() {
                                           if (unAvailableDouble) {
                                             visibleWaiting = true;
+                                          } else {
+                                            visibleWaiting = false;
                                           }
                                         });
                                       });
@@ -1070,189 +1074,100 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                           );
                                         });
                                   } else {*/
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => Dialog(
-                                        backgroundColor:
-                                            Color.fromARGB(255, 247, 247, 247),
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(20)),
-                                        child: Container(
-                                          padding: const EdgeInsets.only(
-                                              left: 30.0,
-                                              right: 30.0,
-                                              top: 30.0,
-                                              bottom: 50.0),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Lottie.asset(
-                                                  'assets/images/warn.json',
-                                                  width: 80,
-                                                  height: 80),
-                                              Text(
-                                                'Confirm the reservation',
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 18,
-                                                    fontWeight:
-                                                        FontWeight.w600),
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => Dialog(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 247, 247, 247),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Container(
+                                        padding: const EdgeInsets.only(
+                                            left: 30.0,
+                                            right: 30.0,
+                                            top: 20.0,
+                                            bottom: 20.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Lottie.asset(
+                                                'assets/images/warn.json',
+                                                width: 80,
+                                                height: 80),
+                                            Text(
+                                              'Confirm the reservation',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            SizedBox(
+                                              height: 10.0,
+                                            ),
+                                            Text(
+                                              'Your reservation will be confirmed with the following information \n',
+                                              style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 48, 48, 48),
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.w400),
+                                            ),
+                                            Container(
+                                              width: 350,
+                                              height: 220,
+                                              margin: const EdgeInsets.all(12),
+                                              padding: const EdgeInsets.all(10),
+                                              decoration: BoxDecoration(
+                                                color: Colors.white
+                                                    .withOpacity(0.6),
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black
+                                                        .withOpacity(0.2),
+                                                    blurRadius: 2.0,
+                                                    spreadRadius: .01,
+                                                  ),
+                                                ],
                                               ),
-                                              SizedBox(
-                                                height: 10.0,
-                                              ),
-                                              Text(
-                                                'Your reservation will be confirmed with the following information \n',
-                                                style: TextStyle(
-                                                    color: Color.fromARGB(
-                                                        255, 48, 48, 48),
-                                                    fontSize: 17,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                              Container(
-                                                width: 350,
-                                                height: 250,
-                                                margin:
-                                                    const EdgeInsets.all(12),
-                                                padding:
-                                                    const EdgeInsets.all(10),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white
-                                                      .withOpacity(0.6),
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.black
-                                                          .withOpacity(0.2),
-                                                      blurRadius: 2.0,
-                                                      spreadRadius: .01,
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: Column(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          'Visitor Name: ',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                        Text(
-                                                          '$name',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5.0,
-                                                    ),
-                                                    Visibility(
-                                                        visible:
-                                                            isVisibleNumber(),
-                                                        child: Row(
-                                                          children: [
-                                                            Text(
-                                                              'Visitor Number: ',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: 17,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                            ),
-                                                            Text(
-                                                              '$number',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .black,
-                                                                  fontSize: 16,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w400),
-                                                            ),
-                                                          ],
-                                                        )),
-                                                    SizedBox(
-                                                      height: 5.0,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          'Vehicle type: ',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                        Text(
-                                                          '$_vehicleType',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5.0,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          'Driving type: ',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                        Text(
-                                                          '$_drivingType',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5.0,
-                                                    ),
-                                                    Visibility(
-                                                      visible: isVisibleGender,
+                                              child: Column(
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        'Visitor Name: ',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      Text(
+                                                        '$name',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5.0,
+                                                  ),
+                                                  Visibility(
+                                                      visible:
+                                                          isVisibleNumber(),
                                                       child: Row(
                                                         children: [
                                                           Text(
-                                                            'Driver gender: ',
+                                                            'Visitor Number: ',
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .black,
@@ -1262,7 +1177,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                                         .w500),
                                                           ),
                                                           Text(
-                                                            '$_driverGender',
+                                                            '$number',
                                                             style: TextStyle(
                                                                 color: Colors
                                                                     .black,
@@ -1272,254 +1187,329 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                                         .w400),
                                                           ),
                                                         ],
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5.0,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          'Date: ',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                        Text(
-                                                          '${DateFormat('yyyy-MM-dd').format(DateTime.now())}', //current date
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 5.0,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Text(
-                                                          'Time: ',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                        ),
-                                                        Text(
-                                                          '$getTime', //'${DateFormat('hh:mm a').format(DateTime.now())}', // current time convert
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 20.0,
-                                              ),
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  ConstrainedBox(
-                                                    constraints:
-                                                        BoxConstraints.tightFor(
-                                                            height: 38,
-                                                            width: 100),
-                                                    child: ElevatedButton(
-                                                      onPressed: () =>
-                                                          Navigator.of(context)
-                                                              .pop(),
-                                                      child: Text(
-                                                        'Cancel',
+                                                      )),
+                                                  SizedBox(
+                                                    height: 5.0,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        'Vehicle type: ',
                                                         style: TextStyle(
                                                             color: Colors.black,
-                                                            fontSize: 15,
+                                                            fontSize: 17,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .w500),
                                                       ),
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            Color.fromARGB(255,
-                                                                255, 255, 255),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(50),
-                                                          ),
+                                                      Text(
+                                                        '$_vehicleType',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5.0,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        'Driving type: ',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      Text(
+                                                        '$_drivingType',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5.0,
+                                                  ),
+                                                  Visibility(
+                                                    visible: isVisibleGender,
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          'Driver gender: ',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 17,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                        Text(
+                                                          '$_driverGender',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5.0,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        'Date: ',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      Text(
+                                                        '${DateFormat('yyyy-MM-dd').format(DateTime.now())}', //current date
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 5.0,
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        'Time: ',
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 17,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w500),
+                                                      ),
+                                                      Text(
+                                                        '$getTime', //'${DateFormat('hh:mm a').format(DateTime.now())}', // current time convert
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 20.0,
+                                            ),
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                ConstrainedBox(
+                                                  constraints:
+                                                      BoxConstraints.tightFor(
+                                                          height: 38,
+                                                          width: 100),
+                                                  child: ElevatedButton(
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(),
+                                                    child: Text(
+                                                      'Cancel',
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          Color.fromARGB(255,
+                                                              255, 255, 255),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(50),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
+                                                ),
 
-                                                  SizedBox(
-                                                    width: 30.0,
-                                                  ),
-                                                  //when press on confirm
+                                                SizedBox(
+                                                  width: 30.0,
+                                                ),
+                                                //when press on confirm
 
-                                                  ConstrainedBox(
-                                                    constraints:
-                                                        BoxConstraints.tightFor(
-                                                            height: 38,
-                                                            width: 100),
-                                                    child: ElevatedButton(
-                                                      onPressed: () async {
-                                                        insert();
-                                                        //success msg here , insert in db --------------------------------------------
+                                                ConstrainedBox(
+                                                  constraints:
+                                                      BoxConstraints.tightFor(
+                                                          height: 38,
+                                                          width: 100),
+                                                  child: ElevatedButton(
+                                                    onPressed: () async {
+                                                      insert();
+                                                      //success msg here , insert in db --------------------------------------------
 
-                                                        _drivingType = "";
-                                                        _driverGender = "";
-                                                        _vehicleType = "";
-                                                        getTime = "";
+                                                      _drivingType = "";
+                                                      _driverGender = "";
+                                                      _vehicleType = "";
+                                                      getTime = "";
 
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                        showDialog(
-                                                            context: context,
-                                                            builder: (context) {
-                                                              Future.delayed(
-                                                                  Duration(
-                                                                      seconds:
-                                                                          2),
-                                                                  () {
-                                                                Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              ManagerHome()),
-                                                                );
-                                                              });
-                                                              return Dialog(
-                                                                backgroundColor:
-                                                                    Color.fromARGB(
-                                                                        255,
-                                                                        247,
-                                                                        247,
-                                                                        247),
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            20)),
-                                                                child:
-                                                                    Container(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(
-                                                                          20.0),
-                                                                  child: Column(
-                                                                    mainAxisAlignment:
-                                                                        MainAxisAlignment
-                                                                            .center,
-                                                                    mainAxisSize:
-                                                                        MainAxisSize
-                                                                            .min,
-                                                                    children: [
-                                                                      Lottie.asset(
-                                                                          'assets/images/success.json',
-                                                                          width:
-                                                                              100,
-                                                                          height:
-                                                                              100),
-                                                                      Text(
-                                                                        'Success',
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .black,
-                                                                            fontSize:
-                                                                                20,
-                                                                            fontWeight:
-                                                                                FontWeight.w600),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            10.0,
-                                                                      ),
-                                                                      Text(
-                                                                        'ٌReservation is done successfully',
-                                                                        style: TextStyle(
-                                                                            color: Colors
-                                                                                .black,
-                                                                            fontSize:
-                                                                                17,
-                                                                            fontWeight:
-                                                                                FontWeight.w400),
-                                                                      ),
-                                                                      SizedBox(
-                                                                        height:
-                                                                            10.0,
-                                                                      ),
-                                                                      Row(
-                                                                        crossAxisAlignment:
-                                                                            CrossAxisAlignment.center,
-                                                                        mainAxisSize:
-                                                                            MainAxisSize.min,
-                                                                        children: [
-                                                                          ConstrainedBox(
-                                                                            constraints:
-                                                                                BoxConstraints.tightFor(height: 38, width: 100),
-                                                                          ),
-                                                                        ],
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                ),
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            Future.delayed(
+                                                                Duration(
+                                                                    seconds: 2),
+                                                                () {
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            ManagerHome()),
                                                               );
                                                             });
-                                                      },
-                                                      child: Text(
-                                                        'Confirm',
-                                                        style: TextStyle(
-                                                            color: Colors.white,
-                                                            fontSize: 13,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
-                                                      ),
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor:
-                                                            Color.fromARGB(255,
-                                                                60, 100, 73),
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                            Radius.circular(50),
-                                                          ),
+                                                            return Dialog(
+                                                              backgroundColor:
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          247,
+                                                                          247,
+                                                                          247),
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20)),
+                                                              child: Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        20.0),
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    Lottie.asset(
+                                                                        'assets/images/success.json',
+                                                                        width:
+                                                                            100,
+                                                                        height:
+                                                                            100),
+                                                                    Text(
+                                                                      'Success',
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .black,
+                                                                          fontSize:
+                                                                              20,
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10.0,
+                                                                    ),
+                                                                    Text(
+                                                                      'ٌReservation is done successfully',
+                                                                      style: TextStyle(
+                                                                          color: Colors
+                                                                              .black,
+                                                                          fontSize:
+                                                                              17,
+                                                                          fontWeight:
+                                                                              FontWeight.w400),
+                                                                    ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10.0,
+                                                                    ),
+                                                                    Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      children: [
+                                                                        ConstrainedBox(
+                                                                          constraints: BoxConstraints.tightFor(
+                                                                              height: 38,
+                                                                              width: 100),
+                                                                        ),
+                                                                      ],
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+                                                    },
+                                                    child: Text(
+                                                      'Confirm',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 13,
+                                                          fontWeight:
+                                                              FontWeight.w500),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          Color.fromARGB(
+                                                              255, 60, 100, 73),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(50),
                                                         ),
                                                       ),
                                                     ),
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
+                                                  ),
+                                                )
+                                              ],
+                                            )
+                                          ],
                                         ),
                                       ),
-                                    );
-                                  
+                                    ),
+                                  );
                                 } else {
                                   //Error msg
                                   String errorMsg = "";
