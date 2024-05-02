@@ -305,9 +305,9 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                           },
                          itemBuilder: (BuildContext context, int index) {
   if (historyList[index]["Status"] == "Waiting") {
-    final reservationTime = DateTime.parse(historyList[index]["time"]); // Parse reservation time
-    final now = DateTime.now();
-    final elapsedTime = now.difference(reservationTime).inMinutes;
+    final reservationTime = parseTimeString(historyList[index]["time"]);
+  final now = DateTime.now();
+  final elapsedTime = now.difference(reservationTime).inMinutes;
 
     if (elapsedTime >= 2) {
       // Reservation has been waiting for more than 2 minutes, cancel it
