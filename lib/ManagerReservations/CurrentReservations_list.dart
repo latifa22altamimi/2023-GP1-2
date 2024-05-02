@@ -99,9 +99,9 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     }
   }
 
- Future<void> AutoCancel() async {
+ Future<void> AutoCancel(id) async {
   var url = "http://10.0.2.2/phpfiles/AutoCancel.php";
-  final response = await http.post(Uri.parse(url), body: {});
+  final response = await http.post(Uri.parse(url), body: {"id": id});
 
   if (response.statusCode == 200) {
       var red = json.decode(response.body);
@@ -303,69 +303,65 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                               height: 9,
                             );
                           },
-                          itemBuilder: (BuildContext context, int index) {
-                            if ((historyList[index]["Status"] == "Waiting")) {
-                              if (historyList[index]["VehicleType"] ==
-                                  "Single") {
-                                //single
-                                if (TypesAvailable.isNotEmpty &&
-                                    (TypesAvailable[0]["Single"] ==
-                                        "AvailableType")) {
-                                  return WaitingCard(
-                                    Id: historyList[index]["reservationId"],
-                                    Name: historyList[index]["visitorName"],
-                                    PhoneNumber: historyList[index]
-                                        ["VphoneNumber"],
-                                    VehicleType: historyList[index]
-                                        ["VehicleType"],
-                                    ExpectUseTime: historyList[index]["time"],
-                                    availableType: "True",
-                                  );
-                                } else {
-                                  return WaitingCard(
-                                    Id: historyList[index]["reservationId"],
-                                    Name: historyList[index]["visitorName"],
-                                    PhoneNumber: historyList[index]
-                                        ["VphoneNumber"],
-                                    VehicleType: historyList[index]
-                                        ["VehicleType"],
-                                    ExpectUseTime: historyList[index]["time"],
-                                    availableType: "False",
-                                  );
-                                }
-                              } else if (historyList[index]["VehicleType"] ==
-                                  "Double") {
-                                //double
-                                if (TypesAvailable.isNotEmpty &&
-                                    TypesAvailable[1]["Double"] ==
-                                        "AvailableType") {
-                                  return WaitingCard(
-                                    Id: historyList[index]["reservationId"],
-                                    Name: historyList[index]["visitorName"],
-                                    PhoneNumber: historyList[index]
-                                        ["VphoneNumber"],
-                                    VehicleType: historyList[index]
-                                        ["VehicleType"],
-                                    ExpectUseTime: historyList[index]["time"],
-                                    availableType: "True",
-                                  );
-                                } else {
-                                  return WaitingCard(
-                                    Id: historyList[index]["reservationId"],
-                                    Name: historyList[index]["visitorName"],
-                                    PhoneNumber: historyList[index]
-                                        ["VphoneNumber"],
-                                    VehicleType: historyList[index]
-                                        ["VehicleType"],
-                                    ExpectUseTime: historyList[index]["time"],
-                                    availableType: "False",
-                                  );
-                                }
-                              }
-                            } else {
-                              return Container(); // Handle other cases if needed
-                            }
-                          },
+                         itemBuilder: (BuildContext context, int index) {
+  if (historyList[index]["Status"] == "Waiting") {
+    final reservationTime = DateTime.parse(historyList[index]["time"]); // Parse reservation time
+    final now = DateTime.now();
+    final elapsedTime = now.difference(reservationTime).inMinutes;
+
+    if (elapsedTime >= 2) {
+      // Reservation has been waiting for more than 2 minutes, cancel it
+      AutoCancel(historyList[index]['reservationId']);
+      return Container(); // Or any placeholder widget for canceled reservations
+    } else {
+      // Reservation is still within the 2-minutes window
+      if (historyList[index]["VehicleType"] == "Single") {
+        if (TypesAvailable.isNotEmpty && TypesAvailable[0]["Single"] == "AvailableType") {
+          return WaitingCard(
+            Id: historyList[index]["reservationId"],
+            Name: historyList[index]["visitorName"],
+            PhoneNumber: historyList[index]["VphoneNumber"],
+            VehicleType: historyList[index]["VehicleType"],
+            ExpectUseTime: historyList[index]["time"],
+            availableType: "True",
+          );
+        } else {
+          return WaitingCard(
+            Id: historyList[index]["reservationId"],
+            Name: historyList[index]["visitorName"],
+            PhoneNumber: historyList[index]["VphoneNumber"],
+            VehicleType: historyList[index]["VehicleType"],
+            ExpectUseTime: historyList[index]["time"],
+            availableType: "False",
+          );
+        }
+      } else if (historyList[index]["VehicleType"] == "Double") {
+        if (TypesAvailable.isNotEmpty && TypesAvailable[1]["Double"] == "AvailableType") {
+          return WaitingCard(
+            Id: historyList[index]["reservationId"],
+            Name: historyList[index]["visitorName"],
+            PhoneNumber: historyList[index]["VphoneNumber"],
+            VehicleType: historyList[index]["VehicleType"],
+            ExpectUseTime: historyList[index]["time"],
+            availableType: "True",
+          );
+        } else {
+          return WaitingCard(
+            Id: historyList[index]["reservationId"],
+            Name: historyList[index]["visitorName"],
+            PhoneNumber: historyList[index]["VphoneNumber"],
+            VehicleType: historyList[index]["VehicleType"],
+            ExpectUseTime: historyList[index]["time"],
+            availableType: "False",
+          );
+        }
+      }
+    }
+  } else {
+    return Container(); // Handle other cases if needed
+  }
+},
+
                         )
                       : Container(
                           margin: EdgeInsets.only(top: 50),
