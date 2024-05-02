@@ -4,8 +4,14 @@
     
 {% block content %}
 <title>Historical Dashboard</title>
-
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    #myChart1 {
+        margin: 0 auto;
+        display: block;
+    }
+</style>
 <main class="">
     {% if messages %}
 			{% for message in messages %}
@@ -26,29 +32,93 @@
             <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
                 <div class="flex justify-between mb-4 items-start">
 
-                    <div class="font-medium">Reports' statistics
-    
-                    </div>
+                    <div class="font-medium">Reported Vehicles' Statistics For <span id="currentMonth"></span></div>
+
+                    <script>
+                    var currentDate = new Date();
+                    var currentMonth = currentDate.toLocaleString('default', { month: 'long' });
+                    var currentMonthElement = document.getElementById('currentMonth');
+                    currentMonthElement.textContent = currentMonth;
+                    </script>
                     
                 
                     
 
                 </div>
                 <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
-                    <div class="flex justify-space"> 
-                            <div class="text-2xl font-semibold " id="Active">0</div>
-                            <div class="text-2xl font-semibold" id="Double">0</div>
-                            <div class="text-2xl font-semibold " id="Single">0</div>
-                            <div class="text-2xl font-semibold " id="Backup" >0</div>
-                        
-                    </div>
+                    <canvas id="myChart" width="450" height="400"></canvas>
+
+                    <script>
+                      function splitValuesByWeeks(data, weeks) {
+                        const splitData = [];
+                        let startIndex = 0;
+                        for (const week of weeks) {
+                          const endIndex = startIndex + week;
+                          splitData.push(data.slice(startIndex, endIndex));
+                          startIndex = endIndex;
+                        }
+                        return splitData;
+                      }
+
+
+                      var data = {{ weekly_counts }};
+                      console.log(data)
+                      const weeks = [4, 4, 4];
+                  
+                      const splitData = splitValuesByWeeks(data, weeks);
+                  
+                      const ctx = document.getElementById('myChart').getContext('2d');
+                      const myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                          labels: ["Week 1", "Week 2", "Week 3", "Week 4"],
+                          datasets: [
+                            {
+                              label: "Sudden stop",
+                              data: splitData[0],
+                              borderColor:  'rgb(255, 99, 132)',
+                              backgroundColor:'rgba(255, 99, 132, 0.2)',
+                              fill: false
+                            },
+                            {
+                              label: "Empty battery",
+                              data: splitData[1],
+                              borderColor:  'rgba(255, 159, 64)',
+                              backgroundColor:'rgba(255, 159, 64, 0.2)',
+                              fill: false
+                            },
+                            {
+                              label: "Other problems",
+                              data: splitData[2],
+                              borderColor: 'rgba(75, 192, 192)',
+                              backgroundColor:'rgba(75, 192, 192, 0.2)',
+
+                              fill: false
+                            }
+                          ]
+                        },
+                        options: {
+                          responsive: true,
+                          scales: {
+                            x: {
+                              display: true,
+                              title: {
+                                display: true,
+                                text: 'Weeks'
+                              }
+                            },
+                            y: {
+                              display: true,
+                              title: {
+                                display: true,
+                                text: 'Number of vehicles'
+                              }
+                            }
+                          }
+                        }
+                      });
+                    </script>
                        
-                        <div class="flex justify-between">
-                            <div class="text-sm font-medium text-gray-400">Total vehicles in usage</div>
-                            <div class="text-sm font-medium text-gray-400">Double vehicles in usage </div>
-                            <div class="text-sm font-medium text-gray-400">Single vehicles in usage </div>
-                            <div class="text-sm font-medium text-gray-400">Backup vehicles</div>
-                        </div>
                        
                  
                
@@ -58,25 +128,66 @@
             <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
                 <div class="flex justify-between mb-4">
                     <div id="container">
-                        <div class="font-medium">Reservations' statistics</div>
+                        <div class="font-medium">Type of Reserved Vehicles' Statistics For <span id="currentMonth1"></span></div>
+
+                            <script>
+                            var currentDate = new Date();
+                            var currentMonth = currentDate.toLocaleString('default', { month: 'long' });
+                            var currentMonthElement = document.getElementById('currentMonth1');
+                            currentMonthElement.textContent = currentMonth;
+                            </script>
                         
                         <br>
-                        <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
-                            <div class="flex justify-space">
-                                <div class="text-2xl font-semibold " id="unsolved">0</div>
-                                <div class="text-2xl font-semibold" id="solved">0</div>
-                                <div class="text-2xl font-semibold " id="unsolved">0</div>
-                                <div class="text-2xl font-semibold" id="solved">0</div>
-                            </div>
-                            <div class="flex justify-space">
-                                <div class="text-sm font-medium text-gray-400">UnSolved reported vehicles</div>
-                                <div class="text-sm font-medium text-gray-400">Solved reported vehicles</div>
-                                <div class="text-sm font-medium text-gray-400">Solved reported vehicles</div>
-                                <div class="text-sm font-medium text-gray-400">Solved reported vehicles</div>
-                            
-                            </div>
+                        <canvas id="myChart1" width="450" height="400"></canvas>
+
+                        <script>
+                            var weeklyCounts1 = [{{single_count}}, {{double_count}}];
+                    
+                            var ctx1 = document.getElementById('myChart1').getContext('2d');
+                            new Chart(ctx1, {
+                                type: 'bar',
+                                data: {
+                                    labels: ['Single', 'Double'],
+                                    datasets: [{
+                                        barPercentage: 0.5,
+                                        barThickness: 80,
+                                        maxBarThickness: 100,
+                                        minBarLength: 2,
+                                        label:'Vehicles Types',
+                                        data: weeklyCounts1,
+                                        backgroundColor: [
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(255, 159, 64, 0.2)',
+    ],
+    borderColor: [
+      'rgb(255, 99, 132)',
+      'rgb(255, 159, 64)',
+    ],
+    borderWidth: 1
+                                    }],
+                                },
+                                options: {
+                                    responsive: true,
+                                    scales: {
+                                        x: {
+                                            title: {
+                                                display: true,
+                                                text: "Vehicles' Types"
+                                            }
+                                        },
+                                        y: {
+                                            beginAtZero: true,
+                                            title: {
+                                                display: true,
+                                                text: "Vehicles' Numbers"
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+                        </script>
                            
-                        </div>
+                        
                     </div>
                     
 

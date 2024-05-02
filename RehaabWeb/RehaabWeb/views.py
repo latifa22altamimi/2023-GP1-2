@@ -403,4 +403,56 @@ def reset_password_complete(request):
 
 
 def historicalDb(request):
-     return render(request, 'HistoricalDB.html')
+ from datetime import datetime, timedelta
+ import json
+       
+ current_date = datetime.now()
+ current_month = current_date.month
+ current_year = current_date.year
+
+ start_date = datetime(current_year, current_month, 1)
+ end_date = start_date + timedelta(days=30)
+
+ SuddenStop = Support.objects.filter(
+        ReportedAt__gte=start_date,
+        ReportedAt__lt=end_date,
+        Message='Sudden stop'
+    )
+ EmptyBattery = Support.objects.filter(
+        ReportedAt__gte=start_date,
+        Message='Empty battery'
+    )
+ Other = Support.objects.filter(
+        ReportedAt__gte=start_date,
+        ReportedAt__lt=end_date
+    ).exclude(
+        Message__in=["Sudden stop", "Empty battery"]
+    )
+
+        
+
+
+            
+ weekly_counts = [0, 0, 0, 0,0,0,0,0,0,0,0,0]
+
+                
+ for row in SuddenStop:
+                    week_number = (row.ReportedAt.day - 1) // 7
+                    weekly_counts[week_number] += 1
+ for row in EmptyBattery:
+                    week_number = (row.ReportedAt.day- 1) // 7
+                    weekly_counts[week_number] += 1
+ for row in Other:
+                    week_number = (row.ReportedAt.day - 1) // 7
+                    weekly_counts[week_number] += 1
+
+ double_count = Reservation.objects.filter(VehicleId=1, timestamp__month=today.month).count()
+ single_count = Reservation.objects.filter(VehicleId=2, timestamp__month=today.month).count()
+
+ context = {
+                    'weekly_counts': weekly_counts,
+                    'single_count':single_count,
+                    'double_count':double_count
+                    }
+
+ return render(request, 'HistoricalDB.html',context)
