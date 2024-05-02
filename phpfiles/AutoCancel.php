@@ -1,26 +1,22 @@
 <?php
 include 'connect.php';
 
-// Get the current time
-$currentDateTime = date('h:i A');
-
-// Calculate the time 5 minutes ago
-$deleteTime = date('h:i A', strtotime('-1 minutes'));
+// Retrieve the reservation ID from the POST request
+$reservationId = $_POST['id'];
 
 // Construct the delete query
 $deleteQuery = "
   DELETE FROM reservation
-  WHERE Status = 'Waiting'
-  AND TIME_FORMAT(time, '%h:%i %p') <= '$deleteTime'
+  WHERE reservationId = '$reservationId'
 ";
 
 // Execute the delete query
 $result = mysqli_query($conn, $deleteQuery);
 
 if ($result) {
-    $response = array('success' => true, 'message' => 'Deletion successful');
+    $response = array('success' => true, 'message' => 'Reservation canceled successfully');
 } else {
-    $response = array('success' => false, 'message' => 'Failed to delete rows');
+    $response = array('success' => false, 'message' => 'Failed to cancel reservation');
 }
 
 // Close the database connection
