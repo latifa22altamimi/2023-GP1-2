@@ -111,7 +111,6 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
 
   Future refresh() async {
     //convertToCompleted();
-    AutoCancel();
     historyList.clear();
     list.clear();
     print(GlobalValues.id);
@@ -157,7 +156,6 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     //convertToCompleted(); //convert status to completed
     super.initState();
     checkAvailableType();
-    AutoCancel();
     curpressed = true;
     GetData();
     curColor = Colors.black.withOpacity(0.5);
