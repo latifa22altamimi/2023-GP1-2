@@ -363,12 +363,14 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
           );
         }
       }
-    }
-  } else {
+    
+   else {
     return Container(); // Handle other cases if needed
   }
-},
-
+  }
+  
+  }
+                         }
                         )
                       : Container(
                           margin: EdgeInsets.only(top: 50),
