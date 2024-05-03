@@ -100,9 +100,11 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     }
   }
 
- Future<void> AutoCancel(id) async {
+
+
+ Future<void> AutoCancel(String Rid) async {
   var url = "http://10.0.2.2/phpfiles/AutoCancel.php";
-  final response = await http.post(Uri.parse(url), body: {"id": id});
+  final response = await http.post(Uri.parse(url), body: {"id": Rid});
 
   if (response.statusCode == 200) {
       var red = json.decode(response.body);
@@ -309,9 +311,10 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                           },
                          itemBuilder: (BuildContext context, int index) {
   if (historyList[index]["Status"] == "Waiting") {
-   final reservationTime = parseTimeString(historyList[index]["time"]);
-  final now = DateTime.now();
-  final elapsedTime = now.difference(reservationTime).inMinutes;
+ DateTime ExpectUseTime = DateFormat('hh:mm a').parse(historyList[index]["time"]);
+  ExpectUseTime = ExpectUseTime.add(Duration(hours: ExpectUseTime.hour < 12 ? 0 : 12));
+ final now = DateTime.now();
+  final elapsedTime = now.difference(ExpectUseTime).inMinutes;
 
     if (elapsedTime >= 2) {
       // Reservation has been waiting for more than 2 minutes, cancel it
