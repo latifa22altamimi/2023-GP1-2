@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/ManagerReservations/Reserve_WalkInVehicle.dart';
@@ -220,7 +221,9 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                       children: [
                         Text(
                           'Waiting',
-                          style: TextStyle(color: prevTxt),
+                          
+                          style: GoogleFonts.poppins(color: prevTxt,
+                          fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -278,7 +281,10 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                     ),
                     child: Text(
                       'Current',
-                      style: TextStyle(color: curTxt),
+                      style: GoogleFonts.poppins(color: curTxt, 
+                      fontWeight: FontWeight.w500
+                      )
+                      ,
                     ),
                   ),
                 ),
@@ -303,7 +309,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                           },
                          itemBuilder: (BuildContext context, int index) {
   if (historyList[index]["Status"] == "Waiting") {
-    final reservationTime = parseTimeString(historyList[index]["time"]);
+   final reservationTime = parseTimeString(historyList[index]["time"]);
   final now = DateTime.now();
   final elapsedTime = now.difference(reservationTime).inMinutes;
 
@@ -369,7 +375,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                                   width: 250, height: 250),
                               Text(
                                 'No waiting yet',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
                                     color: const Color.fromARGB(
@@ -449,7 +455,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                                   width: 250, height: 250),
                               Text(
                                 'No current reservations yet',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
                                     color: const Color.fromARGB(
@@ -677,7 +683,7 @@ class _ReserveCardState extends State<ReserveCard> {
                             width: 100, height: 100),
                         Text(
                           'Add to waiting list',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontSize: 20,
                               fontWeight: FontWeight.w600),
@@ -690,7 +696,7 @@ class _ReserveCardState extends State<ReserveCard> {
                           'The visitor will be added to the waiting list and will be able to use the current reservation' +
                               "'" +
                               's vehicle as soon as it becomes available',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               color: Color.fromARGB(255, 48, 48, 48),
                               fontSize: 17,
                               fontWeight: FontWeight.w400),
@@ -704,7 +710,7 @@ class _ReserveCardState extends State<ReserveCard> {
                             children: [
                               Text(
                                 'Name',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 18),
@@ -1093,7 +1099,7 @@ class _ReserveCardState extends State<ReserveCard> {
                   children: [
                     Text(
                       'Reservation#${widget.Rid}', // reservation id
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 18,
                           fontWeight: FontWeight.w500),
@@ -1103,7 +1109,7 @@ class _ReserveCardState extends State<ReserveCard> {
                     ),
                     Text(
                       '${widget.status} ',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                           color: widget.colorr,
                           fontSize: 18,
                           fontWeight: FontWeight.w500),
@@ -1128,7 +1134,7 @@ class _ReserveCardState extends State<ReserveCard> {
                     margin: EdgeInsets.only(left: 20.0),
                     child: Text(
                       'Vehicle type: ',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 15,
                           fontWeight: FontWeight.w500),
@@ -1136,7 +1142,7 @@ class _ReserveCardState extends State<ReserveCard> {
                   ),
                   Text(
                     '${widget.VehicleType}',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                         color: Colors.black,
                         fontSize: 15,
                         fontWeight: FontWeight.w400),
@@ -1158,7 +1164,7 @@ class _ReserveCardState extends State<ReserveCard> {
                     margin: EdgeInsets.only(left: 20.0),
                     child: Text(
                       'Start time: ',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 15,
                           fontWeight: FontWeight.w500),
@@ -1166,7 +1172,7 @@ class _ReserveCardState extends State<ReserveCard> {
                   ),
                   Text(
                     '${widget.timee}', //widget.timee
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                         color: Colors.black,
                         fontSize: 15,
                         fontWeight: FontWeight.w400),
@@ -1185,14 +1191,14 @@ class _ReserveCardState extends State<ReserveCard> {
                       children: [
                         Text(
                           'Expected finish time: ',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontSize: 15,
                               fontWeight: FontWeight.w500),
                         ),
                         Text(
                           '${widget.ExpectFinishTime}', //widget.timee
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontSize: 15,
                               fontWeight: FontWeight.w400),
@@ -1366,7 +1372,7 @@ class _WaitingCardState extends State<WaitingCard> {
               children: [
                 Text(
                   'Waiting#${widget.Id}', // reservation id
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       color: Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.w500),
@@ -1376,7 +1382,7 @@ class _WaitingCardState extends State<WaitingCard> {
                 ),
                 Text(
                   'Waiting',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       color: Color.fromARGB(255, 37, 149, 190),
                       fontSize: 18,
                       fontWeight: FontWeight.w500),
@@ -1401,7 +1407,7 @@ class _WaitingCardState extends State<WaitingCard> {
                 margin: EdgeInsets.only(left: 20.0),
                 child: Text(
                   'Name: ',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       color: Colors.black,
                       fontSize: 15,
                       fontWeight: FontWeight.w500),
@@ -1409,7 +1415,7 @@ class _WaitingCardState extends State<WaitingCard> {
               ),
               Text(
                 '${widget.Name}',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.w400),
@@ -1428,7 +1434,7 @@ class _WaitingCardState extends State<WaitingCard> {
                 margin: EdgeInsets.only(left: 20.0),
                 child: Text(
                   'Vehicle type: ',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       color: Colors.black,
                       fontSize: 15,
                       fontWeight: FontWeight.w500),
@@ -1436,7 +1442,7 @@ class _WaitingCardState extends State<WaitingCard> {
               ),
               Text(
                 '${widget.VehicleType}',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.w400),
@@ -1459,14 +1465,14 @@ class _WaitingCardState extends State<WaitingCard> {
                     children: [
                       Text(
                         'Phone: ',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                             color: Colors.black,
                             fontSize: 15,
                             fontWeight: FontWeight.w500),
                       ),
                       Text(
                         '${widget.PhoneNumber}',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
                             color: Colors.black,
                             fontSize: 15,
                             fontWeight: FontWeight.w400),
@@ -1486,14 +1492,14 @@ class _WaitingCardState extends State<WaitingCard> {
                   children: [
                     Text(
                       'Expect use time: ',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 15,
                           fontWeight: FontWeight.w500),
                     ),
                     Text(
                       '${widget.ExpectUseTime}',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 15,
                           fontWeight: FontWeight.w400),
@@ -1531,7 +1537,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                             width: 100, height: 100),
                                         Text(
                                           'Remove visitor',
-                                          style: TextStyle(
+                                          style: GoogleFonts.poppins(
                                               color: Colors.black,
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600),
@@ -1543,7 +1549,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                         Text(
                                           'Visitor will be removed \nfrom waiting list',
                                           textAlign: TextAlign.center,
-                                          style: TextStyle(
+                                          style: GoogleFonts.poppins(
                                               color: Color.fromARGB(
                                                   255, 48, 48, 48),
                                               fontSize: 17,
@@ -1566,7 +1572,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                     Navigator.of(context).pop(),
                                                 child: Text(
                                                   'Cancel',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.black,
                                                       fontSize: 15,
                                                       fontWeight:
@@ -1641,7 +1647,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                                   height: 100),
                                                               Text(
                                                                 'Success',
-                                                                style: TextStyle(
+                                                                style: GoogleFonts.poppins(
                                                                     color: Colors
                                                                         .black,
                                                                     fontSize:
@@ -1656,7 +1662,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                               Text(
                                                                 textAlign: TextAlign.center,
                                                                 'Visitor has been \nremoved successfully',
-                                                                style: TextStyle(
+                                                                style: GoogleFonts.poppins(
                                                                     color: Colors
                                                                         .black,
                                                                     fontSize:
@@ -1678,7 +1684,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                 },
                                                 child: Text(
                                                   'Remove',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.white,
                                                       fontSize: 14,
                                                       fontWeight:
@@ -1749,7 +1755,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                               height: 100),
                                           Text(
                                             'Accept visitor',
-                                            style: TextStyle(
+                                            style: GoogleFonts.poppins(
                                                 color: Colors.black,
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.w600),
@@ -1776,7 +1782,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                           .pop(),
                                                   child: Text(
                                                     'Cancel',
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.poppins(
                                                         color: Colors.black,
                                                         fontSize: 15,
                                                         fontWeight:
@@ -1857,7 +1863,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                                         100),
                                                                 Text(
                                                                   'Success',
-                                                                  style: TextStyle(
+                                                                  style: GoogleFonts.poppins(
                                                                       color: Colors
                                                                           .black,
                                                                       fontSize:
@@ -1871,7 +1877,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                                 ),
                                                                 Text(
                                                                   'Visitor has been accepted',
-                                                                  style: TextStyle(
+                                                                  style: GoogleFonts.poppins(
                                                                       color: Colors
                                                                           .black,
                                                                       fontSize:
@@ -1909,7 +1915,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                   },
                                                   child: Text(
                                                     'Accept',
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.poppins(
                                                         color: Colors.white,
                                                         fontSize: 15,
                                                         fontWeight:
@@ -1958,7 +1964,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                         width: 100, height: 100),
                                     Text(
                                       'Unable to accept visitor',
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                           color: Colors.black,
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600),
@@ -1969,7 +1975,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                     ),
                                     Text(
                                       'There are no available vehicles',
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                           color:
                                               Color.fromARGB(255, 48, 48, 48),
                                           fontSize: 17,
@@ -1992,7 +1998,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                 Navigator.of(context).pop(),
                                             child: Text(
                                               'Cancel',
-                                              style: TextStyle(
+                                              style: GoogleFonts.poppins(
                                                   color: Colors.black,
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.w500),

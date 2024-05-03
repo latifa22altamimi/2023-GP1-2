@@ -66,7 +66,7 @@ $minutes = $totalMinutes % 60;
 
 // Adjust hours to wrap around every 24 hours and format AM/PM
 $finalHour = $hours % 24;
-$period = ($finalHour >= 12 && $finalHour < 24) ? 'AM' : 'PM';
+$period = ($finalHour >= 12 && $finalHour < 24) ? 'PM' : 'AM';
 
 // Adjust the finalHour for 12-hour format
 if ($finalHour > 12) {
