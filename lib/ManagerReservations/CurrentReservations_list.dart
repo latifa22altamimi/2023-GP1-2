@@ -98,10 +98,23 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
       print(red);
     }
   }
+  // Function to parse time string from historyList and convert it to 24-hour format
+DateTime parseAndConvertTo24Hour(String timeString) {
+  DateTime parsedTime = DateFormat('hh:mm a').parse(timeString);
+  parsedTime = parsedTime.add(Duration(hours: parsedTime.hour < 12 ? 0 : 12));
+  return parsedTime;
+}
 
- Future<void> AutoCancel(id) async {
+// Function to calculate elapsed time in minutes
+int calculateElapsedTime(DateTime reservationDateTime) {
+  final now = DateTime.now();
+  final elapsedTime = now.difference(reservationDateTime).inMinutes;
+  return elapsedTime;
+}
+
+ Future<void> AutoCancel(String Rid) async {
   var url = "http://10.0.2.2/phpfiles/AutoCancel.php";
-  final response = await http.post(Uri.parse(url), body: {"id": id});
+  final response = await http.post(Uri.parse(url), body: {"id": Rid});
 
   if (response.statusCode == 200) {
       var red = json.decode(response.body);
@@ -303,9 +316,15 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                           },
                          itemBuilder: (BuildContext context, int index) {
   if (historyList[index]["Status"] == "Waiting") {
-    final reservationTime = parseTimeString(historyList[index]["time"]);
-  final now = DateTime.now();
-  final elapsedTime = now.difference(reservationTime).inMinutes;
+ DateTime reservationTime = parseAndConvertTo24Hour(historyList[index]["time"]);
+final reservationDateTime = DateTime(
+  DateTime.now().year,
+  DateTime.now().month,
+  DateTime.now().day,
+  reservationTime.hour,
+  reservationTime.minute,
+);
+final elapsedTime = calculateElapsedTime(reservationDateTime);
 
     if (elapsedTime >= 2) {
       // Reservation has been waiting for more than 2 minutes, cancel it
