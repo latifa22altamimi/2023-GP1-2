@@ -104,12 +104,20 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
 
  Future<void> AutoCancel(String Rid) async {
   var url = "http://10.0.2.2/phpfiles/AutoCancel.php";
-  final response = await http.post(Uri.parse(url), body: {"id": Rid});
+  try {
+    final response = await http.post(Uri.parse(url), body: {"id": Rid});
 
-  if (response.statusCode == 200) {
+    if (response.statusCode == 200) {
       var red = json.decode(response.body);
       print(red);
+    } else {
+      // Handle HTTP errors
+      print("HTTP request failed with status: ${response.statusCode}");
     }
+  } catch (e) {
+    // Handle exceptions
+    print("Error occurred during HTTP request: $e");
+  }
 }
 
   Future refresh() async {
@@ -159,7 +167,6 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     //convertToCompleted(); //convert status to completed
     super.initState();
     checkAvailableType();
-    
     curpressed = true;
     GetData();
     curColor = Colors.black.withOpacity(0.5);
