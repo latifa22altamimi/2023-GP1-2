@@ -5,10 +5,7 @@ include 'connect.php';
 $reservationId = $_POST['id'];
 
 // Construct the delete query
-$deleteQuery = "
-  DELETE FROM reservation
-  WHERE reservationId = '$reservationId'
-";
+$deleteQuery = "DELETE FROM reservation WHERE reservationId = $reservationId";
 
 // Execute the delete query
 $result = mysqli_query($conn, $deleteQuery);
