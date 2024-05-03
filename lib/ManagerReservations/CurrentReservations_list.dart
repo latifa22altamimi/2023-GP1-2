@@ -159,6 +159,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     //convertToCompleted(); //convert status to completed
     super.initState();
     checkAvailableType();
+    
     curpressed = true;
     GetData();
     curColor = Colors.black.withOpacity(0.5);
