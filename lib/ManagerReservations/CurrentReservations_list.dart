@@ -310,21 +310,22 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                             );
                           },
                          itemBuilder: (BuildContext context, int index) {
+                          Widget widget = Container();
   if (historyList[index]["Status"] == "Waiting") {
+
  DateTime ExpectUseTime = DateFormat('hh:mm a').parse(historyList[index]["time"]);
   ExpectUseTime = ExpectUseTime.add(Duration(hours: ExpectUseTime.hour < 12 ? 0 : 12));
  final now = DateTime.now();
-  final elapsedTime = now.difference(ExpectUseTime).inMinutes;
+  final elapsedTime = ExpectUseTime.difference(now).inMinutes;
 
     if (elapsedTime >= 2) {
       // Reservation has been waiting for more than 2 minutes, cancel it
       AutoCancel(historyList[index]['reservationId']);
-      return Container(); // Or any placeholder widget for canceled reservations
     } else {
       // Reservation is still within the 2-minutes window
       if (historyList[index]["VehicleType"] == "Single") {
         if (TypesAvailable.isNotEmpty && TypesAvailable[0]["Single"] == "AvailableType") {
-          return WaitingCard(
+          widget= WaitingCard(
             Id: historyList[index]["reservationId"],
             Name: historyList[index]["visitorName"],
             PhoneNumber: historyList[index]["VphoneNumber"],
@@ -333,7 +334,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
             availableType: "True",
           );
         } else {
-          return WaitingCard(
+          widget= WaitingCard(
             Id: historyList[index]["reservationId"],
             Name: historyList[index]["visitorName"],
             PhoneNumber: historyList[index]["VphoneNumber"],
@@ -344,7 +345,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
         }
       } else if (historyList[index]["VehicleType"] == "Double") {
         if (TypesAvailable.isNotEmpty && TypesAvailable[1]["Double"] == "AvailableType") {
-          return WaitingCard(
+          widget= WaitingCard(
             Id: historyList[index]["reservationId"],
             Name: historyList[index]["visitorName"],
             PhoneNumber: historyList[index]["VphoneNumber"],
@@ -353,7 +354,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
             availableType: "True",
           );
         } else {
-          return WaitingCard(
+          widget= WaitingCard(
             Id: historyList[index]["reservationId"],
             Name: historyList[index]["visitorName"],
             PhoneNumber: historyList[index]["VphoneNumber"],
@@ -365,11 +366,12 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
       }
     
    else {
-    return Container(); // Handle other cases if needed
+   // Handle other cases if needed
   }
   }
   
   }
+  return widget;
                          }
                         )
                       : Container(
