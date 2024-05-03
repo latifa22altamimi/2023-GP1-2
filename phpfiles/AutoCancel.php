@@ -1,25 +1,20 @@
 <?php
 include 'connect.php';
 
-// Retrieve the reservation ID from the POST request
-$reservationId = $_POST['id'];
+date_default_timezone_set('Asia/Riyadh');
+$currentDateTime = date('h:i A');
+$currentDateTimeObj = DateTime::createFromFormat('h:i A', $currentDateTime);
+$currentDateTimeObj->modify('-1 minutes');
+$twoMinutesAgo = $currentDateTimeObj->format('h:i A');
 
-// Construct the delete query
-$deleteQuery = "DELETE FROM reservation WHERE reservationId = $reservationId";
+// Delete records with status 'Waiting' and time 2 minutes or more in the past
+$deleteSql = "DELETE FROM reservation 
+              WHERE status = 'Waiting' 
+              AND TIME_FORMAT(time, '%h:%i %p') <= '$twoMinutesAgo'";
 
-// Execute the delete query
-$result = mysqli_query($conn, $deleteQuery);
+$result = $conn->query($deleteSql);
 
 if ($result) {
-    $response = array('success' => true, 'message' => 'Reservation canceled successfully');
-} else {
-    $response = array('success' => false, 'message' => 'Failed to cancel reservation');
+    echo json_encode($twoMinutesAgo);
 }
-
-// Close the database connection
-mysqli_close($conn);
-
-// Send the JSON response
-header('Content-Type: application/json');
-echo json_encode($response);
 ?>

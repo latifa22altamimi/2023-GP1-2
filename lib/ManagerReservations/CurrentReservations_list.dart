@@ -100,28 +100,19 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     }
   }
 
+  Future AutoCancel() async {
+    var url = "http://10.0.2.2/phpfiles/AutoCancel.php";
+    final res = await http.post(Uri.parse(url), body: {});
 
-
- Future<void> AutoCancel(String Rid) async {
-  var url = "http://10.0.2.2/phpfiles/AutoCancel.php";
-  try {
-    final response = await http.post(Uri.parse(url), body: {"id": Rid});
-
-    if (response.statusCode == 200) {
-      var red = json.decode(response.body);
+    if (res.statusCode == 200) {
+      var red = json.decode(res.body);
       print(red);
-    } else {
-      // Handle HTTP errors
-      print("HTTP request failed with status: ${response.statusCode}");
     }
-  } catch (e) {
-    // Handle exceptions
-    print("Error occurred during HTTP request: $e");
   }
-}
 
   Future refresh() async {
     //convertToCompleted();
+    AutoCancel();
     historyList.clear();
     list.clear();
     print(GlobalValues.id);
@@ -168,7 +159,9 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     super.initState();
     checkAvailableType();
     curpressed = true;
+    AutoCancel();
     GetData();
+
     curColor = Colors.black.withOpacity(0.5);
     prevColor = Color.fromARGB(255, 255, 255, 255);
     curBG = kPrimaryColor;
@@ -231,9 +224,8 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                       children: [
                         Text(
                           'Waiting',
-                          
-                          style: GoogleFonts.poppins(color: prevTxt,
-                          fontWeight: FontWeight.w500),
+                          style: GoogleFonts.poppins(
+                              color: prevTxt, fontWeight: FontWeight.w500),
                         ),
                       ],
                     ),
@@ -291,10 +283,8 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                     ),
                     child: Text(
                       'Current',
-                      style: GoogleFonts.poppins(color: curTxt, 
-                      fontWeight: FontWeight.w500
-                      )
-                      ,
+                      style: GoogleFonts.poppins(
+                          color: curTxt, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),
@@ -317,71 +307,70 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                               height: 9,
                             );
                           },
-                         itemBuilder: (BuildContext context, int index) {
-                          Widget widget = Container();
-  if (historyList[index]["Status"] == "Waiting") {
-
- DateTime ExpectUseTime = DateFormat('hh:mm a').parse(historyList[index]["time"]);
-  ExpectUseTime = ExpectUseTime.add(Duration(hours: ExpectUseTime.hour < 12 ? 0 : 12));
- final now = DateTime.now();
-  final elapsedTime = ExpectUseTime.difference(now).inMinutes;
-
-    if (elapsedTime >= 2) {
-      // Reservation has been waiting for more than 2 minutes, cancel it
-      AutoCancel(historyList[index]['reservationId']);
-    } else {
-      // Reservation is still within the 2-minutes window
-      if (historyList[index]["VehicleType"] == "Single") {
-        if (TypesAvailable.isNotEmpty && TypesAvailable[0]["Single"] == "AvailableType") {
-          widget= WaitingCard(
-            Id: historyList[index]["reservationId"],
-            Name: historyList[index]["visitorName"],
-            PhoneNumber: historyList[index]["VphoneNumber"],
-            VehicleType: historyList[index]["VehicleType"],
-            ExpectUseTime: historyList[index]["time"],
-            availableType: "True",
-          );
-        } else {
-          widget= WaitingCard(
-            Id: historyList[index]["reservationId"],
-            Name: historyList[index]["visitorName"],
-            PhoneNumber: historyList[index]["VphoneNumber"],
-            VehicleType: historyList[index]["VehicleType"],
-            ExpectUseTime: historyList[index]["time"],
-            availableType: "False",
-          );
-        }
-      } else if (historyList[index]["VehicleType"] == "Double") {
-        if (TypesAvailable.isNotEmpty && TypesAvailable[1]["Double"] == "AvailableType") {
-          widget= WaitingCard(
-            Id: historyList[index]["reservationId"],
-            Name: historyList[index]["visitorName"],
-            PhoneNumber: historyList[index]["VphoneNumber"],
-            VehicleType: historyList[index]["VehicleType"],
-            ExpectUseTime: historyList[index]["time"],
-            availableType: "True",
-          );
-        } else {
-          widget= WaitingCard(
-            Id: historyList[index]["reservationId"],
-            Name: historyList[index]["visitorName"],
-            PhoneNumber: historyList[index]["VphoneNumber"],
-            VehicleType: historyList[index]["VehicleType"],
-            ExpectUseTime: historyList[index]["time"],
-            availableType: "False",
-          );
-        }
-      }
-    
-   else {
-   // Handle other cases if needed
-  }
-  }
-  
-  }
-  return widget;
-                         }
-                        )
+                          itemBuilder: (BuildContext context, int index) {
+                            Widget widget = Container();
+                            if (historyList[index]["Status"] == "Waiting") {
+                              // Reservation is still within the 2-minutes window
+                              if (historyList[index]["VehicleType"] ==
+                                  "Single") {
+                                if (TypesAvailable.isNotEmpty &&
+                                    TypesAvailable[0]["Single"] ==
+                                        "AvailableType") {
+                                  widget = WaitingCard(
+                                    Id: historyList[index]["reservationId"],
+                                    Name: historyList[index]["visitorName"],
+                                    PhoneNumber: historyList[index]
+                                        ["VphoneNumber"],
+                                    VehicleType: historyList[index]
+                                        ["VehicleType"],
+                                    ExpectUseTime: historyList[index]["time"],
+                                    availableType: "True",
+                                  );
+                                } else {
+                                  widget = WaitingCard(
+                                    Id: historyList[index]["reservationId"],
+                                    Name: historyList[index]["visitorName"],
+                                    PhoneNumber: historyList[index]
+                                        ["VphoneNumber"],
+                                    VehicleType: historyList[index]
+                                        ["VehicleType"],
+                                    ExpectUseTime: historyList[index]["time"],
+                                    availableType: "False",
+                                  );
+                                }
+                              } else if (historyList[index]["VehicleType"] ==
+                                  "Double") {
+                                if (TypesAvailable.isNotEmpty &&
+                                    TypesAvailable[1]["Double"] ==
+                                        "AvailableType") {
+                                  widget = WaitingCard(
+                                    Id: historyList[index]["reservationId"],
+                                    Name: historyList[index]["visitorName"],
+                                    PhoneNumber: historyList[index]
+                                        ["VphoneNumber"],
+                                    VehicleType: historyList[index]
+                                        ["VehicleType"],
+                                    ExpectUseTime: historyList[index]["time"],
+                                    availableType: "True",
+                                  );
+                                } else {
+                                  widget = WaitingCard(
+                                    Id: historyList[index]["reservationId"],
+                                    Name: historyList[index]["visitorName"],
+                                    PhoneNumber: historyList[index]
+                                        ["VphoneNumber"],
+                                    VehicleType: historyList[index]
+                                        ["VehicleType"],
+                                    ExpectUseTime: historyList[index]["time"],
+                                    availableType: "False",
+                                  );
+                                }
+                              } else {
+                                // Handle other cases if needed
+                              }
+                            }
+                            return widget;
+                          })
                       : Container(
                           margin: EdgeInsets.only(top: 50),
                           child: Column(
@@ -1647,7 +1636,11 @@ class _WaitingCardState extends State<WaitingCard> {
                                                         child: Container(
                                                           padding:
                                                               const EdgeInsets
-                                                                  .only(top:15.0,bottom:15.0,left:10.0,right: 10.0),
+                                                                  .only(
+                                                                  top: 15.0,
+                                                                  bottom: 15.0,
+                                                                  left: 10.0,
+                                                                  right: 10.0),
                                                           child: Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -1675,7 +1668,9 @@ class _WaitingCardState extends State<WaitingCard> {
                                                                 height: 10.0,
                                                               ),
                                                               Text(
-                                                                textAlign: TextAlign.center,
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .center,
                                                                 'Visitor has been \nremoved successfully',
                                                                 style: GoogleFonts.poppins(
                                                                     color: Colors
@@ -1689,7 +1684,6 @@ class _WaitingCardState extends State<WaitingCard> {
                                                               SizedBox(
                                                                 height: 10.0,
                                                               ),
-                                                             
                                                             ],
                                                           ),
                                                         ),
