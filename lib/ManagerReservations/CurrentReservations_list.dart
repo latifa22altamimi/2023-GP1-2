@@ -100,6 +100,8 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
     }
   }
 
+
+
  Future<void> AutoCancel(String Rid) async {
   var url = "http://10.0.2.2/phpfiles/AutoCancel.php";
   try {
@@ -309,82 +311,77 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
                   onRefresh: refresh,
                   child: (historyList.isNotEmpty)
                       ? ListView.separated(
-  itemCount: historyList.length,
-  separatorBuilder: (context, index) {
-    return const SizedBox(
-      height: 9,
-    );
-  },
-  itemBuilder: (BuildContext context, int index) {
-    final item = historyList[index];
+                          itemCount: historyList.length,
+                          separatorBuilder: (context, index) {
+                            return const SizedBox(
+                              height: 9,
+                            );
+                          },
+                         itemBuilder: (BuildContext context, int index) {
+                          Widget widget = Container();
+  if (historyList[index]["Status"] == "Waiting") {
 
-    if (item["Status"] == "Waiting") {
-      DateTime ExpectUseTime = DateFormat('hh:mm a').parse(item["time"]);
-      ExpectUseTime = ExpectUseTime.add(Duration(hours: ExpectUseTime.hour < 12 ? 0 : 12));
-      final now = DateTime.now();
-      final elapsedTime = now.difference(ExpectUseTime).inMinutes;
+ DateTime ExpectUseTime = DateFormat('hh:mm a').parse(historyList[index]["time"]);
+  ExpectUseTime = ExpectUseTime.add(Duration(hours: ExpectUseTime.hour < 12 ? 0 : 12));
+ final now = DateTime.now();
+  final elapsedTime = ExpectUseTime.difference(now).inMinutes;
 
-      if (elapsedTime >= 2) {
-        // Reservation has been waiting for more than 2 minutes, cancel it
-        AutoCancel(item['reservationId']);
-        return Container();
-      } else {
-        // Reservation is still within the 2-minutes window
-        if (item["VehicleType"] == "Single") {
-          if (TypesAvailable.isNotEmpty && TypesAvailable[0]["Single"] == "AvailableType") {
-             return WaitingCard(
-              Id: item["reservationId"],
-              Name: item["visitorName"],
-              PhoneNumber: item["VphoneNumber"],
-              VehicleType: item["VehicleType"],
-              ExpectUseTime: item["time"],
-              availableType: "True",
-            );
-           
-          } else {
-           
-               return WaitingCard(
-              Id: item["reservationId"],
-              Name: item["visitorName"],
-              PhoneNumber: item["VphoneNumber"],
-              VehicleType: item["VehicleType"],
-              ExpectUseTime: item["time"],
-              availableType: "False",
-            );
-            
-          }
-        } else if (item["VehicleType"] == "Double") {
-          if (TypesAvailable.isNotEmpty && TypesAvailable[1]["Double"] == "AvailableType") {
-            
-               return WaitingCard(
-              Id: item["reservationId"],
-              Name: item["visitorName"],
-              PhoneNumber: item["VphoneNumber"],
-              VehicleType: item["VehicleType"],
-              ExpectUseTime: item["time"],
-              availableType: "True",
-            );
-           
-           
-          } else {
-              return WaitingCard(
-              Id: item["reservationId"],
-              Name: item["visitorName"],
-              PhoneNumber: item["VphoneNumber"],
-              VehicleType: item["VehicleType"],
-              ExpectUseTime: item["time"],
-              availableType: "False",
-            );
-            
-          }
-        } 
+    if (elapsedTime >= 2) {
+      // Reservation has been waiting for more than 2 minutes, cancel it
+      AutoCancel(historyList[index]['reservationId']);
+    } else {
+      // Reservation is still within the 2-minutes window
+      if (historyList[index]["VehicleType"] == "Single") {
+        if (TypesAvailable.isNotEmpty && TypesAvailable[0]["Single"] == "AvailableType") {
+          widget= WaitingCard(
+            Id: historyList[index]["reservationId"],
+            Name: historyList[index]["visitorName"],
+            PhoneNumber: historyList[index]["VphoneNumber"],
+            VehicleType: historyList[index]["VehicleType"],
+            ExpectUseTime: historyList[index]["time"],
+            availableType: "True",
+          );
+        } else {
+          widget= WaitingCard(
+            Id: historyList[index]["reservationId"],
+            Name: historyList[index]["visitorName"],
+            PhoneNumber: historyList[index]["VphoneNumber"],
+            VehicleType: historyList[index]["VehicleType"],
+            ExpectUseTime: historyList[index]["time"],
+            availableType: "False",
+          );
+        }
+      } else if (historyList[index]["VehicleType"] == "Double") {
+        if (TypesAvailable.isNotEmpty && TypesAvailable[1]["Double"] == "AvailableType") {
+          widget= WaitingCard(
+            Id: historyList[index]["reservationId"],
+            Name: historyList[index]["visitorName"],
+            PhoneNumber: historyList[index]["VphoneNumber"],
+            VehicleType: historyList[index]["VehicleType"],
+            ExpectUseTime: historyList[index]["time"],
+            availableType: "True",
+          );
+        } else {
+          widget= WaitingCard(
+            Id: historyList[index]["reservationId"],
+            Name: historyList[index]["visitorName"],
+            PhoneNumber: historyList[index]["VphoneNumber"],
+            VehicleType: historyList[index]["VehicleType"],
+            ExpectUseTime: historyList[index]["time"],
+            availableType: "False",
+          );
+        }
       }
-    }
-
-  },
-)
-
-                        
+    
+   else {
+   // Handle other cases if needed
+  }
+  }
+  
+  }
+  return widget;
+                         }
+                        )
                       : Container(
                           margin: EdgeInsets.only(top: 50),
                           child: Column(
