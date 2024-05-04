@@ -44,8 +44,8 @@ $minutes = floor(($averageSeconds % 3600) / 60);
 $AvgTime = sprintf('%02d:%02d', $hours, $minutes); // Average from tawaf duration
 
 // Calculate expected finish time
-list($startHour, $startMinute, $startPeriod) = explode(' ', $startTime);
-list($startHour, $startMinute) = explode(':', $startHour);
+list($startHourMinute, $startPeriod) = explode(' ', $startTime);
+list($startHour, $startMinute) = explode(':', $startHourMinute);
 $startHour = intval($startHour);
 $startMinute = intval($startMinute);
 $startPeriod = strtoupper(trim($startPeriod));
@@ -65,16 +65,13 @@ $hours = floor($totalMinutes / 60);
 $minutes = $totalMinutes % 60;
 
 // Adjust hours to wrap around every 24 hours and format AM/PM
-$finalHour = $hours % 24;
-$period = ($finalHour >= 12 && $finalHour < 24) ? 'AM' : 'PM';
+$finalHour = $hours % 12;
+$period = ($hours >= 12) ? 'PM' : 'AM';
 
 // Adjust the finalHour for 12-hour format
-if ($finalHour > 12) {
-    $finalHour -= 12;
-} elseif ($finalHour == 0) {
+if ($finalHour == 0) {
     $finalHour = 12; // Adjust for midnight
 }
-
 $ExpectFinishTime = sprintf("%02d:%02d %s", $finalHour, $minutes, $period);
 
 

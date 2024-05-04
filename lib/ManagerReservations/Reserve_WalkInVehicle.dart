@@ -818,8 +818,8 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                               if (_formKey.currentState!.validate()) {
                                 //form is valid
                                 if (Status == "Active") {
-                                  getTime = DateFormat('hh:mm a')
-                                      .format(DateTime.now());
+                                  getTime = DateFormat('hh:mm a', 'en_US')
+    .format(DateTime.now().toUtc().add(Duration(hours: 3)));
                                 }
 
                                 if ((_vehicleType != "" &&

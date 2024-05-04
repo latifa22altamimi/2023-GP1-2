@@ -1,32 +1,20 @@
 <?php
 include 'connect.php';
 
-// Get the current time
+date_default_timezone_set('Asia/Riyadh');
 $currentDateTime = date('h:i A');
+$currentDateTimeObj = DateTime::createFromFormat('h:i A', $currentDateTime);
+$currentDateTimeObj->modify('-1 minutes');
+$twoMinutesAgo = $currentDateTimeObj->format('h:i A');
 
-// Calculate the time 5 minutes ago
-$deleteTime = date('h:i A', strtotime('-1 minutes'));
+// Delete records with status 'Waiting' and time 2 minutes or more in the past
+$deleteSql = "DELETE FROM reservation 
+              WHERE status = 'Waiting' 
+              AND TIME_FORMAT(time, '%h:%i %p') <= '$twoMinutesAgo'";
 
-// Construct the delete query
-$deleteQuery = "
-  DELETE FROM reservation
-  WHERE Status = 'Waiting'
-  AND TIME_FORMAT(time, '%h:%i %p') <= '$deleteTime'
-";
-
-// Execute the delete query
-$result = mysqli_query($conn, $deleteQuery);
+$result = $conn->query($deleteSql);
 
 if ($result) {
-    $response = array('success' => true, 'message' => 'Deletion successful');
-} else {
-    $response = array('success' => false, 'message' => 'Failed to delete rows');
+    echo json_encode($twoMinutesAgo);
 }
-
-// Close the database connection
-mysqli_close($conn);
-
-// Send the JSON response
-header('Content-Type: application/json');
-echo json_encode($response);
 ?>
