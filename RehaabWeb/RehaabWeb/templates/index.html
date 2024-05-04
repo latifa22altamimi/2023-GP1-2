@@ -68,10 +68,33 @@
                 <div class="flex justify-between mb-4 items-start">
 
                     <div class="font-medium">Congestion Heat-map
-                        <img src="{% static 'RehaabWeb/HeatMap.jpg' %}" alt="HeatMap" style="width:550px; height:305px;">
+                        <video id="video" controls></video>
                     </div>
                     
+                    <script> 
+ 
+                        function loadVideoFrame(url) { 
+                            var video = document.getElementById('video'); 
+                         
+                            video.src = url; 
+                          video.addEventListener('loadeddata', function() { 
+                           var canvas = document.createElement('canvas'); 
+                                canvas.width = video.videoWidth; 
+                                
+                                var ctx = canvas.getContext('2d'); 
+                                ctx.drawImage(video, 0, 0, canvas.width); 
+            
+                                var img = document.createElement('img'); 
+                                img.src = canvas.toDataURL(); 
+                                document.body.appendChild(img); 
+                            }); 
+                        } 
+                          
+                        var videoURL ="{% static 'RehaabWeb/M.mp4' %}"; 
+                        
                 
+                        loadVideoFrame(videoURL); 
+                        </script>
                     
 
                 </div>
