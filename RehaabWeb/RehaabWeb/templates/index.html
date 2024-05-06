@@ -71,30 +71,35 @@
                         <video id="video" controls></video>
                     </div>
                     
-                    <script> 
- 
-                        function loadVideoFrame(url) { 
-                            var video = document.getElementById('video'); 
-                         
-                            video.src = url; 
-                          video.addEventListener('loadeddata', function() { 
-                           var canvas = document.createElement('canvas'); 
-                                canvas.width = video.videoWidth; 
-                                
-                                var ctx = canvas.getContext('2d'); 
-                                ctx.drawImage(video, 0, 0, canvas.width); 
-            
-                                var img = document.createElement('img'); 
-                                img.src = canvas.toDataURL(); 
-                                document.body.appendChild(img); 
-                            }); 
-                        } 
-                          
-                        var videoURL ="{% static 'RehaabWeb/M.mp4' %}"; 
+               
+
+
+                    <script>
+                        // Function to load video frame from URL
+                        function loadVideo(url) {
+                            var video = document.getElementById('video');
+                            
+                            // Set the source of the video element
+                            video.src = url;
+                            
+                            // Listen for the "loadeddata" event, which is fired when the first frame of the video has finished loading
+                            video.addEventListener('loadeddata', function() {
+                                // Once the video is loaded, play it
+                                video.play();
+                            });
+                        }
                         
-                
-                        loadVideoFrame(videoURL); 
+                        // Example URL
+                        var videoURL ="{% static 'RehaabWeb/M.mp4' %}";
+                        
+                        // Call the function with the video URL
+                        loadVideo(videoURL);
                         </script>
+</script>
+ 
+                     
+                         
+                       
                     
 
                 </div>
