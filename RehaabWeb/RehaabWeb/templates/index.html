@@ -123,34 +123,16 @@ button {
                   });
                 }
               
-                var videoURL = "{% static 'RehaabWeb/M.mp4' %}";
+                var videoURL = "{% static 'RehaabWeb/output.avi' %}";
                 loadVideoFrame(videoURL);
               </script>
-                <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
-                    <div class="flex justify-space"> 
-                            
-                            <div class="text-2xl font-semibold" id="Double">0</div>
-                            <div class="text-2xl font-semibold " id="Single">0</div>
-                            <div class="text-2xl font-semibold " id="Backup" >0</div>
-                        
-                    </div>
-                       
-                        <div class="flex justify-between">
-                           
-                            <div class="text-sm font-medium text-gray-400">Double vehicles in usage</div>
-                            <div class="text-sm font-medium text-gray-400">Single vehicles in usage </div>
-                            <div class="text-sm font-medium text-gray-400">Backup vehicles</div>
-                        </div>
-                       
-                 
-               
-                </div>
-            </div>
-
+             
             <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
+
                 <div class="flex justify-between mb-4">
                     <div id="container">
                         <div class="font-medium">Support Notifications</div>
+                        <br>
                         <div id="map"></div>
                         <br>
                         <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
