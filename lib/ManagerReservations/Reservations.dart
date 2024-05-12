@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/ManagerReservations/CurrentReservations_list.dart';
 import 'package:rehaab/reservations/reservation_list.dart';
@@ -65,9 +66,9 @@ class _ReservationsState extends State<Reservations> {
                     alignment: Alignment.center,
                     child: Text(
                       'Walk-in Reservations',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: 25,
+                          fontSize: 24,
                           fontWeight: FontWeight.w500),
                     ),
                   ),

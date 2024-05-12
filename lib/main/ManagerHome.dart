@@ -21,7 +21,7 @@ import 'package:http/http.dart' as http;
 import '../ManagerReservations/Reservations.dart';
 import '../ManagerReservations/Reserve_WalkInVehicle.dart';
 import 'package:url_launcher/url_launcher.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 bool unavailableVehicles = false;
 int numOfAvailable = 0;
 int TotalVehicles = 0;
@@ -53,7 +53,10 @@ class _ManagerHomeState extends State<ManagerHome> {
   void initState() {
     super.initState();
   }
-
+TextStyle labelTextStyle = GoogleFonts.poppins(
+  fontSize: 15,
+  fontWeight: FontWeight.w500,
+);
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -79,8 +82,7 @@ class _ManagerHomeState extends State<ManagerHome> {
             child: NavigationBarTheme(
               data: NavigationBarThemeData(
                 height: 80,
-                labelTextStyle: MaterialStateProperty.all(
-                    TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                labelTextStyle: MaterialStateProperty.all(labelTextStyle),
                 backgroundColor: Color.fromARGB(255, 255, 255, 255),
                 shadowColor: Colors.black,
                 indicatorColor:
@@ -138,7 +140,8 @@ class AppBarr extends StatelessWidget {
             children: [
               Text(
                 'Hello manager, \n' + GlobalValues.Fullname,
-                style: TextStyle(
+                style: GoogleFonts.poppins(
+                
                     color: Colors.white,
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
@@ -438,7 +441,7 @@ void Solved() async{
               child: Text(
                 'Notifications',
                 textAlign: TextAlign.left,
-                style: TextStyle(
+                style:  GoogleFonts.poppins(
                   color: Colors.black,
                   fontSize: 24,
                   fontWeight: FontWeight.w500,
@@ -461,7 +464,7 @@ void Solved() async{
               },
               child: Text(
                 'Refresh',
-                style: TextStyle(
+                style:  GoogleFonts.poppins(
                   color: Colors.black,
                 ),
               ),
@@ -500,7 +503,7 @@ void Solved() async{
               SizedBox(height: 10),
               Text(
                 'You have 1 support notification!',
-                style: TextStyle(
+                style:  GoogleFonts.poppins(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
                   color: Colors.red,
@@ -524,7 +527,7 @@ void Solved() async{
                       ),
                       child: Text(
                         'Google Maps',
-                        style: TextStyle(
+                        style:  GoogleFonts.poppins(
                           color: Colors.white,
                         ),
                       ),
@@ -545,7 +548,7 @@ void Solved() async{
                       ),
                       child: Text(
                         'Solved',
-                        style: TextStyle(
+                        style:  GoogleFonts.poppins(
                           color: Colors.white,
                         ),
                       ),
@@ -570,9 +573,9 @@ void Solved() async{
                     child: Text(
                       'Vehicles details',
                       textAlign: TextAlign.left,
-                      style: TextStyle(
+                      style:  GoogleFonts.poppins(
                           color: Colors.black,
-                          fontSize: 24,
+                          fontSize: 23,
                           fontWeight: FontWeight.w500),
                     ),
                   )),
@@ -593,7 +596,7 @@ void Solved() async{
       },
       child: Text(
         'Refresh',
-        style: TextStyle(
+        style:  GoogleFonts.poppins(
           color: Colors.black,
         ),
       ),
@@ -648,8 +651,8 @@ void Solved() async{
                               alignment: Alignment.topLeft,
                               child: Text(
                                 'Walk-in vehicles',
-                                style: TextStyle(
-                                  fontSize: 18,
+                                style:  GoogleFonts.poppins(
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -662,8 +665,8 @@ void Solved() async{
                             children: [
                               Text(
                                 '${vehiclesAvailable[1]}',
-                                style: TextStyle(
-                                    fontSize: 15,
+                                style:  GoogleFonts.poppins(
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: emptyColor),
                               ),
@@ -672,8 +675,8 @@ void Solved() async{
                               ),
                               Text(
                                 'Single vehicles',
-                                style: TextStyle(
-                                    fontSize: 15,
+                                style:  GoogleFonts.poppins(
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: kPrimaryColor),
                               ),
@@ -686,8 +689,8 @@ void Solved() async{
                             children: [
                               Text(
                                 '${vehiclesAvailable[0]}',
-                                style: TextStyle(
-                                    fontSize: 15,
+                                style:  GoogleFonts.poppins(
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: emptyColor),
                               ),
@@ -696,8 +699,8 @@ void Solved() async{
                               ),
                               Text(
                                 'Double vehicles',
-                                style: TextStyle(
-                                    fontSize: 15,
+                                style:  GoogleFonts.poppins(
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: kPrimaryColor),
                               ),
@@ -730,18 +733,18 @@ void Solved() async{
                           children: [
                             Text(
                               '${percentage}%',
-                              style: TextStyle(
-                                  fontSize: 25,
+                              style:  GoogleFonts.poppins(
+                                  fontSize: 24,
                                   color: emptyColor,
                                   fontWeight: FontWeight.w600),
                             ),
                             SizedBox(
                               height: 3,
                             ),
-                            const Text(
+                             Text(
                               'Available vehicles',
-                              style: TextStyle(
-                                  fontSize: 11,
+                              style:  GoogleFonts.poppins(
+                                  fontSize: 10,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w400),
                             ),
@@ -794,8 +797,8 @@ void Solved() async{
                       ),
                       Text(
                         '${avgTime}',
-                        style: TextStyle(
-                            fontSize: 17,
+                        style:  GoogleFonts.poppins(
+                            fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.black),
                       ),
@@ -804,7 +807,7 @@ void Solved() async{
                       ),
                       Text(
                         'Average Tawaf Time',
-                        style: TextStyle(
+                        style:  GoogleFonts.poppins(
                             color: Colors.black,
                             fontSize: 12.5,
                             fontWeight: FontWeight.w400),
@@ -868,7 +871,7 @@ void Solved() async{
                               ),
                               Text(
                                 'People in waiting list',
-                                style: TextStyle(
+                                style:  GoogleFonts.poppins(
                                     color: Colors.black,
                                     fontSize: 13,
                                     fontWeight: FontWeight.w700),
@@ -878,7 +881,7 @@ void Solved() async{
                               ),
                               Text(
                                 '${waitNum}',
-                                style: TextStyle(
+                                style:  GoogleFonts.poppins(
                                     color: Colors.black.withOpacity(0.6),
                                     fontSize: 13,
                                     fontWeight: FontWeight.w500),
@@ -918,9 +921,9 @@ void Solved() async{
                 child: Text(
                   'Services',
                   textAlign: TextAlign.left,
-                  style: TextStyle(
+                  style:  GoogleFonts.poppins(
                       color: Colors.black,
-                      fontSize: 24,
+                      fontSize: 23,
                       fontWeight: FontWeight.w500),
                 ),
               )),
@@ -988,9 +991,9 @@ void Solved() async{
                         ),
                         Text(
                           'Reserve vehicle',
-                          style: TextStyle(
+                          style:  GoogleFonts.poppins(
                               color: Colors.black,
-                              fontSize: 17,
+                              fontSize: 16,
                               fontWeight: FontWeight.w500),
                         )
                       ],
@@ -1032,9 +1035,9 @@ void Solved() async{
                         ),
                         Text(
                           'Check in',
-                          style: TextStyle(
+                          style:  GoogleFonts.poppins(
                               color: Colors.black,
-                              fontSize: 17,
+                              fontSize: 16,
                               fontWeight: FontWeight.w500),
                         )
                       ],
