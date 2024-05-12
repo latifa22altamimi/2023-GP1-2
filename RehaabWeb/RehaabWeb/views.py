@@ -1,4 +1,6 @@
 
+import os
+from django.conf import settings
 from django.shortcuts import get_object_or_404, render
 from AdminWeb.models import Parameters
 from datetime import date
@@ -9,7 +11,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from AdminWeb.models import Marker
-from django.http import JsonResponse, QueryDict
+from django.http import HttpResponse, JsonResponse, QueryDict
 from django.core.mail import send_mail
 from django.contrib import messages
 import random
@@ -456,3 +458,76 @@ def historicalDb(request):
                     }
 
  return render(request, 'HistoricalDB.html',context)
+
+def HeatMap(request):
+    print("Hi")
+    from collections import defaultdict
+    import cv2
+    import numpy as np
+    from ultralytics import YOLO
+    model = YOLO('yolov8x.pt')
+    video_filename = 'IMG_1352.MP4'
+    videopath = os.path.join(os.path.dirname(file), 'static', 'RehaabWeb', video_filename)
+    cap = cv2.VideoCapture(videopath)
+    track_history = defaultdict(lambda: [])
+    last_positions = {}
+    def calculate_distance(p1, p2):
+     return np.sqrt((p1[0] - p2[0])  2 + (p1[1] - p2[1])  2)
+    heatmap = np.zeros((int(cap.get(4)), int(cap.get(3)), 3), dtype=np.float32)
+    width = int(cap.get(3))
+    height = int(cap.get(4))
+    output_video_filename = 'output.mp4'
+    output_video_path = os.path.join(settings.BASE_DIR, 'RehaabWeb\\static\\RehaabWeb', output_video_filename)
+    print(output_video_path)
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter(output_video_path, fourcc, 20.0, (width, height))
+    while cap.isOpened():
+     success, frame = cap.read()
+     if success:
+      results = model.track(frame, persist=True, classes=0)
+      print(len(results[0].boxes.xyxy.cpu()))
+      if (results[0].boxes is not None):
+        for result in results[0]:
+
+            boxes = result.boxes.xyxy.cpu().numpy().astype(int)
+            ids = result.boxes.id.cpu().numpy().astype(int)
+
+            for box, track_id in zip(boxes, ids):
+              x_center, y_center, width, height = box
+              current_position = (float(x_center), float(y_center))
+
+              top_left_x = int(x_center - width / 2)
+              top_left_y = int(y_center - height / 2)
+              bottom_right_x = int(x_center + width / 2)
+              bottom_right_y = int(y_center + height / 2)
+
+              top_left_x = max(0, top_left_x)
+              top_left_y = max(0, top_left_y)
+              bottom_right_x = min(heatmap.shape[1], bottom_right_x)
+              bottom_right_y = min(heatmap.shape[0], bottom_right_y)
+
+              track = track_history[track_id]
+              track.append(current_position)
+              if len(track) > 1200:
+                track.pop(0)
+              last_position = last_positions.get(track_id)
+              if last_position and calculate_distance(last_position, current_position) > 5:
+                  heatmap[top_left_y:bottom_right_y, top_left_x:bottom_right_x] += 1
+
+        last_positions[track_id] = current_position
+
+      heatmap_blurred = cv2.GaussianBlur(heatmap, (15, 15), 0)
+      heatmap_norm = cv2.normalize(heatmap_blurred, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+      heatmap_color = cv2.applyColorMap(heatmap_norm, cv2.COLORMAP_JET)
+
+      overlay = cv2.addWeighted(frame, 0.3, heatmap_color, 0.7, 0)
+      out.write(overlay)
+
+      cv2.imshow("Overlay", overlay)
+      if cv2.waitKey(1) & 0xFF == ord("q"):
+        break
+     else:
+      break
+    cap.release()
+    cv2.destroyAllWindows()
+    return HttpResponse("Heatmap executed successfully")

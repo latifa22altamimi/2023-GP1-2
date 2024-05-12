@@ -45,6 +45,18 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+button {
+  margin-left: 10px;
+}
 
 </style>
 <main class="">
@@ -66,43 +78,54 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
                 <div class="flex justify-between mb-4 items-start">
-
-                    <div class="font-medium">Congestion Heat-map
-                        <video id="video" controls></video>
-                    </div>
-                    
-               
-
-
-                    <script>
-                        // Function to load video frame from URL
-                        function loadVideo(url) {
-                            var video = document.getElementById('video');
-                            
-                            // Set the source of the video element
-                            video.src = url;
-                            
-                            // Listen for the "loadeddata" event, which is fired when the first frame of the video has finished loading
-                            video.addEventListener('loadeddata', function() {
-                                // Once the video is loaded, play it
-                                video.play();
-                            });
-                        }
-                        
-                        // Example URL
-                        var videoURL ="{% static 'RehaabWeb/M.mp4' %}";
-                        
-                        // Call the function with the video URL
-                        loadVideo(videoURL);
-                        </script>
-</script>
- 
-                     
-                         
-                       
-                    
-
+                  <div class="font-medium">
+                    Congestion Heat-map
+                  </div>
+                  <div class="flex justify-end">
+                    <button id="Camera1-button">Camera 1</button>
+                    <button>Camera 2</button>
+                  </div>
                 </div>
+                <video id="video" controls></video>
+                <br>
+              <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
+               
+                <div class="flex justify-space">
+                  <div class="text-2xl font-semibold" id="Double">0</div>
+                  <div class="text-2xl font-semibold" id="Single">0</div>
+                  <div class="text-2xl font-semibold" id="Backup">0</div>
+                </div>
+                <div class="flex justify-between">
+                  <div class="text-sm font-medium text-gray-400">Double vehicles in usage</div>
+                  <div class="text-sm font-medium text-gray-400">Single vehicles in usage</div>
+                  <div class="text-sm font-medium text-gray-400">Backup vehicles</div>
+                </div>
+              </div>
+            </div>
+            <script> document.addEventListener("DOMContentLoaded", function() { var heatmapButton = document.getElementById("Camera1-button");
+             heatmapButton.addEventListener("click", function() { 
+                console.log("Button clicked!"); 
+                $.ajax({ url: '{% url "HeatMap" %}', success: function (data) { 
+                    console.log("enter!"); } }); }); }); 
+            </script>
+              <script>
+                function loadVideoFrame(url) {
+                  var video = document.getElementById('video');
+                  video.src = url;
+                  video.addEventListener('loadeddata', function() {
+                    var canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth;
+                    var ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0, canvas.width);
+                    var img = document.createElement('img');
+                    img.src = canvas.toDataURL();
+                    document.body.appendChild(img);
+                  });
+                }
+              
+                var videoURL = "{% static 'RehaabWeb/M.mp4' %}";
+                loadVideoFrame(videoURL);
+              </script>
                 <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
                     <div class="flex justify-space"> 
                             

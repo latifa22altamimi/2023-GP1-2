@@ -33,6 +33,7 @@ urlpatterns = [
     path('reset_password_confirm.html/<uidb64>/', views.reset_password_confirm, name='reset_password_confirm'),
     path('reset_password_complete.html/', views.reset_password_complete, name='reset_password_complete'),
     path('HistoricalDB.html/', views.historicalDb, name='HistoricalDB.html'),
+    path('HeatMap', views.HeatMap, name='HeatMap'),
 ]
 
 if settings.DEBUG:
