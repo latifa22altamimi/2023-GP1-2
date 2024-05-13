@@ -62,7 +62,6 @@ button {
     background-color: white;
     font-weight: normal;
     border: 1px solid #ccc;
-    border-radius: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 5px 10px;
     cursor: pointer;
@@ -70,9 +69,11 @@ button {
   }
 
   .active-button {
-    background-color: rgba(128, 128, 128, 0.233);
+    background-color: rgba(145, 145, 145, 0.358);
     font-weight: bold;
     pointer-events: none; 
+    color: white;
+    opacity: 0.5;
   }
 
 
@@ -97,7 +98,7 @@ button {
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
             <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md" style="height: 600px;">
                 <div class="flex justify-between mb-4 items-start">
-                  <div class="font-medium">
+                  <div class="font-bold" style="font-size: 15px;">
                     Congestion Heat-map
                   </div>
                   <div class="flex justify-end">
@@ -199,7 +200,7 @@ button {
 
                 <div class="flex justify-between mb-4">
                     <div id="container">
-                        <div class="font-medium">Support Notifications</div>
+                        <div class="font-bold" style="font-size: 15px;">Support Notifications</div>
                         <br>
                         <div id="map"></div>
                         <br>

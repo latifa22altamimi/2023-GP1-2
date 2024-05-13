@@ -539,7 +539,7 @@ def HeatMap(request):
 def generate_frames1():
     print("hi1")
     model = YOLO('yolov8x.pt')
-    video_filename = 'IMG_1352.MP4'
+    video_filename = 'IMG_3746.MP4'
     videopath = os.path.join(os.path.dirname(__file__), 'static', 'RehaabWeb', video_filename)
     cap = cv2.VideoCapture(videopath)
     track_history = defaultdict(lambda: [])
