@@ -58,7 +58,26 @@ button {
   margin-left: 10px;
 }
 
+.button {
+    background-color: white;
+    font-weight: normal;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+    cursor: pointer;
+    color:black
+  }
+
+  .active-button {
+    background-color: rgba(128, 128, 128, 0.233);
+    font-weight: bold;
+    pointer-events: none; 
+  }
+
+
 </style>
+
 <main class="">
     {% if messages %}
 			{% for message in messages %}
@@ -76,17 +95,89 @@ button {
     <div class="p-6">
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
+            <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md" style="height: 600px;">
                 <div class="flex justify-between mb-4 items-start">
                   <div class="font-medium">
                     Congestion Heat-map
                   </div>
                   <div class="flex justify-end">
-                    <button id="Camera1-button">Camera 1</button>
-                    <button>Camera 2</button>
+                    <button id="Camera1-button" class="button">Camera 1</button>
+                    <button id="Camera2-button" class="button">Camera 2</button>
                   </div>
                 </div>
-                <video id="video" controls></video>
+                <div id="image-container"></div>
+
+                <script>
+                  window.addEventListener('DOMContentLoaded', () => {
+                    const camera1Button = document.getElementById('Camera1-button');
+                  const camera2Button = document.getElementById('Camera2-button');
+
+                
+                  camera1Button.addEventListener('click', function () {
+                    camera1Button.classList.add('active-button');
+                    camera2Button.classList.remove('active-button');
+                  });
+
+                  camera2Button.addEventListener('click', function () {
+                    camera2Button.classList.add('active-button');
+                    camera1Button.classList.remove('active-button');
+                  });
+
+                  camera1Button.click();
+                
+                    
+                  });
+                
+                  const imageContainer = document.getElementById('image-container');
+                  let eventSource = null;
+                  let previousImage = null;
+                
+                  function processStream(event) {
+                    const frameBase64 = event.data;
+                    const img = document.createElement('img');
+                
+                    img.src = 'data:image/jpeg;base64,' + frameBase64;
+                    img.classList.add('frame-image');
+                    img.style.width = "540px"
+                    img.style.height= "300px"
+                
+                    if (previousImage) {
+                      imageContainer.removeChild(previousImage);
+                    }
+                    imageContainer.appendChild(img);
+                
+                    previousImage = img;
+                  }
+                
+                  function startCamera1() {
+                    if (eventSource) {
+                      eventSource.close();
+                    }
+                    eventSource = new EventSource('/HeatMap');
+                    eventSource.onmessage = function (event) {
+                      console.log('Message from /HeatMap:', event.data);
+                      processStream(event);
+                    };
+                  }
+                
+                  function startCamera2() {
+                    if (eventSource) {
+                      eventSource.close();
+                    }
+                    eventSource = new EventSource('/HeatMap1');
+                    eventSource.onmessage = function (event) {
+                      console.log('Message from /HeatMap1:', event.data);
+                      processStream(event);
+                    };
+                  }
+                
+                  const camera1Button = document.getElementById('Camera1-button');
+                  const camera2Button = document.getElementById('Camera2-button');
+                
+                  camera1Button.addEventListener('click', startCamera1);
+                  camera2Button.addEventListener('click', startCamera2);
+                </script>
+
                 <br>
               <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
                
@@ -102,30 +193,7 @@ button {
                 </div>
               </div>
             </div>
-            <script> document.addEventListener("DOMContentLoaded", function() { var heatmapButton = document.getElementById("Camera1-button");
-             heatmapButton.addEventListener("click", function() { 
-                console.log("Button clicked!"); 
-                $.ajax({ url: '{% url "HeatMap" %}', success: function (data) { 
-                    console.log("enter!"); } }); }); }); 
-            </script>
-              <script>
-                function loadVideoFrame(url) {
-                  var video = document.getElementById('video');
-                  video.src = url;
-                  video.addEventListener('loadeddata', function() {
-                    var canvas = document.createElement('canvas');
-                    canvas.width = video.videoWidth;
-                    var ctx = canvas.getContext('2d');
-                    ctx.drawImage(video, 0, 0, canvas.width);
-                    var img = document.createElement('img');
-                    img.src = canvas.toDataURL();
-                    document.body.appendChild(img);
-                  });
-                }
-              
-                var videoURL = "{% static 'RehaabWeb/output.avi' %}";
-                loadVideoFrame(videoURL);
-              </script>
+          
              
             <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
 

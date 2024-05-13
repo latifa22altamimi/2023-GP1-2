@@ -1,4 +1,5 @@
 
+import base64
 import os
 from django.conf import settings
 from django.shortcuts import get_object_or_404, render
@@ -459,12 +460,84 @@ def historicalDb(request):
 
  return render(request, 'HistoricalDB.html',context)
 
+import base64
+import os
+from collections import defaultdict
+
+import cv2
+import numpy as np
+from django.http import StreamingHttpResponse
+from ultralytics import YOLO
+
+def generate_frames():
+    print("hi")
+    model = YOLO('yolov8x.pt')
+    video_filename = 'IMG_3718.MP4'
+    videopath = os.path.join(os.path.dirname(__file__), 'static', 'RehaabWeb', video_filename)
+    cap = cv2.VideoCapture(videopath)
+    track_history = defaultdict(lambda: [])
+    last_positions = {}
+    def calculate_distance(p1, p2):
+        return np.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
+    heatmap = np.zeros((int(cap.get(4)), int(cap.get(3)), 3), dtype=np.float32)
+    width = int(cap.get(3))
+    height = int(cap.get(4))
+    while cap.isOpened():
+        success, frame = cap.read()
+        if success:
+            results = model.track(frame, persist=True, classes=3)
+            print(len(results[0].boxes.xyxy.cpu()))
+            if results[0].boxes is not None:
+                for result in results[0]:
+                    boxes = result.boxes.xyxy.cpu().numpy().astype(int)
+                    ids = result.boxes.id.cpu().numpy().astype(int)
+
+                    for box, track_id in zip(boxes, ids):
+                        x_center, y_center, width, height = box
+                        current_position = (float(x_center), float(y_center))
+
+                        top_left_x = int(x_center - width / 2)
+                        top_left_y = int(y_center - height / 2)
+                        bottom_right_x = int(x_center + width / 2)
+                        bottom_right_y = int(y_center + height / 2)
+
+                        top_left_x = max(0, top_left_x)
+                        top_left_y = max(0, top_left_y)
+                        bottom_right_x = min(heatmap.shape[1], bottom_right_x)
+                        bottom_right_y = min(heatmap.shape[0], bottom_right_y)
+
+                        track = track_history[track_id]
+                        track.append(current_position)
+                        if len(track) > 1200:
+                            track.pop(0)
+                        last_position = last_positions.get(track_id)
+                        if last_position and calculate_distance(last_position, current_position) > 5:
+                            heatmap[top_left_y:bottom_right_y, top_left_x:bottom_right_x] += 1
+
+                        last_positions[track_id] = current_position
+
+            heatmap_blurred = cv2.GaussianBlur(heatmap, (15, 15), 0)
+            heatmap_norm = cv2.normalize(heatmap_blurred, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            heatmap_color = cv2.applyColorMap(heatmap_norm, cv2.COLORMAP_JET)
+
+            overlay = cv2.addWeighted(frame, 0.3, heatmap_color, 0.7, 0)
+            _, buffer = cv2.imencode('.jpg', overlay)
+            frame_base64 = base64.b64encode(buffer).decode('utf-8')
+            yield f"data: {frame_base64}\n\n"
+        else:
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
 def HeatMap(request):
-    print("Hi")
-    from collections import defaultdict
-    import cv2
-    import numpy as np
-    from ultralytics import YOLO
+    response = StreamingHttpResponse(generate_frames(), content_type='text/event-stream')
+    print(response)
+
+    return response
+
+def generate_frames1():
+    print("hi1")
     model = YOLO('yolov8x.pt')
     video_filename = 'IMG_1352.MP4'
     videopath = os.path.join(os.path.dirname(__file__), 'static', 'RehaabWeb', video_filename)
@@ -472,62 +545,60 @@ def HeatMap(request):
     track_history = defaultdict(lambda: [])
     last_positions = {}
     def calculate_distance(p1, p2):
-     return np.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
+        return np.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
     heatmap = np.zeros((int(cap.get(4)), int(cap.get(3)), 3), dtype=np.float32)
     width = int(cap.get(3))
     height = int(cap.get(4))
-    output_video_filename = 'output.avi'
-    output_video_path = os.path.join(settings.BASE_DIR, 'RehaabWeb\\static\\RehaabWeb', output_video_filename)
-    print(output_video_path)
-    fourcc = cv2.VideoWriter_fourcc(*'XVID')
-    out = cv2.VideoWriter(output_video_path, fourcc, 20.0, (width, height))
     while cap.isOpened():
-     success, frame = cap.read()
-     if success:
-      results = model.track(frame, persist=True, classes=0)
-      print(len(results[0].boxes.xyxy.cpu()))
-      if (results[0].boxes is not None):
-        for result in results[0]:
+        success, frame = cap.read()
+        if success:
+            results = model.track(frame, persist=True, classes=0)
+            print(len(results[0].boxes.xyxy.cpu()))
+            if results[0].boxes is not None:
+                for result in results[0]:
+                    boxes = result.boxes.xyxy.cpu().numpy().astype(int)
+                    ids = result.boxes.id.cpu().numpy().astype(int)
 
-            boxes = result.boxes.xyxy.cpu().numpy().astype(int)
-            ids = result.boxes.id.cpu().numpy().astype(int)
+                    for box, track_id in zip(boxes, ids):
+                        x_center, y_center, width, height = box
+                        current_position = (float(x_center), float(y_center))
 
-            for box, track_id in zip(boxes, ids):
-              x_center, y_center, width, height = box
-              current_position = (float(x_center), float(y_center))
+                        top_left_x = int(x_center - width / 2)
+                        top_left_y = int(y_center - height / 2)
+                        bottom_right_x = int(x_center + width / 2)
+                        bottom_right_y = int(y_center + height / 2)
 
-              top_left_x = int(x_center - width / 2)
-              top_left_y = int(y_center - height / 2)
-              bottom_right_x = int(x_center + width / 2)
-              bottom_right_y = int(y_center + height / 2)
+                        top_left_x = max(0, top_left_x)
+                        top_left_y = max(0, top_left_y)
+                        bottom_right_x = min(heatmap.shape[1], bottom_right_x)
+                        bottom_right_y = min(heatmap.shape[0], bottom_right_y)
 
-              top_left_x = max(0, top_left_x)
-              top_left_y = max(0, top_left_y)
-              bottom_right_x = min(heatmap.shape[1], bottom_right_x)
-              bottom_right_y = min(heatmap.shape[0], bottom_right_y)
+                        track = track_history[track_id]
+                        track.append(current_position)
+                        if len(track) > 1200:
+                            track.pop(0)
+                        last_position = last_positions.get(track_id)
+                        if last_position and calculate_distance(last_position, current_position) > 5:
+                            heatmap[top_left_y:bottom_right_y, top_left_x:bottom_right_x] += 1
 
-              track = track_history[track_id]
-              track.append(current_position)
-              if len(track) > 1200:
-                track.pop(0)
-              last_position = last_positions.get(track_id)
-              if last_position and calculate_distance(last_position, current_position) > 5:
-                  heatmap[top_left_y:bottom_right_y, top_left_x:bottom_right_x] += 1
+                        last_positions[track_id] = current_position
 
-        last_positions[track_id] = current_position
+            heatmap_blurred = cv2.GaussianBlur(heatmap, (15, 15), 0)
+            heatmap_norm = cv2.normalize(heatmap_blurred, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            heatmap_color = cv2.applyColorMap(heatmap_norm, cv2.COLORMAP_JET)
 
-      heatmap_blurred = cv2.GaussianBlur(heatmap, (15, 15), 0)
-      heatmap_norm = cv2.normalize(heatmap_blurred, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
-      heatmap_color = cv2.applyColorMap(heatmap_norm, cv2.COLORMAP_JET)
+            overlay = cv2.addWeighted(frame, 0.3, heatmap_color, 0.7, 0)
+            _, buffer = cv2.imencode('.jpg', overlay)
+            frame_base64 = base64.b64encode(buffer).decode('utf-8')
+            yield f"data: {frame_base64}\n\n"
+        else:
+            break
 
-      overlay = cv2.addWeighted(frame, 0.3, heatmap_color, 0.7, 0)
-      out.write(overlay)
-
-      cv2.imshow("Overlay", overlay)
-      if cv2.waitKey(1) & 0xFF == ord("q"):
-        break
-     else:
-      break
     cap.release()
     cv2.destroyAllWindows()
-    return HttpResponse("Heatmap executed successfully")
+
+def HeatMap1(request):
+    response = StreamingHttpResponse(generate_frames1(), content_type='text/event-stream')
+    print(response)
+
+    return response
