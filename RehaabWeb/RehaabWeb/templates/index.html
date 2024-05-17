@@ -159,9 +159,8 @@ button {
                     if (eventSource) {
                       eventSource.close();
                     }
-                    eventSource = new EventSource('/HeatMap');
+                    eventSource = new EventSource('/HeatMap?vidpath=he2.mp4');
                     eventSource.onmessage = function (event) {
-                      console.log('Message from /HeatMap:', event.data);
                       processStream(event);
                     };
                   }
@@ -170,9 +169,8 @@ button {
                     if (eventSource) {
                       eventSource.close();
                     }
-                    eventSource = new EventSource('/HeatMap1');
+                    eventSource = new EventSource('/HeatMap?vidpath=VE2.MP4');
                     eventSource.onmessage = function (event) {
-                      console.log('Message from /HeatMap1:', event.data);
                       processStream(event);
                     };
                   }
