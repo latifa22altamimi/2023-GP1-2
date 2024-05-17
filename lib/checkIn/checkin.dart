@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:developer';
 import 'dart:ui';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -124,7 +125,7 @@ Future<void> initializeCamera() async {
 Widget build(BuildContext context) => SafeArea(
   child: Scaffold(
     drawer: const Drawer(),
-    backgroundColor: kPrimaryLightColor,
+    backgroundColor: Colors.white,
     appBar: AppBar(
       actions: [],
       iconTheme: IconThemeData(color: Colors.black87),
@@ -144,7 +145,7 @@ Widget build(BuildContext context) => SafeArea(
           child: Center(
             child: Text(
               'Check In',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 color: Colors.white,
                 fontSize: 23,
                 fontWeight: FontWeight.w500,
@@ -164,7 +165,7 @@ Widget build(BuildContext context) => SafeArea(
               children: [
                 Text(
                   "Place the QR code in the area",
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     color: Colors.black87,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -173,7 +174,7 @@ Widget build(BuildContext context) => SafeArea(
                 ),
                 Text(
                   "Scanning will be started automatically",
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     color: Colors.black54,
                     fontSize: 16,
                   ),
@@ -230,7 +231,7 @@ Center(
 
               QRScannerOverlay(
                borderColor: kPrimaryColor,
-                overlayColor: kPrimaryLightColor,
+                overlayColor: Colors.white,
                 borderRadius: 12,
                 scanAreaWidth: (MediaQuery.of(context).size.width) * 0.6,
                 scanAreaHeight: MediaQuery.of(context).size.height * 0.3,
@@ -241,7 +242,7 @@ Center(
         Expanded(
           child: Container(
             alignment: Alignment.center,
-            color: kPrimaryLightColor,
+            color: Colors.white,
             child: Column(
               children: [
                 Row(
@@ -490,7 +491,7 @@ Widget buildModalContent(BuildContext context, String animationAsset, String tit
         child: Text(
           'Scan a code',
           maxLines: 1,
-          style: TextStyle(
+          style: GoogleFonts.poppins(
             fontSize: 15,
             fontWeight: FontWeight.bold,
           ),

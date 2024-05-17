@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/main/ManagerHome.dart';
@@ -162,7 +164,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
             child: Center(
               child: Text(
                 'Reserve vehicle',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
@@ -186,7 +188,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                         alignment: Alignment.topLeft,
                         child: Text(
                           'Name',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
                               fontSize: 18),
@@ -209,7 +211,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                               color: kPrimaryColor,
                             ),
                             hintText: "Visitor name",
-                            hintStyle: const TextStyle(fontFamily: 'OpenSans'),
+                            hintStyle: TextStyle(fontFamily: 'OpenSans'),
                             border: InputBorder.none),
                       )),
                       Align(
@@ -218,7 +220,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                             children: [
                               Text(
                                 'Phone Number',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 18),
@@ -226,7 +228,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                               ),
                               Text(
                                 ' (Optional)',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                     color: Colors.black26,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 14),
@@ -259,7 +261,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                         alignment: Alignment.topLeft,
                         child: Text(
                           'Type of vehicle',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
                               fontSize: 18),
@@ -326,9 +328,9 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                   ),
                                   Text(
                                     "Single",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 17),
+                                        fontSize: 16),
                                   ),
                                   Image.asset(
                                     'assets/images/single.png',
@@ -393,9 +395,9 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                   ),
                                   Text(
                                     "Double",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 17),
+                                        fontSize: 16),
                                   ),
                                   Image.asset(
                                     'assets/images/double.png',
@@ -419,7 +421,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                         alignment: Alignment.topLeft,
                         child: Text(
                           'Driving type',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
                               fontSize: 18),
@@ -433,7 +435,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                           children: [
                             // groupvalue unique among all radiobuttons
                             Container(
-                              padding: const EdgeInsets.only(right: 25.0),
+                              padding: const EdgeInsets.only(right: 15.0),
                               margin: EdgeInsets.all(5.0),
                               decoration: BoxDecoration(
                                 color: Color.fromARGB(255, 255, 255, 255),
@@ -466,7 +468,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                   ),
                                   Text(
                                     "Self-driving",
-                                    style: TextStyle(
+                                    style: GoogleFonts.poppins(
                                         fontWeight: FontWeight.w400,
                                         fontSize: 17),
                                   ),
@@ -477,7 +479,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                             Visibility(
                               visible: !isVisibleDriving,
                               child: Container(
-                                padding: const EdgeInsets.only(right: 23.0),
+                                padding: const EdgeInsets.only(right: 14.0),
                                 margin: EdgeInsets.all(5.0),
                                 decoration: BoxDecoration(
                                   color: Color.fromARGB(255, 255, 255, 255),
@@ -511,9 +513,9 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                     ),
                                     Text(
                                       "With-driver",
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                           fontWeight: FontWeight.w400,
-                                          fontSize: 17),
+                                          fontSize: 16),
                                     ),
                                   ],
                                 ),
@@ -535,7 +537,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                           alignment: Alignment.topLeft,
                           child: Text(
                             'Driver gender',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 18),
@@ -583,7 +585,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                     ),
                                     Text(
                                       'Female',
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 17),
                                     ),
@@ -600,7 +602,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                               ),
 
                               Container(
-                                padding: const EdgeInsets.only(right: 32.0),
+                                padding: const EdgeInsets.only(right: 24.0),
                                 margin: EdgeInsets.all(10.0),
                                 decoration: BoxDecoration(
                                   color: Color.fromARGB(255, 255, 255, 255),
@@ -631,12 +633,12 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                     ),
                                     Text(
                                       'Male',
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                           fontWeight: FontWeight.w400,
                                           fontSize: 17),
                                     ),
                                     SizedBox(
-                                      width: 14,
+                                      width: 10,
                                     ),
                                     Image.asset(
                                       'assets/images/male.png',
@@ -663,7 +665,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                               alignment: Alignment.topLeft,
                               child: Text(
                                 'Add to waiting list',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                     color: ErrorColor,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 18),
@@ -677,7 +679,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                               alignment: Alignment.topLeft,
                               child: Text(
                                 'Nearest Time: ${getTime}',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                     color: Colors.black,
                                     fontWeight: FontWeight.w500,
                                     fontSize: 17),
@@ -693,7 +695,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                         alignment: Alignment.topLeft,
                         child: Text(
                           'Time',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
                               fontSize: 18),
@@ -710,7 +712,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                           ),
                           label: Text(
                             'View available dates/time',
-                            style: TextStyle(color: Colors.black, fontSize: 15),
+                            style: GoogleFonts.poppins(color: Colors.black, fontSize: 15),
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
@@ -770,7 +772,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                             children: [
                                               Text(
                                                 'Error!',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
                                                     color: Color.fromARGB(
                                                         255, 255, 255, 255),
                                                     fontSize: 18,
@@ -778,7 +780,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                               ),
                                               Text(
                                                 "Choose type of vehicle",
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
                                                     color: Color.fromARGB(
                                                         255, 255, 255, 255),
                                                     fontSize: 15,
@@ -872,7 +874,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                   ),
                                                   Text(
                                                     'No available single vehicles',
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.poppins(
                                                         color: Colors.black,
                                                         fontSize: 20,
                                                         fontWeight:
@@ -884,7 +886,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                   ),
                                                   Text(
                                                     'Choose another vehicle type',
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.poppins(
                                                         color: Color.fromARGB(
                                                             255, 48, 48, 48),
                                                         fontSize: 17,
@@ -924,7 +926,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                           },
                                                           child: Text(
                                                             'Done',
-                                                            style: TextStyle(
+                                                            style: GoogleFonts.poppins(
                                                                 color: Colors
                                                                     .white,
                                                                 fontSize: 17,
@@ -991,7 +993,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                   ),
                                                   Text(
                                                     'No available double vehicles',
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.poppins(
                                                         color: Colors.black,
                                                         fontSize: 20,
                                                         fontWeight:
@@ -1003,7 +1005,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                   ),
                                                   Text(
                                                     'Choose another vehicle type',
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.poppins(
                                                         color: Color.fromARGB(
                                                             255, 48, 48, 48),
                                                         fontSize: 17,
@@ -1043,7 +1045,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                           },
                                                           child: Text(
                                                             'Done',
-                                                            style: TextStyle(
+                                                            style: GoogleFonts.poppins(
                                                                 color: Colors
                                                                     .white,
                                                                 fontSize: 17,
@@ -1104,7 +1106,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                 height: 80),
                                             Text(
                                               'Confirm the reservation',
-                                              style: TextStyle(
+                                              style: GoogleFonts.poppins(
                                                   color: Colors.black,
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.w600),
@@ -1114,7 +1116,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                             ),
                                             Text(
                                               'Your reservation will be confirmed with the following information \n',
-                                              style: TextStyle(
+                                              style: GoogleFonts.poppins(
                                                   color: Color.fromARGB(
                                                       255, 48, 48, 48),
                                                   fontSize: 17,
@@ -1145,21 +1147,25 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                     children: [
                                                       Text(
                                                         'Visitor Name: ',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 17,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
                                                       ),
                                                       Text(
                                                         '$name',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
                                                       ),
                                                     ],
                                                   ),
@@ -1173,23 +1179,27 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                         children: [
                                                           Text(
                                                             'Visitor Number: ',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 17,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
                                                           ),
                                                           Text(
                                                             '$number',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 16,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400),
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
                                                           ),
                                                         ],
                                                       )),
@@ -1200,21 +1210,25 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                     children: [
                                                       Text(
                                                         'Vehicle type: ',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 17,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
                                                       ),
                                                       Text(
                                                         '$_vehicleType',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
                                                       ),
                                                     ],
                                                   ),
@@ -1225,21 +1239,25 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                     children: [
                                                       Text(
                                                         'Driving type: ',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 17,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
                                                       ),
                                                       Text(
                                                         '$_drivingType',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
                                                       ),
                                                     ],
                                                   ),
@@ -1252,23 +1270,25 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                       children: [
                                                         Text(
                                                           'Driver gender: ',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 17,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
                                                         ),
                                                         Text(
                                                           '$_driverGender',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400),
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                                  color: Colors
+                                                                      .black,
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400),
                                                         ),
                                                       ],
                                                     ),
@@ -1280,21 +1300,25 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                     children: [
                                                       Text(
                                                         'Date: ',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 17,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
                                                       ),
                                                       Text(
                                                         '${DateFormat('yyyy-MM-dd').format(DateTime.now())}', //current date
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
                                                       ),
                                                     ],
                                                   ),
@@ -1305,21 +1329,25 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                     children: [
                                                       Text(
                                                         'Time: ',
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 17,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w500),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 16,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
                                                       ),
                                                       Text(
                                                         '$getTime', //'${DateFormat('hh:mm a').format(DateTime.now())}', // current time convert
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontSize: 16,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
                                                       ),
                                                     ],
                                                   ),
@@ -1338,18 +1366,21 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                   constraints:
                                                       BoxConstraints.tightFor(
                                                           height: 38,
-                                                          width: 100),
+                                                          width: 102),
                                                   child: ElevatedButton(
                                                     onPressed: () =>
                                                         Navigator.of(context)
                                                             .pop(),
                                                     child: Text(
                                                       'Cancel',
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w500),
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
                                                     ),
                                                     style: ElevatedButton
                                                         .styleFrom(
@@ -1376,7 +1407,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                   constraints:
                                                       BoxConstraints.tightFor(
                                                           height: 38,
-                                                          width: 100),
+                                                          width: 102),
                                                   child: ElevatedButton(
                                                     onPressed: () async {
                                                       insert();
@@ -1438,7 +1469,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                                             100),
                                                                     Text(
                                                                       'Success',
-                                                                      style: TextStyle(
+                                                                      style: GoogleFonts.poppins(
                                                                           color: Colors
                                                                               .black,
                                                                           fontSize:
@@ -1452,7 +1483,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                                     ),
                                                                     Text(
                                                                       'ٌReservation is done successfully',
-                                                                      style: TextStyle(
+                                                                      style: GoogleFonts.poppins(
                                                                           color: Colors
                                                                               .black,
                                                                           fontSize:
@@ -1487,11 +1518,14 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                     },
                                                     child: Text(
                                                       'Confirm',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 13,
-                                                          fontWeight:
-                                                              FontWeight.w500),
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 13,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
                                                     ),
                                                     style: ElevatedButton
                                                         .styleFrom(
@@ -1580,7 +1614,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                 children: [
                                                   Text(
                                                     'Error!',
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.poppins(
                                                         color: Color.fromARGB(
                                                             255, 255, 255, 255),
                                                         fontSize: 18,
@@ -1589,7 +1623,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                                   ),
                                                   Text(
                                                     "$errorMsg",
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.poppins(
                                                         color: Color.fromARGB(
                                                             255, 255, 255, 255),
                                                         fontSize: 15,
@@ -1622,8 +1656,11 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                             },
                             child: Text(
                               'Reserve',
-                              style:
-                                  TextStyle(fontSize: 23, color: Colors.white),
+                              style: GoogleFonts.poppins(
+                                  fontSize: 23, 
+                                  color: Colors.white,
+                                  fontWeight:FontWeight.w500
+                                  ),
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color.fromARGB(255, 60, 100, 73),
@@ -1730,12 +1767,12 @@ class _BookingPageState extends State<BookingPage> {
             child: Column(
               children: <Widget>[
                 _tableCalendar(),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
                   child: Center(
                     child: Text(
                       'Select Reservation Time',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
@@ -1756,7 +1793,7 @@ class _BookingPageState extends State<BookingPage> {
                     ),
                     Text(
                       'No available vehicles',
-                      style: TextStyle(fontWeight: FontWeight.w500),
+                      style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
                       width: 15.0,
@@ -1818,7 +1855,7 @@ class _BookingPageState extends State<BookingPage> {
                                   children: [
                                     Text(
                                       'Error!',
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                           color: Color.fromARGB(
                                               255, 255, 255, 255),
                                           fontSize: 18,
@@ -1826,7 +1863,7 @@ class _BookingPageState extends State<BookingPage> {
                                     ),
                                     Text(
                                       "Choose a time!",
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                           color: Color.fromARGB(
                                               255, 255, 255, 255),
                                           fontSize: 15,
@@ -1960,7 +1997,7 @@ class _BookingPageState extends State<BookingPage> {
               alignment: Alignment.center,
               child: Text(
                 '${timeSlots[index]["time"]}',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
                   color: _currentIndex == index ? Colors.white : null,
                 ),
