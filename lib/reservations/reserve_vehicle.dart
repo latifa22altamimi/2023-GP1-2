@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
 import '../customization/clip.dart';
@@ -19,7 +20,7 @@ String _drivingType = "Double";
 String getDate = "";
 String getTime = "";
 String label = "";
-int duration=0;
+int duration = 0;
 
 Color labelColor = Colors.white;
 
@@ -73,7 +74,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
       appBar: AppBar(
         leading: Container(
           padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
-          child: BackButton(),
+          child: BackButton(color: Colors.white,),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -87,7 +88,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
             child: Center(
               child: Text(
                 'Reserve vehicle',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
@@ -110,7 +111,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     'Type of vehicle',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                         color: Colors.black,
                         fontWeight: FontWeight.w600,
                         fontSize: 18),
@@ -160,11 +161,11 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                             ),
                             Text(
                               "Single",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400, fontSize: 17),
                             ),
                             SizedBox(
-                              width: 92.0,
+                              width: 90.0,
                             ),
                             Image.asset(
                               'assets/images/single.png',
@@ -212,11 +213,11 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                             ),
                             Text(
                               "Double",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400, fontSize: 17),
                             ),
                             SizedBox(
-                              width: 87.0,
+                              width: 80.0,
                             ),
                             Image.asset(
                               'assets/images/double.png',
@@ -240,7 +241,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     'Driving type',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                         color: Colors.black,
                         fontWeight: FontWeight.w600,
                         fontSize: 18),
@@ -254,7 +255,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                     children: [
                       // groupvalue unique among all radiobuttons
                       Container(
-                        padding: const EdgeInsets.only(right: 25.0),
+                        padding: const EdgeInsets.only(right: 20.0),
                         margin: EdgeInsets.all(5.0),
                         decoration: BoxDecoration(
                           color: Color.fromARGB(255, 255, 255, 255),
@@ -286,7 +287,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                             ),
                             Text(
                               "Self-driving",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400, fontSize: 17),
                             ),
                           ],
@@ -296,7 +297,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                       Visibility(
                         visible: !isVisibleDriving,
                         child: Container(
-                          padding: const EdgeInsets.only(right: 20.0),
+                          padding: const EdgeInsets.only(right: 17),
                           margin: EdgeInsets.all(5.0),
                           decoration: BoxDecoration(
                             color: Color.fromARGB(255, 255, 255, 255),
@@ -329,8 +330,8 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                               ),
                               Text(
                                 "With-driver",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400, fontSize: 17),
+                                style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w400, fontSize: 15),
                               ),
                             ],
                           ),
@@ -352,7 +353,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                     alignment: Alignment.topLeft,
                     child: Text(
                       'Driver gender',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontWeight: FontWeight.w600,
                           fontSize: 18),
@@ -399,7 +400,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                               ),
                               Text(
                                 'Female',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.w400, fontSize: 17),
                               ),
                               SizedBox(
@@ -445,7 +446,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                               ),
                               Text(
                                 'Male',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.w400, fontSize: 17),
                               ),
                               SizedBox(
@@ -474,7 +475,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                   alignment: Alignment.topLeft,
                   child: Text(
                     'Date/Time',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                         color: Colors.black,
                         fontWeight: FontWeight.w600,
                         fontSize: 18),
@@ -491,7 +492,8 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                     ),
                     label: Text(
                       'View available dates/time',
-                      style: TextStyle(color: Colors.black, fontSize: 15),
+                      style: GoogleFonts.poppins(
+                          color: Colors.black, fontSize: 15),
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white,
@@ -551,7 +553,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                       children: [
                                         Text(
                                           'Error!',
-                                          style: TextStyle(
+                                          style: GoogleFonts.poppins(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255),
                                               fontSize: 18,
@@ -559,7 +561,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                         ),
                                         Text(
                                           "Choose type of vehicle",
-                                          style: TextStyle(
+                                          style: GoogleFonts.poppins(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255),
                                               fontSize: 15,
@@ -632,7 +634,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                           width: 80, height: 80),
                                       Text(
                                         'Confirm the reservation',
-                                        style: TextStyle(
+                                        style: GoogleFonts.poppins(
                                             color: Colors.black,
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600),
@@ -642,7 +644,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                       ),
                                       Text(
                                         'Your reservation will be confirmed with the following information \n',
-                                        style: TextStyle(
+                                        style: GoogleFonts.poppins(
                                             color:
                                                 Color.fromARGB(255, 48, 48, 48),
                                             fontSize: 17,
@@ -672,7 +674,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                               children: [
                                                 Text(
                                                   'Vehicle type: ',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.black,
                                                       fontSize: 17,
                                                       fontWeight:
@@ -680,7 +682,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                 ),
                                                 Text(
                                                   '$_vehicleType',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.black,
                                                       fontSize: 16,
                                                       fontWeight:
@@ -695,7 +697,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                               children: [
                                                 Text(
                                                   'Driving type: ',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.black,
                                                       fontSize: 17,
                                                       fontWeight:
@@ -703,7 +705,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                 ),
                                                 Text(
                                                   '$_drivingType',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.black,
                                                       fontSize: 16,
                                                       fontWeight:
@@ -720,7 +722,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                 children: [
                                                   Text(
                                                     'Driver gender: ',
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.poppins(
                                                         color: Colors.black,
                                                         fontSize: 17,
                                                         fontWeight:
@@ -728,7 +730,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                   ),
                                                   Text(
                                                     '$_driverGender',
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.poppins(
                                                         color: Colors.black,
                                                         fontSize: 16,
                                                         fontWeight:
@@ -744,7 +746,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                               children: [
                                                 Text(
                                                   'Date: ',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.black,
                                                       fontSize: 17,
                                                       fontWeight:
@@ -752,7 +754,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                 ),
                                                 Text(
                                                   '$getDate',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.black,
                                                       fontSize: 16,
                                                       fontWeight:
@@ -767,7 +769,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                               children: [
                                                 Text(
                                                   'Time: ',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.black,
                                                       fontSize: 17,
                                                       fontWeight:
@@ -775,7 +777,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                 ),
                                                 Text(
                                                   '$getTime',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.black,
                                                       fontSize: 16,
                                                       fontWeight:
@@ -803,9 +805,9 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                   Navigator.of(context).pop(),
                                               child: Text(
                                                 'Cancel',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
                                                     color: Colors.black,
-                                                    fontSize: 15,
+                                                    fontSize: 14,
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),
@@ -830,7 +832,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                           ConstrainedBox(
                                             constraints:
                                                 BoxConstraints.tightFor(
-                                                    height: 38, width: 100),
+                                                    height: 38, width: 102),
                                             child: ElevatedButton(
                                               onPressed: () async {
                                                 insert();
@@ -884,7 +886,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                                   height: 100),
                                                               Text(
                                                                 'Success',
-                                                                style: TextStyle(
+                                                                style: GoogleFonts.poppins(
                                                                     color: Colors
                                                                         .black,
                                                                     fontSize:
@@ -898,7 +900,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                                               ),
                                                               Text(
                                                                 'ٌReservation is done successfully',
-                                                                style: TextStyle(
+                                                                style: GoogleFonts.poppins(
                                                                     color: Colors
                                                                         .black,
                                                                     fontSize:
@@ -935,9 +937,9 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                               },
                                               child: Text(
                                                 'Confirm',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
                                                     color: Colors.white,
-                                                    fontSize: 15,
+                                                    fontSize: 13,
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),
@@ -1022,7 +1024,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                           children: [
                                             Text(
                                               'Error!',
-                                              style: TextStyle(
+                                              style: GoogleFonts.poppins(
                                                   color: Color.fromARGB(
                                                       255, 255, 255, 255),
                                                   fontSize: 18,
@@ -1030,7 +1032,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                                             ),
                                             Text(
                                               "$errorMsg",
-                                              style: TextStyle(
+                                              style: GoogleFonts.poppins(
                                                   color: Color.fromARGB(
                                                       255, 255, 255, 255),
                                                   fontSize: 15,
@@ -1061,7 +1063,8 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                       },
                       child: Text(
                         'Reserve',
-                        style: TextStyle(fontSize: 23, color: Colors.white),
+                        style: GoogleFonts.poppins(
+                            fontSize: 23, color: Colors.white),
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 60, 100, 73),
@@ -1099,115 +1102,120 @@ class _BookingPageState extends State<BookingPage> {
   // ignore: unused_field
   static bool _dateSelected = false;
   static bool _timeSelected = false;
- 
 
-List<String> times=[];
-int duration = 0; // Initialize duration
-String timeSlotsString = ''; // Initialize timeSlotsString
-List list = []; // Initialize list for time slots
-List tlist = []; // Initialize filtered time slots list
+  List<String> times = [];
+  int duration = 0; // Initialize duration
+  String timeSlotsString = ''; // Initialize timeSlotsString
+  List list = []; // Initialize list for time slots
+  List tlist = []; // Initialize filtered time slots list
 
-@override
-void initState() {
-  super.initState();
-  // Fetch the average duration asynchronously
-  GetDuration();
-}
+  @override
+  void initState() {
+    super.initState();
+    // Fetch the average duration asynchronously
+    GetDuration();
+  }
 
-Future<void> GetDuration() async {
-  var url = "http://10.0.2.2/phpfiles/AvgDuration.php";
-  final result = await http.get(Uri.parse(url));
-  if (result.statusCode == 200) {
-    String dur = json.decode(result.body);
-    var Durations = dur.split(':');
-    if (Durations[0] != "" && Durations[1] != "") {
-      duration = int.parse(Durations[0]) * 60 + int.parse(Durations[1]);
-      print(duration);
-      times = slots(duration);
-      timeSlotsString = times.join(',');
-      GetData();
-
+  Future<void> GetDuration() async {
+    var url = "http://10.0.2.2/phpfiles/AvgDuration.php";
+    final result = await http.get(Uri.parse(url));
+    if (result.statusCode == 200) {
+      String dur = json.decode(result.body);
+      var Durations = dur.split(':');
+      if (Durations[0] != "" && Durations[1] != "") {
+        duration = int.parse(Durations[0]) * 60 + int.parse(Durations[1]);
+        print(duration);
+        times = slots(duration);
+        timeSlotsString = times.join(',');
+        GetData();
+      }
     }
   }
-}
 
-Future<void> GetData() async {
-  var url = "http://10.0.2.2/phpfiles/times.php";
-  final res = await http.post(Uri.parse(url), body: {
-    "date": DateFormat('yyyy-MM-dd').format(_currentDay),
-    "times": timeSlotsString, // Send the string representation of time slots
-  });
+  Future<void> GetData() async {
+    var url = "http://10.0.2.2/phpfiles/times.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "date": DateFormat('yyyy-MM-dd').format(_currentDay),
+      "times": timeSlotsString, // Send the string representation of time slots
+    });
 
-  if (res.statusCode == 200) {
-    var jsonResponse = json.decode(res.body);
+    if (res.statusCode == 200) {
+      var jsonResponse = json.decode(res.body);
       print(jsonResponse); // Print the jsonResponse to check its contents
 
-    setState(() {
-      list.clear(); // Clear the previous data
+      setState(() {
+        list.clear(); // Clear the previous data
 
-      list.addAll(jsonResponse);
-      tlist.clear();
+        list.addAll(jsonResponse);
+        tlist.clear();
 
-      String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-      String currentTime = DateFormat('HH:mm:ss').format(DateTime.now());
-      String selectedDate = DateFormat('yyyy-MM-dd').format(_currentDay);
+        String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+        String currentTime = DateFormat('HH:mm:ss').format(DateTime.now());
+        String selectedDate = DateFormat('yyyy-MM-dd').format(_currentDay);
 
-      // If the selected day (_currentDay) is today
-      if (selectedDate == currentDate) {
-        for (int i = 0; i < jsonResponse.length; i++) {
-          String slot = jsonResponse[i]['time'];
-          String hours = slot.substring(0, 2); // Extract hours from the time slot
-          String minutes = slot.substring(3, 5); // Extract minutes from the time slot
-          int slotMinutes = int.parse(minutes); // Convert minutes to integer
+        // If the selected day (_currentDay) is today
+        if (selectedDate == currentDate) {
+          for (int i = 0; i < jsonResponse.length; i++) {
+            String slot = jsonResponse[i]['time'];
+            String hours =
+                slot.substring(0, 2); // Extract hours from the time slot
+            String minutes =
+                slot.substring(3, 5); // Extract minutes from the time slot
+            int slotMinutes = int.parse(minutes); // Convert minutes to integer
 
-          String currentHours = currentTime.substring(0, 2); // Current hour
-          String currentMinutes = currentTime.substring(3, 5); // Current minutes
-          int currentSlotMinutes = int.parse(currentMinutes); // Convert current minutes to integer
+            String currentHours = currentTime.substring(0, 2); // Current hour
+            String currentMinutes =
+                currentTime.substring(3, 5); // Current minutes
+            int currentSlotMinutes =
+                int.parse(currentMinutes); // Convert current minutes to integer
 
-          int slotHours = int.parse(hours); // Convert time slot hour to integer
-          int currentHoursInt = int.parse(currentHours); // Convert current hour to integer
+            int slotHours =
+                int.parse(hours); // Convert time slot hour to integer
+            int currentHoursInt =
+                int.parse(currentHours); // Convert current hour to integer
 
-          // Compare current hour and minute with the time slot hour and minute
-          if (currentHoursInt < slotHours ||
-              (currentHoursInt == slotHours && currentSlotMinutes > slotMinutes)) {
-            tlist.add(list[i]);
+            // Compare current hour and minute with the time slot hour and minute
+            if (currentHoursInt < slotHours ||
+                (currentHoursInt == slotHours &&
+                    currentSlotMinutes > slotMinutes)) {
+              tlist.add(list[i]);
+            }
           }
+        } else {
+          // If the selected day is not today, add all time slots to tlist
+          tlist.addAll(list);
         }
-      } else {
-        // If the selected day is not today, add all time slots to tlist
-        tlist.addAll(list);
-      }
-    });
-  }
-}
-
-List<String> slots(int duration) {
-  DateTime now = DateTime.now();
-  DateTime startTime = DateTime(now.year, now.month, now.day, 0, 0, 0);
-  DateTime endTime = DateTime(now.year, now.month, now.day, 23, 59, 0);
-
-  String time;
-  Duration step = Duration(minutes: duration);
-  int count = 0;
-  List<String> timeSlots = [];
-  DateTime timeIncrement = startTime;
-  time = "${DateFormat.Hm().format(timeIncrement)} ${timeIncrement.hour > 11 ? 'PM' : 'AM'}";
-  timeSlots.add(time);
-  while (startTime.isBefore(endTime)) {
-    timeIncrement = startTime.add(step);
-    if (count == 1440 ~/ duration) {
-      break;
-    } else {
-      time = "${DateFormat.Hm().format(timeIncrement)} ${timeIncrement.hour > 11 ? 'PM' : 'AM'}";
-      timeSlots.add(time);
-      count++;
-      startTime = timeIncrement;
+      });
     }
   }
-  return timeSlots;
-}
 
+  List<String> slots(int duration) {
+    DateTime now = DateTime.now();
+    DateTime startTime = DateTime(now.year, now.month, now.day, 0, 0, 0);
+    DateTime endTime = DateTime(now.year, now.month, now.day, 23, 59, 0);
 
+    String time;
+    Duration step = Duration(minutes: duration);
+    int count = 0;
+    List<String> timeSlots = [];
+    DateTime timeIncrement = startTime;
+    time =
+        "${DateFormat.Hm().format(timeIncrement)} ${timeIncrement.hour > 11 ? 'PM' : 'AM'}";
+    timeSlots.add(time);
+    while (startTime.isBefore(endTime)) {
+      timeIncrement = startTime.add(step);
+      if (count == 1440 ~/ duration) {
+        break;
+      } else {
+        time =
+            "${DateFormat.Hm().format(timeIncrement)} ${timeIncrement.hour > 11 ? 'PM' : 'AM'}";
+        timeSlots.add(time);
+        count++;
+        startTime = timeIncrement;
+      }
+    }
+    return timeSlots;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -1219,12 +1227,12 @@ List<String> slots(int duration) {
             child: Column(
               children: <Widget>[
                 _tableCalendar(),
-                const Padding(
+                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
                   child: Center(
                     child: Text(
                       'Select Reservation Time',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
@@ -1245,7 +1253,7 @@ List<String> slots(int duration) {
                     ),
                     Text(
                       'No available vehicles',
-                      style: TextStyle(fontWeight: FontWeight.w500),
+                      style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
                       width: 15.0,
@@ -1307,7 +1315,7 @@ List<String> slots(int duration) {
                                   children: [
                                     Text(
                                       'Error!',
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                           color: Color.fromARGB(
                                               255, 255, 255, 255),
                                           fontSize: 18,
@@ -1315,7 +1323,7 @@ List<String> slots(int duration) {
                                     ),
                                     Text(
                                       "Choose a time!",
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                           color: Color.fromARGB(
                                               255, 255, 255, 255),
                                           fontSize: 15,
@@ -1385,86 +1393,83 @@ List<String> slots(int duration) {
 
           timeSlotsContainer();
           GetData();
-
         });
       }),
     );
   }
 
   Widget timeSlotsContainer() {
-  return SliverGrid(
-    delegate: SliverChildBuilderDelegate(
-      (context, index) {
-        
-      var slot = tlist[index];
+    return SliverGrid(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          var slot = tlist[index];
 
-        return InkWell(
-          splashColor: Color.fromARGB(0, 255, 255, 255),
-          onTap: () {
-            setState(() {
-              if (slot["slotStatus"] == "Both") {
-                _currentIndex = index;
-                _timeSelected = true;
-              }
-              if (slot["slotStatus"] == "OnlySingle" &&
-                  _vehicleType == "Single") {
-                _currentIndex = index;
-                _timeSelected = true;
-              }
-              if (slot["slotStatus"] == "OnlyDouble" &&
-                  _vehicleType == "Double") {
-                _currentIndex = index;
-                _timeSelected = true;
-              }
-            });
-          },
-          child: Container(
-            margin: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              border: Border.all(
+          return InkWell(
+            splashColor: Color.fromARGB(0, 255, 255, 255),
+            onTap: () {
+              setState(() {
+                if (slot["slotStatus"] == "Both") {
+                  _currentIndex = index;
+                  _timeSelected = true;
+                }
+                if (slot["slotStatus"] == "OnlySingle" &&
+                    _vehicleType == "Single") {
+                  _currentIndex = index;
+                  _timeSelected = true;
+                }
+                if (slot["slotStatus"] == "OnlyDouble" &&
+                    _vehicleType == "Double") {
+                  _currentIndex = index;
+                  _timeSelected = true;
+                }
+              });
+            },
+            child: Container(
+              margin: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: _currentIndex == index
+                      ? Color.fromARGB(255, 243, 239, 239)
+                      : Colors.white,
+                ),
+                borderRadius: BorderRadius.circular(15),
                 color: _currentIndex == index
-                    ? Color.fromARGB(255, 243, 239, 239)
-                    : Colors.white,
+                    ? kPrimaryColor
+                    : slot["slotStatus"] == "Both"
+                        ? Colors.white
+                        : slot["slotStatus"] == "OnlySingle" &&
+                                _vehicleType == "Double"
+                            ? Color.fromARGB(255, 205, 204, 204)
+                            : slot["slotStatus"] == "OnlyDouble" &&
+                                    _vehicleType == "Single"
+                                ? Color.fromARGB(255, 205, 204, 204)
+                                : slot["slotStatus"] == "OnlyDouble" &&
+                                        _vehicleType == "Double"
+                                    ? Colors.white
+                                    : slot["slotStatus"] == "OnlySingle" &&
+                                            _vehicleType == "Single"
+                                        ? Colors.white
+                                        : Color.fromARGB(255, 205, 204, 204),
               ),
-              borderRadius: BorderRadius.circular(15),
-              color: _currentIndex == index
-                  ? kPrimaryColor
-                  : slot["slotStatus"] == "Both"
-                      ? Colors.white
-                      : slot["slotStatus"] == "OnlySingle" &&
-                              _vehicleType == "Double"
-                          ? Color.fromARGB(255, 205, 204, 204)
-                          : slot["slotStatus"] == "OnlyDouble" &&
-                                  _vehicleType == "Single"
-                              ? Color.fromARGB(255, 205, 204, 204)
-                              : slot["slotStatus"] == "OnlyDouble" &&
-                                      _vehicleType == "Double"
-                                  ? Colors.white
-                                  : slot["slotStatus"] ==
-                                              "OnlySingle" &&
-                                          _vehicleType == "Single"
-                                      ? Colors.white
-                                      : Color.fromARGB(255, 205, 204, 204),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              '${slot["time"]}', // Display the time
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: _currentIndex == index ? Colors.white : null,
+              alignment: Alignment.center,
+              child: Text(
+                '${slot["time"]}', // Display the time
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  color: _currentIndex == index ? Colors.white : null,
+                ),
               ),
             ),
-          ),
-        );
-      },
-      childCount: tlist.length,
-    ),
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 4,
-      childAspectRatio: 1.5,
-    ),
-  );
-}
+          );
+        },
+        childCount: tlist.length,
+      ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        childAspectRatio: 1.5,
+      ),
+    );
+  }
 }
 
 /*class BookingCalendarDemoApp extends StatefulWidget {

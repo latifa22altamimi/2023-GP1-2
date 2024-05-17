@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/widgets/constants.dart';
@@ -40,7 +41,7 @@ class Profile extends StatelessWidget {
                   children: [
                     Text(
                       GlobalValues.Fullname,
-                      style: TextStyle(
+                      style:  GoogleFonts.poppins(
                         fontWeight: FontWeight.w600,
                         fontSize: 26,
                       ),
@@ -57,14 +58,14 @@ class Profile extends StatelessWidget {
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
-                        child: const ListTile(
+                        child:  ListTile(
                           leading: Icon(
                             Icons.privacy_tip_sharp,
                             color: kPrimaryColor,
                           ),
                           title: Text(
                             'Privacy',
-                            style: TextStyle(
+                            style:  GoogleFonts.poppins(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: kPrimaryColor),
@@ -84,12 +85,12 @@ class Profile extends StatelessWidget {
                             left: 35, right: 35, bottom: 10),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
-                        child: const ListTile(
+                        child:  ListTile(
                           leading:
                               Icon(Icons.help_outline, color: kPrimaryColor),
                           title: Text(
                             'Help & Support',
-                            style: TextStyle(
+                            style:  GoogleFonts.poppins(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: kPrimaryColor),
@@ -110,14 +111,14 @@ class Profile extends StatelessWidget {
                             left: 35, right: 35, bottom: 10),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
-                        child: const ListTile(
+                        child:  ListTile(
                           leading: Icon(
                             Icons.privacy_tip_sharp,
                             color: kPrimaryColor,
                           ),
                           title: Text(
                             'Settings',
-                            style: TextStyle(
+                            style:  GoogleFonts.poppins(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: kPrimaryColor),
@@ -135,14 +136,14 @@ class Profile extends StatelessWidget {
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30)),
-                        child: const ListTile(
+                        child:  ListTile(
                           leading: Icon(
                             Icons.language,
                             color: kPrimaryColor,
                           ),
                           title: Text(
                             'Change Language',
-                            style: TextStyle(
+                            style:  GoogleFonts.poppins(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: kPrimaryColor),
@@ -181,7 +182,7 @@ class Profile extends StatelessWidget {
                                             width: 100, height: 100),
                                         Text(
                                           'Log Out',
-                                          style: TextStyle(
+                                          style:  GoogleFonts.poppins(
                                               color: Colors.black,
                                               fontSize: 18,
                                               fontWeight: FontWeight.w600),
@@ -191,7 +192,7 @@ class Profile extends StatelessWidget {
                                         ),
                                         Text(
                                           'Logging out of your account \nwill return you to the start page.',
-                                          style: TextStyle(
+                                          style:  GoogleFonts.poppins(
                                               color: Color.fromARGB(255, 48, 48, 48),
                                               fontSize: 15,
                                               fontWeight: FontWeight.w400),
@@ -213,9 +214,9 @@ class Profile extends StatelessWidget {
                                                     Navigator.of(context).pop(),
                                                 child: Text(
                                                   'Cancel',
-                                                  style: TextStyle(
+                                                  style:  GoogleFonts.poppins(
                                                       color: Colors.black,
-                                                      fontSize: 15,
+                                                      fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.w500),
                                                 ),
@@ -297,7 +298,7 @@ class Profile extends StatelessWidget {
                                                                         100),
                                                                 Text(
                                                                   'Success',
-                                                                  style: TextStyle(
+                                                                  style:  GoogleFonts.poppins(
                                                                       color: Colors
                                                                           .black,
                                                                       fontSize:
@@ -311,7 +312,7 @@ class Profile extends StatelessWidget {
                                                                 ),
                                                                 Text(
                                                                   "You've successfully Loggged out",
-                                                                  style: TextStyle(
+                                                                  style:  GoogleFonts.poppins(
                                                                       color: Colors
                                                                           .black,
                                                                       fontSize:
@@ -348,9 +349,9 @@ class Profile extends StatelessWidget {
                                                 },
                                                 child: Text(
                                                   'Log out',
-                                                  style: TextStyle(
+                                                  style:  GoogleFonts.poppins(
                                                       color: Colors.white,
-                                                      fontSize: 15,
+                                                      fontSize: 13.5,
                                                       fontWeight:
                                                           FontWeight.w500),
                                                 ),
@@ -379,14 +380,14 @@ class Profile extends StatelessWidget {
                               color: Colors.white,
                              margin: const EdgeInsets.only(
                                 left: 35, right:35, bottom: 1),
-                              child: const ListTile(
+                              child:  ListTile(
                                 leading: Icon(
                                   Icons.logout,
                                   color: kPrimaryColor,
                                 ),
                                 title: Text(
                                   'Logout',
-                                  style: TextStyle(
+                                  style:  GoogleFonts.poppins(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                       color: kPrimaryColor),

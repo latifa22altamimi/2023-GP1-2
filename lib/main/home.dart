@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/TrackTawafStatus/TrackTawaf.dart';
 import 'package:rehaab/main/onboardingscreen.dart';
@@ -103,7 +104,7 @@ class _homeState extends State<home> {
               data: NavigationBarThemeData(
                 height: 80,
                 labelTextStyle: MaterialStateProperty.all(
-                    TextStyle(fontSize: 15, fontWeight: FontWeight.w600)),
+                     GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w600)),
                 backgroundColor: Color.fromARGB(255, 255, 255, 255),
                 shadowColor: Colors.black,
                 indicatorColor:
@@ -159,7 +160,7 @@ class AppBarr extends StatelessWidget {
             children: [
               Text(
                 'Hello, \n' + GlobalValues.Fullname,
-                style: TextStyle(
+                style:  GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
@@ -288,7 +289,7 @@ class BodyHome extends StatelessWidget {
             children: [
               Text(
                 'Our Services',
-                style: TextStyle(
+                style:  GoogleFonts.poppins(
                     color: Colors.black,
                     fontSize: 24,
                     fontWeight: FontWeight.w500),
@@ -341,9 +342,9 @@ class BodyHome extends StatelessWidget {
                       ),
                       Text(
                         'Reserve vehicle',
-                        style: TextStyle(
+                        style:  GoogleFonts.poppins(
                             color: Colors.black,
-                            fontSize: 18,
+                            fontSize: 16.5,
                             fontWeight: FontWeight.w500),
                       )
                     ],
@@ -385,9 +386,9 @@ class BodyHome extends StatelessWidget {
                       ),
                       Text(
                         'Track tawaf status',
-                        style: TextStyle(
+                        style:  GoogleFonts.poppins(
                             color: Colors.black,
-                            fontSize: 18,
+                            fontSize: 16.5,
                             fontWeight: FontWeight.w500),
                       )
                     ],
@@ -429,9 +430,9 @@ class BodyHome extends StatelessWidget {
                       ),
                       Text(
                         'Vehicles location',
-                        style: TextStyle(
+                        style:  GoogleFonts.poppins(
                             color: Colors.black,
-                            fontSize: 18,
+                            fontSize: 16.5,
                             fontWeight: FontWeight.w500),
                       )
                     ],
@@ -475,9 +476,9 @@ class BodyHome extends StatelessWidget {
                       ),
                       Text(
                         'Qibla',
-                        style: TextStyle(
+                        style:  GoogleFonts.poppins(
                             color: Colors.black,
-                            fontSize: 18,
+                            fontSize: 16.5,
                             fontWeight: FontWeight.w500),
                       )
                     ],

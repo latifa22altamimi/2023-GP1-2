@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart';
 import 'package:rehaab/CheckOut/CheckOut.dart';
@@ -162,7 +163,7 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
             child: Center(
               child: Text(
                 'Reservation details',
-                style: TextStyle(
+                style:  GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
@@ -211,19 +212,19 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
                           child: Text(
                             '${Status}', // reservation status
                             style: Status == "Cancelled"
-                                ? TextStyle(
+                                ?  GoogleFonts.poppins(
                                     color: Colors.red,
                                     fontWeight: FontWeight.bold)
                                 : Status == "Confirmed"
-                                    ? TextStyle(
+                                    ?  GoogleFonts.poppins(
                                         color: Colors.green,
                                         fontWeight: FontWeight.bold)
                                     : Status == "Completed"
-                                        ? TextStyle(
+                                        ?  GoogleFonts.poppins(
                                             color:
                                                 Color.fromRGBO(38, 161, 244, 1),
                                             fontWeight: FontWeight.bold)
-                                        : TextStyle(
+                                        :  GoogleFonts.poppins(
                                             color:
                                                 Color.fromRGBO(255, 196, 4, 1),
                                             fontWeight: FontWeight.bold),
@@ -233,7 +234,7 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 20.0,),
                     child: Column(
                       // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -262,7 +263,7 @@ class _WalkIn_ReservationDetailsState extends State<WalkIn_ReservationDetails>
                         
                         
                         Padding(
-                          padding: const EdgeInsets.only( top:6, right: 52.0),
+                          padding: const EdgeInsets.only( top:6, right: 40.0),
                           child: list.isNotEmpty
                               ? ticketDetailsWidget(
                                  'Reservation no.',
@@ -343,13 +344,13 @@ Widget ticketDetailsWidget(String firstTitle, String firstDesc,
           children: <Widget>[
             Text(
               firstTitle,
-              style: const TextStyle(color: Colors.grey,fontSize: 16),
+              style:   GoogleFonts.poppins(color: Colors.grey,fontSize: 16),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 4.0),
               child: Text(
                 firstDesc,
-                style: const TextStyle(color: Colors.black,fontSize: 16),
+                style:   GoogleFonts.poppins(color: Colors.black,fontSize: 16),
               ),
             )
           ],
@@ -363,13 +364,13 @@ Widget ticketDetailsWidget(String firstTitle, String firstDesc,
           children: [
             Text(
               secondTitle,
-              style: const TextStyle(color: Colors.grey,fontSize: 16),
+              style:   GoogleFonts.poppins(color: Colors.grey,fontSize: 16),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 4.0),
               child: Text(
                 secondDesc,
-                style: const TextStyle(color: Colors.black, fontSize: 16),
+                style:   GoogleFonts.poppins(color: Colors.black, fontSize: 16),
               ),
             )
           ],
@@ -392,13 +393,13 @@ Widget ticketDetailsWidgetC(String firstTitle, String firstDesc,
           children: <Widget>[
             Text(
               firstTitle,
-              style: const TextStyle(color: Colors.grey, fontSize: 18),
+              style:   GoogleFonts.poppins(color: Colors.grey, fontSize: 18),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 0.0),
               child: Text(
                 firstDesc,
-                style: const TextStyle(color: Colors.black, fontSize: 18),
+                style:   GoogleFonts.poppins(color: Colors.black, fontSize: 18),
               ),
             )
           ],
@@ -411,13 +412,13 @@ Widget ticketDetailsWidgetC(String firstTitle, String firstDesc,
           children: [
             Text(
               secondTitle,
-              style: const TextStyle(color: Colors.grey, fontSize: 18),
+              style:   GoogleFonts.poppins(color: Colors.grey, fontSize: 18),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 0.0),
               child: Text(
                 secondDesc,
-                style: const TextStyle(color: Colors.black,fontSize: 18),
+                style:   GoogleFonts.poppins(color: Colors.black,fontSize: 18),
               ),
             )
           ],

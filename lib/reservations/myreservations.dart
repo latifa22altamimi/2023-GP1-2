@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/reservations/reservation_list.dart';
 import 'package:http/http.dart' as http;
@@ -64,7 +65,7 @@ class _MyReservationsState extends State<MyReservations> {
                     alignment: Alignment.center,
                     child: Text(
                       'My reservations',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                           color: Colors.white,
                           fontSize: 25,
                           fontWeight: FontWeight.w500),
@@ -88,7 +89,7 @@ class _MyReservationsState extends State<MyReservations> {
                 width: 250, height: 250),
             Text(
               'No reservations yet',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                   fontWeight: FontWeight.w500,
                   fontSize: 16,
                   color: const Color.fromARGB(255, 132, 131, 131)),

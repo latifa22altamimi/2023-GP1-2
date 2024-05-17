@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:rehaab/GlobalValues.dart';
 import 'package:rehaab/reservations/reservationdetails.dart';
@@ -178,7 +179,7 @@ class _ReservationListState extends State<ReservationList> {
                     children: [
                       Text(
                         'Previous',
-                        style: TextStyle(color: prevTxt),
+                        style: GoogleFonts.poppins(color: prevTxt),
                       ),
                     ],
                   ),
@@ -233,7 +234,7 @@ class _ReservationListState extends State<ReservationList> {
                   ),
                   child: Text(
                     'Current',
-                    style: TextStyle(color: curTxt),
+                    style: GoogleFonts.poppins(color: curTxt),
                   ),
                 ),
               ),
@@ -263,7 +264,7 @@ class _ReservationListState extends State<ReservationList> {
                             timee: historyList[index]["time"],
                             status: historyList[index]["Status"],
                             colorr: Color.fromARGB(255, 33, 152, 51),
-                            widthAdjust: 90.0);
+                            widthAdjust: 70.0);
                       }
                       if (historyList[index]["Status"] == "Cancelled") {
                         return ReserveCard(
@@ -292,7 +293,7 @@ class _ReservationListState extends State<ReservationList> {
                           timee: historyList[index]["time"],
                           status: historyList[index]["Status"],
                           colorr: Color.fromRGBO(38, 161, 244, 1),
-                          widthAdjust: 88.0,
+                          widthAdjust: 70.0,
                         );
                       }
                     } else {
@@ -314,7 +315,7 @@ class _ReservationListState extends State<ReservationList> {
                     width: 250, height: 250),
                 Text(
                   'No current reservations yet',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: const Color.fromARGB(255, 132, 131, 131)),
@@ -354,7 +355,7 @@ class ReserveCard extends StatelessWidget {
               children: [
                 Text(
                   'Reservation#$Rid', // reservation id
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       color: Colors.black,
                       fontSize: 18,
                       fontWeight: FontWeight.w500),
@@ -364,7 +365,7 @@ class ReserveCard extends StatelessWidget {
                 ),
                 Text(
                   '$status ',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       color: colorr, fontSize: 18, fontWeight: FontWeight.w500),
                 ),
                 Image.asset(
@@ -387,7 +388,7 @@ class ReserveCard extends StatelessWidget {
                 margin: EdgeInsets.only(left: 20.0),
                 child: Text(
                   'Date: ',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       color: Colors.black,
                       fontSize: 15,
                       fontWeight: FontWeight.w500),
@@ -395,7 +396,7 @@ class ReserveCard extends StatelessWidget {
               ),
               Text(
                 '$datee',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.w400),
@@ -413,7 +414,7 @@ class ReserveCard extends StatelessWidget {
                 margin: EdgeInsets.only(left: 20.0),
                 child: Text(
                   'Time: ',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                       color: Colors.black,
                       fontSize: 15,
                       fontWeight: FontWeight.w500),
@@ -421,13 +422,13 @@ class ReserveCard extends StatelessWidget {
               ),
               Text(
                 '$timee',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                     color: Colors.black,
                     fontSize: 15,
                     fontWeight: FontWeight.w400),
               ),
               SizedBox(
-                width: 170.0,
+                width: 160.0,
               ),
               Container(
                 margin: EdgeInsets.only(right: 6.0),

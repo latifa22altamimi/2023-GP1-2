@@ -1382,7 +1382,7 @@ class _WaitingCardState extends State<WaitingCard> {
                       fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
-                  width: 148.0,
+                  width: 130.0,
                 ),
                 Text(
                   'Waiting',

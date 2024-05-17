@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/material.dart';
@@ -36,8 +37,8 @@ class ReservationDetails extends StatefulWidget {
 
 int ind = 0;
 List list = [];
-String CancelDur="";
-int CancelDurInt=0;
+String CancelDur = "";
+int CancelDurInt = 0;
 
 var datetime;
 
@@ -56,11 +57,11 @@ class _ReservationDetailsState extends State<ReservationDetails>
   _ReservationDetailsState({this.Rid, this.Status, this.date, this.time});
   String encryptIt(String text) {
     final key = enc.Key.fromUtf8("3159a027584ad57a42c03d5dab118f68");
-  final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
-  final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
-  final encrypted = encrypter.encrypt(text, iv: iv);
-  return encrypted.base64;
-}
+    final iv = enc.IV.fromUtf8("e0c2ed4fbc3e1fb6");
+    final encrypter = enc.Encrypter(enc.AES(key, mode: enc.AESMode.cbc));
+    final encrypted = encrypter.encrypt(text, iv: iv);
+    return encrypted.base64;
+  }
 
   Future GetData() async {
     var url = "http://10.0.2.2/phpfiles/details.php";
@@ -85,22 +86,19 @@ class _ReservationDetailsState extends State<ReservationDetails>
     super.initState();
     GetData();
     //GetCancelDur();
-   _startCallFunction(); ////////////function that calls _checkout every 1 s till the page disposed
+    _startCallFunction(); ////////////function that calls _checkout every 1 s till the page disposed
     animationController.addListener(() {
       setState(() {});
     });
-    if(list.isNotEmpty){
-      GlobalValues.Status=list[ind]["Status"];
-
+    if (list.isNotEmpty) {
+      GlobalValues.Status = list[ind]["Status"];
     }
-    
 
     restart();
   }
 
-
- Timer? _timer;
- void _startCallFunction() {
+  Timer? _timer;
+  void _startCallFunction() {
     _Checkout();
 
     _timer = Timer.periodic(Duration(seconds: 1), (Timer timer) {
@@ -109,15 +107,15 @@ class _ReservationDetailsState extends State<ReservationDetails>
   }
 
   void _Checkout() {
-  if(GlobalValues.Status=="Active"){
-  CheckOutState().Checkoutt();
-  }
+    if (GlobalValues.Status == "Active") {
+      CheckOutState().Checkoutt();
+    }
   }
 
   @override
   void dispose() {
     animationController.dispose();
-      if (_timer != null) {
+    if (_timer != null) {
       _timer!.cancel();
     }
     super.dispose();
@@ -146,8 +144,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
     print(respo);
   }
 
-   Future GetCancelDur() async{
- 
+  Future GetCancelDur() async {
     var url = "http://10.0.2.2/phpfiles/CancelDur.php";
     var res = await http.get(Uri.parse(url));
 
@@ -155,22 +152,20 @@ class _ReservationDetailsState extends State<ReservationDetails>
       CancelDur = json.decode(res.body);
 
       setState(() {
-        var index=CancelDur.indexOf("h");
-        CancelDur=CancelDur.substring(0,index);
+        var index = CancelDur.indexOf("h");
+        CancelDur = CancelDur.substring(0, index);
         print(CancelDur);
-        CancelDurInt=int.parse(CancelDur);
-          CancelDurInt=CancelDurInt*60; // convert to minutes
-        
-
+        CancelDurInt = int.parse(CancelDur);
+        CancelDurInt = CancelDurInt * 60; // convert to minutes
       });
     }
-   }
-   bool visibility(){ 
-    
+  }
+
+  bool visibility() {
     datetime = date! + " " + time!.substring(0, 5) + ":00";
-     final duration= DateTime.parse(datetime).difference(DateTime.now());
+    final duration = DateTime.parse(datetime).difference(DateTime.now());
     if (Status == 'Cancelled' ||
-         duration.inMinutes<=1440 ||
+        duration.inMinutes <= 1440 ||
         Status == "Active" ||
         Status == "Completed") {
       return false;
@@ -179,18 +174,16 @@ class _ReservationDetailsState extends State<ReservationDetails>
     }
   }
 
- 
-
   bool start() {
     datetime = date! + " " + time!.substring(0, 5) + ":00";
-    final d= DateTime.parse(datetime).difference(DateTime.now());
-      if(Status == "Confirmed" && d.inMinutes<=60 && d.inMinutes>=-15){  // "check in" button appears before 60 minutes of reservation time
+    final d = DateTime.parse(datetime).difference(DateTime.now());
+    if (Status == "Confirmed" && d.inMinutes <= 60 && d.inMinutes >= -15) {
+      // "check in" button appears before 60 minutes of reservation time
       return true;
     } else {
       return false;
     }
   }
-  
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -198,7 +191,9 @@ class _ReservationDetailsState extends State<ReservationDetails>
       appBar: AppBar(
         leading: Container(
           padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
-          child: BackButton(),
+          child: BackButton(
+            color: Colors.white,
+          ),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -212,7 +207,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
             child: Center(
               child: Text(
                 'Reservation details',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
@@ -257,19 +252,19 @@ class _ReservationDetailsState extends State<ReservationDetails>
                           child: Text(
                             '${Status}', // reservation status
                             style: Status == "Cancelled"
-                                ? TextStyle(
+                                ? GoogleFonts.poppins(
                                     color: Colors.red,
                                     fontWeight: FontWeight.bold)
                                 : Status == "Confirmed"
-                                    ? TextStyle(
+                                    ? GoogleFonts.poppins(
                                         color: Colors.green,
                                         fontWeight: FontWeight.bold)
                                     : Status == "Completed"
-                                        ? TextStyle(
+                                        ? GoogleFonts.poppins(
                                             color:
                                                 Color.fromRGBO(38, 161, 244, 1),
                                             fontWeight: FontWeight.bold)
-                                        : TextStyle(
+                                        : GoogleFonts.poppins(
                                             color:
                                                 Color.fromRGBO(255, 196, 4, 1),
                                             fontWeight: FontWeight.bold),
@@ -298,7 +293,6 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                     )
                                   : null,
                             ),
-
                             child: list.isEmpty
                                 ? Text("")
                                 : QrImageView(
@@ -309,11 +303,11 @@ class _ReservationDetailsState extends State<ReservationDetails>
                             padding: const EdgeInsets.only(top: 5),
                             alignment: Alignment.topCenter,
                             height: 40,
-                            child: const Text(
+                            child: Text(
                               "Use this QR code at the pickup location to check in\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  ",
                               maxLines: 2,
-                              style:
-                                  TextStyle(color: Colors.grey, fontSize: 12),
+                              style: GoogleFonts.poppins(
+                                  color: Colors.grey, fontSize: 11),
                             )),
                         Padding(
                           padding: const EdgeInsets.only(top: 6, right: 52.0),
@@ -338,7 +332,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                         Padding(
                           padding: const EdgeInsets.only(top: 6.0, right: 43.0),
                           child: list.isNotEmpty &&
-                                 list[ind]["drivingType"] != "Self-driving"
+                                  list[ind]["drivingType"] != "Self-driving"
                               ? ticketDetailsWidget(
                                   'Time',
                                   '${list[ind]["time"]}',
@@ -362,7 +356,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-               /* Visibility(
+                /* Visibility(
                   visible: start(),
                   child: Container(
                     //padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 200),
@@ -387,7 +381,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                             width: 100, height: 100),
                                         Text(
                                           'Start Tawaf',
-                                          style: TextStyle(
+                                          style: GoogleFonts.poppins(
                                               color: Colors.black,
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600),
@@ -413,7 +407,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                     Navigator.of(context).pop(),
                                                 child: Text(
                                                   'Cancel',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.black,
                                                       fontSize: 15,
                                                       fontWeight:
@@ -493,7 +487,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                                   height: 100),
                                                               Text(
                                                                 'Success',
-                                                                style: TextStyle(
+                                                                style: GoogleFonts.poppins(
                                                                     color: Colors
                                                                         .black,
                                                                     fontSize:
@@ -507,7 +501,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                               ),
                                                               Text(
                                                                 'Starting Tawaf is done successfully',
-                                                                style: TextStyle(
+                                                                style: GoogleFonts.poppins(
                                                                     color: Colors
                                                                         .black,
                                                                     fontSize:
@@ -545,7 +539,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                 },
                                                 child: Text(
                                                   'Start',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.white,
                                                       fontSize: 15,
                                                       fontWeight:
@@ -573,7 +567,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                       },
                       child: Text(
                         "Check in",
-                        style: TextStyle(fontSize: 16),
+                        style: GoogleFonts.poppins(fontSize: 16),
                       ), //vehicle manager checks in (temp for testing)
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith(
@@ -608,7 +602,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                       },
                       label: Text(
                         "Reschdule",
-                        style: TextStyle(fontSize: 16),
+                        style: GoogleFonts.poppins(fontSize: 16),
                       ),
                       icon: Icon(Icons.schedule),
                       style: ButtonStyle(
@@ -648,7 +642,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                             width: 100, height: 100),
                                         Text(
                                           'Cancel reservation',
-                                          style: TextStyle(
+                                          style: GoogleFonts.poppins(
                                               color: Colors.black,
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600),
@@ -658,7 +652,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                         ),
                                         Text(
                                           'Your reservation will be cancelled, and \nyour current time slot will be available to the public, but you can reserve again.',
-                                          style: TextStyle(
+                                          style: GoogleFonts.poppins(
                                               color: Color.fromARGB(
                                                   255, 48, 48, 48),
                                               fontSize: 17,
@@ -682,7 +676,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                     Navigator.of(context).pop(),
                                                 child: Text(
                                                   'Cancel',
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.black,
                                                       fontSize: 15,
                                                       fontWeight:
@@ -757,7 +751,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                                   height: 100),
                                                               Text(
                                                                 'Success',
-                                                                style: TextStyle(
+                                                                style: GoogleFonts.poppins(
                                                                     color: Colors
                                                                         .black,
                                                                     fontSize:
@@ -771,7 +765,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                               ),
                                                               Text(
                                                                 'Cancellation is done successfully',
-                                                                style: TextStyle(
+                                                                style: GoogleFonts.poppins(
                                                                     color: Colors
                                                                         .black,
                                                                     fontSize:
@@ -810,7 +804,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                 child: Text(
                                                   'Cancel reservation',
                                                   textAlign: TextAlign.center,
-                                                  style: TextStyle(
+                                                  style: GoogleFonts.poppins(
                                                       color: Colors.white,
                                                       fontSize: 15,
                                                       fontWeight:
@@ -838,7 +832,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                       },
                       label: Text(
                         "Cancel",
-                        style: TextStyle(fontSize: 16),
+                        style: GoogleFonts.poppins(fontSize: 16),
                       ),
                       icon: Icon(Icons.close),
                       style: ButtonStyle(
@@ -897,7 +891,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                               height: 120),
                                           Text(
                                             'Warning',
-                                            style: TextStyle(
+                                            style: GoogleFonts.poppins(
                                                 color: Colors.black,
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.w600),
@@ -907,7 +901,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                           ),
                                           Text(
                                             'Do you want to check out?',
-                                            style: TextStyle(
+                                            style: GoogleFonts.poppins(
                                                 color: Colors.black,
                                                 fontSize: 17,
                                                 fontWeight: FontWeight.w400),
@@ -930,7 +924,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                           .pop(),
                                                   child: Text(
                                                     'Close',
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.poppins(
                                                         color: Colors.black,
                                                         fontSize: 15,
                                                         fontWeight:
@@ -995,7 +989,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                                   height: 100),
                                                               Text(
                                                                 'Success',
-                                                                style: TextStyle(
+                                                                style: GoogleFonts.poppins(
                                                                     color: Colors
                                                                         .black,
                                                                     fontSize:
@@ -1009,7 +1003,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                               ),
                                                               Text(
                                                                 'the operation is done successfully',
-                                                                style: TextStyle(
+                                                                style: GoogleFonts.poppins(
                                                                     color: Colors
                                                                         .black,
                                                                     fontSize:
@@ -1045,7 +1039,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                                       child:
                                                                           Text(
                                                                         'Done',
-                                                                        style: TextStyle(
+                                                                        style: GoogleFonts.poppins(
                                                                             color: Colors
                                                                                 .black,
                                                                             fontSize:
@@ -1080,7 +1074,7 @@ class _ReservationDetailsState extends State<ReservationDetails>
                                                   },
                                                   child: Text(
                                                     'Confirm',
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.poppins(
                                                         color: Colors.white,
                                                         fontSize: 15,
                                                         fontWeight:
@@ -1147,13 +1141,13 @@ Widget ticketDetailsWidget(String firstTitle, String firstDesc,
           children: <Widget>[
             Text(
               firstTitle,
-              style: const TextStyle(color: Colors.grey),
+              style:  GoogleFonts.poppins(color: Colors.grey),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 4.0),
               child: Text(
                 firstDesc,
-                style: const TextStyle(color: Colors.black),
+                style:  GoogleFonts.poppins(color: Colors.black),
               ),
             )
           ],
@@ -1166,13 +1160,13 @@ Widget ticketDetailsWidget(String firstTitle, String firstDesc,
           children: [
             Text(
               secondTitle,
-              style: const TextStyle(color: Colors.grey),
+              style:  GoogleFonts.poppins(color: Colors.grey),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 4.0),
               child: Text(
                 secondDesc,
-                style: const TextStyle(color: Colors.black),
+                style:  GoogleFonts.poppins(color: Colors.black),
               ),
             )
           ],
@@ -1203,112 +1197,119 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
   // ignore: unused_field
   static bool _dateSelected = false;
   static bool _timeSelected = false;
-  List<String> times=[];
-int duration = 0; // Initialize duration
-String timeSlotsString = ''; // Initialize timeSlotsString
-List list = []; // Initialize list for time slots
-List tlist = []; // Initialize filtered time slots list
+  List<String> times = [];
+  int duration = 0; // Initialize duration
+  String timeSlotsString = ''; // Initialize timeSlotsString
+  List list = []; // Initialize list for time slots
+  List tlist = []; // Initialize filtered time slots list
 
-@override
-void initState() {
-  super.initState();
-  // Fetch the average duration asynchronously
-  GetDuration();
-}
+  @override
+  void initState() {
+    super.initState();
+    // Fetch the average duration asynchronously
+    GetDuration();
+  }
 
-Future<void> GetDuration() async {
-  var url = "http://10.0.2.2/phpfiles/AvgDuration.php";
-  final result = await http.get(Uri.parse(url));
-  if (result.statusCode == 200) {
-    String dur = json.decode(result.body);
-    var Durations = dur.split(':');
-    if (Durations[0] != "" && Durations[1] != "") {
-      duration = int.parse(Durations[0]) * 60 + int.parse(Durations[1]);
-      print(duration);
-      times = slots(duration);
-      timeSlotsString = times.join(',');
-      GetData();
-
+  Future<void> GetDuration() async {
+    var url = "http://10.0.2.2/phpfiles/AvgDuration.php";
+    final result = await http.get(Uri.parse(url));
+    if (result.statusCode == 200) {
+      String dur = json.decode(result.body);
+      var Durations = dur.split(':');
+      if (Durations[0] != "" && Durations[1] != "") {
+        duration = int.parse(Durations[0]) * 60 + int.parse(Durations[1]);
+        print(duration);
+        times = slots(duration);
+        timeSlotsString = times.join(',');
+        GetData();
+      }
     }
   }
-}
 
-Future<void> GetData() async {
-  var url = "http://10.0.2.2/phpfiles/times.php";
-  final res = await http.post(Uri.parse(url), body: {
-    "date": DateFormat('yyyy-MM-dd').format(_currentDay),
-    "times": timeSlotsString, // Send the string representation of time slots
-  });
+  Future<void> GetData() async {
+    var url = "http://10.0.2.2/phpfiles/times.php";
+    final res = await http.post(Uri.parse(url), body: {
+      "date": DateFormat('yyyy-MM-dd').format(_currentDay),
+      "times": timeSlotsString, // Send the string representation of time slots
+    });
 
-  if (res.statusCode == 200) {
-    var jsonResponse = json.decode(res.body);
+    if (res.statusCode == 200) {
+      var jsonResponse = json.decode(res.body);
       print(jsonResponse); // Print the jsonResponse to check its contents
 
-    setState(() {
-      list.clear(); // Clear the previous data
+      setState(() {
+        list.clear(); // Clear the previous data
 
-      list.addAll(jsonResponse);
-      tlist.clear();
+        list.addAll(jsonResponse);
+        tlist.clear();
 
-      String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-      String currentTime = DateFormat('HH:mm:ss').format(DateTime.now());
-      String selectedDate = DateFormat('yyyy-MM-dd').format(_currentDay);
+        String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+        String currentTime = DateFormat('HH:mm:ss').format(DateTime.now());
+        String selectedDate = DateFormat('yyyy-MM-dd').format(_currentDay);
 
-      // If the selected day (_currentDay) is today
-      if (selectedDate == currentDate) {
-        for (int i = 0; i < jsonResponse.length; i++) {
-          String slot = jsonResponse[i]['time'];
-          String hours = slot.substring(0, 2); // Extract hours from the time slot
-          String minutes = slot.substring(3, 5); // Extract minutes from the time slot
-          int slotMinutes = int.parse(minutes); // Convert minutes to integer
+        // If the selected day (_currentDay) is today
+        if (selectedDate == currentDate) {
+          for (int i = 0; i < jsonResponse.length; i++) {
+            String slot = jsonResponse[i]['time'];
+            String hours =
+                slot.substring(0, 2); // Extract hours from the time slot
+            String minutes =
+                slot.substring(3, 5); // Extract minutes from the time slot
+            int slotMinutes = int.parse(minutes); // Convert minutes to integer
 
-          String currentHours = currentTime.substring(0, 2); // Current hour
-          String currentMinutes = currentTime.substring(3, 5); // Current minutes
-          int currentSlotMinutes = int.parse(currentMinutes); // Convert current minutes to integer
+            String currentHours = currentTime.substring(0, 2); // Current hour
+            String currentMinutes =
+                currentTime.substring(3, 5); // Current minutes
+            int currentSlotMinutes =
+                int.parse(currentMinutes); // Convert current minutes to integer
 
-          int slotHours = int.parse(hours); // Convert time slot hour to integer
-          int currentHoursInt = int.parse(currentHours); // Convert current hour to integer
+            int slotHours =
+                int.parse(hours); // Convert time slot hour to integer
+            int currentHoursInt =
+                int.parse(currentHours); // Convert current hour to integer
 
-          // Compare current hour and minute with the time slot hour and minute
-          if (currentHoursInt < slotHours ||
-              (currentHoursInt == slotHours && currentSlotMinutes > slotMinutes)) {
-            tlist.add(list[i]);
+            // Compare current hour and minute with the time slot hour and minute
+            if (currentHoursInt < slotHours ||
+                (currentHoursInt == slotHours &&
+                    currentSlotMinutes > slotMinutes)) {
+              tlist.add(list[i]);
+            }
           }
+        } else {
+          // If the selected day is not today, add all time slots to tlist
+          tlist.addAll(list);
         }
-      } else {
-        // If the selected day is not today, add all time slots to tlist
-        tlist.addAll(list);
-      }
-    });
-  }
-}
-
-List<String> slots(int duration) {
-  DateTime now = DateTime.now();
-  DateTime startTime = DateTime(now.year, now.month, now.day, 0, 0, 0);
-  DateTime endTime = DateTime(now.year, now.month, now.day, 23, 59, 0);
-
-  String time;
-  Duration step = Duration(minutes: duration);
-  int count = 0;
-  List<String> timeSlots = [];
-  DateTime timeIncrement = startTime;
-  time = "${DateFormat.Hm().format(timeIncrement)} ${timeIncrement.hour > 11 ? 'PM' : 'AM'}";
-  timeSlots.add(time);
-  while (startTime.isBefore(endTime)) {
-    timeIncrement = startTime.add(step);
-    if (count == 1440 ~/ duration) {
-      break;
-    } else {
-      time = "${DateFormat.Hm().format(timeIncrement)} ${timeIncrement.hour > 11 ? 'PM' : 'AM'}";
-      timeSlots.add(time);
-      count++;
-      startTime = timeIncrement;
+      });
     }
   }
-  return timeSlots;
-}
 
+  List<String> slots(int duration) {
+    DateTime now = DateTime.now();
+    DateTime startTime = DateTime(now.year, now.month, now.day, 0, 0, 0);
+    DateTime endTime = DateTime(now.year, now.month, now.day, 23, 59, 0);
+
+    String time;
+    Duration step = Duration(minutes: duration);
+    int count = 0;
+    List<String> timeSlots = [];
+    DateTime timeIncrement = startTime;
+    time =
+        "${DateFormat.Hm().format(timeIncrement)} ${timeIncrement.hour > 11 ? 'PM' : 'AM'}";
+    timeSlots.add(time);
+    while (startTime.isBefore(endTime)) {
+      timeIncrement = startTime.add(step);
+      if (count == 1440 ~/ duration) {
+        break;
+      } else {
+        time =
+            "${DateFormat.Hm().format(timeIncrement)} ${timeIncrement.hour > 11 ? 'PM' : 'AM'}";
+        timeSlots.add(time);
+        count++;
+        startTime = timeIncrement;
+      }
+    }
+    return timeSlots;
+  }
 
   reschedule() async {
     var url = "http://10.0.2.2/phpfiles/reschedule.php";
@@ -1331,12 +1332,12 @@ List<String> slots(int duration) {
             child: Column(
               children: <Widget>[
                 _tableCalendar(),
-                const Padding(
+                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
                   child: Center(
                     child: Text(
                       'Select Reservation Time',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
                       ),
@@ -1357,7 +1358,7 @@ List<String> slots(int duration) {
                     ),
                     Text(
                       'No available vehicles',
-                      style: TextStyle(fontWeight: FontWeight.w500),
+                      style: GoogleFonts.poppins(fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
                       width: 15.0,
@@ -1399,7 +1400,7 @@ List<String> slots(int duration) {
                                         width: 100, height: 100),
                                     Text(
                                       'Reschedule reservation',
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                           color: Colors.black,
                                           fontSize: 20,
                                           fontWeight: FontWeight.w600),
@@ -1409,7 +1410,7 @@ List<String> slots(int duration) {
                                     ),
                                     Text(
                                       'Your reservation will be rescheduled to:',
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                           color:
                                               Color.fromARGB(255, 48, 48, 48),
                                           fontSize: 17,
@@ -1438,7 +1439,7 @@ List<String> slots(int duration) {
                                             children: [
                                               Text(
                                                 'Date: ',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
                                                     color: Colors.black,
                                                     fontSize: 17,
                                                     fontWeight:
@@ -1446,7 +1447,7 @@ List<String> slots(int duration) {
                                               ),
                                               Text(
                                                 '$getUpdatedDate',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
                                                     color: Colors.black,
                                                     fontSize: 16,
                                                     fontWeight:
@@ -1461,7 +1462,7 @@ List<String> slots(int duration) {
                                             children: [
                                               Text(
                                                 'Time: ',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
                                                     color: Colors.black,
                                                     fontSize: 17,
                                                     fontWeight:
@@ -1469,7 +1470,7 @@ List<String> slots(int duration) {
                                               ),
                                               Text(
                                                 '$getUpdatedTime',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
                                                     color: Colors.black,
                                                     fontSize: 16,
                                                     fontWeight:
@@ -1496,7 +1497,7 @@ List<String> slots(int duration) {
                                                 Navigator.of(context).pop(),
                                             child: Text(
                                               'Cancel',
-                                              style: TextStyle(
+                                              style: GoogleFonts.poppins(
                                                   color: Colors.black,
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.w500),
@@ -1565,26 +1566,30 @@ List<String> slots(int duration) {
                                                               height: 100),
                                                           Text(
                                                             'Success',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 20,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        20,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600),
                                                           ),
                                                           SizedBox(
                                                             height: 10.0,
                                                           ),
                                                           Text(
                                                             'Reschedulling is done successfully',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black,
-                                                                fontSize: 17,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400),
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        17,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
                                                           ),
                                                           SizedBox(
                                                             height: 10.0,
@@ -1616,7 +1621,7 @@ List<String> slots(int duration) {
                                             },
                                             child: Text(
                                               'Reschedule',
-                                              style: TextStyle(
+                                              style: GoogleFonts.poppins(
                                                   color: Colors.white,
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.w500),
@@ -1674,7 +1679,7 @@ List<String> slots(int duration) {
                                   children: [
                                     Text(
                                       'Error!',
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                           color: Color.fromARGB(
                                               255, 255, 255, 255),
                                           fontSize: 18,
@@ -1682,7 +1687,7 @@ List<String> slots(int duration) {
                                     ),
                                     Text(
                                       "Choose a time!",
-                                      style: TextStyle(
+                                      style: GoogleFonts.poppins(
                                           color: Color.fromARGB(
                                               255, 255, 255, 255),
                                           fontSize: 15,
@@ -1718,7 +1723,6 @@ List<String> slots(int duration) {
         ],
       ),
     );
-
   }
 
   //table calendar
@@ -1757,78 +1761,77 @@ List<String> slots(int duration) {
       }),
     );
   }
-Widget timeSlotsContainer() {
-  return SliverGrid(
-    delegate: SliverChildBuilderDelegate(
-      (context, index) {
-        
-      var slot = tlist[index];
 
-        return InkWell(
-          splashColor: Color.fromARGB(0, 255, 255, 255),
-          onTap: () {
-            setState(() {
-              if (slot["slotStatus"] == "Both") {
-                _currentIndex = index;
-                _timeSelected = true;
-              }
-              if (slot["slotStatus"] == "OnlySingle" &&
-                  list[ind]["VehicleType"] == "Single") {
-                _currentIndex = index;
-                _timeSelected = true;
-              }
-              if (slot["slotStatus"] == "OnlyDouble" &&
-                  list[ind]["VehicleType"] == "Double") {
-                _currentIndex = index;
-                _timeSelected = true;
-              }
-            });
-          },
-          child: Container(
-            margin: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-              border: Border.all(
+  Widget timeSlotsContainer() {
+    return SliverGrid(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          var slot = tlist[index];
+
+          return InkWell(
+            splashColor: Color.fromARGB(0, 255, 255, 255),
+            onTap: () {
+              setState(() {
+                if (slot["slotStatus"] == "Both") {
+                  _currentIndex = index;
+                  _timeSelected = true;
+                }
+                if (slot["slotStatus"] == "OnlySingle" &&
+                    list[ind]["VehicleType"] == "Single") {
+                  _currentIndex = index;
+                  _timeSelected = true;
+                }
+                if (slot["slotStatus"] == "OnlyDouble" &&
+                    list[ind]["VehicleType"] == "Double") {
+                  _currentIndex = index;
+                  _timeSelected = true;
+                }
+              });
+            },
+            child: Container(
+              margin: const EdgeInsets.all(5),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: _currentIndex == index
+                      ? Color.fromARGB(255, 243, 239, 239)
+                      : Colors.white,
+                ),
+                borderRadius: BorderRadius.circular(15),
                 color: _currentIndex == index
-                    ? Color.fromARGB(255, 243, 239, 239)
-                    : Colors.white,
+                    ? kPrimaryColor
+                    : slot["slotStatus"] == "Both"
+                        ? Colors.white
+                        : slot["slotStatus"] == "OnlySingle" &&
+                                list[ind]["VehicleType"] == "Double"
+                            ? Color.fromARGB(255, 205, 204, 204)
+                            : slot["slotStatus"] == "OnlyDouble" &&
+                                    list[ind]["VehicleType"] == "Single"
+                                ? Color.fromARGB(255, 205, 204, 204)
+                                : slot["slotStatus"] == "OnlyDouble" &&
+                                        list[ind]["VehicleType"] == "Double"
+                                    ? Colors.white
+                                    : slot["slotStatus"] == "OnlySingle" &&
+                                            list[ind]["VehicleType"] == "Single"
+                                        ? Colors.white
+                                        : Color.fromARGB(255, 205, 204, 204),
               ),
-              borderRadius: BorderRadius.circular(15),
-              color: _currentIndex == index
-                  ? kPrimaryColor
-                  : slot["slotStatus"] == "Both"
-                      ? Colors.white
-                      : slot["slotStatus"] == "OnlySingle" &&
-                              list[ind]["VehicleType"] == "Double"
-                          ? Color.fromARGB(255, 205, 204, 204)
-                          : slot["slotStatus"] == "OnlyDouble" &&
-                                  list[ind]["VehicleType"] == "Single"
-                              ? Color.fromARGB(255, 205, 204, 204)
-                              : slot["slotStatus"] == "OnlyDouble" &&
-                                     list[ind]["VehicleType"] == "Double"
-                                  ? Colors.white
-                                  : slot["slotStatus"] ==
-                                              "OnlySingle" &&
-                                          list[ind]["VehicleType"] == "Single"
-                                      ? Colors.white
-                                      : Color.fromARGB(255, 205, 204, 204),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              '${slot["time"]}', // Display the time
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: _currentIndex == index ? Colors.white : null,
+              alignment: Alignment.center,
+              child: Text(
+                '${slot["time"]}', // Display the time
+                style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.bold,
+                  color: _currentIndex == index ? Colors.white : null,
+                ),
               ),
             ),
-          ),
-        );
-      },
-      childCount: tlist.length,
-    ),
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 4,
-      childAspectRatio: 1.5,
-    ),
-  );
-}
+          );
+        },
+        childCount: tlist.length,
+      ),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 4,
+        childAspectRatio: 1.5,
+      ),
+    );
+  }
 }
