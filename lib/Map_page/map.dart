@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         leading: Container(
           padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
-          child: BackButton(),
+          child: BackButton(color: Colors.white,),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,

@@ -370,8 +370,8 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                       children: [
                         // groupvalue unique among all radiobuttons
                         Container(
-                          padding: const EdgeInsets.only(right: 14.0),
-                          margin: EdgeInsets.all(10.0),
+                          padding: const EdgeInsets.only(right: 16.0),
+                          margin: EdgeInsets.all(8.0),
                           decoration: BoxDecoration(
                             color: Color.fromARGB(255, 255, 255, 255),
                             borderRadius: BorderRadius.circular(20),
@@ -416,7 +416,7 @@ class _ReserveVehicleState extends State<ReserveVehicle> {
                         ),
 
                         Container(
-                          padding: const EdgeInsets.only(right: 32.0),
+                          padding: const EdgeInsets.only(left:5.0,right: 15.0),
                           margin: EdgeInsets.all(10.0),
                           decoration: BoxDecoration(
                             color: Color.fromARGB(255, 255, 255, 255),
