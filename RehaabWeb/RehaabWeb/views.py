@@ -470,7 +470,6 @@ from django.http import StreamingHttpResponse
 from ultralytics import YOLO
 
 def generate_frames(vidpath):
-    print('hi')
     model = YOLO('yolov8x.pt')
     video_filename = vidpath
     videopath = os.path.join(os.path.dirname(__file__), 'static', 'RehaabWeb', video_filename)

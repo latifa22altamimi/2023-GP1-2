@@ -36,6 +36,9 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   bool oneRound =
       false; /////////////to check if the user finished first round or not
   StreamSubscription<LocationData>? locationSubscription;
+  int totalRounds = 7;
+  int remainingRounds = 7;
+  int remainingTimeInSeconds = 0;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
 
@@ -163,24 +166,20 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
             gap = stopwatch.elapsed.inMilliseconds;
           }
         }
-        if (counter >= 7) {
+        if (counter >= totalRounds) {
           rest = 0;
           EndStream();
-        } else if (!oneRound) {
-          if (counter == 1) {
-            _stopWatchTimer.onStopTimer();
-            final round_time =
-                (stopwatch.elapsed.inMilliseconds / 1000).floor();
-            print(round_time);
-            final int totalTimeInSeconds = round_time * 7;
-            final int hours = totalTimeInSeconds ~/ 3600;
-            final int minutes = (totalTimeInSeconds % 3600) ~/ 60;
-            final int seconds = totalTimeInSeconds % 60;
-            TotalTime =
-                '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
-            oneRound = true;
+        } else {
+           remainingRounds = totalRounds - counter;
+          remainingTimeInSeconds = stopwatch.elapsed.inMilliseconds ~/ 1000 * remainingRounds;
+
+          final int hours = remainingTimeInSeconds ~/ 3600;
+          final int minutes = (remainingTimeInSeconds % 3600) ~/ 60;
+          final int seconds = remainingTimeInSeconds % 60;
+          TotalTime =
+              '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
           }
-        }
+        
       }
     });
 

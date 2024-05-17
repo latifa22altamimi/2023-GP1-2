@@ -159,7 +159,7 @@ button {
                     if (eventSource) {
                       eventSource.close();
                     }
-                    eventSource = new EventSource('/HeatMap?vidpath=he2.mp4');
+                    eventSource = new EventSource('/HeatMap?vidpath=vehicles1.mp4');
                     eventSource.onmessage = function (event) {
                       processStream(event);
                     };
@@ -169,7 +169,7 @@ button {
                     if (eventSource) {
                       eventSource.close();
                     }
-                    eventSource = new EventSource('/HeatMap?vidpath=VE2.MP4');
+                    eventSource = new EventSource('/HeatMap?vidpath=vehicles2.MP4');
                     eventSource.onmessage = function (event) {
                       processStream(event);
                     };
