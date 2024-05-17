@@ -1,4 +1,7 @@
 
+import base64
+import os
+from django.conf import settings
 from django.shortcuts import get_object_or_404, render
 from AdminWeb.models import Parameters
 from datetime import date
@@ -9,7 +12,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from AdminWeb.models import Marker
-from django.http import JsonResponse, QueryDict
+from django.http import HttpResponse, JsonResponse, QueryDict
 from django.core.mail import send_mail
 from django.contrib import messages
 import random
@@ -456,3 +459,215 @@ def historicalDb(request):
                     }
 
  return render(request, 'HistoricalDB.html',context)
+
+import base64
+import os
+from collections import defaultdict
+
+import cv2
+import numpy as np
+from django.http import StreamingHttpResponse
+from ultralytics import YOLO
+
+def generate_frames():
+    print('hi')
+    model = YOLO('yolov8x.pt')
+    video_filename = 'he2.MP4'
+    videopath = os.path.join(os.path.dirname(__file__), 'static', 'RehaabWeb', video_filename)
+    cap = cv2.VideoCapture(videopath)
+    width = int(cap.get(3))
+    height = int(cap.get(4))
+    heatmap = np.zeros((height, width), dtype=np.float32)
+    def calculate_distance(p1, p2):
+     return np.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
+
+    def calculate_vertical_distance(p1, p2):
+      return abs(p1[1] - p2[1])
+
+    def calculate_horizontal_distance(p1, p2):
+      return abs(p1[0] - p2[0])
+    
+    rectangle_height_increment = 360
+    while cap.isOpened():
+        success, frame = cap.read()
+        if success:
+            results = model.track(frame, persist=True, classes=[3])
+            for result in results:
+              if result.boxes.xyxy.cpu() is not None and result.boxes.id.cpu() is not None:
+                boxes = result.boxes.xyxy.cpu().numpy().astype(int)
+                centers = [(int((box[0] + box[2]) / 2), int((box[1] + box[3]) / 2)) for box in boxes]
+
+                for i in range(len(centers)):
+                  for j in range(i + 1, len(centers)):
+                      euclidean_distance = calculate_distance(centers[i], centers[j])
+                      vertical_distance = calculate_vertical_distance(centers[i], centers[j])
+                      horizontal_distance = calculate_horizontal_distance(centers[i], centers[j])
+                      if euclidean_distance < 100: 
+                            x1, y1 = centers[i]
+                            x2, y2 = centers[j]
+
+                            top_left_x = min(x1, x2)
+                            top_left_y = min(y1, y2) - rectangle_height_increment // 2
+                            bottom_right_x = max(x1, x2)
+                            bottom_right_y = max(y1, y2) + rectangle_height_increment // 2
+
+                            top_left_x = max(0, top_left_x)
+                            top_left_y = max(0, top_left_y)
+                            bottom_right_x = min(heatmap.shape[1], bottom_right_x)
+                            bottom_right_y = min(heatmap.shape[0], bottom_right_y)
+
+                            heatmap[top_left_y:bottom_right_y, top_left_x:bottom_right_x] += 1
+                      if vertical_distance < 100 and centers[i][1] < centers[j][1]: 
+                            x1, y1 = centers[i]
+                            x2, y2 = centers[j]
+                            top_left_x = min(x1, x2)
+                            top_left_y = min(y1, y2) - rectangle_height_increment // 2
+                            bottom_right_x = max(x1, x2)
+                            bottom_right_y = max(y1, y2) + rectangle_height_increment // 2
+
+        
+                            top_left_x = max(0, top_left_x)
+                            top_left_y = max(0, top_left_y)
+                            bottom_right_x = min(heatmap.shape[1], bottom_right_x)
+                            bottom_right_y = min(heatmap.shape[0], bottom_right_y)
+
+                            heatmap[top_left_y:bottom_right_y, top_left_x:bottom_right_x] += 1
+
+                      if horizontal_distance < 100 and centers[i][0] < centers[j][0]:  
+                            x1, y1 = centers[i]
+                            x2, y2 = centers[j]
+
+                            top_left_x = min(x1, x2)
+                            top_left_y = min(y1, y2) - rectangle_height_increment // 2
+                            bottom_right_x = max(x1, x2)
+                            bottom_right_y = max(y1, y2) + rectangle_height_increment // 2
+
+                     
+                            top_left_x = max(0, top_left_x)
+                            top_left_y = max(0, top_left_y)
+                            bottom_right_x = min(heatmap.shape[1], bottom_right_x)
+                            bottom_right_y = min(heatmap.shape[0], bottom_right_y)
+
+                            heatmap[top_left_y:bottom_right_y, top_left_x:bottom_right_x] += 1
+
+
+            heatmap_blurred = cv2.GaussianBlur(heatmap, (15, 15), 0)
+            heatmap_norm = cv2.normalize(heatmap_blurred, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            heatmap_color = cv2.applyColorMap(heatmap_norm, cv2.COLORMAP_JET)
+
+            overlay = cv2.addWeighted(frame, 0.3, heatmap_color, 0.7, 0)
+            _, buffer = cv2.imencode('.jpg', overlay)
+            frame_base64 = base64.b64encode(buffer).decode('utf-8')
+            yield f"data: {frame_base64}\n\n"
+        else:
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+def HeatMap(request):
+    response = StreamingHttpResponse(generate_frames(), content_type='text/event-stream')
+    print(response)
+
+    return response
+
+def generate_frames1():
+    print('hi')
+    model = YOLO('yolov8x.pt')
+    video_filename = 'VE2.MP4'
+    videopath = os.path.join(os.path.dirname(__file__), 'static', 'RehaabWeb', video_filename)
+    cap = cv2.VideoCapture(videopath)
+    width = int(cap.get(3))
+    height = int(cap.get(4))
+    heatmap = np.zeros((height, width), dtype=np.float32)
+    def calculate_distance(p1, p2):
+     return np.sqrt((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2)
+
+    def calculate_vertical_distance(p1, p2):
+      return abs(p1[1] - p2[1])
+
+    def calculate_horizontal_distance(p1, p2):
+      return abs(p1[0] - p2[0])
+    
+    rectangle_height_increment = 360
+    while cap.isOpened():
+        success, frame = cap.read()
+        if success:
+            results = model.track(frame, persist=True, classes=[3])
+            for result in results:
+              if result.boxes.xyxy.cpu() is not None and result.boxes.id.cpu() is not None:
+                boxes = result.boxes.xyxy.cpu().numpy().astype(int)
+                centers = [(int((box[0] + box[2]) / 2), int((box[1] + box[3]) / 2)) for box in boxes]
+
+                for i in range(len(centers)):
+                  for j in range(i + 1, len(centers)):
+                      euclidean_distance = calculate_distance(centers[i], centers[j])
+                      vertical_distance = calculate_vertical_distance(centers[i], centers[j])
+                      horizontal_distance = calculate_horizontal_distance(centers[i], centers[j])
+                      if euclidean_distance < 100: 
+                            x1, y1 = centers[i]
+                            x2, y2 = centers[j]
+
+                            top_left_x = min(x1, x2)
+                            top_left_y = min(y1, y2) - rectangle_height_increment // 2
+                            bottom_right_x = max(x1, x2)
+                            bottom_right_y = max(y1, y2) + rectangle_height_increment // 2
+
+                            top_left_x = max(0, top_left_x)
+                            top_left_y = max(0, top_left_y)
+                            bottom_right_x = min(heatmap.shape[1], bottom_right_x)
+                            bottom_right_y = min(heatmap.shape[0], bottom_right_y)
+
+                            heatmap[top_left_y:bottom_right_y, top_left_x:bottom_right_x] += 1
+                      if vertical_distance < 100 and centers[i][1] < centers[j][1]: 
+                            x1, y1 = centers[i]
+                            x2, y2 = centers[j]
+                            top_left_x = min(x1, x2)
+                            top_left_y = min(y1, y2) - rectangle_height_increment // 2
+                            bottom_right_x = max(x1, x2)
+                            bottom_right_y = max(y1, y2) + rectangle_height_increment // 2
+
+        
+                            top_left_x = max(0, top_left_x)
+                            top_left_y = max(0, top_left_y)
+                            bottom_right_x = min(heatmap.shape[1], bottom_right_x)
+                            bottom_right_y = min(heatmap.shape[0], bottom_right_y)
+
+                            heatmap[top_left_y:bottom_right_y, top_left_x:bottom_right_x] += 1
+
+                      if horizontal_distance < 100 and centers[i][0] < centers[j][0]:  
+                            x1, y1 = centers[i]
+                            x2, y2 = centers[j]
+
+                            top_left_x = min(x1, x2)
+                            top_left_y = min(y1, y2) - rectangle_height_increment // 2
+                            bottom_right_x = max(x1, x2)
+                            bottom_right_y = max(y1, y2) + rectangle_height_increment // 2
+
+                     
+                            top_left_x = max(0, top_left_x)
+                            top_left_y = max(0, top_left_y)
+                            bottom_right_x = min(heatmap.shape[1], bottom_right_x)
+                            bottom_right_y = min(heatmap.shape[0], bottom_right_y)
+
+                            heatmap[top_left_y:bottom_right_y, top_left_x:bottom_right_x] += 1
+
+
+            heatmap_blurred = cv2.GaussianBlur(heatmap, (15, 15), 0)
+            heatmap_norm = cv2.normalize(heatmap_blurred, None, 0, 255, cv2.NORM_MINMAX, dtype=cv2.CV_8U)
+            heatmap_color = cv2.applyColorMap(heatmap_norm, cv2.COLORMAP_JET)
+
+            overlay = cv2.addWeighted(frame, 0.3, heatmap_color, 0.7, 0)
+            _, buffer = cv2.imencode('.jpg', overlay)
+            frame_base64 = base64.b64encode(buffer).decode('utf-8')
+            yield f"data: {frame_base64}\n\n"
+        else:
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+def HeatMap1(request):
+    response = StreamingHttpResponse(generate_frames1(), content_type='text/event-stream')
+    print(response)
+
+    return response

@@ -45,8 +45,45 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+button {
+  margin-left: 10px;
+}
+
+.button {
+    background-color: white;
+    font-weight: normal;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px 10px;
+    cursor: pointer;
+    color:black;
+    border-radius: 20px;
+  }
+
+  .active-button {
+    background-color: rgba(145, 145, 145, 0.358);
+    font-weight: bold;
+    pointer-events: none; 
+    opacity: 0.5;
+  }
+  #map1 {
+            width: 550px;
+            height: 305px;
+        }
+
+
 
 </style>
+
 <main class="">
     {% if messages %}
 			{% for message in messages %}
@@ -64,42 +101,112 @@
     <div class="p-6">
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-            <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
+            <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md" style="height: 550px;">
                 <div class="flex justify-between mb-4 items-start">
+                  <div class="font-bold" style="font-size: 15px;">
+                    Congestion Heat-map
+                  </div>
+                  <div class="flex justify-end">
+                    <button id="Camera1-button" class="button">Camera 1</button>
+                    <button id="Camera2-button" class="button">Camera 2</button>
+                  </div>
+                </div>
+                <div id="image-container"></div>
 
-                    <div class="font-medium">Congestion Heat-map
-                        <img src="{% static 'RehaabWeb/HeatMap.jpg' %}" alt="HeatMap" style="width:550px; height:305px;">
-                    </div>
-                    
+                <script>
+                  window.addEventListener('DOMContentLoaded', () => {
+                    const camera1Button = document.getElementById('Camera1-button');
+                  const camera2Button = document.getElementById('Camera2-button');
+
+                
+                  camera1Button.addEventListener('click', function () {
+                    camera1Button.classList.add('active-button');
+                    camera2Button.classList.remove('active-button');
+                  });
+
+                  camera2Button.addEventListener('click', function () {
+                    camera2Button.classList.add('active-button');
+                    camera1Button.classList.remove('active-button');
+                  });
+
+                  camera1Button.click();
                 
                     
+                  });
+                
+                  const imageContainer = document.getElementById('image-container');
+                  let eventSource = null;
+                  let previousImage = null;
+                
+                  function processStream(event) {
+                    const frameBase64 = event.data;
+                    const img = document.createElement('img');
+                
+                    img.src = 'data:image/jpeg;base64,' + frameBase64;
+                    img.classList.add('frame-image');
+                    img.style.width = "540px"
+                    img.style.height= "300px"
+                
+                    if (previousImage) {
+                      imageContainer.removeChild(previousImage);
+                    }
+                    imageContainer.appendChild(img);
+                
+                    previousImage = img;
+                  }
+                
+                  function startCamera1() {
+                    if (eventSource) {
+                      eventSource.close();
+                    }
+                    eventSource = new EventSource('/HeatMap');
+                    eventSource.onmessage = function (event) {
+                      console.log('Message from /HeatMap:', event.data);
+                      processStream(event);
+                    };
+                  }
+                
+                  function startCamera2() {
+                    if (eventSource) {
+                      eventSource.close();
+                    }
+                    eventSource = new EventSource('/HeatMap1');
+                    eventSource.onmessage = function (event) {
+                      console.log('Message from /HeatMap1:', event.data);
+                      processStream(event);
+                    };
+                  }
+                
+                  const camera1Button = document.getElementById('Camera1-button');
+                  const camera2Button = document.getElementById('Camera2-button');
+                
+                  camera1Button.addEventListener('click', startCamera1);
+                  camera2Button.addEventListener('click', startCamera2);
+                </script>
 
-                </div>
-                <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
-                    <div class="flex justify-space"> 
-                            
-                            <div class="text-2xl font-semibold" id="Double">0</div>
-                            <div class="text-2xl font-semibold " id="Single">0</div>
-                            <div class="text-2xl font-semibold " id="Backup" >0</div>
-                        
-                    </div>
-                       
-                        <div class="flex justify-between">
-                           
-                            <div class="text-sm font-medium text-gray-400">Double vehicles in usage</div>
-                            <div class="text-sm font-medium text-gray-400">Single vehicles in usage </div>
-                            <div class="text-sm font-medium text-gray-400">Backup vehicles</div>
-                        </div>
-                       
-                 
+                <br>
+              <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
                
+                <div class="flex justify-space">
+                  <div class="text-2xl font-semibold" id="Double">0</div>
+                  <div class="text-2xl font-semibold" id="Single">0</div>
+                  <div class="text-2xl font-semibold" id="Backup">0</div>
                 </div>
+                <div class="flex justify-between">
+                  <div class="text-sm font-medium text-gray-400">Double vehicles in usage</div>
+                  <div class="text-sm font-medium text-gray-400">Single vehicles in usage</div>
+                  <div class="text-sm font-medium text-gray-400">Backup vehicles</div>
+                </div>
+              </div>
             </div>
-
+          
+             
             <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
+
                 <div class="flex justify-between mb-4">
                     <div id="container">
-                        <div class="font-medium">Support Notifications</div>
+                        <div class="font-bold" style="font-size: 15px;">Support Notifications</div>
+                        <br>
                         <div id="map"></div>
                         <br>
                         <div class="bg-white rounded-md border border-gray-100 p-6 shadow-md shadow-black/5">
@@ -117,143 +224,7 @@
                     </div>
                     
 
-                    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                    <script>
-                                  let iconUr = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png';
-                        let mapOptions = {
-                            iconUrl: iconUr,
-                            center: [21.4225,39.8262],
-                            zoom: 17
-                        };
-                        let customIcon = L.icon({
-                            iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-                            iconSize: [25, 41],
-                            iconAnchor: [12, 41],
-                            popupAnchor: [1, -34],
-                            shadowSize: [41, 41]
-                        });
-
-                        let map = L.map('map', mapOptions);
-
-
-                        let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-                        map.addLayer(layer);
-                    </script>
-                    <script>
-                        $(document).ready(function () {
-                            var supportTableBody = $('#supportTableBody');
-
-                            function updateAvailableData() {
-    $.ajax({
-        url: '{% url "get_Vehicles_Info" %}',
-        success: function (data) {
-            map.eachLayer(function (layer) {
-                if (layer instanceof L.Marker) {
-                    map.removeLayer(layer);
-                }
-            });
-
-            var supportTableBody = $('#supportTableBody');
-            var solvedRows = '';
-            var unsolvedRows = '';
-           
-            $.each(data.AllSupport, function (index, support) {
-                var assignedToContent = support.Assigned_to ? support.Assigned_to : '<span class="text-[13px] font-medium text-gray-400">Not assigned</span>';
-                var solveButtonContent = support.Assigned_to ? '<span class="inline-block p-1 rounded bg-yellow-500/10 text-yellow-500 font-medium text-[12px] leading-none">InProgress</span>' : '<span class="inline-block p-1 rounded bg-rose-500/10 text-rose-500 font-medium text-[12px] leading-none">Waiting</span>';
-                var Solved = support.Solved === 1 ? '<span class="inline-block p-1 rounded bg-green-500/10 text-green-500 font-medium text-[12px] leading-none">Solved</span>' : solveButtonContent;
-                var timestamp = support.ReportedAt;
-                console.log(timestamp);
-                var dateObject = new Date(timestamp);
-                var hours = dateObject.getUTCHours();
-                var minutes = dateObject.getUTCMinutes();
-
-                var ampm = hours >= 12 ? 'PM' : 'AM';
-                hours = hours % 12;
-                hours = hours ? hours : 12;
-
-                var formattedTime = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ampm;
-
-                console.log(formattedTime);
-                var VMEmail = support.VMEmail.toString();
-                var VEmail = support.VEmail.toString();
-                var VMtitle = "Vehicle manager's Email: " + VMEmail;
-                var Vtitle = "Visitor's Email: " + VEmail;
-
-                var row = '<tr id="supportRow_' + support.supportID + '">' +
-            
-                    '<td class="py-2 px-4 border-b border-b-gray-50">' +
-                    '<span class="text-[13px] font-medium text-gray-400" title="' + Vtitle + '">' + support.visitor_name + '</span>' +
-                    '</td>' +
-                    '<td class="py-2 px-4 border-b border-b-gray-50">' +
-                    '<span class="text-[13px] font-medium text-gray-400">' + support.Message + '</span>' +
-                    '</td>' +
-                    '<td class="py-2 px-4 border-b border-b-gray-50">' +
-                    '<span class="text-[13px] font-medium text-gray-400" title="' + VMtitle + '" })>' + assignedToContent + ' </span>' +
-                    '</td>' +
-                    '<td class="py-2 px-4 border-b border-b-gray-50">' +
-                    '<span class="text-[13px] font-medium text-gray-400">' + formattedTime + ' </span>' +
-                    '</td>' +
-                    '<td class="py-2 px-4 border-b border-b-gray-50">' +
-                    Solved +
-                    '</td>' +
-                    '</tr>';
-
-                    function setTooltip(element, content) {
-    element.setAttribute('title', content);
-}
-
-                if (support.Solved === 1) {
-                    solvedRows += row;
-                } else {
-                    unsolvedRows += row;
-                }
-            });
-
-            supportTableBody.html(unsolvedRows + solvedRows);
-                                        $('#Active').text(data.Active);
-                                        $('#Backup').text(data.num_of_backup_vehicles);
-                                        $('#unsolved').text(data.support_count)
-                                        $('#solved').text(data.s_support_count)
-                                        $('#Double').text(data.Double)
-                                        $('#Single').text(data.Single)
-
-
-
-                                        let latitudeValues = data.latitude_values
-                                        let longitudeValues = data.longitude_values
-                                        let infoWindowContents = data.message
-
-                                for (let i = 0; i < latitudeValues.length; i++) {
-                                 let latitude = latitudeValues[i];
-                                 let longitude = longitudeValues[i];
-                                 let marker = L.marker([latitude, longitude],{ icon: customIcon }).addTo(map);
-
-                                  let infoWindowContent = infoWindowContents[i];
-                                
-                            marker.bindPopup(infoWindowContent);
-                        }
-                                        
-                                    }
-                                });
-                            }
-                            updateAvailableData();
-
-                            setInterval(updateAvailableData, 5000);
-                        });
-
-     let list = document.querySelectorAll('.list');
-    for (let i = 0; i < list.length; i++) {
-        list[i].onclick = function () {
-            let j = 0;
-            while (j < list.length) {
-                list[j++].className = 'mb-1 group ';
-            }
-            list[i].className = 'mb-1 group active';
-        };
-    }
-
-                    </script>
+                   
                    
 
                 </div>
@@ -275,18 +246,172 @@
   </table>
 </div>
 
-<script>
-function toggleTable() {
-  var table = document.getElementById("SupportTable");
-  if (table.style.display === "none") {
-    table.style.display = "block";
-  } else {
-    table.style.display = "none";
-  }
-}
-</script>
-            </div>
 
+            </div>
+            <!--
+            <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
+
+              <div class="flex justify-between mb-4">
+                  <div id="container">
+                      <div class="font-bold" style="font-size: 15px;">Distrbution</div>
+                      <br>
+                      <div id="map1"></div>
+                      <br>
+                     
+                  </div>
+                  </div>
+
+            </div>
+            -->
+            <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                         let iconUr = 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png';
+                let mapOptions = {
+                    iconUrl: iconUr,
+                    center: [21.4225,39.8262],
+                    zoom: 17
+                };
+                let customIcon = L.icon({
+                    iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+
+                let map = L.map('map', mapOptions);
+
+
+
+                let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+                map.addLayer(layer);
+         
+            </script>
+            <script>
+                $(document).ready(function () {
+                    var supportTableBody = $('#supportTableBody');
+
+                    function updateAvailableData() {
+$.ajax({
+url: '{% url "get_Vehicles_Info" %}',
+success: function (data) {
+    map.eachLayer(function (layer) {
+        if (layer instanceof L.Marker) {
+            map.removeLayer(layer);
+        }
+    });
+
+    var supportTableBody = $('#supportTableBody');
+    var solvedRows = '';
+    var unsolvedRows = '';
+   
+    $.each(data.AllSupport, function (index, support) {
+        var assignedToContent = support.Assigned_to ? support.Assigned_to : '<span class="text-[13px] font-medium text-gray-400">Not assigned</span>';
+        var solveButtonContent = support.Assigned_to ? '<span class="inline-block p-1 rounded bg-yellow-500/10 text-yellow-500 font-medium text-[12px] leading-none">InProgress</span>' : '<span class="inline-block p-1 rounded bg-rose-500/10 text-rose-500 font-medium text-[12px] leading-none">Waiting</span>';
+        var Solved = support.Solved === 1 ? '<span class="inline-block p-1 rounded bg-green-500/10 text-green-500 font-medium text-[12px] leading-none">Solved</span>' : solveButtonContent;
+        var timestamp = support.ReportedAt;
+        console.log(timestamp);
+        var dateObject = new Date(timestamp);
+        var hours = dateObject.getUTCHours();
+        var minutes = dateObject.getUTCMinutes();
+
+        var ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12;
+
+        var formattedTime = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ampm;
+
+        console.log(formattedTime);
+        var VMEmail = support.VMEmail.toString();
+        var VEmail = support.VEmail.toString();
+        var VMtitle = "Vehicle manager's Email: " + VMEmail;
+        var Vtitle = "Visitor's Email: " + VEmail;
+
+        var row = '<tr id="supportRow_' + support.supportID + '">' +
+    
+            '<td class="py-2 px-4 border-b border-b-gray-50">' +
+            '<span class="text-[13px] font-medium text-gray-400" title="' + Vtitle + '">' + support.visitor_name + '</span>' +
+            '</td>' +
+            '<td class="py-2 px-4 border-b border-b-gray-50">' +
+            '<span class="text-[13px] font-medium text-gray-400">' + support.Message + '</span>' +
+            '</td>' +
+            '<td class="py-2 px-4 border-b border-b-gray-50">' +
+            '<span class="text-[13px] font-medium text-gray-400" title="' + VMtitle + '" })>' + assignedToContent + ' </span>' +
+            '</td>' +
+            '<td class="py-2 px-4 border-b border-b-gray-50">' +
+            '<span class="text-[13px] font-medium text-gray-400">' + formattedTime + ' </span>' +
+            '</td>' +
+            '<td class="py-2 px-4 border-b border-b-gray-50">' +
+            Solved +
+            '</td>' +
+            '</tr>';
+
+            function setTooltip(element, content) {
+element.setAttribute('title', content);
+}
+
+        if (support.Solved === 1) {
+            solvedRows += row;
+        } else {
+            unsolvedRows += row;
+        }
+    });
+
+    supportTableBody.html(unsolvedRows + solvedRows);
+                                $('#Active').text(data.Active);
+                                $('#Backup').text(data.num_of_backup_vehicles);
+                                $('#unsolved').text(data.support_count)
+                                $('#solved').text(data.s_support_count)
+                                $('#Double').text(data.Double)
+                                $('#Single').text(data.Single)
+
+
+
+                                let latitudeValues = data.latitude_values
+                                let longitudeValues = data.longitude_values
+                                let infoWindowContents = data.message
+
+                        for (let i = 0; i < latitudeValues.length; i++) {
+                         let latitude = latitudeValues[i];
+                         let longitude = longitudeValues[i];
+                         let marker = L.marker([latitude, longitude],{ icon: customIcon }).addTo(map);
+
+                          let infoWindowContent = infoWindowContents[i];
+                        
+                    marker.bindPopup(infoWindowContent);
+                }
+                                
+                            }
+                        });
+                    }
+                    updateAvailableData();
+
+                    setInterval(updateAvailableData, 5000);
+                });
+
+let list = document.querySelectorAll('.list');
+for (let i = 0; i < list.length; i++) {
+list[i].onclick = function () {
+    let j = 0;
+    while (j < list.length) {
+        list[j++].className = 'mb-1 group ';
+    }
+    list[i].className = 'mb-1 group active';
+};
+}
+
+            </script>
+            <script>
+            function toggleTable() {
+              var table = document.getElementById("SupportTable");
+              if (table.style.display === "none") {
+                table.style.display = "block";
+              } else {
+                table.style.display = "none";
+              }
+            }
+            </script>
             </div>
             
         </div>
