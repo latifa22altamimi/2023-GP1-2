@@ -86,6 +86,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
         });
         NearestTime();
       } else {
+         
         unAvailableSingle = false;
         unAvailableDouble = false;
       }
@@ -139,7 +140,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 244, 244, 244),
+      backgroundColor: Color.fromARGB(255, 255, 255, 255),
       appBar: AppBar(
         leading: Container(
           padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
@@ -819,7 +820,9 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                 //form is valid
                                 if (Status == "Active") {
                                   getTime = DateFormat('hh:mm a', 'en_US')
-    .format(DateTime.now().toUtc().add(Duration(hours: 3)));
+                                      .format(DateTime.now()
+                                          .toUtc()
+                                          .add(Duration(hours: 3)));
                                 }
 
                                 if ((_vehicleType != "" &&

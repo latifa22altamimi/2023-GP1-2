@@ -130,7 +130,7 @@ Widget build(BuildContext context) => SafeArea(
       iconTheme: IconThemeData(color: Colors.black87),
       leading: Container(
         padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
-        child: BackButton(),
+        child: BackButton(color: Colors.white,),
       ),
       backgroundColor: Colors.transparent,
       elevation: 0.0,

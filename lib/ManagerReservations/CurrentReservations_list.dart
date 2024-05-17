@@ -111,7 +111,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
   }
 
   Future refresh() async {
-    //convertToCompleted();
+    convertToCompleted();
     AutoCancel();
     historyList.clear();
     list.clear();
@@ -155,7 +155,7 @@ class _CurrentReservationsListState extends State<CurrentReservationsList> {
   }
 
   void initState() {
-    //convertToCompleted(); //convert status to completed
+    convertToCompleted(); //convert status to completed
     super.initState();
     checkAvailableType();
     curpressed = true;
@@ -1211,10 +1211,10 @@ class _ReserveCardState extends State<ReserveCard> {
                     ),
                   ),
                   SizedBox(
-                    width: 50.0,
+                    width: 47.0,
                   ),
                   Container(
-                    margin: EdgeInsets.only(right: 10.0),
+                    margin: EdgeInsets.only(right: 5.0),
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.push(
@@ -1382,7 +1382,7 @@ class _WaitingCardState extends State<WaitingCard> {
                       fontWeight: FontWeight.w500),
                 ),
                 SizedBox(
-                  width: 150.0,
+                  width: 148.0,
                 ),
                 Text(
                   'Waiting',
@@ -1578,7 +1578,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                   'Cancel',
                                                   style: GoogleFonts.poppins(
                                                       color: Colors.black,
-                                                      fontSize: 15,
+                                                      fontSize: 14,
                                                       fontWeight:
                                                           FontWeight.w500),
                                                 ),
@@ -1695,7 +1695,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                   'Remove',
                                                   style: GoogleFonts.poppins(
                                                       color: Colors.white,
-                                                      fontSize: 14,
+                                                      fontSize: 12,
                                                       fontWeight:
                                                           FontWeight.w500),
                                                 ),
@@ -1721,7 +1721,7 @@ class _WaitingCardState extends State<WaitingCard> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: ErrorColor,
-
+                        padding: EdgeInsets.only(top:2.0,left:10.0,right:10.0,bottom:2.0),
                         //Color.fromARGB(131, 60, 100, 73)
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
@@ -1730,7 +1730,7 @@ class _WaitingCardState extends State<WaitingCard> {
                         ),
                       ),
                       child:
-                          const Icon(CupertinoIcons.xmark, color: Colors.white),
+                          const Icon(CupertinoIcons.xmark, color: Colors.white,size: 20.0,),
                     ),
                   ),
                   SizedBox(
@@ -2009,7 +2009,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                               'Cancel',
                                               style: GoogleFonts.poppins(
                                                   color: Colors.black,
-                                                  fontSize: 15,
+                                                  fontSize: 14,
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             style: ElevatedButton.styleFrom(
@@ -2034,7 +2034,7 @@ class _WaitingCardState extends State<WaitingCard> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: kPrimaryColor,
-
+                        padding: EdgeInsets.only(top:2.0,left:10.0,right:10.0,bottom:2.0),
                         //Color.fromARGB(131, 60, 100, 73)
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(
@@ -2043,7 +2043,7 @@ class _WaitingCardState extends State<WaitingCard> {
                         ),
                       ),
                       child: const Icon(CupertinoIcons.check_mark,
-                          color: Colors.white),
+                          color: Colors.white,size: 20.0,),
                     ),
                   ),
                 ],
