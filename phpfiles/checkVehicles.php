@@ -20,18 +20,22 @@ $rowSingleOrDouble = mysqli_fetch_assoc($resultSingleOrDouble);
 $numVehicles = $rowSingleOrDouble['TotalNumberofVehicles'];
 
 // Fetch active walk-in reservations for the provided vehicle type
-$sqlReservations = "SELECT r.*, v.VehicleType , m.*
-                    FROM reservation r INNER JOIN managerreservation m ON r.reservationId = m.reservationId
-                    INNER JOIN vehicle v ON r.VehicleId = v.vehicleId 
-                    WHERE r.Status='Active' AND v.VehicleType='$VehicleType'";
+$sqlReservations = "SELECT COUNT(*) AS num_rows
+                    FROM reservation AS r
+                    WHERE r.Status = 'Active' 
+                    AND r.VehicleId IN (
+                        SELECT v.vehicleId
+                        FROM vehicle AS v
+                        WHERE v.VehicleType = '$VehicleType'
+                    )
+                    AND r.reservationId IN (
+                        SELECT m.reservationId
+                        FROM managerreservation AS m
+                    )";
 $resultReservations = mysqli_query($conn, $sqlReservations);
-$ActiveWalkInReservations = [];
-while ($rowReservation = mysqli_fetch_assoc($resultReservations)) {
-    $ActiveWalkInReservations[] = $rowReservation;
-}
+$rowReservation = mysqli_fetch_assoc($resultReservations);
 
-// Count the number of active reservations for the provided vehicle type
-$numOfActive = count($ActiveWalkInReservations);
+$numOfActive = $rowReservation['num_rows'];
 
 // Check availability and construct response
 if ($numOfActive == $numVehicles) {
