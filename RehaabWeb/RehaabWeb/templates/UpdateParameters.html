@@ -426,7 +426,6 @@ label {
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
         <script>
-            // Define a function to show the Swal.fire() message
             function showConfirmationMessage() {
                 Swal.fire({
             title: 'Are you sure you want to update the system information? ',
@@ -439,7 +438,7 @@ label {
             showCancelButton: true,
         }).then((result) => {
             if (result.isConfirmed) {
-                alert_message(msg="success")
+                alert_message(msg="The parameters have been updated successfully")
                 setTimeout(function () {
                     $("#Update").click();
                 },1500);

@@ -35,10 +35,9 @@
       <li>
         <a href="/index.html/"><span class="fa fa-home mr-3" style="color: white;"></span> Live Dashboard</a>
       </li>
-     <li> 
-        <a href="/HistoricalDB.html/"><i class="fa fa-area-chart " aria-hidden="true" ></i>  
-         <span style="color: whitesmoke; margin-left: 5%;"> Historical Dashboard </span></a> 
-      </li> 
+      <li>
+        <a href="/HistoricalDB.html/"><span class="fa fa-area-chart mr-3" style="color: white;"></span>Historical Dashboard</a>
+      </li>
       <li>
       <li>
         <a href="/UpdateParameters.html/"><span class="fa fa-cog mr-3" style="color: white;"></span> Configure and
@@ -95,7 +94,7 @@
         showCancelButton: true,
       }).then((result) => {
         if (result.isConfirmed) {
-              alert_message(msg="success")
+              alert_message(msg="You have been succussfully logged out")
               setTimeout(function () {
                   window.location.href = "{% url 'sign-in' %}";
               },1500);
