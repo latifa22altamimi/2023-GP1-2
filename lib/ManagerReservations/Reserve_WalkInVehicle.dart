@@ -86,7 +86,9 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
         });
         NearestTime();
       } else {
-         
+        getTime = DateFormat('hh:mm a', 'en_US')
+            .format(DateTime.now().toUtc().add(Duration(hours: 3)));
+        Status = "Active";
         unAvailableSingle = false;
         unAvailableDouble = false;
       }

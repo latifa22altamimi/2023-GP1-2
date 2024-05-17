@@ -1109,7 +1109,7 @@ class _ReserveCardState extends State<ReserveCard> {
                           fontWeight: FontWeight.w500),
                     ),
                     SizedBox(
-                      width: widget.widthAdjust,
+                      width: 107.0,
                     ),
                     Text(
                       '${widget.status} ',

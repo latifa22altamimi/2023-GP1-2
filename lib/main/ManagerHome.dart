@@ -68,6 +68,7 @@ TextStyle labelTextStyle = GoogleFonts.poppins(
         ),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
+          
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(40), topLeft: Radius.circular(40)),
             boxShadow: [
@@ -83,8 +84,8 @@ TextStyle labelTextStyle = GoogleFonts.poppins(
               data: NavigationBarThemeData(
                 height: 80,
                 labelTextStyle: MaterialStateProperty.all(labelTextStyle),
-                backgroundColor: Color.fromARGB(255, 255, 255, 255),
-                shadowColor: Colors.black,
+                backgroundColor:Colors.white,
+                shadowColor: Colors.transparent,
                 indicatorColor:
                     Color.fromARGB(255, 104, 132, 113).withOpacity(0.34),
               ),
