@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -515,7 +517,7 @@ void Solved() async{
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: 120,
+                    width: 150,
                     child: ElevatedButton(
                       onPressed: () {
                         openGoogleMaps();
@@ -530,13 +532,15 @@ void Solved() async{
                         'Google Maps',
                         style:  GoogleFonts.poppins(
                           color: Colors.white,
+                        fontSize:14,
+                        fontWeight:FontWeight.w500
                         ),
                       ),
                     ),
                   ),
                   SizedBox(width: 10),
                   Container(
-                    width: 80,
+                    width: 100,
                     child: ElevatedButton(
                       onPressed: () {
                         Solved();
@@ -548,10 +552,11 @@ void Solved() async{
                         ),
                       ),
                       child: Text(
-                        'Solved',
+                        'Solve',
                         style:  GoogleFonts.poppins(
                           color: Colors.white,
-                        ),
+                          fontSize:14,
+                          fontWeight:FontWeight.w500                        ),
                       ),
                     ),
                   ),
