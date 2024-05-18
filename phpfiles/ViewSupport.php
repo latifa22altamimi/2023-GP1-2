@@ -12,10 +12,11 @@ if ($result->num_rows > 0) {
         $solved = $row["Solved"];
         $longitude = $row["Latitude"];
         $latitude = $row["Longitude"];
-        echo json_encode([0 => true, 1 => $longitude, 2 => $latitude, 3 => $id]);
+        $Message= $row["Message"];
+        echo json_encode([0 => true, 1 => $longitude, 2 => $latitude, 3 => $id, 4=>$Message]);
     }
 } else {
-    echo json_encode([0 => false, 1 => "0.0", 2 => "0.0", 3 =>"0"]);}
+    echo json_encode([0 => false, 1 => "0.0", 2 => "0.0", 3 =>"0", 4=>'']);}
 
 $conn->close();
 

@@ -280,6 +280,7 @@ bool Support=false;
 String long="";
 String lat="";
 String id='';
+String Problem='';
 
 class BodyHome extends StatefulWidget {
   const BodyHome({Key? key}) : super(key: key);
@@ -324,12 +325,18 @@ void openGoogleMaps() async {
     print("could not open map");
   }
 }
-void Solved() async{
+Solved() async{
   print(id);
     var url = "http://10.0.2.2/phpfiles/UpdateSolved.php";
 
     final res = await http.post(Uri.parse(url), body: {"id":id});
+      var data=json.decode(res.body);
+      print(data);
+   
 }
+  
+
+
 
   Future ViewSupport() async {
     print("hi");
@@ -343,10 +350,12 @@ void Solved() async{
      long=data[1];
      lat=data[2];
      id=data[3];
+     Problem=data[4];
      print(Support);
      print(long);
      print(lat);
      print(id);
+     print(Problem);
   }
 
   Future WaitingNum() async {
@@ -456,7 +465,7 @@ void Solved() async{
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.white,
-                elevation: 2, // Adjust the elevation value as desired
+                elevation: 2, 
               ),
               onPressed: () {
                 vehiclesAvailable.clear();
@@ -485,7 +494,7 @@ void Solved() async{
         height: 18.0,
       ),
       SizedBox(
-        height: 90,
+        height: 118,
         width: 370,
         child: Container(
           decoration: BoxDecoration(
@@ -504,6 +513,14 @@ void Solved() async{
               SizedBox(height: 10),
               Text(
                 'You have 1 support notification!',
+                style:  GoogleFonts.poppins(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.red,
+                ),
+              ),
+               Text(
+                'Type of problem: $Problem',
                 style:  GoogleFonts.poppins(
                   fontSize: 15,
                   fontWeight: FontWeight.w500,
@@ -539,7 +556,219 @@ void Solved() async{
                     width: 80,
                     child: ElevatedButton(
                       onPressed: () {
-                        Solved();
+                           showDialog(
+                                context: context,
+                                builder: (context) => Dialog(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 247, 247, 247),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                        left: 10.0,
+                                        right: 10.0,
+                                        top: 20.0,
+                                        bottom: 30.0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Lottie.asset('assets/images/warn.json',
+                                            width: 100, height: 100),
+                                        Text(
+                                          'Problem Solved?',
+                                          style:  GoogleFonts.poppins(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        SizedBox(
+                                          height: 10.0,
+                                        ),
+                                        Text(
+                                          'Are you sure that you have solved the problem?',
+                                          style:  GoogleFonts.poppins(
+                                              color: Color.fromARGB(255, 48, 48, 48),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w400),
+                                               textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(
+                                          height: 20.0,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ConstrainedBox(
+                                              constraints:
+                                                  BoxConstraints.tightFor(
+                                                      height: 38, width: 100),
+                                              child: ElevatedButton(
+                                                onPressed: () =>
+                                                    Navigator.of(context).pop(),
+                                                child: Text(
+                                                  'No',
+                                                  style:  GoogleFonts.poppins(
+                                                      color: Colors.black,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 255, 255, 255),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(50),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+
+                                            SizedBox(
+                                              width: 30.0,
+                                            ),
+                                            //when press on confirm
+
+                                            ConstrainedBox(
+                                              constraints:
+                                                  BoxConstraints.tightFor(
+                                                      height: 38, width: 100),
+                                              child: ElevatedButton(
+                                                onPressed: () async {
+
+                                                  Navigator.of(context).pop();
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        Future.delayed(
+                                                        
+                                                            Duration(
+                                                                seconds: 2),
+                                                            () {
+                                                          Solved();
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        ManagerHome()),
+                                                          );
+                                                            
+                                                        });
+                                                        return Dialog(
+                                                          backgroundColor:
+                                                              Color.fromARGB(
+                                                                  255,
+                                                                  247,
+                                                                  247,
+                                                                  247),
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20)),
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(20.0),
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Lottie.asset(
+                                                                    'assets/images/success.json',
+                                                                    width: 100,
+                                                                    height:
+                                                                        100),
+                                                                Text(
+                                                                  'Success',
+                                                                  style:  GoogleFonts.poppins(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          20,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 10.0,
+                                                                ),
+                                                                Text(
+                                                                  "Thank you for solving the problem!",
+                                                                  style:  GoogleFonts.poppins(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          17,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400),
+                                                                    textAlign: TextAlign.center,
+                                                                ),
+                                                               
+                                                                Row(
+                                                                  crossAxisAlignment:
+                                                                      CrossAxisAlignment
+                                                                          .center,
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    ConstrainedBox(
+                                                                      constraints: BoxConstraints.tightFor(
+                                                                          height:
+                                                                              28,
+                                                                          width:
+                                                                              100),
+                                                                    ),
+                                                                  ],
+                                                                )
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        );
+                                                      });
+                                                },
+                                                child: Text(
+                                                  'Yes',
+                                                  style:  GoogleFonts.poppins(
+                                                      color: Colors.white,
+                                                      fontSize: 13.5,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Color.fromARGB(
+                                                          255, 60, 100, 73),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(50),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                           );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: kPrimaryColor,
