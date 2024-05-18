@@ -33,13 +33,9 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
   String? TotalTime; //////////round time*7 to get the approximant finish time
   int? StoppedTimeMinutes; ///////convert time to mins
   var icon = Icons.start;
-  bool oneRound =
-      false; /////////////to check if the user finished first round or not
   StreamSubscription<LocationData>? locationSubscription;
-  int totalRounds = 7;
-  int remainingRounds = 7;
-  int remainingTimeInSeconds = 0;
-
+  List<bool> Round = [true,false,false,false,false, false,false,false];
+  int i=1;
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
 
   void EndStream() {
@@ -166,19 +162,27 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
             gap = stopwatch.elapsed.inMilliseconds;
           }
         }
-        if (counter >= totalRounds) {
+        if (counter >= 7) {
           rest = 0;
           EndStream();
-        } else {
-           remainingRounds = totalRounds - counter;
-          remainingTimeInSeconds = stopwatch.elapsed.inMilliseconds ~/ 1000 * remainingRounds;
-
-          final int hours = remainingTimeInSeconds ~/ 3600;
-          final int minutes = (remainingTimeInSeconds % 3600) ~/ 60;
-          final int seconds = remainingTimeInSeconds % 60;
-          TotalTime =
-              '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+        } else if (!Round[counter]) {
+          if (counter == i) {
+            _stopWatchTimer.onStopTimer();
+            final round_time =
+                (stopwatch.elapsed.inMilliseconds / 1000).floor();
+            print(round_time);
+            final int totalTimeInSeconds = round_time * 7;
+            final int hours = totalTimeInSeconds ~/ 3600;
+            final int minutes = (totalTimeInSeconds % 3600) ~/ 60;
+            final int seconds = totalTimeInSeconds % 60;
+            TotalTime =
+                '${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+            Round[counter]= true; 
+            i=i+i;
+             _stopWatchTimer.onResetTimer();   
+             _stopWatchTimer.onStartTimer(); 
           }
+        }
         
       }
     });
