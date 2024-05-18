@@ -521,14 +521,27 @@ Solved() async{
                   color: Colors.red,
                 ),
               ),
-               Text(
-                'Type of problem: $Problem',
-                style:  GoogleFonts.poppins(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.red,
-                ),
-              ),
+               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                 children: [
+                   Text(
+                    'Problem type: ',
+                    style:  GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: const Color.fromARGB(255, 0, 0, 0),
+                    ),
+                                 ),
+                                 Text(
+                    '$Problem',
+                    style:  GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color:  Colors.red
+                    ),
+                                 ),
+                 ],
+               ),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
