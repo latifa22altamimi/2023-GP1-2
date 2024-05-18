@@ -602,9 +602,12 @@ class _ReservationDetailsState extends State<ReservationDetails>
                       },
                       label: Text(
                         "Reschdule",
-                        style: GoogleFonts.poppins(fontSize: 16),
+                        style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400),
                       ),
-                      icon: Icon(Icons.schedule),
+                      icon: Icon(Icons.schedule, color: Colors.white),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith(
                             (states) => kPrimaryColor),
@@ -832,9 +835,12 @@ class _ReservationDetailsState extends State<ReservationDetails>
                       },
                       label: Text(
                         "Cancel",
-                        style: GoogleFonts.poppins(fontSize: 16),
+                        style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400),
                       ),
-                      icon: Icon(Icons.close),
+                      icon: Icon(Icons.close, color: Colors.white),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.resolveWith(
                             (states) => ErrorColor),
@@ -1141,13 +1147,13 @@ Widget ticketDetailsWidget(String firstTitle, String firstDesc,
           children: <Widget>[
             Text(
               firstTitle,
-              style:  GoogleFonts.poppins(color: Colors.grey),
+              style: GoogleFonts.poppins(color: Colors.grey),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 4.0),
               child: Text(
                 firstDesc,
-                style:  GoogleFonts.poppins(color: Colors.black),
+                style: GoogleFonts.poppins(color: Colors.black),
               ),
             )
           ],
@@ -1160,13 +1166,13 @@ Widget ticketDetailsWidget(String firstTitle, String firstDesc,
           children: [
             Text(
               secondTitle,
-              style:  GoogleFonts.poppins(color: Colors.grey),
+              style: GoogleFonts.poppins(color: Colors.grey),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 4.0),
               child: Text(
                 secondDesc,
-                style:  GoogleFonts.poppins(color: Colors.black),
+                style: GoogleFonts.poppins(color: Colors.black),
               ),
             )
           ],
@@ -1235,6 +1241,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
 
     if (res.statusCode == 200) {
       var jsonResponse = json.decode(res.body);
+      print("hi");
       print(jsonResponse); // Print the jsonResponse to check its contents
 
       setState(() {
@@ -1332,7 +1339,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
             child: Column(
               children: <Widget>[
                 _tableCalendar(),
-                 Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
                   child: Center(
                     child: Text(
@@ -1409,6 +1416,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
                                       height: 10.0,
                                     ),
                                     Text(
+                                      textAlign: TextAlign.center,
                                       'Your reservation will be rescheduled to:',
                                       style: GoogleFonts.poppins(
                                           color:
@@ -1418,7 +1426,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
                                     ),
                                     Container(
                                       width: 350,
-                                      height: 70,
+                                      height: 74,
                                       margin: const EdgeInsets.all(12),
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
@@ -1491,7 +1499,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
                                       children: [
                                         ConstrainedBox(
                                           constraints: BoxConstraints.tightFor(
-                                              height: 38, width: 100),
+                                              height: 38, width: 104),
                                           child: ElevatedButton(
                                             onPressed: () =>
                                                 Navigator.of(context).pop(),
@@ -1521,7 +1529,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
 
                                         ConstrainedBox(
                                           constraints: BoxConstraints.tightFor(
-                                              height: 38, width: 118),
+                                              height: 38, width: 126),
                                           child: ElevatedButton(
                                             onPressed: () {
                                               reschedule();
@@ -1566,6 +1574,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
                                                               height: 100),
                                                           Text(
                                                             'Success',
+                                                            textAlign: TextAlign.center,
                                                             style: GoogleFonts
                                                                 .poppins(
                                                                     color: Colors
@@ -1580,6 +1589,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
                                                             height: 10.0,
                                                           ),
                                                           Text(
+                                                            textAlign: TextAlign.center,
                                                             'Reschedulling is done successfully',
                                                             style: GoogleFonts
                                                                 .poppins(
@@ -1608,7 +1618,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
                                                                         height:
                                                                             38,
                                                                         width:
-                                                                            100),
+                                                                            104),
                                                               ),
                                                             ],
                                                           )
@@ -1623,7 +1633,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
                                               'Reschedule',
                                               style: GoogleFonts.poppins(
                                                   color: Colors.white,
-                                                  fontSize: 15,
+                                                  fontSize: 13,
                                                   fontWeight: FontWeight.w500),
                                             ),
                                             style: ElevatedButton.styleFrom(
@@ -1786,6 +1796,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
                   _currentIndex = index;
                   _timeSelected = true;
                 }
+                 
               });
             },
             child: Container(

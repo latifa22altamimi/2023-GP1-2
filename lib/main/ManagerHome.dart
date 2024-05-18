@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -519,20 +521,33 @@ Solved() async{
                   color: Colors.red,
                 ),
               ),
-               Text(
-                'Type of problem: $Problem',
-                style:  GoogleFonts.poppins(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.red,
-                ),
-              ),
+               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                 children: [
+                   Text(
+                    'Problem type: ',
+                    style:  GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: const Color.fromARGB(255, 0, 0, 0),
+                    ),
+                                 ),
+                                 Text(
+                    '$Problem',
+                    style:  GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                      color:  Colors.red
+                    ),
+                                 ),
+                 ],
+               ),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    width: 120,
+                    width: 150,
                     child: ElevatedButton(
                       onPressed: () {
                         openGoogleMaps();
@@ -547,13 +562,15 @@ Solved() async{
                         'Google Maps',
                         style:  GoogleFonts.poppins(
                           color: Colors.white,
+                        fontSize:14,
+                        fontWeight:FontWeight.w500
                         ),
                       ),
                     ),
                   ),
                   SizedBox(width: 10),
                   Container(
-                    width: 80,
+                    width: 100,
                     child: ElevatedButton(
                       onPressed: () {
                            showDialog(
@@ -777,10 +794,11 @@ Solved() async{
                         ),
                       ),
                       child: Text(
-                        'Solved',
+                        'Solve',
                         style:  GoogleFonts.poppins(
                           color: Colors.white,
-                        ),
+                          fontSize:14,
+                          fontWeight:FontWeight.w500                        ),
                       ),
                     ),
                   ),

@@ -51,8 +51,16 @@ $startMinute = intval($startMinute);
 $startPeriod = strtoupper(trim($startPeriod));
 
 // Adjust start hour if it's PM
-if ($startPeriod === 'PM' && $startHour != 12) {
-    $startHour += 12;
+if ($startPeriod === 'PM') {
+    if ($startHour != 12) {
+        $startHour += 12;
+    } else {
+        $startHour = 0; // Adjust for 12:00 PM (noon)
+    }
+} else {
+    if ($startHour == 12) {
+        $startHour = 0; // Adjust for 12:00 AM (midnight)
+    }
 }
 
 list($avgHour, $avgMinute) = explode(':', $AvgTime);
@@ -66,14 +74,10 @@ $minutes = $totalMinutes % 60;
 
 // Adjust hours to wrap around every 24 hours and format AM/PM
 $finalHour = $hours % 12;
+$finalHour = ($finalHour === 0) ? 12 : $finalHour; // Adjust for 12-hour format
 $period = ($hours >= 12) ? 'PM' : 'AM';
 
-// Adjust the finalHour for 12-hour format
-if ($finalHour == 0) {
-    $finalHour = 12; // Adjust for midnight
-}
 $ExpectFinishTime = sprintf("%02d:%02d %s", $finalHour, $minutes, $period);
-
 
 // Fetch available vehicles count
 $sqlSingle = "SELECT TotalNumberofVehicles FROM parameters WHERE VehicleType='Single' AND VehicleDedicatedTo='walkIn'";

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:rehaab/main/home.dart';
@@ -33,7 +34,6 @@ class _CallSupportState extends State<callSupport> {
     return Color.fromARGB(219, 69, 95, 77);
   }
 
-  
   @override
   void initState() {
     super.initState();
@@ -56,6 +56,7 @@ class _CallSupportState extends State<callSupport> {
       }
     }
   }
+
   Future insert() async {
     var url = "http://10.0.2.2/phpfiles/support.php";
     final res = await http.post(Uri.parse(url), body: {
@@ -77,7 +78,7 @@ class _CallSupportState extends State<callSupport> {
       appBar: AppBar(
         leading: Container(
           padding: EdgeInsets.only(top: 5.0, bottom: 60.0),
-          child: BackButton(),
+          child: BackButton(color: Colors.white,),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -100,7 +101,7 @@ class _CallSupportState extends State<callSupport> {
             child: Center(
               child: Text(
                 'Call for support',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                     color: Colors.white,
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
@@ -131,7 +132,7 @@ class _CallSupportState extends State<callSupport> {
                         alignment: Alignment.topLeft,
                         child: Text(
                           'Problem type',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
                               fontSize: 18),
@@ -175,7 +176,7 @@ class _CallSupportState extends State<callSupport> {
                     alignment: Alignment.center,
                     child: Text(
                       '${types[index]}',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
                         color: _currentIndex == index ? Colors.white : null,
@@ -204,7 +205,7 @@ class _CallSupportState extends State<callSupport> {
                         alignment: Alignment.topLeft,
                         child: Text(
                           'Other problems',
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontWeight: FontWeight.w600,
                               fontSize: 14),
@@ -285,7 +286,7 @@ class _CallSupportState extends State<callSupport> {
                                           height: 100),
                                       Text(
                                         'Ask for support',
-                                        style: TextStyle(
+                                        style: GoogleFonts.poppins(
                                             color: Colors.black,
                                             fontSize: 20,
                                             fontWeight: FontWeight.w600),
@@ -295,7 +296,7 @@ class _CallSupportState extends State<callSupport> {
                                       ),
                                       Text(
                                         'Your request will be forwarded to the support team',
-                                        style: TextStyle(
+                                        style: GoogleFonts.poppins(
                                             color:
                                                 Color.fromARGB(255, 48, 48, 48),
                                             fontSize: 17,
@@ -319,7 +320,7 @@ class _CallSupportState extends State<callSupport> {
                                                   Navigator.of(context).pop(),
                                               child: Text(
                                                 'Close',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
                                                     color: Colors.black,
                                                     fontSize: 14,
                                                     fontWeight:
@@ -346,7 +347,7 @@ class _CallSupportState extends State<callSupport> {
                                           ConstrainedBox(
                                             constraints:
                                                 BoxConstraints.tightFor(
-                                                    height: 38, width: 100),
+                                                    height: 38, width: 102),
                                             child: ElevatedButton(
                                               onPressed: () {
                                                 insert();
@@ -396,7 +397,7 @@ class _CallSupportState extends State<callSupport> {
                                                                 height: 100),
                                                             Text(
                                                               'Success',
-                                                              style: TextStyle(
+                                                              style: GoogleFonts.poppins(
                                                                   color: Colors
                                                                       .black,
                                                                   fontSize: 20,
@@ -412,7 +413,8 @@ class _CallSupportState extends State<callSupport> {
                                                               textAlign:
                                                                   TextAlign
                                                                       .center,
-                                                              style: TextStyle(
+                                                              style: GoogleFonts
+                                                                  .poppins(
                                                                 color: Colors
                                                                     .black,
                                                                 fontSize: 17,
@@ -451,9 +453,9 @@ class _CallSupportState extends State<callSupport> {
                                               },
                                               child: Text(
                                                 'Request',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
                                                     color: Colors.white,
-                                                    fontSize: 14,
+                                                    fontSize: 13,
                                                     fontWeight:
                                                         FontWeight.w500),
                                               ),
@@ -514,7 +516,7 @@ class _CallSupportState extends State<callSupport> {
                                       children: [
                                         Text(
                                           'Error!',
-                                          style: TextStyle(
+                                          style: GoogleFonts.poppins(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255),
                                               fontSize: 18,
@@ -522,7 +524,7 @@ class _CallSupportState extends State<callSupport> {
                                         ),
                                         Text(
                                           "Type the problem or choose from the options!",
-                                          style: TextStyle(
+                                          style: GoogleFonts.poppins(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255),
                                               fontSize: 10,
