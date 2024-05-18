@@ -3,7 +3,7 @@ include 'connect.php';
 $id=$_POST['id'];
 $sql = "UPDATE support SET Solved = 1 WHERE supportID=$id";
 if ($conn->query($sql) === TRUE) {
-    echo "Solved value updated in the database.";
+    echo json_encode("Solved");
 } else {
-    echo "Error updating the Solved value: " . $conn->error;
+    echo json_encode("Error");
 }
