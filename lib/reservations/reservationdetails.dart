@@ -1278,7 +1278,7 @@ class _RescheduleBookingPage extends State<RescheduleBookingPage> {
             // Compare current hour and minute with the time slot hour and minute
             if (currentHoursInt < slotHours ||
                 (currentHoursInt == slotHours &&
-                    currentSlotMinutes > slotMinutes)) {
+                    currentSlotMinutes < slotMinutes)) {
               tlist.add(list[i]);
             }
           }
