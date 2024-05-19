@@ -6,32 +6,31 @@ $Rid = $_POST['Rid'];
 date_default_timezone_set('Asia/Riyadh'); // Set to Makkah
 $startTime = date("h:i A");
 
-// Get the average of tawaf to calculate expect finish time 
-$sql= "SELECT TDuration FROM tawaf";
+// Fetch ReservationDur from parameters
+$sql = "SELECT TDuration FROM tawaf";
 $result = $conn->query($sql);
 $tawafDurations = [];
-$allTimes = []; // Array of time strings
 while ($ro2 = $result->fetch_assoc()) {
-    $tawafDurations[] = $ro2;
+    $tawafDurations[] = $ro2['TDuration'];
 }
 
-foreach ($tawafDurations as $time) {
-   $allTimes[]= $time['TDuration'];
-    
-}
 // Function to convert time string to seconds
 function timeToSeconds($time) {
     $parts = explode(':', $time);
-    return $parts[0] * 3600 + $parts[1] * 60;
+    $hours = intval($parts[0]);
+    $minutes = intval($parts[1]);
+    return $hours * 3600 + $minutes * 60;
 }
-// Convert each time string to seconds and calculate total sum
-$totalSeconds = 0;
-foreach ($allTimes as $time) {
-    $totalSeconds += timeToSeconds($time);
+
+// Convert each time string to seconds
+$tawafDurationsSeconds = [];
+foreach ($tawafDurations as $time) {
+    $tawafDurationsSeconds[] = timeToSeconds($time);
 }
 
 // Calculate the average in seconds
-$averageSeconds = $totalSeconds / count($allTimes);
+$totalSeconds = array_sum($tawafDurationsSeconds);
+$averageSeconds = $totalSeconds / count($tawafDurationsSeconds);
 
 // Convert average back to time format (hours:minutes)
 $hours = floor($averageSeconds / 3600);
@@ -39,22 +38,40 @@ $minutes = floor(($averageSeconds % 3600) / 60);
 $AvgTime = sprintf('%02d:%02d', $hours, $minutes); // Average from tawaf duration
 
 // Calculate expected finish time
-list($startHour, $startMinute, $startPeriod) = explode(':', $startTime);
+list($startHourMinute, $startPeriod) = explode(' ', $startTime);
+list($startHour, $startMinute) = explode(':', $startHourMinute);
 $startHour = intval($startHour);
 $startMinute = intval($startMinute);
 $startPeriod = strtoupper(trim($startPeriod));
+
+// Adjust start hour if it's PM
+if ($startPeriod === 'PM') {
+    if ($startHour != 12) {
+        $startHour += 12;
+    } else {
+        $startHour = 0; // Adjust for 12:00 PM (noon)
+    }
+} else {
+    if ($startHour == 12) {
+        $startHour = 0; // Adjust for 12:00 AM (midnight)
+    }
+}
+
 list($avgHour, $avgMinute) = explode(':', $AvgTime);
 $avgHour = intval($avgHour);
 $avgMinute = intval($avgMinute);
-$totalMinutes = $startHour * 60 + $startMinute + $avgHour * 60 + $avgMinute;
-$hours = floor($totalMinutes / 60) % 12;
-$minutes = $totalMinutes % 60;
-$period = ($startPeriod == 'AM' && $hours >= 12) || ($startPeriod == 'PM' && $hours < 12) ? 'PM' : 'AM';
-if ($period == 'PM') {
-    $hours += 12;
-}
-$ExpectFinishTime = sprintf("%02d:%02d %s", $hours, $minutes, $period);
 
+// Calculate total minutes and convert to total hours and minutes
+$totalMinutes = $startHour * 60 + $startMinute + $avgHour * 60 + $avgMinute;
+$hours = floor($totalMinutes / 60);
+$minutes = $totalMinutes % 60;
+
+// Adjust hours to wrap around every 24 hours and format AM/PM
+$finalHour = $hours % 12;
+$finalHour = ($finalHour === 0) ? 12 : $finalHour; // Adjust for 12-hour format
+$period = ($hours >= 12) ? 'PM' : 'AM';
+
+$ExpectFinishTime = sprintf("%02d:%02d %s", $finalHour, $minutes, $period);
 
 
 $updateReservationQuery = "UPDATE `reservation` SET `Status`='Active', `time`='$startTime' WHERE reservationId=$Rid";

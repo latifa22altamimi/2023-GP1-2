@@ -1793,7 +1793,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                     'Cancel',
                                                     style: GoogleFonts.poppins(
                                                         color: Colors.black,
-                                                        fontSize: 15,
+                                                        fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.w500),
                                                   ),
@@ -1926,7 +1926,7 @@ class _WaitingCardState extends State<WaitingCard> {
                                                     'Accept',
                                                     style: GoogleFonts.poppins(
                                                         color: Colors.white,
-                                                        fontSize: 15,
+                                                        fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.w500),
                                                   ),

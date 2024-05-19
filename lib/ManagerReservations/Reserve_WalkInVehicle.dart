@@ -1579,7 +1579,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                                     SnackBar(
                                       duration: Duration(seconds: 3),
                                       content: Container(
-                                        height: 80,
+                                        height: 88,
                                         padding: EdgeInsets.all(10.0),
                                         decoration: BoxDecoration(
                                             gradient: LinearGradient(

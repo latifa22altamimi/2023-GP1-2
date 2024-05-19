@@ -24,6 +24,7 @@ import '../ManagerReservations/Reservations.dart';
 import '../ManagerReservations/Reserve_WalkInVehicle.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 bool unavailableVehicles = false;
 int numOfAvailable = 0;
 int TotalVehicles = 0;
@@ -45,7 +46,7 @@ class _ManagerHomeState extends State<ManagerHome> {
         //home page
         children: const [
           AppBarr(),
-           BodyHome(),
+          BodyHome(),
         ],
       ),
     ),
@@ -55,10 +56,11 @@ class _ManagerHomeState extends State<ManagerHome> {
   void initState() {
     super.initState();
   }
-TextStyle labelTextStyle = GoogleFonts.poppins(
-  fontSize: 15,
-  fontWeight: FontWeight.w500,
-);
+
+  TextStyle labelTextStyle = GoogleFonts.poppins(
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+  );
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -70,7 +72,6 @@ TextStyle labelTextStyle = GoogleFonts.poppins(
         ),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
-          
             borderRadius: BorderRadius.only(
                 topRight: Radius.circular(40), topLeft: Radius.circular(40)),
             boxShadow: [
@@ -86,7 +87,7 @@ TextStyle labelTextStyle = GoogleFonts.poppins(
               data: NavigationBarThemeData(
                 height: 80,
                 labelTextStyle: MaterialStateProperty.all(labelTextStyle),
-                backgroundColor:Colors.white,
+                backgroundColor: Colors.white,
                 shadowColor: Colors.transparent,
                 indicatorColor:
                     Color.fromARGB(255, 104, 132, 113).withOpacity(0.34),
@@ -120,8 +121,6 @@ TextStyle labelTextStyle = GoogleFonts.poppins(
 
 class AppBarr extends StatelessWidget {
   const AppBarr({super.key});
-  
-
 
   @override
   Widget build(BuildContext context) {
@@ -144,13 +143,12 @@ class AppBarr extends StatelessWidget {
               Text(
                 'Hello manager, \n' + GlobalValues.Fullname,
                 style: GoogleFonts.poppins(
-                
                     color: Colors.white,
                     fontSize: 23,
                     fontWeight: FontWeight.w500),
               ),
-                 
-            /* 
+
+              /* 
               Container(
 
                   child:Support?  TextButton(
@@ -269,7 +267,7 @@ class AppBarr extends StatelessWidget {
   }
 }
 
-List vehiclesAvailable = [0,0];
+List vehiclesAvailable = [0, 0];
 String avgTime = "";
 int waitNum = 0;
 double waitPercent = 0.0;
@@ -278,11 +276,11 @@ int percentage = 0;
 Color emptyColor = kPrimaryColor;
 int totalActive = 0;
 double totalActiveDouble = 0.0;
-bool Support=false;
-String long="";
-String lat="";
-String id='';
-String Problem='';
+bool Support = false;
+String long = "";
+String lat = "";
+String id = '';
+String Problem = '';
 
 class BodyHome extends StatefulWidget {
   const BodyHome({Key? key}) : super(key: key);
@@ -314,50 +312,47 @@ class _BodyHomeState extends State<BodyHome> {
 
     avgTime = formattedTime;
   }
- 
 
-void openGoogleMaps() async {
-  double lat1 = double.parse(lat);
-  double long2 = double.parse(long);
-  String googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=$lat1,$long2';
-  Uri uri = Uri.parse(googleMapsUrl);
-  if (await canLaunchUrl(uri)) {
-    await launchUrl(uri);
-  } else {
-    print("could not open map");
+  void openGoogleMaps() async {
+    double lat1 = double.parse(lat);
+    double long2 = double.parse(long);
+    String googleMapsUrl =
+        'https://www.google.com/maps/search/?api=1&query=$lat1,$long2';
+    Uri uri = Uri.parse(googleMapsUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      print("could not open map");
+    }
   }
-}
-Solved() async{
-  print(id);
+
+  Solved() async {
+    print(id);
     var url = "http://10.0.2.2/phpfiles/UpdateSolved.php";
 
-    final res = await http.post(Uri.parse(url), body: {"id":id});
-      var data=json.decode(res.body);
-      print(data);
-   
-}
-  
-
-
+    final res = await http.post(Uri.parse(url), body: {"id": id});
+    var data = json.decode(res.body);
+    print(data);
+  }
 
   Future ViewSupport() async {
     print("hi");
     var url = "http://10.0.2.2/phpfiles/ViewSupport.php";
-     final res = await http.post(Uri.parse(url), body: {
+    final res = await http.post(Uri.parse(url), body: {
       "Userid": GlobalValues.id,
     });
-     var data = json.decode(res.body);
+    var data = json.decode(res.body);
     print(data);
-     Support=data[0];
-     long=data[1];
-     lat=data[2];
-     id=data[3];
-     Problem=data[4];
-     print(Support);
-     print(long);
-     print(lat);
-     print(id);
-     print(Problem);
+    Support = data[0];
+    long = data[1];
+    lat = data[2];
+    id = data[3];
+    Problem = data[4];
+    print(Support);
+    print(long);
+    print(lat);
+    print(id);
+    print(Problem);
   }
 
   Future WaitingNum() async {
@@ -371,8 +366,7 @@ Solved() async{
     if (waitPercent.isNaN) {
       waitPercent = 0.0;
     } else {
-      waitPercent = double.parse(
-          waitPercent.toStringAsFixed(1)); 
+      waitPercent = double.parse(waitPercent.toStringAsFixed(1));
     }
 
     print("$waitPercent waitPercent");
@@ -439,378 +433,394 @@ Solved() async{
     return SingleChildScrollView(
       child: Column(
         children: [
-            Visibility(
-  visible: Support, 
-  child: Column(
-    children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                'Notifications',
-                textAlign: TextAlign.left,
-                style:  GoogleFonts.poppins(
-                  color: Colors.black,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(right: 20.0, top: 17.0),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.white,
-                elevation: 2, 
-              ),
-              onPressed: () {
-                vehiclesAvailable.clear();
-                DisplayWaiting();
-                ViewSupport();
-              },
-              child: Text(
-                'Refresh',
-                style:  GoogleFonts.poppins(
-                  color: Colors.black,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-      SizedBox(
-        height: 5.0,
-      ),
-      Container(
-        height: 1.0,
-        width: double.infinity,
-        color: Colors.grey.withOpacity(0.3),
-      ),
-      SizedBox(
-        height: 18.0,
-      ),
-      SizedBox(
-        height: 118,
-        width: 370,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Color.fromARGB(255, 255, 255, 255),
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 2.0,
-                spreadRadius: 0.05,
-              ),
-            ],
-          ),
-          child: Column(
-            children: [
-              SizedBox(height: 10),
-              Text(
-                'You have 1 support notification!',
-                style:  GoogleFonts.poppins(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.red,
-                ),
-              ),
-               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                 children: [
-                   Text(
-                    'Problem type: ',
-                    style:  GoogleFonts.poppins(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                      color: const Color.fromARGB(255, 0, 0, 0),
-                    ),
-                                 ),
-                                 Text(
-                    '$Problem',
-                    style:  GoogleFonts.poppins(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color:  Colors.red
-                    ),
-                                 ),
-                 ],
-               ),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 150,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        openGoogleMaps();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: kPrimaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      child: Text(
-                        'Google Maps',
-                        style:  GoogleFonts.poppins(
-                          color: Colors.white,
-                        fontSize:14,
-                        fontWeight:FontWeight.w500
+          Visibility(
+            visible: Support,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 30, left: 20, right: 20),
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: Text(
+                          'Notifications',
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.poppins(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Container(
-                    width: 100,
-                    child: ElevatedButton(
-                      onPressed: () {
-                           showDialog(
-                                context: context,
-                                builder: (context) => Dialog(
-                                  backgroundColor:
-                                      Color.fromARGB(255, 247, 247, 247),
+                    Container(
+                      margin: EdgeInsets.only(right: 20.0, top: 17.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.white,
+                          elevation: 2,
+                        ),
+                        onPressed: () {
+                          vehiclesAvailable.clear();
+                          DisplayWaiting();
+                          ViewSupport();
+                          WaitingNum();
+                        },
+                        child: Text(
+                          'Refresh',
+                          style: GoogleFonts.poppins(
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Container(
+                  height: 1.0,
+                  width: double.infinity,
+                  color: Colors.grey.withOpacity(0.3),
+                ),
+                SizedBox(
+                  height: 18.0,
+                ),
+                SizedBox(
+                  height: 118,
+                  width: 370,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 255, 255, 255),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 2.0,
+                          spreadRadius: 0.05,
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 10),
+                        Text(
+                          'You have 1 support notification!',
+                          style: GoogleFonts.poppins(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.red,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Problem type: ',
+                              style: GoogleFonts.poppins(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: const Color.fromARGB(255, 0, 0, 0),
+                              ),
+                            ),
+                            Text(
+                              '$Problem',
+                              style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.red),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 150,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  openGoogleMaps();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: kPrimaryColor,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Container(
-                                    padding: const EdgeInsets.only(
-                                        left: 10.0,
-                                        right: 10.0,
-                                        top: 20.0,
-                                        bottom: 30.0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Lottie.asset('assets/images/warn.json',
-                                            width: 100, height: 100),
-                                        Text(
-                                          'Problem Solved?',
-                                          style:  GoogleFonts.poppins(
-                                              color: Colors.black,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        SizedBox(
-                                          height: 10.0,
-                                        ),
-                                        Text(
-                                          'Are you sure that you have solved the problem?',
-                                          style:  GoogleFonts.poppins(
-                                              color: Color.fromARGB(255, 48, 48, 48),
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w400),
-                                               textAlign: TextAlign.center,
-                                        ),
-                                        SizedBox(
-                                          height: 20.0,
-                                        ),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Google Maps',
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Container(
+                              width: 100,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => Dialog(
+                                      backgroundColor:
+                                          Color.fromARGB(255, 247, 247, 247),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Container(
+                                        padding: const EdgeInsets.only(
+                                            left: 10.0,
+                                            right: 10.0,
+                                            top: 20.0,
+                                            bottom: 30.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
-                                            ConstrainedBox(
-                                              constraints:
-                                                  BoxConstraints.tightFor(
-                                                      height: 38, width: 100),
-                                              child: ElevatedButton(
-                                                onPressed: () =>
-                                                    Navigator.of(context).pop(),
-                                                child: Text(
-                                                  'No',
-                                                  style:  GoogleFonts.poppins(
-                                                      color: Colors.black,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 255, 255, 255),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(50),
+                                            Lottie.asset(
+                                                'assets/images/warn.json',
+                                                width: 100,
+                                                height: 100),
+                                            Text(
+                                              'Problem Solved?',
+                                              style: GoogleFonts.poppins(
+                                                  color: Colors.black,
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            SizedBox(
+                                              height: 10.0,
+                                            ),
+                                            Text(
+                                              'Are you sure that you have solved the problem?',
+                                              style: GoogleFonts.poppins(
+                                                  color: Color.fromARGB(
+                                                      255, 48, 48, 48),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w400),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            SizedBox(
+                                              height: 20.0,
+                                            ),
+                                            Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                ConstrainedBox(
+                                                  constraints:
+                                                      BoxConstraints.tightFor(
+                                                          height: 38,
+                                                          width: 100),
+                                                  child: ElevatedButton(
+                                                    onPressed: () =>
+                                                        Navigator.of(context)
+                                                            .pop(),
+                                                    child: Text(
+                                                      'No',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          Color.fromARGB(255,
+                                                              255, 255, 255),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(50),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            ),
 
-                                            SizedBox(
-                                              width: 30.0,
-                                            ),
-                                            //when press on confirm
+                                                SizedBox(
+                                                  width: 30.0,
+                                                ),
+                                                //when press on confirm
 
-                                            ConstrainedBox(
-                                              constraints:
-                                                  BoxConstraints.tightFor(
-                                                      height: 38, width: 100),
-                                              child: ElevatedButton(
-                                                onPressed: () async {
-
-                                                  Navigator.of(context).pop();
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (context) {
-                                                        Future.delayed(
-                                                        
-                                                            Duration(
-                                                                seconds: 2),
-                                                            () {
-                                                          Solved();
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        ManagerHome()),
-                                                          );
-                                                            
-                                                        });
-                                                        return Dialog(
-                                                          backgroundColor:
-                                                              Color.fromARGB(
-                                                                  255,
-                                                                  247,
-                                                                  247,
-                                                                  247),
-                                                          shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20)),
-                                                          child: Container(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(20.0),
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              children: [
-                                                                Lottie.asset(
-                                                                    'assets/images/success.json',
-                                                                    width: 100,
-                                                                    height:
-                                                                        100),
-                                                                Text(
-                                                                  'Success',
-                                                                  style:  GoogleFonts.poppins(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          20,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
-                                                                ),
-                                                                SizedBox(
-                                                                  height: 10.0,
-                                                                ),
-                                                                Text(
-                                                                  "Thank you for solving the problem!",
-                                                                  style:  GoogleFonts.poppins(
-                                                                      color: Colors
-                                                                          .black,
-                                                                      fontSize:
-                                                                          17,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w400),
-                                                                    textAlign: TextAlign.center,
-                                                                ),
-                                                               
-                                                                Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
+                                                ConstrainedBox(
+                                                  constraints:
+                                                      BoxConstraints.tightFor(
+                                                          height: 38,
+                                                          width: 100),
+                                                  child: ElevatedButton(
+                                                    onPressed: () async {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            Future.delayed(
+                                                                Duration(
+                                                                    seconds: 2),
+                                                                () {
+                                                              Solved();
+                                                              Navigator.push(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            ManagerHome()),
+                                                              );
+                                                            });
+                                                            return Dialog(
+                                                              backgroundColor:
+                                                                  Color
+                                                                      .fromARGB(
+                                                                          255,
+                                                                          247,
+                                                                          247,
+                                                                          247),
+                                                              shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20)),
+                                                              child: Container(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        20.0),
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
                                                                           .center,
                                                                   mainAxisSize:
                                                                       MainAxisSize
                                                                           .min,
                                                                   children: [
-                                                                    ConstrainedBox(
-                                                                      constraints: BoxConstraints.tightFor(
-                                                                          height:
-                                                                              28,
-                                                                          width:
-                                                                              100),
+                                                                    Lottie.asset(
+                                                                        'assets/images/success.json',
+                                                                        width:
+                                                                            100,
+                                                                        height:
+                                                                            100),
+                                                                    Text(
+                                                                      'Success',
+                                                                      style: GoogleFonts.poppins(
+                                                                          color: Colors
+                                                                              .black,
+                                                                          fontSize:
+                                                                              20,
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
                                                                     ),
+                                                                    SizedBox(
+                                                                      height:
+                                                                          10.0,
+                                                                    ),
+                                                                    Text(
+                                                                      "Thank you for solving the problem!",
+                                                                      style: GoogleFonts.poppins(
+                                                                          color: Colors
+                                                                              .black,
+                                                                          fontSize:
+                                                                              17,
+                                                                          fontWeight:
+                                                                              FontWeight.w400),
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                    ),
+                                                                    Row(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .center,
+                                                                      mainAxisSize:
+                                                                          MainAxisSize
+                                                                              .min,
+                                                                      children: [
+                                                                        ConstrainedBox(
+                                                                          constraints: BoxConstraints.tightFor(
+                                                                              height: 28,
+                                                                              width: 100),
+                                                                        ),
+                                                                      ],
+                                                                    )
                                                                   ],
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        );
-                                                      });
-                                                },
-                                                child: Text(
-                                                  'Yes',
-                                                  style:  GoogleFonts.poppins(
-                                                      color: Colors.white,
-                                                      fontSize: 13.5,
-                                                      fontWeight:
-                                                          FontWeight.w500),
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  backgroundColor:
-                                                      Color.fromARGB(
-                                                          255, 60, 100, 73),
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(50),
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+                                                    },
+                                                    child: Text(
+                                                      'Yes',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 13.5,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                    ),
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                      backgroundColor:
+                                                          Color.fromARGB(
+                                                              255, 60, 100, 73),
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(50),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
+                                                )
+                                              ],
                                             )
                                           ],
-                                        )
-                                      ],
+                                        ),
+                                      ),
                                     ),
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: kPrimaryColor,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
                                 ),
-                           );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: kPrimaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
+                                child: Text(
+                                  'Solve',
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      child: Text(
-                        'Solve',
-                        style:  GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontSize:14,
-                          fontWeight:FontWeight.w500                        ),
-                      ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
-    ],
-  ),
-),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -821,42 +831,39 @@ Solved() async{
                     child: Text(
                       'Vehicles details',
                       textAlign: TextAlign.left,
-                      style:  GoogleFonts.poppins(
+                      style: GoogleFonts.poppins(
                           color: Colors.black,
                           fontSize: 23,
                           fontWeight: FontWeight.w500),
                     ),
                   )),
-                   Visibility(
-  visible: !Support, 
-  child: Container(
-    margin: EdgeInsets.only(right: 20.0, top: 17.0),
-    child: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.white,
-        elevation: 2, // Adjust the elevation value as desired
-      ),
-      onPressed: () {
-        vehiclesAvailable.clear();
-        DisplayWaiting();
-        ViewSupport();
-      },
-      child: Text(
-        'Refresh',
-        style:  GoogleFonts.poppins(
-          color: Colors.black,
-        ),
-      ),
-    ),
-  ),
-),
-                 
-                 
-              
+              Visibility(
+                visible: !Support,
+                child: Container(
+                  margin: EdgeInsets.only(right: 20.0, top: 17.0),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.white,
+                      elevation: 2, // Adjust the elevation value as desired
+                    ),
+                    onPressed: () {
+                      vehiclesAvailable.clear();
+                      DisplayWaiting();
+                      ViewSupport();
+                    },
+                    child: Text(
+                      'Refresh',
+                      style: GoogleFonts.poppins(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
-               
+
           SizedBox(
             height: 5.0,
           ),
@@ -899,7 +906,7 @@ Solved() async{
                               alignment: Alignment.topLeft,
                               child: Text(
                                 'Walk-in vehicles',
-                                style:  GoogleFonts.poppins(
+                                style: GoogleFonts.poppins(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -913,7 +920,7 @@ Solved() async{
                             children: [
                               Text(
                                 '${vehiclesAvailable[1]}',
-                                style:  GoogleFonts.poppins(
+                                style: GoogleFonts.poppins(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: emptyColor),
@@ -923,7 +930,7 @@ Solved() async{
                               ),
                               Text(
                                 'Single vehicles',
-                                style:  GoogleFonts.poppins(
+                                style: GoogleFonts.poppins(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: kPrimaryColor),
@@ -937,7 +944,7 @@ Solved() async{
                             children: [
                               Text(
                                 '${vehiclesAvailable[0]}',
-                                style:  GoogleFonts.poppins(
+                                style: GoogleFonts.poppins(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w600,
                                     color: emptyColor),
@@ -947,24 +954,16 @@ Solved() async{
                               ),
                               Text(
                                 'Double vehicles',
-                                style:  GoogleFonts.poppins(
+                                style: GoogleFonts.poppins(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                     color: kPrimaryColor),
                               ),
-                               
                             ],
                           ),
-                               
-                
-                         ],
-                        
+                        ],
                       ),
-                
-            
-                    SizedBox(width:40.0),
-              
-            
+                      SizedBox(width: 40.0),
                       CircularPercentIndicator(
                         addAutomaticKeepAlive: true,
                         restartAnimation: false,
@@ -981,7 +980,7 @@ Solved() async{
                           children: [
                             Text(
                               '${percentage}%',
-                              style:  GoogleFonts.poppins(
+                              style: GoogleFonts.poppins(
                                   fontSize: 24,
                                   color: emptyColor,
                                   fontWeight: FontWeight.w600),
@@ -989,9 +988,9 @@ Solved() async{
                             SizedBox(
                               height: 3,
                             ),
-                             Text(
+                            Text(
                               'Available vehicles',
-                              style:  GoogleFonts.poppins(
+                              style: GoogleFonts.poppins(
                                   fontSize: 10,
                                   color: Colors.black,
                                   fontWeight: FontWeight.w400),
@@ -1045,7 +1044,7 @@ Solved() async{
                       ),
                       Text(
                         '${avgTime}',
-                        style:  GoogleFonts.poppins(
+                        style: GoogleFonts.poppins(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             color: Colors.black),
@@ -1055,7 +1054,7 @@ Solved() async{
                       ),
                       Text(
                         'Average Tawaf Time',
-                        style:  GoogleFonts.poppins(
+                        style: GoogleFonts.poppins(
                             color: Colors.black,
                             fontSize: 12.5,
                             fontWeight: FontWeight.w400),
@@ -1119,7 +1118,7 @@ Solved() async{
                               ),
                               Text(
                                 'People in waiting list',
-                                style:  GoogleFonts.poppins(
+                                style: GoogleFonts.poppins(
                                     color: Colors.black,
                                     fontSize: 13,
                                     fontWeight: FontWeight.w700),
@@ -1129,7 +1128,7 @@ Solved() async{
                               ),
                               Text(
                                 '${waitNum}',
-                                style:  GoogleFonts.poppins(
+                                style: GoogleFonts.poppins(
                                     color: Colors.black.withOpacity(0.6),
                                     fontSize: 13,
                                     fontWeight: FontWeight.w500),
@@ -1161,7 +1160,7 @@ Solved() async{
               ),
             ],
           ),
-            
+
           Padding(
               padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
               child: Align(
@@ -1169,7 +1168,7 @@ Solved() async{
                 child: Text(
                   'Services',
                   textAlign: TextAlign.left,
-                  style:  GoogleFonts.poppins(
+                  style: GoogleFonts.poppins(
                       color: Colors.black,
                       fontSize: 23,
                       fontWeight: FontWeight.w500),
@@ -1198,12 +1197,11 @@ Solved() async{
                 InkWell(
                   onTap: () {
                     print(unavailableVehicles);
-                   
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Reserve_WalkInVehicle()));
-                    
+
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Reserve_WalkInVehicle()));
                   },
                   //() => Navigator.push(context,
                   //  MaterialPageRoute(builder: (context) => Reserve_WalkInVehicle())),
@@ -1239,7 +1237,7 @@ Solved() async{
                         ),
                         Text(
                           'Reserve vehicle',
-                          style:  GoogleFonts.poppins(
+                          style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
@@ -1283,7 +1281,7 @@ Solved() async{
                         ),
                         Text(
                           'Check in',
-                          style:  GoogleFonts.poppins(
+                          style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontSize: 16,
                               fontWeight: FontWeight.w500),
