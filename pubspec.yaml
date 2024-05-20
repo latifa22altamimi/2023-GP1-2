@@ -64,6 +64,7 @@ dependencies:
   shared_preferences: ^2.0.8
   url_launcher: ^6.0.6
   google_fonts: 6.1.0
+  network_info_plus: ^2.1.0
 
 
 
