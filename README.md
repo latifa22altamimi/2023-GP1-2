@@ -8,16 +8,18 @@ The system will use using Dart programming language, computer vision for object 
 In addition, reservations are managed through unique barcodes issued, and a barcode scanner is used to verify the reservations of the electric vehicle and to update the availability status of vehicles.
 
 ##  launching instructions 
-
-### 1.Clone the Repository:
+### Open 2023-GP1-2 repository on GitHub.
 ```
 https://github.com/latifa22altamimi/rehaab.git 
 ```
-
-### 2.Go to the Project Directory:
-```
-rehaab.git 
-```
+• Click on the code button.
+• Download .zip file.
+### • Unzip the file.
+### • Open Android Studio or Visual Studio Code.
+### • Click on File > Open > Location of the saved file then click on Ok.
+### • Turn on an Android Emulator or connect an android mobile to your computer using
+USB.
+### • Run  Rehaab application.
 ### 3.Run the App:
 
 
