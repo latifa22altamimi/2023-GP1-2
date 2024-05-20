@@ -10,7 +10,7 @@ In addition, reservations are managed through unique barcodes issued, and a barc
 ##  launching instructions 
 ### Open 2023-GP1-2 repository on GitHub.
 ```
-https://github.com/latifa22altamimi/rehaab.git 
+https://github.com/latifa22altamimi/2023-GP1-2.git   
 ```
 • Click on the code button.
 • Download .zip file.
