@@ -199,7 +199,7 @@ button {
             </div>
           
              
-            <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md">
+            <div class="bg-white border border-gray-100 shadow-md shadow-black/5 p-6 rounded-md" style="width: 600px;">
 
                 <div class="flex justify-between mb-4">
                     <div id="container">
@@ -232,6 +232,7 @@ button {
 <div id="SupportTable" style="display: none;">
   <table class="w-full min-w-[540px]">
     <tr>
+      <th class="text-[12px] tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Id</th>
       <th class="text-[12px] tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Visitor's Name</th>
       <th class="text-[12px] tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Problem</th>
       <th class="text-[12px] tracking-wide font-medium text-gray-400 py-2 px-4 bg-gray-50 text-left">Assigned To</th>
@@ -321,13 +322,18 @@ success: function (data) {
         var formattedTime = ('0' + hours).slice(-2) + ':' + ('0' + minutes).slice(-2) + ampm;
 
         console.log(formattedTime);
-        var VMEmail = support.VMEmail.toString();
+      
         var VEmail = support.VEmail.toString();
+        if(support.Assigned_to !=null){
+          var VMEmail = support.VMEmail.toString();
         var VMtitle = "Vehicle manager's Email: " + VMEmail;
+        }
         var Vtitle = "Visitor's Email: " + VEmail;
 
         var row = '<tr id="supportRow_' + support.supportID + '">' +
-    
+          '<td class="py-2 px-4 border-b border-b-gray-50">' +
+            '<span class="text-[13px] font-medium text-gray-400">' + support.supportID + '</span>' +
+            '</td>' +
             '<td class="py-2 px-4 border-b border-b-gray-50">' +
             '<span class="text-[13px] font-medium text-gray-400" title="' + Vtitle + '">' + support.visitor_name + '</span>' +
             '</td>' +
