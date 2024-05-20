@@ -20,13 +20,10 @@ $numVehicles = $rowSingleOrDouble['TotalNumberofVehicles'];
 // Fetch active reservations managed by a manager for the provided vehicle type
 $sqlReservations = "SELECT COUNT(*) AS num_rows
                     FROM reservation AS r
-                    JOIN managerreservation AS m ON r.reservationId = m.reservationId
+                    JOIN managerreservation AS mr ON r.reservationId = mr.reservationId
+                    JOIN vehicle AS v ON r.vehicleId = v.vehicleId
                     WHERE r.Status = 'Active'
-                    AND r.VehicleId IN (
-                        SELECT v.vehicleId
-                        FROM vehicle AS v
-                        WHERE v.VehicleType = '$VehicleType'
-                    )";
+                    AND v.VehicleType = '$VehicleType'";
 $resultReservations = mysqli_query($conn, $sqlReservations);
 if (!$resultReservations) {
     echo "Error: " . mysqli_error($conn);
@@ -38,9 +35,9 @@ $numOfActive = $rowReservation['num_rows'];
 
 // Check availability and construct response
 if ($numOfActive >= $numVehicles) {
-    $response = json_encode(["Unavailable" => $VehicleType]);
+    $response = json_encode(["Unavailable" . $VehicleType]);
 } else {
-    $response = json_encode(["Available" => $VehicleType]);
+    $response = json_encode(["Available"]);
 }
 
 // Output the response
