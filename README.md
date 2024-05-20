@@ -20,6 +20,25 @@ https://github.com/latifa22altamimi/2023-GP1-2.git
 ### • Turn on an Android Emulator or connect an android mobile to your computer using
 USB.
 ### • Run  Rehaab application.
+### credentials
+### Al-haram visitor 
+User:shahadalothman2@gmail.com 
+Password:Shahad12! 
+
+
+### Vehicle manager 
+User:alnaserfatimah344@gmail.com
+Password: Fatimah12!
+
+### Admin 
+User:Latifah.maltamimi@gmail.com 
+Password: Fatimah12!
+
+
+### website link:
+http://www.rehaabplatforrm.com/  
+
+
 
 
 
