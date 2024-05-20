@@ -20,7 +20,7 @@ https://github.com/latifa22altamimi/rehaab.git
 ### • Turn on an Android Emulator or connect an android mobile to your computer using
 USB.
 ### • Run  Rehaab application.
-### 3.Run the App:
+
 
 
 
