@@ -3,6 +3,7 @@ include 'connect.php';
 
 // Get the vehicle type from the POST data
 $VehicleType = $_POST['VehicleType'];
+$date = $_POST['date'];
 
 // Fetch the total number of available vehicles for the specified type
 $sqlSingleOrDouble = "SELECT TotalNumberofVehicles 
@@ -23,7 +24,7 @@ $sqlReservations = "SELECT COUNT(*) AS num_rows
                     JOIN managerreservation AS mr ON r.reservationId = mr.reservationId
                     JOIN vehicle AS v ON r.vehicleId = v.vehicleId
                     WHERE r.Status = 'Active'
-                    AND v.VehicleType = '$VehicleType'";
+                    AND v.VehicleType = '$VehicleType' AND r.date ='$date'";
 $resultReservations = mysqli_query($conn, $sqlReservations);
 if (!$resultReservations) {
     echo "Error: " . mysqli_error($conn);
