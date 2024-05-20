@@ -65,6 +65,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
 
     if (res.statusCode == 200) {
       var respno = json.decode(res.body);
+      print(respno);
     }
   }
 
@@ -1657,10 +1658,9 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
                             child: Text(
                               'Reserve',
                               style: GoogleFonts.poppins(
-                                  fontSize: 23, 
+                                  fontSize: 23,
                                   color: Colors.white,
-                                  fontWeight:FontWeight.w500
-                                  ),
+                                  fontWeight: FontWeight.w500),
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Color.fromARGB(255, 60, 100, 73),

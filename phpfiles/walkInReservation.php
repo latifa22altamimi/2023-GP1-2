@@ -97,16 +97,19 @@ $rowVehicle = mysqli_fetch_assoc($resultVehicle);
 $vehicleId = $rowVehicle['vehicleId'];
 
 // Fetch reservations in the same day
-$sqlReservations = "SELECT r.*, v.VehicleType
-                    FROM reservation r
-                    INNER JOIN vehicle v ON r.VehicleId = v.vehicleId
-                    WHERE r.date='$date' AND r.Status='Active'";
+$sqlReservations =  "SELECT r.*, v.VehicleType
+FROM reservation r
+INNER JOIN vehicle v ON r.VehicleId = v.vehicleId
+INNER JOIN managerreservation m ON r.reservationId = m.reservationId
+WHERE r.VehicleId = '$vehicleId'
+AND r.Status = 'Active'
+AND r.date = '$date'";
 $resultReservations = mysqli_query($conn, $sqlReservations);
 $reservationsInSameDay = [];
 while ($rowReservation = mysqli_fetch_assoc($resultReservations)) {
     $reservationsInSameDay[] = $rowReservation;
 }
-
+echo json_encode($reservationsInSameDay);
 // Decrement available vehicle count based on reservations
 foreach ($reservationsInSameDay as $reservation) {
     $vehicleType = $reservation['VehicleType'];
@@ -148,6 +151,7 @@ if (($VehicleType == "Single" && $numSingle > 0) || ($VehicleType == "Double" &&
     }
 } else{
      // Handle case when no available vehicles
+     echo json_encode("broke mafe vehicles");
 }
 }else if($Status=="Waiting"){
     // Insert into reservation table 
