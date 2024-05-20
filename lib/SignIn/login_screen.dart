@@ -15,7 +15,6 @@ import 'package:rehaab/Signin/forgotPass_Screen.dart';
 import 'dart:async';
 import 'package:rehaab/main/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:rehaab/Connection.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -31,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
 
   Future signin() async {
-    var url = Connection.signin;
+    var url = "http://10.0.2.2/phpfiles/signin.php";
     setState(() {
     isLoading = true;
   });
