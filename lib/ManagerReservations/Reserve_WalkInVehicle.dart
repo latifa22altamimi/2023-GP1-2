@@ -73,6 +73,7 @@ class _Reserve_WalkInVehicleState extends State<Reserve_WalkInVehicle> {
     var url = "http://10.0.2.2/phpfiles/checkVehicles.php";
     final res = await http.post(Uri.parse(url), body: {
       "VehicleType": _vehicleType,
+      "date": DateFormat('yyyy-MM-dd').format(DateTime.now())
     });
 
     if (res.statusCode == 200) {
