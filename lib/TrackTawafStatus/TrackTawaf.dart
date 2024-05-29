@@ -123,6 +123,12 @@ class _TrackTawafState extends State<TrackTawaf> with TickerProviderStateMixin {
       _isVisible = !_isVisible;
     });
     _isVisible = true;
+    final bool permissionGranted = await requestPermission();
+  if (!permissionGranted) {
+    // Handle case when permission is not granted
+    print('Location permission not granted.');
+    return Future.error('Location permission not granted.');
+  }
     final serviceEnabled = await location.serviceEnabled();
     if (!serviceEnabled) {
       final result = await location.requestService;
